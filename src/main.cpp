@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
         //printf("frameDelay: %ld deltaTime: %ld numberMs: %d\n", frameDelay, deltaTime, ((frameDelay - deltaTime) % frequency2)/10000);
         Uint32 remainingTime = frameDelay - deltaTime;
         Uint32 timeSlept = 0;
-        /*if (remainingTime >= 50000){ //ESSAYER AVEC while( ... >= 15000) pour prendre en compte que ça ajoute un peu à chaque fois ? ou juste if aussi
-            int numberMs = ((remainingTime % frequency2)/10000)-4;
+        if (remainingTime >= 10000){ //ESSAYER AVEC while( ... >= 15000) pour prendre en compte que ça ajoute un peu à chaque fois ? ou juste if aussi
+            int numberMs = ((remainingTime % frequency2)/10000)-0;
             Uint64 startTimeSlept = SDL_GetPerformanceCounter() ;
             SDL_Delay(numberMs);
             timeSlept = (SDL_GetPerformanceCounter() - startTimeSlept);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
             else {
                 remainingTime = frameDelay - timeSlept;
             }
-        }*/
+        }
         //deltaTime = SDL_GetPerformanceCounter() - frameStart;
         //printf("remainingTime: %ld deltaTime: %ld %ld timeSlipt: %ld \n", remainingTime, deltaTime, deltaTime - timeSlept, timeSlept);
         //std::cout << "remainingTime: " << remainingTime << std::endl;
