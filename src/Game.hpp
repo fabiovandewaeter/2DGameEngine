@@ -8,10 +8,10 @@
 
 class Game {
 public:
-    unsigned int fixedFPS = 90;
+    unsigned int fixedFPS = 60;
     unsigned int fixedUPS = 60;
-    void printFPS();
-    void printUPS();
+    Uint64 frameDelay, frequency;
+    
 
     Game();
     ~Game();
@@ -23,6 +23,10 @@ public:
     void clean();
 
     bool running();
+    void printFPS();
+    void printUPS();
+    void changeFPS(unsigned int fps);
+    void changeUPS(unsigned int ups);
 
 private:
     bool isRunning;

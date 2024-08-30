@@ -38,7 +38,8 @@ Game::~Game()
 }
 
 void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen)
-{
+{   
+    frequency = SDL_GetPerformanceFrequency();
     int flags = 0;
     if (fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
@@ -134,4 +135,12 @@ void Game::clean() {
 
 bool Game::running(){
     return isRunning;
+}
+
+void Game::changeFPS(unsigned int fps){
+    fixedFPS = fps;
+}
+void Game::changeUPS(unsigned int ups){
+    fixedUPS = ups;
+    frameDelay = frequency / fixedUPS;
 }
