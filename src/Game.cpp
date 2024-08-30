@@ -54,16 +54,48 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             std::cout << "Renderer created" << std::endl;
         }
+        // Initialize PNG loading
+        int imgFlags = IMG_INIT_PNG;
+        if ((IMG_Init(imgFlags) & imgFlags)) {
+            std::cout << "SDL_image initialized" << std::endl;
+            //std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+        }
         isRunning = true;
+        
     }
     else {
         isRunning = false;
     }
 
     // load player texture
-    SDL_Surface *tmpSurface = IMG_Load("src/assets/img/player.png");
+    /*SDL_Surface *tmpSurface = IMG_Load("src/assets/img/player.png");
     playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-    SDL_FreeSurface(tmpSurface);
+    SDL_FreeSurface(tmpSurface);*/
+    SDL_Surface *tmpSurface = loadSurface("src/assets/img/player.png");
+    playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+}
+
+SDL_Surface *Game::loadSurface(const char *path){
+    // The final optimized image
+    SDL_Surface* optimizedSurface = NULL;
+
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load( path );
+    if ( loadedSurface == NULL ) {
+        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
+    }
+    else {
+        //Convert surface to screen format
+        optimizedSurface = SDL_ConvertSurface( loadedSurface, SDL_GetWindowSurface(window)->format, 0 );
+        if ( optimizedSurface == NULL ) {
+            printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
+        }
+
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
+    }
+
+    return optimizedSurface;
 }
 
 void Game::handleEvents()
@@ -73,7 +105,6 @@ void Game::handleEvents()
     if (event.type == SDL_QUIT){
         isRunning = false;
     }
-
 }
 
 int x = 16;
