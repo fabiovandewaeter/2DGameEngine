@@ -68,19 +68,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     // load player texture
-    /*SDL_Surface *tmpSurface = IMG_Load("src/assets/img/player.png");
-    playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-    SDL_FreeSurface(tmpSurface);*/
     SDL_Surface *tmpSurface = loadSurface("src/assets/img/player.png");
     playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 }
 
 SDL_Surface *Game::loadSurface(const char *path){
     // The final optimized image
-    SDL_Surface* optimizedSurface = NULL;
+    SDL_Surface *optimizedSurface = NULL;
 
     //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load( path );
+    SDL_Surface *loadedSurface = IMG_Load( path );
     if ( loadedSurface == NULL ) {
         printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
     }
