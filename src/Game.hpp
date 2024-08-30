@@ -8,7 +8,7 @@
 
 class Game {
 public:
-    unsigned int fixedFPS = 48099;
+    unsigned int fixedFPS = 60;
     unsigned int fixedUPS = 60;
     void printFPS();
     void printUPS();

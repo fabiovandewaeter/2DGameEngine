@@ -1,7 +1,4 @@
 #include "Game.hpp"
-    #include <unistd.h>
-    #include <thread>
-#include <chrono>
 
 
 
@@ -50,7 +47,6 @@ int main(int argc, char *argv[]) {
         }
         if (currentTimeFPS2 - lastTimeFPS2 >= frequency2-1000)
         { // 1000 ms = 1 seconde
-        printf("test");
             //printf("frameCount: %d currentTime: %ld lastTime: %ld time: %ld res: %F\n", frameCount2, currentTimeFPS2, lastTimeFPS2,currentTimeFPS2 - lastTimeFPS2, (currentTimeFPS2 - lastTimeFPS2) / frequency2);
             fps2 = frameCount2 / ((currentTimeFPS2 - lastTimeFPS2) / (frequency2-1000));
             std::cout << "FPS: " << fps2 << std::endl;
@@ -68,12 +64,12 @@ int main(int argc, char *argv[]) {
         //printf("frameDelay: %ld deltaTime: %ld numberMs: %d\n", frameDelay, deltaTime, ((frameDelay - deltaTime) % frequency2)/10000);
         Uint32 remainingTime = frameDelay - deltaTime;
         Uint32 timeSlept = 0;
-        if (remainingTime >= 10000){ //ESSAYER AVEC while( ... >= 15000) pour prendre en compte que ça ajoute un peu à chaque fois ? ou juste if aussi
-            int numberMs = ((remainingTime % frequency2)/10000)-0;
+        if (remainingTime >= 20000){ //ESSAYER AVEC while( ... >= 15000) pour prendre en compte que ça ajoute un peu à chaque fois ? ou juste if aussi
+            int numberMs = ((remainingTime % frequency2)/10000)-1;
             Uint64 startTimeSlept = SDL_GetPerformanceCounter() ;
             SDL_Delay(numberMs);
             timeSlept = (SDL_GetPerformanceCounter() - startTimeSlept);
-            //printf("%d\n", numberMs);
+            //std::cout << "numberMs: " << numberMs << std::endl;
             //std::cout << "timeSlept: " << timeSlept << std::endl;
             if (timeSlept > frameDelay) {
                 remainingTime = 0;
@@ -81,6 +77,7 @@ int main(int argc, char *argv[]) {
             else {
                 remainingTime = frameDelay - timeSlept;
             }
+            //std::cout << "remainingTime: " << remainingTime << std::endl;
         }
         //deltaTime = SDL_GetPerformanceCounter() - frameStart;
         //printf("remainingTime: %ld deltaTime: %ld %ld timeSlipt: %ld \n", remainingTime, deltaTime, deltaTime - timeSlept, timeSlept);
@@ -89,8 +86,8 @@ int main(int argc, char *argv[]) {
             //printf("deltaTime-timeSlept: %ld remainingTime: %ld\n", deltaTime-timeSlept, remainingTime );
             deltaTime = SDL_GetPerformanceCounter() - frameStart;
         }*/
-            deltaTime = SDL_GetPerformanceCounter() - frameStart;
-       while (deltaTime < frameDelay) {
+        deltaTime = SDL_GetPerformanceCounter() - frameStart;
+        while (deltaTime < frameDelay) {
             deltaTime = SDL_GetPerformanceCounter() - frameStart;
         }
         //std::cout << "FINIdeltaTime: " << deltaTime << std::endl;
