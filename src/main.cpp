@@ -3,11 +3,11 @@
 Game game;
 Uint64 frequency = SDL_GetPerformanceFrequency(), deltaTime, frameDelay;
 
-// if the loop lasted less than on frame at the speed of game.fixedFPS, wait until the end
+// if the loop lasted less than on frame at the speed of game.fixedUPS, wait until the end
 void handleTickSpeed(Uint64 &frameStart)
 {
     deltaTime = SDL_GetPerformanceCounter() - frameStart;
-    frameDelay = frequency / game.fixedFPS;
+    frameDelay = frequency / game.fixedUPS;
 
     Uint64 remainingTime = frameDelay - deltaTime;
     Uint64 timeSlept = 0;
