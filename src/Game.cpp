@@ -13,7 +13,6 @@ void Game::printFPS(){
     frameCount++;
     currentTimeFPS = SDL_GetTicks64();
     if (currentTimeFPS- lastTimeFPS >= 1000) { // 1000 ms = 1 seconde
-        printf("frameCount: %d time: %ld res: %f\n",frameCount, currentTimeFPS-lastTimeFPS, (currentTimeFPS-lastTimeFPS)/1000.0f);
         fps = frameCount / ((currentTimeFPS - lastTimeFPS) / 1000.0f);
         std::cout << "FPS: " << fps << std::endl;
         lastTimeFPS = currentTimeFPS;
