@@ -6,6 +6,8 @@
 #include <iostream>
 #include <time.h>
 
+#include "LTexture.hpp"
+
 class Game {
 public:
     unsigned int fixedFPS = 60;
@@ -17,6 +19,7 @@ public:
     ~Game();
     
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+    bool loadMedia();
     void handleEvents();
     void update();
     void render();
@@ -25,8 +28,8 @@ public:
     bool running();
     void printFPS();
     void printUPS();
-    void changeFPS(unsigned int fps);
-    void changeUPS(unsigned int ups);
+    void setFPS(unsigned int fps);
+    void setUPS(unsigned int ups);
 
 private:
     bool isRunning;
@@ -34,6 +37,7 @@ private:
     SDL_Renderer *renderer;
     
     SDL_Surface *loadSurface(const char *path);
+    SDL_Texture *loadTexture(const char *path);
 };
 
 #endif

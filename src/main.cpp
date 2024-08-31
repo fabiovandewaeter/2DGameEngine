@@ -26,11 +26,10 @@ void handleTickSpeed(Uint64 &frameStart)
 
 int main(int argc, char *argv[]) {
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
-    game.changeUPS(60);
+    game.setUPS(60);
 
     while (game.running()){
         Uint64 frameStart = SDL_GetPerformanceCounter() ;
-
         game.handleEvents();
         game.update();
         game.render();

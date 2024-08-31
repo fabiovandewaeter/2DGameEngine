@@ -1,9 +1,6 @@
 #include "Game.hpp"
 
-#include <thread>
-#include <chrono>
-
-SDL_Texture *playerTex;
+LTexture backgroundTexture,playerTexture;
 SDL_Rect srcR, destR;
 
 unsigned int frameCount = 0, updateCount = 0;
@@ -44,56 +41,35 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     if (fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
     }
+    isRunning = true;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout << "Subsystems Initialised" << std::endl;
+        // Create window
         window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if (window){
-            std::cout << "Window created" << std::endl;
-        }
+        if (window){std::cout << "Window created" << std::endl;}
+        else {std::cout << "FAIL : Window NOT created" << std::endl; isRunning = false;};
+        // Create renderer
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        if (renderer){
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            std::cout << "Renderer created" << std::endl;
-        }
+        if (renderer){ SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); std::cout << "Renderer created" << std::endl;}
+        else {std::cout << "FAIL : Renderer NOT created" << std::endl; isRunning = false;}
         // Initialize PNG loading
         int imgFlags = IMG_INIT_PNG;
-        if ((IMG_Init(imgFlags) & imgFlags)) {
-            std::cout << "SDL_image initialized" << std::endl;
-            //std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
-        }
-        isRunning = true;
-        
-    }
-    else {
-        isRunning = false;
+        if ((IMG_Init(imgFlags) & imgFlags)) {std::cout << "SDL_image initialized" << std::endl;}
+        else {std::cout << "FAIL : SDL_image NOT initialized" << std::endl; isRunning = false;}
     }
 
-    // load player texture
-    SDL_Surface *tmpSurface = loadSurface("src/assets/img/player.png");
-    playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
+    loadMedia();
 }
 
-SDL_Surface *Game::loadSurface(const char *path){
-    // The final optimized image
-    SDL_Surface *optimizedSurface = NULL;
+bool Game::loadMedia(){
+    bool success = true;
 
-    //Load image at specified path
-    SDL_Surface *loadedSurface = IMG_Load( path );
-    if ( loadedSurface == NULL ) {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
-    }
-    else {
-        //Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface( loadedSurface, SDL_GetWindowSurface(window)->format, 0 );
-        if ( optimizedSurface == NULL ) {
-            printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
-        }
+    // Load background texture
+    if (!backgroundTexture.loadFromFile("assets/img/background.png", renderer)){std::cout << "FAIL : background texture NOT loaded" << std::endl; success = false;}
+    // Load player texture
+    if (!playerTexture.loadFromFile("assets/img/player.png", renderer)){std::cout << "FAIL : player texture NOT loaded" << std::endl; success = false;}
 
-        //Get rid of old loaded surface
-        SDL_FreeSurface( loadedSurface );
-    }
-
-    return optimizedSurface;
+    return success;
 }
 
 void Game::handleEvents()
@@ -108,39 +84,48 @@ void Game::handleEvents()
 int x = 16;
 double t = 1;
 void Game::update() {
-    printUPS();
     t += 0.001;
     destR.h = x*t;
     destR.w = x*t;
+
+    printUPS();
 }
 
 void Game::render() {
-    printFPS();
-
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
 
-    // this is where we would add stuff to render
-    // render player texture
-    SDL_RenderCopy(renderer, playerTex, NULL, &destR);
+    backgroundTexture.render(0, 0, renderer);
+    playerTexture.render(240, 190, renderer);
 
     SDL_RenderPresent(renderer);
+
+    printFPS();
 }
 
 void Game::clean() {
-    SDL_DestroyWindow(window);
+    // Free loaded images
+    playerTexture.free();
+    backgroundTexture.free();
+
+    // Destroy window
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    
+    // Quit SDL subsystems
+    IMG_Quit();
     SDL_Quit();
+
     std::cout << "Game Cleaned" << std::endl;
 }
 
 bool Game::running(){
     return isRunning;
 }
-
-void Game::changeFPS(unsigned int fps){
+void Game::setFPS(unsigned int fps){
     fixedFPS = fps;
 }
-void Game::changeUPS(unsigned int ups){
+void Game::setUPS(unsigned int ups){
     fixedUPS = ups;
     frameDelay = frequency / fixedUPS;
 }
