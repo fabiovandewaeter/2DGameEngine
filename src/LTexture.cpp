@@ -28,7 +28,7 @@ bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
 {
     //Get rid of preexisting texture
     free();
-      //The final texture
+    // The final texture
     SDL_Texture* newTexture = NULL;
 
     //Load image at specified path
