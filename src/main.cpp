@@ -10,17 +10,17 @@ void handleTickSpeed(Uint64 &frameStart)
     Uint64 remainingTime = game.frameDelay - deltaTime;
     Uint64 timeSlept = 0;
     
-    // SDL_Delay() can only wait milliseconds but consumes little CPU
-    if (deltaTime < game.frameDelay && remainingTime >= 20000) {
-        unsigned int msSlept = (remainingTime / 10000)-1;
-        Uint64 startTimeSlept = SDL_GetPerformanceCounter();
-        SDL_Delay(msSlept);
-    }
-    deltaTime = SDL_GetPerformanceCounter() - frameStart;
-    // can wait for sub-millisecond duration but is CPU heavy
-    while (deltaTime < game.frameDelay)
+    if (deltaTime < game.frameDelay)
     {
+        if (remainingTime >= 20000) // 20000 = 2ms because SDL_Delay(1) wait more than 1 ms ; the last millisecond is handled by the more precise while loop
+        {
+            SDL_Delay((remainingTime / 10000) - 1); // -1 because of the margin of error or SDL_Delay()
+        }
         deltaTime = SDL_GetPerformanceCounter() - frameStart;
+        while (deltaTime < game.frameDelay) // wait for sub-millisecond duration but is CPU heavy
+        {
+            deltaTime = SDL_GetPerformanceCounter() - frameStart;
+        }
     }
 }
 

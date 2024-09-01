@@ -1,6 +1,8 @@
 #include "Game.hpp"
 
-LTexture backgroundTexture,playerTexture;
+#define NUMBER_OF_TEXTURES 2
+
+LTexture textures[NUMBER_OF_TEXTURES];
 SDL_Rect srcR, destR;
 
 unsigned int frameCount = 0, updateCount = 0;
@@ -65,9 +67,9 @@ bool Game::loadMedia(){
     bool success = true;
 
     // Load background texture
-    if (!backgroundTexture.loadFromFile("assets/img/background.png", renderer)){std::cout << "FAIL : background texture NOT loaded" << std::endl; success = false;}
+    if (!textures[0].loadFromFile("assets/img/background.png", renderer)){std::cout << "FAIL : background texture NOT loaded" << std::endl; success = false;}
     // Load player texture
-    if (!playerTexture.loadFromFile("assets/img/player.png", renderer)){std::cout << "FAIL : player texture NOT loaded" << std::endl; success = false;}
+    if (!textures[1].loadFromFile("assets/img/player.png", renderer)){std::cout << "FAIL : player texture NOT loaded" << std::endl; success = false;}
 
     return success;
 }
@@ -95,8 +97,8 @@ void Game::render() {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
 
-    backgroundTexture.render(0, 0, renderer);
-    playerTexture.render(240, 190, renderer);
+    textures[0].render(0, 0, renderer);
+    textures[1].render(10, 10, renderer);
 
     SDL_RenderPresent(renderer);
 
@@ -105,8 +107,9 @@ void Game::render() {
 
 void Game::clean() {
     // Free loaded images
-    playerTexture.free();
-    backgroundTexture.free();
+    for (int i = 0; i < NUMBER_OF_TEXTURES; i++){
+        textures[i].free();
+    }
 
     // Destroy window
     SDL_DestroyRenderer(renderer);
