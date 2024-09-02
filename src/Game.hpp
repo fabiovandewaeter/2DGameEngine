@@ -12,7 +12,7 @@ class Game {
 public:
     unsigned int fixedFPS = 60;
     unsigned int fixedUPS = 60;
-    Uint64 frameDelay, frequency;
+    Uint64 frameDelay;
     
 
     Game();

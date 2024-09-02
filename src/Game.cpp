@@ -5,6 +5,8 @@
 LTexture textures[NUMBER_OF_TEXTURES];
 SDL_Rect srcR, destR;
 
+SDL_Event event;
+
 unsigned int frameCount = 0, updateCount = 0;
 float fps = 0, ups = 0;
 Uint64 lastTimeFPS = SDL_GetTicks64(), currentTimeFPS, lastTimeUPS = lastTimeFPS, currentTimeUPS;
@@ -38,7 +40,6 @@ Game::~Game()
 
 void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen)
 {   
-    frequency = SDL_GetPerformanceFrequency();
     int flags = 0;
     if (fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
@@ -61,6 +62,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     loadMedia();
+    destR.h = 16;
+    destR.w = 16;
 }
 
 bool Game::loadMedia(){
@@ -74,21 +77,26 @@ bool Game::loadMedia(){
     return success;
 }
 
+// source : https://lazyfoo.net/tutorials/SDL/18_key_states/index.php
 void Game::handleEvents()
 {
-    SDL_Event event;
-    SDL_PollEvent(&event);
-    if (event.type == SDL_QUIT){
-        isRunning = false;
+    while (SDL_PollEvent(&event) != 0)
+    {
+        if (event.type == SDL_QUIT)
+        {
+            isRunning = false;
+        }
+        const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
+        if (currentKeyStates[SDL_SCANCODE_DOWN]){
+        }
     }
 }
 
-int x = 16;
 double t = 1;
 void Game::update() {
     t += 0.001;
-    destR.h = x*t;
-    destR.w = x*t;
+    destR.h *= t;
+    destR.w *= t;
 
     printUPS();
 }
