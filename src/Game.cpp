@@ -130,5 +130,5 @@ void Game::setFPS(unsigned int fps){
 }
 void Game::setUPS(unsigned int ups){
     fixedUPS = ups;
-    frameDelay = frequency / fixedUPS;
+    frameDelay = 10000000 / fixedUPS;
 }
