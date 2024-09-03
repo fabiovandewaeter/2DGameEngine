@@ -8,7 +8,7 @@ Windows :
 
 MacOs:
 
-```g++ src/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image ; ./a.out```
+```g++ src/*.cpp src/entities/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image ; ./a.out```
 
 ## SDL libraries
 - SDL2

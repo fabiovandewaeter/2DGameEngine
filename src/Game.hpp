@@ -1,20 +1,18 @@
 #ifndef game_hpp
 #define game_hpp
 
+#define NUMBER_OF_TEXTURES 2
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
 #include <time.h>
 
 #include "LTexture.hpp"
+#include "entities/Player.hpp"
 
 class Game {
 public:
-    unsigned int fixedFPS = 60;
-    unsigned int fixedUPS = 60;
-    Uint64 frameDelay;
-    
-
     Game();
     ~Game();
     
@@ -30,11 +28,16 @@ public:
     void printUPS();
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
+    Uint64 getFrameDelay();
 
 private:
     bool isRunning;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    unsigned int fixedFPS;
+    unsigned int fixedUPS;
+    Uint64 frameDelay;
+    LTexture textures[NUMBER_OF_TEXTURES];
     
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);

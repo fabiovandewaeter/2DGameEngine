@@ -1,8 +1,6 @@
 #include "Game.hpp"
 
-#define NUMBER_OF_TEXTURES 2
-
-LTexture textures[NUMBER_OF_TEXTURES];
+Player player;
 SDL_Rect srcR, destR;
 
 SDL_Event event;
@@ -40,19 +38,22 @@ Game::~Game()
 
 void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen)
 {   
+    this->fixedFPS = 60;
+    this->fixedUPS = 60;
+
     int flags = 0;
     if (fullscreen){
         flags = SDL_WINDOW_FULLSCREEN;
     }
-    isRunning = true;
+    this->isRunning = true;
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout << "Subsystems Initialised" << std::endl;
         // Create window
-        window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+        this->window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
         if (window){std::cout << "Window created" << std::endl;}
         else {std::cout << "FAIL : Window NOT created" << std::endl; isRunning = false;};
         // Create renderer
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         if (renderer){ SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); std::cout << "Renderer created" << std::endl;}
         else {std::cout << "FAIL : Renderer NOT created" << std::endl; isRunning = false;}
         // Initialize PNG loading
@@ -64,6 +65,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     destR.h = 16;
     destR.w = 16;
+    
+    SDL_Rect r = {10, 10, 20, 20};
+    player.init(textures[1], r);
+    player.setVelocity(0, 0);
 }
 
 bool Game::loadMedia(){
@@ -84,7 +89,7 @@ void Game::handleEvents()
     {
         if (event.type == SDL_QUIT)
         {
-            isRunning = false;
+            this->isRunning = false;
         }
         const Uint8 *currentKeyStates = SDL_GetKeyboardState(NULL);
         if (currentKeyStates[SDL_SCANCODE_DOWN]){
@@ -92,11 +97,8 @@ void Game::handleEvents()
     }
 }
 
-double t = 1;
 void Game::update() {
-    t += 0.001;
-    destR.h *= t;
-    destR.w *= t;
+    player.update();
 
     printUPS();
 }
@@ -106,7 +108,8 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     textures[0].render(0, 0, renderer);
-    textures[1].render(10, 10, renderer);
+    //textures[1].render(10, 10, renderer);
+    player.render(renderer);
 
     SDL_RenderPresent(renderer);
 
@@ -131,12 +134,15 @@ void Game::clean() {
 }
 
 bool Game::running(){
-    return isRunning;
+    return this->isRunning;
 }
 void Game::setFPS(unsigned int fps){
-    fixedFPS = fps;
+    this->fixedFPS = fps;
 }
 void Game::setUPS(unsigned int ups){
-    fixedUPS = ups;
-    frameDelay = 10000000 / fixedUPS;
+    this->fixedUPS = ups;
+    this->frameDelay = 10000000 / this->fixedUPS;
+}
+Uint64 Game::getFrameDelay(){
+    return this->frameDelay;
 }

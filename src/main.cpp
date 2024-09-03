@@ -12,15 +12,15 @@ void handleTickSpeed(Uint64 &frameStart)
 {
     Uint64 deltaTime = getNormalizedTick() - frameStart;
     
-    if (deltaTime < game.frameDelay)
+    if (deltaTime < game.getFrameDelay())
     {
-        Uint64 remainingTime = game.frameDelay - deltaTime;
+        Uint64 remainingTime = game.getFrameDelay() - deltaTime;
         if (remainingTime >= 20000) // 20000 = 2ms because SDL_Delay(1) wait more than 1 ms ; the last millisecond is handled by the more precise while loop
         {
             SDL_Delay((remainingTime / 10000) - 1); // -1 because of the margin of error or SDL_Delay()
         }
         deltaTime = getNormalizedTick() - frameStart;
-        while (deltaTime < game.frameDelay) // wait for sub-millisecond duration but is CPU heavy
+        while (deltaTime < game.getFrameDelay()) // wait for sub-millisecond duration but is CPU heavy
         {
             deltaTime = getNormalizedTick() - frameStart;
         }
