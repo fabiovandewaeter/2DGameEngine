@@ -13,6 +13,7 @@ public:
     Camera();
     ~Camera();
 
+    void handleEvents(SDL_Event *event);
     void render(int x, int y, SDL_Renderer *renderer);
 
     // Gets image dimensions
@@ -22,8 +23,8 @@ public:
 
 private:
     // Image dimensions
-    int width;
-    int height;
+    int width, height;
+    int velX, velY;
 };
 
 #endif
