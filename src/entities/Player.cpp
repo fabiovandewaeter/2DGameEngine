@@ -1,39 +1,93 @@
 #include "Player.hpp"
 
-Player::Player(){}
-Player::~Player(){
-    printf("DAZDAZ");
-    texture.free();
-}
+const int VELOCITY = 2;
 
-void Player::init(LTexture texture, SDL_Rect position){
+Player::Player() {}
+Player::~Player() {}
+
+void Player::init(LTexture *texture, SDL_Rect position)
+{
     this->texture = texture;
     this->position = position;
     this->velX = 0;
-    this-> velY = 0;
+    this->velY = 0;
 }
 
-bool Player::update(){
+bool Player::update()
+{
     return move();
 }
 
-bool Player::move(){
+void Player::handleEvents(SDL_Event *event)
+{
+    // If a key was pressed
+    if (event->type == SDL_KEYDOWN && event->key.repeat == 0)
+    {
+        // Adjust the velocity
+        switch (event->key.keysym.sym)
+        {
+        case SDLK_UP:
+            this->velY -= VELOCITY;
+            break;
+        case SDLK_DOWN:
+            this->velY += VELOCITY;
+            break;
+        case SDLK_LEFT:
+            this->velX -= VELOCITY;
+            break;
+        case SDLK_RIGHT:
+            this->velX += VELOCITY;
+            break;
+        }
+    }
+    // If a key was released
+    else if (event->type == SDL_KEYUP && event->key.repeat == 0)
+    {
+        // Adjust the velocity
+        switch (event->key.keysym.sym)
+        {
+        case SDLK_UP:
+            this->velY+= VELOCITY;
+            break;
+        case SDLK_DOWN:
+            this->velY-= VELOCITY;
+            break;
+        case SDLK_LEFT:
+            this->velX += VELOCITY;
+            break;
+        case SDLK_RIGHT:
+            this->velX -= VELOCITY;
+            break;
+        }
+    }
+}
+
+bool Player::move()
+{
     bool success = true;
 
     // EXAMPLE: check if he stunned ...
-    position.x += velX;
-    position.y += velY;
+    position.x += VELOCITY*velX;
+    position.y += VELOCITY*velY;
 
     return success;
 }
 
-void Player::render(SDL_Renderer *renderer){
-    texture.render(position.x, position.y, renderer);
-    std::cout << position.x << " " << position.y << " " << std::endl;
+void Player::render(SDL_Renderer *renderer)
+{
+    texture->render(position.x, position.y, renderer);
 }
 
 void Player::setVelocity(int velocityX, int velocityY)
 {
     this->velX = velocityX;
+    this->velY = velocityY;
+}
+void Player::setVelocityX(int velocityX)
+{
+    this->velX = velocityX;
+}
+void Player::setVelocityY(int velocityY)
+{
     this->velY = velocityY;
 }
