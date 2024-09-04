@@ -6,36 +6,30 @@
 #include <iostream>
 
 // source : https://lazyfoo.net/tutorials/SDL/10_color_keying/index.php
-//Texture wrapper class
+// Texture wrapper class
 class LTexture
 {
-    public:
-        //Initializes variables
-        LTexture();
+public:
+    LTexture();
+    ~LTexture();
 
-        //Deallocates memory
-        ~LTexture();
+    bool loadFromFile(const char *path, SDL_Renderer *renderer);
+    // Deallocates texture
+    void free();
+    void render(int x, int y, SDL_Renderer *renderer);
 
-        //Loads image at specified path
-        bool loadFromFile(const char *path, SDL_Renderer *renderer);
+    // Gets image dimensions
+    int getWidth();
+    int getHeight();
+    void setSize(int width, int height);
 
-        //Deallocates texture
-        void free();
+private:
+    // The actual hardware texture
+    SDL_Texture *mTexture;
 
-        //Renders texture at given point
-        void render( int x, int y, SDL_Renderer *renderer);
-
-        //Gets image dimensions
-        int getWidth();
-        int getHeight();
-
-    private:
-        //The actual hardware texture
-        SDL_Texture *mTexture;
-
-        //Image dimensions
-        int mWidth;
-        int mHeight;
+    // Image dimensions
+    int width;
+    int height;
 };
 
 #endif

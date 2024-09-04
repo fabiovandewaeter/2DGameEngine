@@ -4,8 +4,8 @@ LTexture::LTexture()
 {
     //Initialize
     mTexture = NULL;
-    mWidth = 0;
-    mHeight = 0;
+    width = 0;
+    height = 0;
 }
 LTexture::~LTexture()
 {
@@ -19,8 +19,8 @@ void LTexture::free()
     {
         SDL_DestroyTexture( mTexture );
         mTexture = NULL;
-        mWidth = 0;
-        mHeight = 0;
+        width = 0;
+        height = 0;
     }
 }
 
@@ -50,8 +50,8 @@ bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
         else
         {
             //Get image dimensions
-            mWidth = loadedSurface->w;
-            mHeight = loadedSurface->h;
+            width = loadedSurface->w;
+            height = loadedSurface->h;
         }
 
         //Get rid of old loaded surface
@@ -66,15 +66,19 @@ bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
 void LTexture::render( int x, int y, SDL_Renderer *renderer)
 {
     //Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+    SDL_Rect renderQuad = { x, y, width, height };
     SDL_RenderCopy( renderer, mTexture, NULL, &renderQuad );
 }
 
 int LTexture::getWidth()
 {
-    return mWidth;
+    return width;
 }
 int LTexture::getHeight()
 {
-    return mHeight;
+    return height;
+}
+void LTexture::setSize(int width, int height){
+    this->width = width;
+    this->height = height;
 }

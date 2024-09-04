@@ -124,6 +124,7 @@ bool Game::loadMedia()
         std::cout << "FAIL : player texture NOT loaded" << std::endl;
         success = false;
     }
+    textures[1].setSize(16, 16);
 
     return success;
 }
