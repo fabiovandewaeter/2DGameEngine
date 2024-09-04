@@ -27,15 +27,19 @@ void Player::handleEvents(SDL_Event *event)
         switch (event->key.keysym.sym)
         {
         case SDLK_UP:
+        case SDLK_z:
             this->velY -= VELOCITY;
             break;
         case SDLK_DOWN:
+        case SDLK_s:
             this->velY += VELOCITY;
             break;
         case SDLK_LEFT:
+        case SDLK_q:
             this->velX -= VELOCITY;
             break;
         case SDLK_RIGHT:
+        case SDLK_d:
             this->velX += VELOCITY;
             break;
         }
@@ -47,15 +51,19 @@ void Player::handleEvents(SDL_Event *event)
         switch (event->key.keysym.sym)
         {
         case SDLK_UP:
+        case SDLK_z:
             this->velY+= VELOCITY;
             break;
         case SDLK_DOWN:
+        case SDLK_s:
             this->velY-= VELOCITY;
             break;
         case SDLK_LEFT:
+        case SDLK_q:
             this->velX += VELOCITY;
             break;
         case SDLK_RIGHT:
+        case SDLK_d:
             this->velX -= VELOCITY;
             break;
         }
