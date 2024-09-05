@@ -15,12 +15,18 @@ public:
 
     void init(int maxWidth, int maxHeight, int width, int height);
     void handleEvents(SDL_Event *event);
+    bool update();
+    bool move();
+    
+    int getPosX();
+    int getPosY();
 
 private:
     // Image dimensions
     int width, height;
     int maxWidth, maxHeight;
     int velX, velY;
+    int positionX, positionY;
 };
 
 #endif

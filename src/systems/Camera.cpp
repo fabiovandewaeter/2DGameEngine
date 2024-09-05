@@ -6,8 +6,8 @@ const int SPRINT_VELOCITY = 2;
 int sprint = 1;
 int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 
-Camera::Camera(){}
-Camera::~Camera(){}
+Camera::Camera() {}
+Camera::~Camera() {}
 
 void Camera::init(int maxWidth, int maxHeight, int width, int height)
 {
@@ -15,6 +15,8 @@ void Camera::init(int maxWidth, int maxHeight, int width, int height)
     this->maxHeight = maxHeight;
     this->width = width;
     this->height = height;
+    this->positionX = 0;
+    this->positionY = 0;
 }
 
 void Camera::handleEvents(SDL_Event *event)
@@ -77,4 +79,29 @@ void Camera::handleEvents(SDL_Event *event)
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
     }
+}
+
+bool Camera::update()
+{
+    return move();
+}
+
+bool Camera::move()
+{
+    bool success = true;
+
+    // EXAMPLE: check if he stunned ...
+    this->positionX += VELOCITY * velX;
+    this->positionY += VELOCITY * velY;
+
+    return success;
+}
+
+int Camera::getPosX()
+{
+    return this->positionX;
+}
+int Camera::getPosY()
+{
+    return this->positionY;
 }

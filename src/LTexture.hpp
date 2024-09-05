@@ -16,7 +16,7 @@ public:
     bool loadFromFile(const char *path, SDL_Renderer *renderer);
     // Deallocates texture
     void free();
-    void render(int x, int y, SDL_Renderer *renderer);
+    void render(SDL_Renderer *renderer, int x, int y);
 
     // Gets image dimensions
     int getWidth();

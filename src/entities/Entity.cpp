@@ -28,7 +28,7 @@ bool Entity::update()
 
 void Entity::handleEvents(SDL_Event *event)
 {
-    // If a key was pressed
+    /*// If a key was pressed
     if (event->type == SDL_KEYDOWN && event->key.repeat == 0)
     {
         // Adjust the velocity
@@ -85,7 +85,7 @@ void Entity::handleEvents(SDL_Event *event)
         }
         this->velX = sprint*(rightVelX - leftVelX);
         this->velY = sprint*(downVelY - upVelY);
-    }
+    }*/
 }
 
 bool Entity::move()
@@ -99,9 +99,9 @@ bool Entity::move()
     return success;
 }
 
-void Entity::render(SDL_Renderer *renderer)
+void Entity::render(SDL_Renderer *renderer, int cameraX, int cameraY)
 {
-    texture->render(position.x, position.y, renderer);
+    texture->render(renderer, position.x-cameraX, position.y-cameraY);
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)

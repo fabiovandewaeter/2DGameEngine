@@ -152,12 +152,14 @@ void Game::handleEvents(){
 
         // player
         this->player.handleEvents(&event);
+        this->camera.handleEvents(&event);
     }
 }
 
 void Game::update()
 {
     this->player.update();
+    this->camera.update();
     printUPS();
 }
 
@@ -166,11 +168,13 @@ void Game::render()
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
+    int cameraX = this->camera.getPosX();
+    int cameraY = this->camera.getPosY();
     // background
-    this->textures[0].render(0, 0, this->renderer);
-    this->player.render(this->renderer);
+    this->textures[0].render(this->renderer, 0, 0);
+    this->player.render(this->renderer, cameraX, cameraY);
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].render(this->renderer);
+        this->entities[i].render(this->renderer, cameraX, cameraY);
     }
 
     SDL_RenderPresent(this->renderer);

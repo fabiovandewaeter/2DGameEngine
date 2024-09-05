@@ -10,11 +10,11 @@ public:
     Entity();
     ~Entity();
 
-    bool update();
     void init(LTexture *texture, SDL_Rect position);
     void handleEvents(SDL_Event *event);
+    bool update();
     bool move();
-    void render(SDL_Renderer *renderer);
+    void render(SDL_Renderer *renderer, int cameraX, int cameraY);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
