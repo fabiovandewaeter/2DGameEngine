@@ -1,7 +1,7 @@
 #ifndef game_hpp
 #define game_hpp
 
-#define NUMBER_OF_TEXTURES 2
+#define NUMBER_OF_TEXTURES 3
 #define NUMBER_OF_ENTITIES 1
 
 #include <SDL.h>

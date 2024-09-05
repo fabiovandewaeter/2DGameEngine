@@ -120,6 +120,13 @@ bool Game::loadMedia()
         success = false;
     }
     this->textures[1].setSize(16, 16);
+    // entity0 texture
+    if (!this->textures[2].loadFromFile("assets/img/entity0.png", renderer))
+    {
+        std::cout << "FAIL : player texture NOT loaded" << std::endl;
+        success = false;
+    }
+    this->textures[2].setSize(16, 16);
 
     return success;
 }
@@ -160,9 +167,12 @@ void Game::render()
     // background
     this->textures[0].render(0, 0, this->renderer);
     this->player.render(this->renderer);
+    for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
+        this->entities[i].render(this->renderer);
+    }
 
     SDL_RenderPresent(this->renderer);
-    printFPS();
+    //printFPS();
 }
 
 void Game::clean()
