@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 
+const double BASE_SCALE = 1.0;
 // 1 if false and SPRINT_VELOCITY if true
 int sprint = 1;
 int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
@@ -7,13 +8,14 @@ int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 Camera::Camera() {}
 Camera::~Camera() {}
 
-void Camera::init(int width, int height, double maxScale, int positionX, int positionY)
+void Camera::init(int width, int height, double minScale, double maxScale, int positionX, int positionY)
 {
     this->width = width;
     this->height = height;
-    this->scale = 1;
-    this->maxScale = maxScale;
-    this->scaleSpeed = 0.8;
+    this->scale = 1.0;
+    this->minScale = minScale;
+    this->maxScale = 1/maxScale;
+    this->scaleSpeed = 0.1;
     this->positionX = positionX;
     this->positionY = positionY;
     this->VELOCITY = 1;
@@ -47,6 +49,9 @@ void Camera::handleEvents(SDL_Event *event)
         case SDLK_LSHIFT:
             sprint = SPRINT_VELOCITY;
             break;
+        case SDLK_0:
+            this->scale = BASE_SCALE;
+            break;
         }
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
@@ -57,7 +62,7 @@ void Camera::handleEvents(SDL_Event *event)
         if (event->wheel.y > 0)
         {
             double newScale = this->scale + this->scaleSpeed;
-            if (newScale < this->maxScale)
+            if (newScale < this->minScale)
             {
                 this->scale = newScale;
             }
@@ -65,7 +70,7 @@ void Camera::handleEvents(SDL_Event *event)
         else if (event->wheel.y < 0)
         {
             double newScale = this->scale - this->scaleSpeed;
-            if (newScale > 0)
+            if (newScale > this->maxScale)
             {
                 this->scale = newScale;
             }

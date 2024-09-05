@@ -1,8 +1,8 @@
 #ifndef game_hpp
 #define game_hpp
 
-#define NUMBER_OF_TEXTURES 3
-#define NUMBER_OF_ENTITIES 1
+#define NUMBER_OF_TEXTURES 4
+#define NUMBER_OF_ENTITIES 2
 #define SCREEN_WIDTH 
 #define SCREEN_HEIGHT
 
