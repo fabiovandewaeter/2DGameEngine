@@ -21,6 +21,7 @@ public:
 
     int getPositionX();
     int getPositionY();
+    LTexture* getTexture();
 
 protected:
     LTexture *texture;

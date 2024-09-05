@@ -95,10 +95,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     loadEntities();
     
-    int cameraPosX = ( player.getPositionX() + textures[1].getWidth()/ 2 ) - width/ 2;
-    int cameraPosY = ( player.getPositionY() + textures[1].getHeight()/ 2 ) - height / 2;
-    std::cout << ( player.getPositionX() + textures[1].getWidth()/ 2 ) << " " << cameraPosX << " " << ( player.getPositionY() + textures[1].getHeight()/ 2 ) << " " <<  cameraPosY << std::endl;
-    std::cout << player.getPositionX() << " " << player.getPositionY() << std::endl;
+    int cameraPosX = ( this->player.getPositionX() + this->player.getTexture()->getWidth()/ 2 ) - width/ 2;
+    int cameraPosY = ( this->player.getPositionY() + this->player.getTexture()->getHeight()/ 2 ) - height / 2;
     this->camera.init(width*5, height*5, width, height, cameraPosX, cameraPosY);
 }
 
@@ -140,8 +138,7 @@ bool Game::loadMedia()
 }
 
 void Game::loadEntities(){
-    //this->player.init(&textures[1], this->camera.getWidth()/2, this->camera.getHeight()/2); 
-    this->player.init(&textures[1], 0, 0);
+    this->player.init(&textures[1], (this->screenWidth/2)-(this->textures[1].getWidth()/2), (this->screenHeight/2)-(this->textures[1].getHeight()/2)); 
     this->entities[0].init(&textures[2], 0, 0);
 }
 
@@ -163,7 +160,7 @@ void Game::handleEvents(){
 void Game::update()
 {
     this->player.update();
-    this->camera.update(int playerX, int playerY);
+    this->camera.update();
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].update();
     }
@@ -182,8 +179,7 @@ void Game::render()
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraX, cameraY);
     }
-    this->player.render(this->renderer, 0, 0);
-    this->player.render(this->renderer, cameraX, cameraY);
+    this->player.render(this->renderer);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

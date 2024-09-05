@@ -55,3 +55,7 @@ int Entity::getPositionY()
 {
     return this->positionY;
 }
+LTexture *Entity::getTexture()
+{
+    return this->texture;
+}

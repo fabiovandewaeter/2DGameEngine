@@ -11,7 +11,7 @@ public:
     Player();
     ~Player();
 
-    void render(SDL_Renderer *renderer, int cameraX, int cameraY);
+    void render(SDL_Renderer *renderer);
 
 private:
 };
