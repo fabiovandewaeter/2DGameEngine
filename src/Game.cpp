@@ -43,6 +43,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 {
     this->fixedFPS = 60;
     this->fixedUPS = 60;
+    this->screenWidth = width;
+    this->screenHeight = height;
 
     // initialize window
     int flags = 0;
@@ -93,7 +95,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     loadEntities();
     
-    this->camera.init(3840*5, 2160*5, 3840, 2160);
+    int cameraPosX = ( player.getPositionX() + textures[1].getWidth()/ 2 ) - width/ 2;
+    int cameraPosY = ( player.getPositionY() + textures[1].getHeight()/ 2 ) - height / 2;
+    std::cout << ( player.getPositionX() + textures[1].getWidth()/ 2 ) << " " << cameraPosX << " " << ( player.getPositionY() + textures[1].getHeight()/ 2 ) << " " <<  cameraPosY << std::endl;
+    std::cout << player.getPositionX() << " " << player.getPositionY() << std::endl;
+    this->camera.init(width*5, height*5, width, height, cameraPosX, cameraPosY);
 }
 
 bool Game::loadMedia()
@@ -134,9 +140,9 @@ bool Game::loadMedia()
 }
 
 void Game::loadEntities(){
-    this->player.init(&textures[1], (SDL_Rect){50, 50, 1, 1});
-    
-    this->entities[0].init(&textures[2], (SDL_Rect){50, 50, 1, 1});
+    //this->player.init(&textures[1], this->camera.getWidth()/2, this->camera.getHeight()/2); 
+    this->player.init(&textures[1], 0, 0);
+    this->entities[0].init(&textures[2], 0, 0);
 }
 
 void Game::handleEvents(){
@@ -150,8 +156,6 @@ void Game::handleEvents(){
             this->isRunning = false;
         }
 
-        // player
-        this->player.handleEvents(&event);
         this->camera.handleEvents(&event);
     }
 }
@@ -159,7 +163,10 @@ void Game::handleEvents(){
 void Game::update()
 {
     this->player.update();
-    this->camera.update();
+    this->camera.update(int playerX, int playerY);
+    for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
+        this->entities[i].update();
+    }
     printUPS();
 }
 
@@ -168,14 +175,15 @@ void Game::render()
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
-    int cameraX = this->camera.getPosX();
-    int cameraY = this->camera.getPosY();
+    int cameraX = this->camera.getPositionX();
+    int cameraY = this->camera.getPositionY();
     // background
     this->textures[0].render(this->renderer, 0, 0);
-    this->player.render(this->renderer, cameraX, cameraY);
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraX, cameraY);
     }
+    this->player.render(this->renderer, 0, 0);
+    this->player.render(this->renderer, cameraX, cameraY);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

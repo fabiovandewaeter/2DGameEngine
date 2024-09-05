@@ -3,6 +3,8 @@
 
 #define NUMBER_OF_TEXTURES 3
 #define NUMBER_OF_ENTITIES 1
+#define SCREEN_WIDTH 
+#define SCREEN_HEIGHT
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -38,6 +40,7 @@ private:
     SDL_Window *window;
     SDL_Renderer *renderer;
     Camera camera;
+    int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;

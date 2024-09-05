@@ -10,8 +10,7 @@ public:
     Entity();
     ~Entity();
 
-    void init(LTexture *texture, SDL_Rect position);
-    void handleEvents(SDL_Event *event);
+    void init(LTexture *texture, int positionX, int positionY);
     bool update();
     bool move();
     void render(SDL_Renderer *renderer, int cameraX, int cameraY);
@@ -20,16 +19,14 @@ public:
     void setVelocityX(int velocityX);
     void setVelocityY(int velocityY);
 
+    int getPositionX();
+    int getPositionY();
+
 protected:
     LTexture *texture;
     int velX, velY;
-    SDL_Rect position;
-
+    int positionX, positionY;
     int VELOCITY;
-    int SPRINT_VELOCITY;
-    // 1 if false and SPRINT_VELOCITY if true
-    int sprint;
-    int leftVelX, rightVelX, upVelY, downVelY;
 };
 
 #endif

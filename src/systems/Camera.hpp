@@ -13,13 +13,15 @@ public:
     Camera();
     ~Camera();
 
-    void init(int maxWidth, int maxHeight, int width, int height);
+    void init(int maxWidth, int maxHeight, int width, int height, int positionX, int positionY);
     void handleEvents(SDL_Event *event);
     bool update();
     bool move();
     
-    int getPosX();
-    int getPosY();
+    int getPositionX();
+    int getPositionY();
+    int getWidth();
+    int getHeight();
 
 private:
     // Image dimensions
@@ -27,6 +29,8 @@ private:
     int maxWidth, maxHeight;
     int velX, velY;
     int positionX, positionY;
+    int VELOCITY;
+    int SPRINT_VELOCITY;
 };
 
 #endif
