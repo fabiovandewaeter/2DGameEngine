@@ -29,9 +29,9 @@ bool Entity::move()
     return success;
 }
 
-void Entity::render(SDL_Renderer *renderer, int cameraX, int cameraY)
+void Entity::render(SDL_Renderer *renderer, int cameraX, int cameraY, double scale)
 {
-    texture->render(renderer, positionX - cameraX, positionY - cameraY);
+    texture->render(renderer, positionX - cameraX, positionY - cameraY, scale);
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)

@@ -63,10 +63,10 @@ bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
     return mTexture != NULL;
 }
 
-void LTexture::render(SDL_Renderer *renderer, int x, int y)
+void LTexture::render(SDL_Renderer *renderer, int x, int y, double scale)
 {
     // Set rendering space and render to screen
-    SDL_Rect renderQuad = {x, y, width, height};
+    SDL_Rect renderQuad = {x, y, width*scale, height*scale};
     SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
 }
 

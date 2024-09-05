@@ -22,12 +22,15 @@ public:
     int getPositionY();
     int getWidth();
     int getHeight();
+    double getScale();
 
 private:
     // Image dimensions
     int width, height;
     int maxWidth, maxHeight;
     int velX, velY;
+    double scale;
+    
     int positionX, positionY;
     int VELOCITY;
     int SPRINT_VELOCITY;

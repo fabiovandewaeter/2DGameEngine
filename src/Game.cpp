@@ -114,7 +114,7 @@ bool Game::loadMedia()
     SDL_FreeSurface(iconSurface);
 
     // background texture
-    if (!this->textures[0].loadFromFile("assets/img/background.png", renderer))
+    if (!this->textures[0].loadFromFile("assets/img/background2.png", renderer))
     {
         std::cout << "FAIL : background texture NOT loaded" << std::endl;
         success = false;
@@ -174,12 +174,13 @@ void Game::render()
 
     int cameraX = this->camera.getPositionX();
     int cameraY = this->camera.getPositionY();
+    double scale = this->camera.getScale();
     // background
-    this->textures[0].render(this->renderer, 0, 0);
+    this->textures[0].render(this->renderer, 0-cameraX, 0-cameraY, scale);
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].render(this->renderer, cameraX, cameraY);
+        this->entities[i].render(this->renderer, cameraX, cameraY, scale);
     }
-    this->player.render(this->renderer);
+    this->player.render(this->renderer, scale);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

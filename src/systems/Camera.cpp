@@ -13,6 +13,7 @@ void Camera::init(int maxWidth, int maxHeight, int width, int height, int positi
     this->maxHeight = maxHeight;
     this->width = width;
     this->height = height;
+    this->scale = 1;
     this->positionX = positionX;
     this->positionY = positionY;
     this->VELOCITY = 1;
@@ -110,4 +111,7 @@ int Camera::getWidth(){
 }
 int Camera::getHeight(){
     return this->height;
+}
+double Camera::getScale(){
+    return this->scale;
 }

@@ -13,7 +13,7 @@ public:
     void init(LTexture *texture, int positionX, int positionY);
     bool update();
     bool move();
-    void render(SDL_Renderer *renderer, int cameraX, int cameraY);
+    void render(SDL_Renderer *renderer, int cameraX, int cameraY, double scale);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
