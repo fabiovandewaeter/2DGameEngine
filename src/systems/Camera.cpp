@@ -7,13 +7,13 @@ int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 Camera::Camera() {}
 Camera::~Camera() {}
 
-void Camera::init(int maxWidth, int maxHeight, int width, int height, int positionX, int positionY)
+void Camera::init(int width, int height, double maxScale, int positionX, int positionY)
 {
-    this->maxWidth = maxWidth;
-    this->maxHeight = maxHeight;
     this->width = width;
     this->height = height;
     this->scale = 1;
+    this->maxScale = maxScale;
+    this->scaleSpeed = 0.1;
     this->positionX = positionX;
     this->positionY = positionY;
     this->VELOCITY = 1;
@@ -50,6 +50,26 @@ void Camera::handleEvents(SDL_Event *event)
         }
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
+    }
+    // if mouse wheel moved
+    if (event->type == SDL_MOUSEWHEEL)
+    {
+        if (event->wheel.y > 0)
+        {
+            double newScale = this->scale + this->scaleSpeed;
+            if (newScale < this->maxScale)
+            {
+                this->scale = newScale;
+            }
+        }
+        else if (event->wheel.y < 0)
+        {
+            double newScale = this->scale - this->scaleSpeed;
+            if (newScale > 0)
+            {
+                this->scale = newScale;
+            }
+        }
     }
     // If a key was released
     else if (event->type == SDL_KEYUP && event->key.repeat == 0)
@@ -106,12 +126,15 @@ int Camera::getPositionY()
 {
     return this->positionY;
 }
-int Camera::getWidth(){
+int Camera::getWidth()
+{
     return this->width;
 }
-int Camera::getHeight(){
+int Camera::getHeight()
+{
     return this->height;
 }
-double Camera::getScale(){
+double Camera::getScale()
+{
     return this->scale;
 }

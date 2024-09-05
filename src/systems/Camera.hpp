@@ -13,7 +13,7 @@ public:
     Camera();
     ~Camera();
 
-    void init(int maxWidth, int maxHeight, int width, int height, int positionX, int positionY);
+    void init(int width, int height, double maxScale, int positionX, int positionY);
     void handleEvents(SDL_Event *event);
     bool update();
     bool move();
@@ -27,9 +27,10 @@ public:
 private:
     // Image dimensions
     int width, height;
-    int maxWidth, maxHeight;
     int velX, velY;
     double scale;
+    double maxScale;
+    double scaleSpeed;
     
     int positionX, positionY;
     int VELOCITY;
