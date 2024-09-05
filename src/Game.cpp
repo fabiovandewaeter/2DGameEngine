@@ -92,6 +92,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     loadMedia();
     loadEntities();
+    
+    this->camera.init(3840*5, 2160*5, 3840, 2160);
 }
 
 bool Game::loadMedia()

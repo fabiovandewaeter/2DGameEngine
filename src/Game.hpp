@@ -11,6 +11,7 @@
 
 #include "LTexture.hpp"
 #include "entities/Player.hpp"
+#include "systems/Camera.hpp"
 
 class Game {
 public:
@@ -36,6 +37,7 @@ private:
     bool isRunning;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    Camera camera;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;

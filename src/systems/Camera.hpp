@@ -13,17 +13,13 @@ public:
     Camera();
     ~Camera();
 
+    void init(int maxWidth, int maxHeight, int width, int height);
     void handleEvents(SDL_Event *event);
-    void render(int x, int y, SDL_Renderer *renderer);
-
-    // Gets image dimensions
-    int getWidth();
-    int getHeight();
-    void setSize(int width, int height);
 
 private:
     // Image dimensions
     int width, height;
+    int maxWidth, maxHeight;
     int velX, velY;
 };
 

@@ -6,6 +6,17 @@ const int SPRINT_VELOCITY = 2;
 int sprint = 1;
 int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 
+Camera::Camera(){}
+Camera::~Camera(){}
+
+void Camera::init(int maxWidth, int maxHeight, int width, int height)
+{
+    this->maxWidth = maxWidth;
+    this->maxHeight = maxHeight;
+    this->width = width;
+    this->height = height;
+}
+
 void Camera::handleEvents(SDL_Event *event)
 {
     // If a key was pressed
@@ -34,8 +45,8 @@ void Camera::handleEvents(SDL_Event *event)
             sprint = SPRINT_VELOCITY;
             break;
         }
-        this->velX = sprint*(rightVelX - leftVelX);
-        this->velY = sprint*(downVelY - upVelY);
+        this->velX = sprint * (rightVelX - leftVelX);
+        this->velY = sprint * (downVelY - upVelY);
     }
     // If a key was released
     else if (event->type == SDL_KEYUP && event->key.repeat == 0)
@@ -63,7 +74,7 @@ void Camera::handleEvents(SDL_Event *event)
             sprint = 1;
             break;
         }
-        this->velX = sprint*(rightVelX - leftVelX);
-        this->velY = sprint*(downVelY - upVelY);
+        this->velX = sprint * (rightVelX - leftVelX);
+        this->velY = sprint * (downVelY - upVelY);
     }
 }
