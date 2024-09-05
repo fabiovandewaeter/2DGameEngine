@@ -2,6 +2,7 @@
 #define game_hpp
 
 #define NUMBER_OF_TEXTURES 2
+#define NUMBER_OF_ENTITIES 1
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -38,6 +39,9 @@ private:
     unsigned int fixedUPS;
     Uint64 frameDelay;
     LTexture textures[NUMBER_OF_TEXTURES];
+    
+    Player player;
+    Entity entities[NUMBER_OF_ENTITIES];
     
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);

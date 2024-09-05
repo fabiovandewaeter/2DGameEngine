@@ -1,6 +1,5 @@
 #include "Game.hpp"
 
-Player player;
 SDL_Rect srcR, destR;
 
 SDL_Event event;
@@ -57,7 +56,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         std::cout << "Subsystems Initialised" << std::endl;
         // Create window
         this->window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if (window)
+        if (this->window)
         {
             std::cout << "Window created" << std::endl;
         }
@@ -67,8 +66,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
             isRunning = false;
         };
         // Create renderer
-        this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        if (renderer)
+        this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
+        if (this->renderer)
         {
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
             std::cout << "Renderer created" << std::endl;
@@ -95,8 +94,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     // initialize player
     SDL_Rect r = {50, 50, 1, 1};
-    player.init(&textures[1], r);
-    player.setVelocity(0, 0);
+    this->player.init(&textures[1], r);
+    this->player.setVelocity(0, 0);
 }
 
 bool Game::loadMedia()
@@ -113,18 +112,18 @@ bool Game::loadMedia()
     SDL_FreeSurface(iconSurface);
 
     // background texture
-    if (!textures[0].loadFromFile("assets/img/background.png", renderer))
+    if (!this->textures[0].loadFromFile("assets/img/background.png", renderer))
     {
         std::cout << "FAIL : background texture NOT loaded" << std::endl;
         success = false;
     }
     // player texture
-    if (!textures[1].loadFromFile("assets/img/player.png", renderer))
+    if (!this->textures[1].loadFromFile("assets/img/player.png", renderer))
     {
         std::cout << "FAIL : player texture NOT loaded" << std::endl;
         success = false;
     }
-    textures[1].setSize(16, 16);
+    this->textures[1].setSize(16, 16);
 
     return success;
 }
@@ -141,26 +140,26 @@ void Game::handleEvents(){
         }
 
         // player
-        player.handleEvents(&event);
+        this->player.handleEvents(&event);
     }
 }
 
 void Game::update()
 {
-    player.update();
+    this->player.update();
     printUPS();
 }
 
 void Game::render()
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+    SDL_RenderClear(this->renderer);
 
     // background
-    textures[0].render(0, 0, renderer);
-    player.render(renderer);
+    this->textures[0].render(0, 0, this->renderer);
+    this->player.render(this->renderer);
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(this->renderer);
     printFPS();
 }
 
@@ -169,12 +168,12 @@ void Game::clean()
     // Free loaded images
     for (int i = 0; i < NUMBER_OF_TEXTURES; i++)
     {
-        textures[i].free();
+        this->textures[i].free();
     }
 
     // Destroy window
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
 
     // Quit SDL subsystems
     IMG_Quit();
