@@ -91,11 +91,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
 
     loadMedia();
-
-    // initialize player
-    SDL_Rect r = {50, 50, 1, 1};
-    this->player.init(&textures[1], r);
-    this->player.setVelocity(0, 0);
+    loadEntities();
 }
 
 bool Game::loadMedia()
@@ -126,6 +122,12 @@ bool Game::loadMedia()
     this->textures[1].setSize(16, 16);
 
     return success;
+}
+
+void Game::loadEntities(){
+    this->player.init(&textures[1], (SDL_Rect){50, 50, 1, 1});
+    
+    this->entities[0].init(&textures[2], (SDL_Rect){50, 50, 1, 1});
 }
 
 void Game::handleEvents(){
