@@ -11,7 +11,7 @@
 #include <iostream>
 #include <time.h>
 
-#include "LTexture.hpp"
+#include "Texture.hpp"
 #include "entities/Player.hpp"
 #include "systems/Camera.hpp"
 
@@ -44,7 +44,7 @@ private:
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;
-    LTexture textures[NUMBER_OF_TEXTURES];
+    Texture textures[NUMBER_OF_TEXTURES];
     
     Player player;
     Entity entities[NUMBER_OF_ENTITIES];

@@ -1,30 +1,30 @@
-#include "LTexture.hpp"
+#include "Texture.hpp"
 
-LTexture::LTexture()
+Texture::Texture()
 {
     // Initialize
-    mTexture = NULL;
+    texture = NULL;
     width = 0;
     height = 0;
 }
-LTexture::~LTexture()
+Texture::~Texture()
 {
     // Deallocate
     free();
 }
-void LTexture::free()
+void Texture::free()
 {
     // Free texture if it exists
-    if (mTexture != NULL)
+    if (texture != NULL)
     {
-        SDL_DestroyTexture(mTexture);
-        mTexture = NULL;
+        SDL_DestroyTexture(texture);
+        texture = NULL;
         width = 0;
         height = 0;
     }
 }
 
-bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
+bool Texture::loadFromFile(const char *path, SDL_Renderer *renderer)
 {
     // Get rid of preexisting texture
     free();
@@ -59,27 +59,35 @@ bool LTexture::loadFromFile(const char *path, SDL_Renderer *renderer)
     }
 
     // Return success
-    mTexture = newTexture;
-    return mTexture != NULL;
+    texture = newTexture;
+    return texture != NULL;
 }
 
-void LTexture::render(SDL_Renderer *renderer, int x, int y, double scale)
+void Texture::render(SDL_Renderer *renderer, int x, int y, double scale)
 {
     // Set rendering space and render to screen
+    /*SDL_Rect renderQuad = {x*scale, y*scale, width*scale, height*scale};
+    SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);*/
     SDL_Rect renderQuad = {x, y, width*scale, height*scale};
-    SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
+    SDL_RenderCopy(renderer, texture, NULL, &renderQuad);
 }
 
-int LTexture::getWidth()
+int Texture::getWidth()
 {
     return width;
 }
-int LTexture::getHeight()
+int Texture::getHeight()
 {
     return height;
 }
-void LTexture::setSize(int width, int height)
+void Texture::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
+}
+int Texture::getCenterX(){
+    return this->getWidth()/2;
+}
+int Texture::getCenterY(){
+    return this->getHeight()/2;
 }

@@ -119,6 +119,7 @@ bool Game::loadMedia()
         std::cout << "FAIL : background texture NOT loaded" << std::endl;
         success = false;
     }
+    this->textures[0].setSize(1000, 1000);
     // player texture
     if (!this->textures[1].loadFromFile("assets/img/player.png", renderer))
     {
@@ -172,16 +173,15 @@ void Game::render()
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
-    int cameraX = this->camera.getPositionX();
-    int cameraY = this->camera.getPositionY();
+    int cameraPositionX = this->camera.getPositionX();
+    int cameraPositionY = this->camera.getPositionY();
+    int cameraCenterX = (this->screenWidth / 2);
+    int cameraCenterY = (this->screenHeight/ 2);
     double scale = this->camera.getScale();
     // background
-    //this->textures[0].render(this->renderer, 0-cameraX, 0-cameraY, scale);
-    //this->textures[0].render(this->renderer, ((this->screenWidth/2)-(this->textures[0].getWidth()/2))-cameraX, ((this->screenHeight/2)-(this->textures[0].getHeight()/2))-cameraY, scale);
-    this->textures[0].render(this->renderer, ((this->screenWidth/2)-(this->textures[0].getWidth()/2)*scale)-cameraX, ((this->screenHeight/2)-(this->textures[0].getHeight()/2)*scale)-cameraY, scale);
+    this->textures[0].render(this->renderer, cameraCenterX - (this->textures[0].getCenterX() * scale), cameraCenterY - (this->textures[0].getCenterY() * scale), scale);
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].render(this->renderer, ((this->screenWidth / 2) - (this->textures[i].getWidth() / 2) * scale) - cameraX, ((this->screenHeight / 2) - (this->textures[i].getHeight() / 2) * scale) - cameraY, scale);
-        //this->entities[i].render(this->renderer, cameraX, cameraY, scale);
+        this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
     }
     this->player.render(this->renderer, scale);
 

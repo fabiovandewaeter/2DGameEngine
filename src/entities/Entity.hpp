@@ -2,7 +2,7 @@
 #define entity_hpp
 
 #include <SDL_render.h>
-#include "../LTexture.hpp"
+#include "../Texture.hpp"
 
 class Entity
 {
@@ -10,10 +10,10 @@ public:
     Entity();
     ~Entity();
 
-    void init(LTexture *texture, int positionX, int positionY);
+    void init(Texture *texture, int positionX, int positionY);
     bool update();
     bool move();
-    void render(SDL_Renderer *renderer, int cameraX, int cameraY, double scale);
+    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
@@ -21,10 +21,10 @@ public:
 
     int getPositionX();
     int getPositionY();
-    LTexture* getTexture();
+    Texture* getTexture();
 
 protected:
-    LTexture *texture;
+    Texture *texture;
     int velX, velY;
     int positionX, positionY;
     int VELOCITY;

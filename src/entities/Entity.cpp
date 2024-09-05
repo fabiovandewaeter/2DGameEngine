@@ -3,7 +3,7 @@
 Entity::Entity() {}
 Entity::~Entity() {}
 
-void Entity::init(LTexture *texture, int positionX, int positionY)
+void Entity::init(Texture *texture, int positionX, int positionY)
 {
     this->texture = texture;
     this->positionX = positionX;
@@ -29,10 +29,9 @@ bool Entity::move()
     return success;
 }
 
-void Entity::render(SDL_Renderer *renderer, int cameraX, int cameraY, double scale)
+void Entity::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale)
 {
-    //texture->render(renderer, (positionX - cameraX)*scale, (positionY - cameraY)*scale, scale);
-    texture->render(renderer, (positionX - cameraX)*scale, (positionY - cameraY)*scale, scale);
+    this->texture->render(renderer, (cameraCenterX-cameraPositionX*scale) - ((this->texture->getCenterX()+this->positionX) * scale), (cameraCenterY-cameraPositionY*scale) - ((this->texture->getCenterY()+this->positionY) * scale), scale);
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)
@@ -56,7 +55,7 @@ int Entity::getPositionY()
 {
     return this->positionY;
 }
-LTexture *Entity::getTexture()
+Texture *Entity::getTexture()
 {
     return this->texture;
 }
