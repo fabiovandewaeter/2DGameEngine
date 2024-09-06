@@ -130,14 +130,12 @@ bool Game::loadMedia()
         std::cout << "FAIL : player texture NOT loaded" << std::endl;
         success = false;
     }
-    //this->textures[2].setSize(16, 16);
     // entity0 texture
     if (!this->textures[3].loadFromFile("assets/img/entity0.png", this->renderer))
     {
         std::cout << "FAIL : texture[2] NOT loaded" << std::endl;
         success = false;
     }
-    //this->textures[3].setSize(16, 16);
 
     return success;
 }
@@ -146,10 +144,9 @@ void Game::loadEntities(){
     // ground
     this->entities[0].init(&textures[1], (SDL_Rect){0, 0, 500, 500}, false);
     // player
-    //this->player.init(&textures[2], (SDL_Rect){(this->screenWidth/2)-(this->textures[2].getWidth()/2), (this->screenHeight/2)-(this->textures[2].getHeight()/2), 16, 16}); 
     this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[1].init(&textures[3], (SDL_Rect){50, 50, 16, 16}, false);
+    this->entities[1].init(&textures[3], (SDL_Rect){50, 50, 16, 16}, true);
     
     this->collisionManager.addEntity(&this->player);
     for (int i = 1; i < NUMBER_OF_ENTITIES; i++){
