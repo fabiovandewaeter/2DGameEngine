@@ -3,6 +3,9 @@
 
 #include <SDL_render.h>
 #include "../Texture.hpp"
+#include "../systems/CollisionManager.hpp"
+
+class CollisionManager;
 
 class Entity
 {
@@ -10,9 +13,10 @@ public:
     Entity();
     ~Entity();
 
-    void init(Texture *texture, SDL_Rect hitbox);
-    bool update();
-    bool move();
+    void init(Texture *texture, SDL_Rect hitbox, bool solid);
+    void update(CollisionManager *collisionManager);
+    bool canMove();
+    void move(CollisionManager *collisionManager);
     void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale);
 
     void setVelocity(int velX, int velY);
@@ -25,12 +29,14 @@ public:
     int getCenterY();
     Texture *getTexture();
     SDL_Rect getHitBox();
+    bool isSolid();
 
 protected:
     Texture *texture;
     int velX, velY;
     int velocity;
     SDL_Rect hitBox;
+    bool solid;
 };
 
 #endif

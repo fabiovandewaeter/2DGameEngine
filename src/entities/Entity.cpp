@@ -3,29 +3,39 @@
 Entity::Entity() {}
 Entity::~Entity() {}
 
-void Entity::init(Texture *texture, SDL_Rect hitBox)
+void Entity::init(Texture *texture, SDL_Rect hitBox, bool solid)
 {
     this->texture = texture;
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
     this->velocity= 1;
+    this->solid = solid;
 }
 
-bool Entity::update()
+void Entity::update(CollisionManager *collisionManager)
 {
-    return move();
+    move(collisionManager);
 }
 
-bool Entity::move()
+bool Entity::canMove(){
+    // EXAMPLE: check if he is stunned ...
+    return true;
+}
+void Entity::move(CollisionManager *collisionManager)
 {
-    bool success = true;
+    if (canMove())
+    {
+        int newPosX = this->velocity * this->velX;
+        int newPosY = this->velocity * this->velY;
+        
+        SDL_Rect newRect = collisionManager->handleCollisionsFor(this, newPosX, newPosY);
 
-    // EXAMPLE: check if he stunned ...
-    this->hitBox.x += this->velocity* this->velX;
-    this->hitBox.y += this->velocity * this->velY;
-
-    return success;
+        /*this->hitBox.x += newRect.x;
+        this->hitBox.y += newRect.y;*/
+        this->hitBox.x += newPosX;
+        this->hitBox.y += newPosY;
+    }
 }
 
 void Entity::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale)
@@ -63,4 +73,11 @@ int Entity::getCenterY(){
 Texture *Entity::getTexture()
 {
     return this->texture;
+}
+SDL_Rect Entity::getHitBox(){
+    return this->hitBox;
+}
+bool Entity::isSolid()
+{
+    return this->solid;
 }

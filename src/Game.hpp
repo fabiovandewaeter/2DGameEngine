@@ -14,6 +14,7 @@
 #include "Texture.hpp"
 #include "entities/Player.hpp"
 #include "systems/Camera.hpp"
+#include "systems/CollisionManager.hpp"
 
 class Game {
 public:
@@ -51,6 +52,8 @@ private:
     
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);
+    
+    CollisionManager collisionManager;
 };
 
 #endif

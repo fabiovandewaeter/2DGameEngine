@@ -144,12 +144,12 @@ bool Game::loadMedia()
 
 void Game::loadEntities(){
     // ground
-    this->entities[0].init(&textures[1], (SDL_Rect){0, 0, 500, 500});
+    this->entities[0].init(&textures[1], (SDL_Rect){0, 0, 500, 500}, false);
     // player
     //this->player.init(&textures[2], (SDL_Rect){(this->screenWidth/2)-(this->textures[2].getWidth()/2), (this->screenHeight/2)-(this->textures[2].getHeight()/2), 16, 16}); 
-    this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16});
+    this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[1].init(&textures[3], (SDL_Rect){0, 0, 16, 16});
+    this->entities[1].init(&textures[3], (SDL_Rect){0, 0, 16, 16}, false);
 }
 
 void Game::handleEvents(){
@@ -164,15 +164,16 @@ void Game::handleEvents(){
         }
 
         this->camera.handleEvents(&event);
+        this->player.handleEvents(&event);
     }
 }
 
 void Game::update()
 {
-    this->player.update();
+    this->player.update(&this->collisionManager);
     this->camera.update();
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].update();
+        this->entities[i].update(&this->collisionManager);
     }
     printUPS();
 }
@@ -192,7 +193,7 @@ void Game::render()
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
     }
-    //this->player.render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
+    this->player.render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

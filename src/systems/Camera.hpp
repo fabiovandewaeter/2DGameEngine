@@ -18,6 +18,7 @@ public:
     bool update();
     bool move();
     
+    void setPosition(int x, int y);
     int getPositionX();
     int getPositionY();
     int getWidth();

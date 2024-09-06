@@ -123,6 +123,10 @@ bool Camera::move()
     return success;
 }
 
+void Camera::setPosition(int x, int y){
+    this->positionX = x;
+    this->positionY = y;
+}
 int Camera::getPositionX()
 {
     return this->positionX;

@@ -11,7 +11,10 @@ public:
     Player();
     ~Player();
 
+    void handleEvents(SDL_Event *event);
     void render2(SDL_Renderer *renderer, double scale);
+    
+    void setPosition(int x, int y);
 
 private:
 };
