@@ -11,7 +11,7 @@ public:
     Player();
     ~Player();
 
-    void render(SDL_Renderer *renderer, double scale);
+    void render2(SDL_Renderer *renderer, double scale);
 
 private:
 };

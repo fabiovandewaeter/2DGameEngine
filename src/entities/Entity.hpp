@@ -10,7 +10,7 @@ public:
     Entity();
     ~Entity();
 
-    void init(Texture *texture, int positionX, int positionY);
+    void init(Texture *texture, SDL_Rect hitbox);
     bool update();
     bool move();
     void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale);
@@ -21,13 +21,16 @@ public:
 
     int getPositionX();
     int getPositionY();
-    Texture* getTexture();
+    int getCenterX();
+    int getCenterY();
+    Texture *getTexture();
+    SDL_Rect getHitBox();
 
 protected:
     Texture *texture;
     int velX, velY;
-    int positionX, positionY;
-    int VELOCITY;
+    int velocity;
+    SDL_Rect hitBox;
 };
 
 #endif

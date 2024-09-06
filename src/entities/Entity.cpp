@@ -3,14 +3,13 @@
 Entity::Entity() {}
 Entity::~Entity() {}
 
-void Entity::init(Texture *texture, int positionX, int positionY)
+void Entity::init(Texture *texture, SDL_Rect hitBox)
 {
     this->texture = texture;
-    this->positionX = positionX;
-    this->positionY = positionY;
+    this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
-    this->VELOCITY = 1;
+    this->velocity= 1;
 }
 
 bool Entity::update()
@@ -23,15 +22,15 @@ bool Entity::move()
     bool success = true;
 
     // EXAMPLE: check if he stunned ...
-    positionX += VELOCITY * velX;
-    positionY += VELOCITY * velY;
+    this->hitBox.x += this->velocity* this->velX;
+    this->hitBox.y += this->velocity * this->velY;
 
     return success;
 }
 
 void Entity::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale)
 {
-    this->texture->render(renderer, (cameraCenterX-cameraPositionX*scale) - ((this->texture->getCenterX()+this->positionX) * scale), (cameraCenterY-cameraPositionY*scale) - ((this->texture->getCenterY()+this->positionY) * scale), scale);
+    this->texture->render(renderer, (cameraCenterX-cameraPositionX*scale) - ((this->getCenterX()+this->hitBox.x) * scale), (cameraCenterY-cameraPositionY*scale) - ((this->getCenterY()+this->hitBox.y) * scale), this->hitBox.w, this->hitBox.h, scale);
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)
@@ -49,11 +48,17 @@ void Entity::setVelocityY(int velocityY)
 }
 int Entity::getPositionX()
 {
-    return this->positionX;
+    return this->hitBox.x;
 }
 int Entity::getPositionY()
 {
-    return this->positionY;
+    return this->hitBox.y;
+}
+int Entity::getCenterX(){
+    return this->hitBox.w/2;
+}
+int Entity::getCenterY(){
+    return this->hitBox.h/2;
 }
 Texture *Entity::getTexture()
 {

@@ -71,7 +71,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
         this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
         if (this->renderer)
         {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
             std::cout << "Renderer created" << std::endl;
         }
         else
@@ -95,9 +95,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     loadEntities();
     
-    int cameraPosX = ( this->player.getPositionX() + this->player.getTexture()->getWidth()/ 2 ) - width/ 2;
-    int cameraPosY = ( this->player.getPositionY() + this->player.getTexture()->getHeight()/ 2 ) - height / 2;
-    this->camera.init(width, height, 2.0, 2.0, cameraPosX, cameraPosY);
+    this->camera.init(width, height, 2.0, 2.0, 0, 0);
 }
 
 bool Game::loadMedia()
@@ -114,43 +112,44 @@ bool Game::loadMedia()
     SDL_FreeSurface(iconSurface);
 
     // background texture
-    if (!this->textures[0].loadFromFile("assets/img/background.png", renderer))
+    if (!this->textures[0].loadFromFile("assets/img/background.png", this->renderer))
     {
         std::cout << "FAIL : background texture NOT loaded" << std::endl;
         success = false;
     }
     this->textures[0].setSize(1280*5, 720*5);
     // ground texture
-    if (!this->textures[1].loadFromFile("assets/img/ground.png", renderer))
+    if (!this->textures[1].loadFromFile("assets/img/ground.png", this->renderer))
     {
         std::cout << "FAIL : ground texture NOT loaded" << std::endl;
         success = false;
     }
     // player texture
-    if (!this->textures[2].loadFromFile("assets/img/player.png", renderer))
+    if (!this->textures[2].loadFromFile("assets/img/player.png", this->renderer))
     {
         std::cout << "FAIL : player texture NOT loaded" << std::endl;
         success = false;
     }
-    this->textures[2].setSize(16, 16);
+    //this->textures[2].setSize(16, 16);
     // entity0 texture
-    if (!this->textures[3].loadFromFile("assets/img/entity0.png", renderer))
+    if (!this->textures[3].loadFromFile("assets/img/entity0.png", this->renderer))
     {
         std::cout << "FAIL : texture[2] NOT loaded" << std::endl;
         success = false;
     }
-    this->textures[3].setSize(16, 16);
+    //this->textures[3].setSize(16, 16);
 
     return success;
 }
 
 void Game::loadEntities(){
     // ground
-    this->entities[0].init(&textures[1], 0, 0);
+    this->entities[0].init(&textures[1], (SDL_Rect){0, 0, 500, 500});
     // player
-    this->player.init(&textures[2], (this->screenWidth/2)-(this->textures[2].getWidth()/2), (this->screenHeight/2)-(this->textures[2].getHeight()/2)); 
+    //this->player.init(&textures[2], (SDL_Rect){(this->screenWidth/2)-(this->textures[2].getWidth()/2), (this->screenHeight/2)-(this->textures[2].getHeight()/2), 16, 16}); 
+    this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16});
     // entity0
-    this->entities[1].init(&textures[3], 0, 0);
+    this->entities[1].init(&textures[3], (SDL_Rect){0, 0, 16, 16});
 }
 
 void Game::handleEvents(){
@@ -193,7 +192,7 @@ void Game::render()
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
     }
-    this->player.render(this->renderer, scale);
+    //this->player.render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

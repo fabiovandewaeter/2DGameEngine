@@ -30,9 +30,10 @@ private:
     int velX, velY;
     double scale, scaleSpeed, minScale, maxScale;
     
+    // in-game coordinates
     int positionX, positionY;
-    int VELOCITY;
-    int SPRINT_VELOCITY;
+    int velocity;
+    int sprintVelocity;
 };
 
 #endif

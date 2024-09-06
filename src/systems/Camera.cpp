@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 const double BASE_SCALE = 1.0;
-// 1 if false and SPRINT_VELOCITY if true
+// 1 if false and sprintVelocity if true
 int sprint = 1;
 int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 
@@ -18,8 +18,8 @@ void Camera::init(int width, int height, double minScale, double maxScale, int p
     this->scaleSpeed = 0.1;
     this->positionX = positionX;
     this->positionY = positionY;
-    this->VELOCITY = 1;
-    this->SPRINT_VELOCITY = 2;
+    this->velocity = 1;
+    this->sprintVelocity = 2;
 }
 
 void Camera::handleEvents(SDL_Event *event)
@@ -32,22 +32,22 @@ void Camera::handleEvents(SDL_Event *event)
         {
         case SDLK_UP:
         case SDLK_z:
-            upVelY = VELOCITY;
+            upVelY = this->velocity;
             break;
         case SDLK_DOWN:
         case SDLK_s:
-            downVelY = VELOCITY;
+            downVelY = this->velocity;
             break;
         case SDLK_LEFT:
         case SDLK_q:
-            leftVelX = VELOCITY;
+            leftVelX = this->velocity;
             break;
         case SDLK_RIGHT:
         case SDLK_d:
-            rightVelX = VELOCITY;
+            rightVelX = this->velocity;
             break;
         case SDLK_LSHIFT:
-            sprint = SPRINT_VELOCITY;
+            sprint = sprintVelocity;
             break;
         case SDLK_0:
             this->scale = BASE_SCALE;
@@ -117,8 +117,8 @@ bool Camera::move()
     bool success = true;
 
     // EXAMPLE: check if he stunned ...
-    this->positionX += VELOCITY * velX;
-    this->positionY += VELOCITY * velY;
+    this->positionX += this->velocity * velX;
+    this->positionY += this->velocity * velY;
 
     return success;
 }
