@@ -22,19 +22,20 @@ bool Entity::canMove(){
     // EXAMPLE: check if he is stunned ...
     return true;
 }
+bool Entity::isMoving(){
+    return this->velX != 0 || this->velY != 0;
+}
 void Entity::move(CollisionManager *collisionManager)
 {
-    if (canMove())
+    if (canMove() && isMoving())
     {
-        int newPosX = this->velocity * this->velX;
-        int newPosY = this->velocity * this->velY;
-        
+        int newPosX = this->getPositionX() + (this->velocity * this->velX);
+        int newPosY = this->getPositionY() + (this->velocity * this->velY);
+
         SDL_Rect newRect = collisionManager->handleCollisionsFor(this, newPosX, newPosY);
 
-        /*this->hitBox.x += newRect.x;
-        this->hitBox.y += newRect.y;*/
-        this->hitBox.x += newPosX;
-        this->hitBox.y += newPosY;
+        this->hitBox.x = newRect.x;
+        this->hitBox.y = newRect.y;
     }
 }
 

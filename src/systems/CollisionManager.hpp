@@ -17,7 +17,7 @@ public:
     void init(std::vector<Entity*> entities);
     bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
     SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
-    SDL_Rect resolveCollision(SDL_Rect &rectA, const SDL_Rect &rectB, int &dx, int &dy);
+    SDL_Rect resolveCollision(SDL_Rect rectA, const SDL_Rect rectB, int newPosX, int newPosY);
 
     void addEntity(Entity *entity);
 

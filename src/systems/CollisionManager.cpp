@@ -3,7 +3,8 @@
 CollisionManager::CollisionManager() {}
 CollisionManager::~CollisionManager() {}
 
-void CollisionManager::init(std::vector<Entity*> entities){
+void CollisionManager::init(std::vector<Entity *> entities)
+{
     this->allEntities.insert(this->allEntities.end(), entities.begin(), entities.end());
     /*for (size_t i = 0; i < entities.size(); i++){
         for (size_t j = 0; j < entities.size(); i++)
@@ -24,62 +25,71 @@ bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
              rectA.y >= rectB.y + rectB.h);
 }
 
-SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY){
+SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
+{
     SDL_Rect hitBox = entity->getHitBox();
-    SDL_Rect res = hitBox;
     for (size_t i = 0; i < this->allEntities.size(); i++)
     {
-        SDL_Rect otherEntityBox = this->allEntities[i]->getHitBox();
-        if (checkCollision(hitBox, otherEntityBox)){
-            res = resolveCollision(hitBox, otherEntityBox, newPosX, newPosY);
+        Entity *otherEntity = this->allEntities[i];
+        if (entity != otherEntity)
+        {
+            SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
+            if (checkCollision(newHitBox, otherEntity->getHitBox()))
+            {
+                //return resolveCollision(hitBox, otherEntity->getHitBox(), newPosX, newPosY);
+                return hitBox;
+            }
+            else
+            {
+                return newHitBox;
+            }
         }
     }
-
-    return hitBox;
 }
 
-SDL_Rect CollisionManager::resolveCollision(SDL_Rect &rectA, const SDL_Rect &rectB, int &dx, int &dy)
+/*SDL_Rect CollisionManager::resolveCollision(SDL_Rect rectA, const SDL_Rect rectB, int newPosX, int newPosY)
 {
-    // Si rectA touche rectB après avoir essayé de bouger
-    SDL_Rect rectA_afterMove = rectA;
-    rectA_afterMove.x += dx;
-    rectA_afterMove.y += dy;
+    SDL_Rect newRectA = {newPosX, newPosY, rectA.w, rectA.h};
+    SDL_Rect res = rectA;
+    bool success = true;
 
-    if (checkCollision(rectA_afterMove, rectB))
+    if (newRectA.x + newRectA.w <= rectB.x)
     {
-        // Si une collision a lieu, on ajuste dx et dy pour permettre un déplacement partiel
-        // Traitement pour l'axe X
-        if (dx > 0)
-        { // déplacement vers la droite
-            rectA.x = rectB.x - rectA.w;
-            dx = 0; // arrêt complet sur l'axe X
-        }
-        else if (dx < 0)
-        { // déplacement vers la gauche
-            rectA.x = rectB.x + rectB.w;
-            dx = 0;
-        }
-
-        // Traitement pour l'axe Y
-        if (dy > 0)
-        { // déplacement vers le bas
-            rectA.y = rectB.y - rectA.h;
-            dy = 0; // arrêt complet sur l'axe Y
-        }
-        else if (dy < 0)
-        { // déplacement vers le haut
-            rectA.y = rectB.y + rectB.h;
-            dy = 0;
-        }
+        res.x = rectB.x;
+        success = false;
+        printf("djazuid\n");
     }
-    else
+    if (newRectA.x >= rectB.x + rectB.w)
     {
-        // Si aucune collision, applique le déplacement complet
-        rectA.x += dx;
-        rectA.y += dy;
+        res.x = rectB.x + rectB.w;
+        success = false;
+        printf("djazuid\n");
     }
-}
+    if (newRectA.y + newRectA.h <= rectB.y)
+    {
+        res.y = rectB.y;
+        success = false;
+        printf("djazuid\n");
+    }
+    if (newRectA.y >= rectB.y + rectB.h)
+    {
+        res.y = rectB.y + rectB.h;
+        success = false;
+        printf("djazuid\n");
+    }
+    
+    if (success){
+        res.x = newRectA.x;
+        res.y = newRectA.y;
+    }
+    else {
+        printf("djazuid\n");
+    }
 
-void CollisionManager::addEntity(Entity *entity){
+    return res;
+}*/
 
+void CollisionManager::addEntity(Entity *entity)
+{
+    this->allEntities.push_back(entity);
 }

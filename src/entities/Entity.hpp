@@ -16,6 +16,7 @@ public:
     void init(Texture *texture, SDL_Rect hitbox, bool solid);
     void update(CollisionManager *collisionManager);
     bool canMove();
+    bool isMoving();
     void move(CollisionManager *collisionManager);
     void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale);
 

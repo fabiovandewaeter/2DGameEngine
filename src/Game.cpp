@@ -149,7 +149,12 @@ void Game::loadEntities(){
     //this->player.init(&textures[2], (SDL_Rect){(this->screenWidth/2)-(this->textures[2].getWidth()/2), (this->screenHeight/2)-(this->textures[2].getHeight()/2), 16, 16}); 
     this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[1].init(&textures[3], (SDL_Rect){0, 0, 16, 16}, false);
+    this->entities[1].init(&textures[3], (SDL_Rect){50, 50, 16, 16}, false);
+    
+    this->collisionManager.addEntity(&this->player);
+    for (int i = 1; i < NUMBER_OF_ENTITIES; i++){
+        this->collisionManager.addEntity(&this->entities[i]);
+    }
 }
 
 void Game::handleEvents(){
