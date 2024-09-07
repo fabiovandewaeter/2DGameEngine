@@ -1,9 +1,7 @@
 #ifndef game_hpp
 #define game_hpp
 
-#define NUMBER_OF_TEXTURES 4
-#define NUMBER_OF_ENTITIES 2
-#define SCREEN_WIDTH 
+#define SCREEN_WIDTH
 #define SCREEN_HEIGHT
 
 #include <SDL.h>
@@ -16,12 +14,14 @@
 #include "systems/Camera.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/IOManager.hpp"
+#include "systems/TextureManager.hpp"
 
-class Game {
+class Game
+{
 public:
     Game();
     ~Game();
-    
+
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
     bool loadMedia();
     void loadEntities();
@@ -46,14 +46,17 @@ private:
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;
-    Texture textures[NUMBER_OF_TEXTURES];
-    
+
     Player player;
     Entity entities[NUMBER_OF_ENTITIES];
-    
+    Texture *backgroundTexture;
+    Texture *entityTextures;
+    Texture *tileTextures;
+
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);
-    
+
+    TextureManager textureManager;
     CollisionManager collisionManager;
     IOManager ioManager;
 };

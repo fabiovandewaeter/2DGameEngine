@@ -91,18 +91,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
             isRunning = false;
         }
     }
-
-    loadMedia();
-    loadEntities();
-    
-    this->camera.init(width, height, 2.0, 2.0, 0, 0);
-    
-}
-
-bool Game::loadMedia()
-{
-    bool success = true;
-
     // window icon
     SDL_Surface *iconSurface = SDL_LoadBMP("assets/icon/window_icon.bmp");
     if (!iconSurface)
@@ -112,42 +100,26 @@ bool Game::loadMedia()
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
-    // background texture
-    if (!this->textures[0].loadFromFile("assets/img/background.png", this->renderer))
-    {
-        std::cout << "FAIL : background texture NOT loaded" << std::endl;
-        success = false;
-    }
-    this->textures[0].setSize(1280*5, 720*5);
-    // ground texture
-    if (!this->textures[1].loadFromFile("assets/img/ground.png", this->renderer))
-    {
-        std::cout << "FAIL : ground texture NOT loaded" << std::endl;
-        success = false;
-    }
-    // player texture
-    if (!this->textures[2].loadFromFile("assets/img/player.png", this->renderer))
-    {
-        std::cout << "FAIL : player texture NOT loaded" << std::endl;
-        success = false;
-    }
-    // entity0 texture
-    if (!this->textures[3].loadFromFile("assets/img/entity0.png", this->renderer))
-    {
-        std::cout << "FAIL : texture[2] NOT loaded" << std::endl;
-        success = false;
-    }
+    this->textureManager.loadMedia(this->renderer);
+    this->backgroundTexture = this->textureManager.getBackgroundTexture();
+    this->entityTextures = this->textureManager.getEntityTextures();
+    this->tileTextures = this->textureManager.getTileTextures();
+    loadEntities();
+    this->camera.init(width, height, 2.0, 2.0, 0, 0);
+}
 
-    return success;
+bool Game::loadMedia()
+{
+    this->textureManager.loadMedia(this->renderer);
 }
 
 void Game::loadEntities(){
     // ground
-    this->entities[0].init(&textures[1], (SDL_Rect){0, 0, 500, 500}, false);
+    this->entities[0].init(&this->tileTextures[0], (SDL_Rect){0, 0, 500, 500}, false);
     // player
-    this->player.init(&textures[2], (SDL_Rect){0, 0, 16, 16}, false);
+    this->player.init(&this->entityTextures[0], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[1].init(&textures[3], (SDL_Rect){50, 50, 16, 16}, true);
+    this->entities[1].init(&this->entityTextures[1], (SDL_Rect){50, 50, 16, 16}, true);
     
     this->collisionManager.addEntity(&this->player);
     for (int i = 1; i < NUMBER_OF_ENTITIES; i++){
@@ -192,7 +164,7 @@ void Game::render()
     int cameraCenterY = (this->screenHeight/ 2);
     double scale = this->camera.getScale();
     // background
-    this->textures[0].render(this->renderer, cameraCenterX - (this->textures[0].getCenterX() * scale), cameraCenterY - (this->textures[0].getCenterY() * scale), scale);
+    this->backgroundTexture->render(this->renderer, cameraCenterX - (this->backgroundTexture->getCenterX() * scale), cameraCenterY - (this->backgroundTexture->getCenterY() * scale), scale);
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
     }
@@ -204,11 +176,7 @@ void Game::render()
 
 void Game::clean()
 {
-    // Free loaded images
-    for (int i = 0; i < NUMBER_OF_TEXTURES; i++)
-    {
-        this->textures[i].free();
-    }
+    this->textureManager.free();
 
     // Destroy window
     SDL_DestroyRenderer(this->renderer);
