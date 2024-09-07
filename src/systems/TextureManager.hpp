@@ -3,7 +3,7 @@
 
 #define NUMBER_OF_ENTITY_TEXTURES 2
 #define NUMBER_OF_ENTITIES 2
-#define NUMBER_OF_TILE_TEXTURES 4
+#define NUMBER_OF_TILE_TEXTURES 3
 
 #include "../Texture.hpp"
 

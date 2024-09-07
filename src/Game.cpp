@@ -108,7 +108,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->camera.init(width, height, 2.0, 2.0, 0, 0);
 }
 
-bool Game::loadMedia()
+void Game::loadMedia()
 {
     this->textureManager.loadMedia(this->renderer);
 }

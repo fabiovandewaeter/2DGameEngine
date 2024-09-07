@@ -23,7 +23,7 @@ public:
     ~Game();
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
-    bool loadMedia();
+    void loadMedia();
     void loadEntities();
     void handleEvents();
     void update();

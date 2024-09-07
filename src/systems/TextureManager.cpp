@@ -21,10 +21,7 @@ void TextureManager::free()
 void TextureManager::loadMedia(SDL_Renderer *renderer)
 {
     // background texture
-    if (!this->backgroundTexture.loadFromFile("assets/img/background.png", renderer))
-    {
-        std::cout << "FAIL : background texture NOT loaded" << std::endl;
-    }
+    this->backgroundTexture.loadFromFile("assets/img/background.png", renderer);
     this->backgroundTexture.setSize(1280 * 5, 720 * 5);
 
     loadEntityTextures(renderer);
@@ -34,23 +31,18 @@ void TextureManager::loadMedia(SDL_Renderer *renderer)
 void TextureManager::loadEntityTextures(SDL_Renderer *renderer)
 {
     // player texture
-    if (!this->entityTextures[0].loadFromFile("assets/img/player.png", renderer))
-    {
-        std::cout << "FAIL : player texture NOT loaded" << std::endl;
-    }
+    this->entityTextures[0].loadFromFile("assets/img/player.png", renderer);
     // entity0 texture
-    if (!this->entityTextures[1].loadFromFile("assets/img/entity0.png", renderer))
-    {
-        std::cout << "FAIL : texture[2] NOT loaded" << std::endl;
-    }
+    this->entityTextures[1].loadFromFile("assets/img/entity0.png", renderer);
 }
 void TextureManager::loadTileTextures(SDL_Renderer *renderer)
 {
     // ground texture
-    if (!this->tileTextures[0].loadFromFile("assets/img/ground.png", renderer))
-    {
-        std::cout << "FAIL : ground texture NOT loaded" << std::endl;
-    }
+    this->tileTextures[0].loadFromFile("assets/img/ground.png", renderer);
+    // grass0 texture
+    this->tileTextures[1].loadFromFile("assets/img/tiles/grass0.png", renderer);
+    // grass1 texture
+    this->tileTextures[2].loadFromFile("assets/img/tiles/grass1.png", renderer);
 }
 
 Texture *TextureManager::getBackgroundTexture()
