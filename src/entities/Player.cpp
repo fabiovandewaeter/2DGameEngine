@@ -66,7 +66,8 @@ void Player::render2(SDL_Renderer *renderer, double scale)
     this->texture->render(renderer, this->hitBox.x, this->hitBox.y, scale);
 }
 
-void Player::setPosition(int x, int y){
+void Player::setPosition(int x, int y)
+{
     this->hitBox.x = x;
     this->hitBox.y = y;
 }

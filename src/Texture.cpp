@@ -1,11 +1,15 @@
 #include "Texture.hpp"
 
+int idCounter = 0;
+
 Texture::Texture()
 {
     // Initialize
     texture = NULL;
     width = 0;
     height = 0;
+    this->id = idCounter;
+    idCounter++;
 }
 Texture::~Texture()
 {
@@ -94,4 +98,7 @@ int Texture::getCenterX(){
 }
 int Texture::getCenterY(){
     return this->getHeight()/2;
+}
+int Texture::getId(){
+    return this->id;
 }

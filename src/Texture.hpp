@@ -27,6 +27,7 @@ public:
     void setSize(int width, int height);
     int getCenterX();
     int getCenterY();
+    int getId();
 
 private:
     // The actual hardware texture
@@ -35,6 +36,8 @@ private:
     // Image dimensions
     int width;
     int height;
+    
+    int id;
 };
 
 #endif

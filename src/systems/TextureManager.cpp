@@ -30,19 +30,23 @@ void TextureManager::loadMedia(SDL_Renderer *renderer)
 
 void TextureManager::loadEntityTextures(SDL_Renderer *renderer)
 {
+    int i = 0;
     // player texture
-    this->entityTextures[0].loadFromFile("assets/img/player.png", renderer);
+    this->entityTextures[i].loadFromFile("assets/img/player.png", renderer);
+    i++;
     // entity0 texture
-    this->entityTextures[1].loadFromFile("assets/img/entity0.png", renderer);
+    this->entityTextures[i].loadFromFile("assets/img/entity0.png", renderer);
+    i++;
 }
 void TextureManager::loadTileTextures(SDL_Renderer *renderer)
 {
-    // ground texture
-    this->tileTextures[0].loadFromFile("assets/img/ground.png", renderer);
+    int i = 0;
     // grass0 texture
-    this->tileTextures[1].loadFromFile("assets/img/tiles/grass0.png", renderer);
+    this->tileTextures[i].loadFromFile("assets/img/tiles/grass0.png", renderer);
+    i++;
     // grass1 texture
-    this->tileTextures[2].loadFromFile("assets/img/tiles/grass1.png", renderer);
+    this->tileTextures[i].loadFromFile("assets/img/tiles/grass1.png", renderer);
+    i++;
 }
 
 Texture *TextureManager::getBackgroundTexture()

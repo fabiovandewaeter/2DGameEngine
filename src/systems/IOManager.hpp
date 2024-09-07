@@ -6,11 +6,13 @@
 #include <SDL_stdinc.h>
 
 
+// source : https://lazyfoo.net/tutorials/SDL/33_file_reading_and_writing/index.php
 class IOManager
 {
 public:
     IOManager();
     ~IOManager();
+    
 private:
     Sint32 data[TOTAL_DATA];
 };

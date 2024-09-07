@@ -1,36 +1,6 @@
 #include "Game.hpp"
 
-SDL_Rect srcR, destR;
-
 SDL_Event event;
-
-unsigned int frameCount = 0, updateCount = 0;
-float fps = 0, ups = 0;
-Uint64 lastTimeFPS = SDL_GetTicks64(), currentTimeFPS, lastTimeUPS = lastTimeFPS, currentTimeUPS;
-void Game::printFPS()
-{
-    frameCount++;
-    currentTimeFPS = SDL_GetTicks64();
-    if (currentTimeFPS - lastTimeFPS >= 1000)
-    { // 1000 ms = 1 seconde
-        fps = frameCount / ((currentTimeFPS - lastTimeFPS) / 1000.0f);
-        std::cout << "FPS: " << fps << std::endl;
-        lastTimeFPS = currentTimeFPS;
-        frameCount = 0;
-    }
-}
-void Game::printUPS()
-{
-    updateCount++;
-    currentTimeUPS = SDL_GetTicks64();
-    if (currentTimeUPS - lastTimeUPS >= 1000)
-    { // 1000 ms = 1 seconde
-        ups = updateCount / ((currentTimeUPS - lastTimeUPS) / 1000.0f);
-        std::cout << "UPS: " << ups << std::endl;
-        lastTimeUPS = currentTimeUPS;
-        updateCount = 0;
-    }
-}
 
 Game::Game()
 {
@@ -108,18 +78,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->camera.init(width, height, 2.0, 2.0, 0, 0);
 }
 
-void Game::loadMedia()
-{
-    this->textureManager.loadMedia(this->renderer);
-}
-
 void Game::loadEntities(){
-    // ground
-    this->entities[0].init(&this->tileTextures[0], (SDL_Rect){0, 0, 500, 500}, false);
+    int i = 0;
     // player
     this->player.init(&this->entityTextures[0], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[1].init(&this->entityTextures[1], (SDL_Rect){50, 50, 16, 16}, true);
+    this->entities[i].init(&this->entityTextures[1], (SDL_Rect){50, 50, 16, 16}, true);
+    i++;
     
     this->collisionManager.addEntity(&this->player);
     for (int i = 1; i < NUMBER_OF_ENTITIES; i++){
@@ -127,17 +92,14 @@ void Game::loadEntities(){
     }
 }
 
-void Game::handleEvents(){
+void Game::handleEvents()
+{
     while (SDL_PollEvent(&event) != 0)
     {
-        int velocityX = 0;
-        int velocityY = 0;
-
         if (event.type == SDL_QUIT)
         {
             this->isRunning = false;
         }
-
         this->camera.handleEvents(&event);
         this->player.handleEvents(&event);
     }
@@ -165,6 +127,12 @@ void Game::render()
     double scale = this->camera.getScale();
     // background
     this->backgroundTexture->render(this->renderer, cameraCenterX - (this->backgroundTexture->getCenterX() * scale), cameraCenterY - (this->backgroundTexture->getCenterY() * scale), scale);
+    // tiles
+    Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
+    tile->render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
+    delete tile;
+
+    // entities
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
         this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
     }
@@ -205,4 +173,31 @@ void Game::setUPS(unsigned int ups)
 Uint64 Game::getFrameDelay()
 {
     return this->frameDelay;
+}
+unsigned int frameCount = 0, updateCount = 0;
+float fps = 0, ups = 0;
+Uint64 lastTimeFPS = SDL_GetTicks64(), currentTimeFPS, lastTimeUPS = lastTimeFPS, currentTimeUPS;
+void Game::printFPS()
+{
+    frameCount++;
+    currentTimeFPS = SDL_GetTicks64();
+    if (currentTimeFPS - lastTimeFPS >= 1000)
+    { // 1000 ms = 1 seconde
+        fps = frameCount / ((currentTimeFPS - lastTimeFPS) / 1000.0f);
+        std::cout << "FPS: " << fps << std::endl;
+        lastTimeFPS = currentTimeFPS;
+        frameCount = 0;
+    }
+}
+void Game::printUPS()
+{
+    updateCount++;
+    currentTimeUPS = SDL_GetTicks64();
+    if (currentTimeUPS - lastTimeUPS >= 1000)
+    { // 1000 ms = 1 seconde
+        ups = updateCount / ((currentTimeUPS - lastTimeUPS) / 1000.0f);
+        std::cout << "UPS: " << ups << std::endl;
+        lastTimeUPS = currentTimeUPS;
+        updateCount = 0;
+    }
 }

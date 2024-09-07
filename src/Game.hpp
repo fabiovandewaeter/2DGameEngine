@@ -1,8 +1,7 @@
 #ifndef game_hpp
 #define game_hpp
 
-#define SCREEN_WIDTH
-#define SCREEN_HEIGHT
+#define NUMBER_OF_ENTITIES 1
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -15,6 +14,8 @@
 #include "systems/CollisionManager.hpp"
 #include "systems/IOManager.hpp"
 #include "systems/TextureManager.hpp"
+#include "map/Map.hpp"
+#include "map/Tile.hpp"
 
 class Game
 {
@@ -23,7 +24,6 @@ public:
     ~Game();
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
-    void loadMedia();
     void loadEntities();
     void handleEvents();
     void update();
@@ -59,6 +59,7 @@ private:
     TextureManager textureManager;
     CollisionManager collisionManager;
     IOManager ioManager;
+    Map map;
 };
 
 #endif
