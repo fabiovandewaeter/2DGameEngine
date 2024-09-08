@@ -47,6 +47,7 @@ void Camera::handleEvents(SDL_Event *event)
             rightVelX = this->velocity;
             break;
         case SDLK_LSHIFT:
+        case SDLK_RSHIFT:
             sprint = sprintVelocity;
             break;
         case SDLK_0:
@@ -99,6 +100,7 @@ void Camera::handleEvents(SDL_Event *event)
             rightVelX = 0;
             break;
         case SDLK_LSHIFT:
+        case SDLK_RSHIFT:
             sprint = 1;
             break;
         }
@@ -123,11 +125,7 @@ bool Camera::move()
     return success;
 }
 
-void convertInGameToCameraCoordinates(SDL_Rect &rect){
-    
-}
-
-bool Camera::isVisible(SDL_Rect &rect)
+void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)
 {
     int cameraPositionX = this->positionX;
     int cameraPositionY = this->positionY;
@@ -136,17 +134,21 @@ bool Camera::isVisible(SDL_Rect &rect)
 
     int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * scale);
     int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * scale);
-    int viewBottomRightPositionX = (viewCenterX - cameraPositionX * scale) + ((rect.x + rect.w) * scale);
-    int viewBottomRightPositionY = (viewCenterY - cameraPositionY * scale) + ((rect.y + rect.h) * scale);
 
-    if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
-    {
-        return false;
-    }
     rect.x = viewPositionX;
     rect.y = viewPositionY;
     rect.w *= scale;
     rect.h *= scale;
+}
+
+bool Camera::isVisible(SDL_Rect rect)
+{
+    int viewBottomRightPositionX = rect.x + rect.w;
+    int viewBottomRightPositionY = rect.y + rect.h;
+    if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || rect.x > this->width || rect.y > this->height)
+    {
+        return false;
+    }
     return true;
 }
 

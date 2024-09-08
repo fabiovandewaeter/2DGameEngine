@@ -2,7 +2,7 @@
 #define map_hpp
 
 #define TILE_SIZE 16
-#define CHUNK_SIZE TILE_SIZE*TILE_SIZE
+#define CHUNK_SIZE 16
 
 #include <vector>
 #include "Tile.hpp"

@@ -3,15 +3,16 @@
 Game game;
 Uint64 frequency = SDL_GetPerformanceFrequency();
 
-Uint64 getNormalizedTick(){
-    return SDL_GetPerformanceCounter() / (frequency/10000000);
+Uint64 getNormalizedTick()
+{
+    return SDL_GetPerformanceCounter() / (frequency / 10000000);
 }
 
 // if the loop lasted less than on frame at the speed of game.fixedUPS, wait until the end
 void handleTickSpeed(Uint64 &frameStart)
 {
     Uint64 deltaTime = getNormalizedTick() - frameStart;
-    
+
     if (deltaTime < game.getFrameDelay())
     {
         Uint64 remainingTime = game.getFrameDelay() - deltaTime;
@@ -27,11 +28,13 @@ void handleTickSpeed(Uint64 &frameStart)
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
-    game.setUPS(6000000);
+    game.setUPS(60000000);
 
-    while (game.running()){
+    while (game.running())
+    {
         Uint64 frameStart = getNormalizedTick();
         game.handleEvents();
         game.update();
@@ -39,7 +42,7 @@ int main(int argc, char *argv[]) {
 
         handleTickSpeed(frameStart);
     }
-    
+
     game.clean();
     return 0;
 }

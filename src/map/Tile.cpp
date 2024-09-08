@@ -10,12 +10,12 @@ Tile::~Tile() {}
 
 void Tile::render(SDL_Renderer *renderer, Camera *camera)
 {
-    /*SDL_Rect renderBox = this->box;
+    SDL_Rect renderBox = this->box;
+    camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
         this->texture->render(renderer, renderBox);
-    }*/
-    this->texture->render(renderer, renderBox);
+    }
 }
 
 int Tile::getCenterX()

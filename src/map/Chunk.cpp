@@ -13,15 +13,19 @@ Chunk::~Chunk() {}
 
 void Chunk::loadTiles()
 {
-    for (int i = 0; i < SIZE * SIZE; i++)
+    for (int i = 0; i < SIZE; i++)
     {
-        this->tiles[i] = new Tile(&this->tileTextures[0], (SDL_Rect){0, 0, this->tileSize, this->tileSize});
+        for (int j = 0; j < SIZE; j++)
+        {
+            this->tiles[16 * i + j] = new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});            
+        }
     }
 }
 
 void Chunk::render(SDL_Renderer *renderer, Camera *camera)
 {
     SDL_Rect renderBox = this->box;
+    camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
         for (int i = 0; i < SIZE * SIZE; i++)
