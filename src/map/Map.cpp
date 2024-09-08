@@ -20,41 +20,42 @@ void Map::init(Texture *tileTextures)
 
 void Map::loadChunks()
 {
-    for (int j = 0; j < 20; j++)
+    int number = 100;
+    for (int j = 0; j < number; j++)
     {
         int i = 0;
         // bas-droite
-        for (int k = 0; k < 20; k++)
+        for (int k = 0; k < number; k++)
         {
             generateChunk(TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
             i++;
         }
     }
-    for (int j = 1; j < 21; j++)
+    for (int j = 1; j < number+1; j++)
     {
         int i = 0;
         // haut-droite
-        for (int k = 0; k < 20; k++)
+        for (int k = 0; k < number; k++)
         {
             generateChunk(TILE_SIZE * CHUNK_SIZE * i, -j * TILE_SIZE * CHUNK_SIZE);
             i++;
         }
     }
-    for (int j = 1; j < 21; j++)
+    for (int j = 1; j < number+1; j++)
     {
         int i = 1;
         // haut-gauche
-        for (int k = 0; k < 20; k++)
+        for (int k = 0; k < number; k++)
         {
             generateChunk(-TILE_SIZE * CHUNK_SIZE * i, -j * TILE_SIZE * CHUNK_SIZE);
             i++;
         }
     }
-    for (int j = 0; j < 20; j++)
+    for (int j = 0; j < number; j++)
     {
         int i = 1;
         // bas-gauche
-        for (int k = 0; k < 20; k++)
+        for (int k = 0; k < number; k++)
         {
             generateChunk(-TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
             i++;
