@@ -4,6 +4,7 @@
 #include <vector>
 #include "Tile.hpp"
 #include "../systems/Camera.hpp"
+#include "../systems/TextureManager.hpp"
 
 class Map
 {
@@ -11,11 +12,14 @@ public:
     Map();
     ~Map();
 
-    void init(int tileWidth, int tileHeight);
+    void init(Texture *tileTextures);
+    void loadTiles();
     void render(SDL_Renderer *renderer, Camera *camera);
+
 private:
-    std::vector<Tile *> tiles;
-    int tileWidth, tileHeight;
+    std::vector<Tile*> tiles;
+    int tileSize;
+    Texture *tileTextures;
 };
 
 #endif

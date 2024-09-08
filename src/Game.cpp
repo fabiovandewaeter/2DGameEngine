@@ -76,18 +76,21 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->tileTextures = this->textureManager.getTileTextures();
     loadEntities();
     this->camera.init(width, height, 2.0, 2.0, 0, 0);
+    this->map.init(this->tileTextures);
 }
 
-void Game::loadEntities(){
+void Game::loadEntities()
+{
     int i = 0;
     // player
     this->player.init(&this->entityTextures[0], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
     this->entities[i].init(&this->entityTextures[1], (SDL_Rect){50, 50, 16, 16}, true);
     i++;
-    
+
     this->collisionManager.addEntity(&this->player);
-    for (int i = 1; i < NUMBER_OF_ENTITIES; i++){
+    for (int i = 1; i < NUMBER_OF_ENTITIES; i++)
+    {
         this->collisionManager.addEntity(&this->entities[i]);
     }
 }
@@ -109,7 +112,8 @@ void Game::update()
 {
     this->player.update(&this->collisionManager);
     this->camera.update();
-    for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
+    for (int i = 0; i < NUMBER_OF_ENTITIES; i++)
+    {
         this->entities[i].update(&this->collisionManager);
     }
     printUPS();
@@ -123,11 +127,10 @@ void Game::render()
     int cameraPositionX = this->camera.getPositionX();
     int cameraPositionY = this->camera.getPositionY();
     int viewCenterX = (this->screenWidth / 2);
-    int viewCenterY = (this->screenHeight/ 2);
+    int viewCenterY = (this->screenHeight / 2);
     double scale = this->camera.getScale();
     // background
-    SDL_Rect renderBox = {(int)(viewCenterX - (this->backgroundTexture->getCenterX() * scale)), (int)(viewCenterY - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth()*scale), (int)(this->backgroundTexture->getHeight()*scale)};
-    this->backgroundTexture->render(this->renderer, renderBox);
+    this->backgroundTexture->render(this->renderer, (SDL_Rect){(int)(viewCenterX - (this->backgroundTexture->getCenterX() * scale)), (int)(viewCenterY - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
     // tiles
     this->map.render(this->renderer, &this->camera);
     /*Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
@@ -135,13 +138,14 @@ void Game::render()
     delete tile;*/
 
     // entities
-    for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
+    for (int i = 0; i < NUMBER_OF_ENTITIES; i++)
+    {
         this->entities[i].render(this->renderer, &this->camera);
     }
     this->player.render(this->renderer, &this->camera);
 
     SDL_RenderPresent(this->renderer);
-    //printFPS();
+    // printFPS();
 }
 
 void Game::clean()

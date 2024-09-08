@@ -20,6 +20,7 @@ public:
     Texture *getBackgroundTexture();
     Texture *getEntityTextures();
     Texture *getTileTextures();
+
 private:
     Texture backgroundTexture;
     Texture entityTextures[NUMBER_OF_ENTITY_TEXTURES];

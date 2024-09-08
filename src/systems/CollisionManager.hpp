@@ -2,7 +2,6 @@
 #define collision_manager_hpp
 
 #include <SDL.h>
-#include <unordered_map>
 #include <vector>
 #include "../entities/Entity.hpp"
 

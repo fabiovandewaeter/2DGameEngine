@@ -10,16 +10,24 @@ Map::~Map()
     tiles.clear();
 }
 
-void Map::init(int tileWidth, int tileHeight)
+void Map::init(Texture *tileTextures)
 {
-    this->tileWidth;
-    this->tileHeight;
+    this->tileSize = 16;
+    this->tileTextures = tileTextures;
+    loadTiles();
+}
+
+void Map::loadTiles()
+{
+    this->tiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, 0, this->tileSize, this->tileSize}));
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)
 {
+    printf("un\n");
     for (Tile *tile : this->tiles)
     {
-        tile->render(renderer, camera);            
+        printf("deux\n");
+        tile->render(renderer, camera);
     }
 }

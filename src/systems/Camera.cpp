@@ -136,7 +136,6 @@ bool Camera::isVisible(SDL_Rect &rect)
     int viewBottomRightPositionY = (viewCenterY - cameraPositionY * scale) - ((rect.y - rect.h) * scale);
     if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
     {
-        printf("sorti\n");
         return false;
     }
     rect.x = viewPositionX;
