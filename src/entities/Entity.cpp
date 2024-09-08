@@ -9,7 +9,7 @@ void Entity::init(Texture *texture, SDL_Rect hitBox, bool solid)
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
-    this->velocity= 1;
+    this->velocity = 1;
     this->solid = solid;
 }
 
@@ -18,11 +18,13 @@ void Entity::update(CollisionManager *collisionManager)
     move(collisionManager);
 }
 
-bool Entity::canMove(){
+bool Entity::canMove()
+{
     // EXAMPLE: check if he is stunned ...
     return true;
 }
-bool Entity::isMoving(){
+bool Entity::isMoving()
+{
     return this->velX != 0 || this->velY != 0;
 }
 void Entity::move(CollisionManager *collisionManager)
@@ -39,9 +41,14 @@ void Entity::move(CollisionManager *collisionManager)
     }
 }
 
-void Entity::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale)
+void Entity::render(SDL_Renderer *renderer, int viewCenterX, int viewCenterY, int cameraPositionX, int cameraPositionY, double scale, Camera *camera)
 {
-    this->texture->render(renderer, (cameraCenterX-cameraPositionX*scale) - ((this->getCenterX()+this->hitBox.x) * scale), (cameraCenterY-cameraPositionY*scale) - ((this->getCenterY()+this->hitBox.y) * scale), this->hitBox.w, this->hitBox.h, scale);
+    int viewPositionX = (viewCenterX - cameraPositionX * scale) - ((this->getCenterX() + this->hitBox.x) * scale);
+    int viewPositionY = (viewCenterY - cameraPositionY * scale) - ((this->getCenterY() + this->hitBox.y) * scale);
+    if (camera->isVisible(this->hitBox, viewPositionX, viewPositionY))
+    {
+        this->texture->render(renderer, viewPositionX, viewPositionY, this->hitBox.w, this->hitBox.h, scale);
+    }
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)
@@ -65,17 +72,20 @@ int Entity::getPositionY()
 {
     return this->hitBox.y;
 }
-int Entity::getCenterX(){
-    return this->hitBox.w/2;
+int Entity::getCenterX()
+{
+    return this->hitBox.w / 2;
 }
-int Entity::getCenterY(){
-    return this->hitBox.h/2;
+int Entity::getCenterY()
+{
+    return this->hitBox.h / 2;
 }
 Texture *Entity::getTexture()
 {
     return this->texture;
 }
-SDL_Rect Entity::getHitBox(){
+SDL_Rect Entity::getHitBox()
+{
     return this->hitBox;
 }
 bool Entity::isSolid()

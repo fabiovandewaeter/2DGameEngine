@@ -122,21 +122,22 @@ void Game::render()
 
     int cameraPositionX = this->camera.getPositionX();
     int cameraPositionY = this->camera.getPositionY();
-    int cameraCenterX = (this->screenWidth / 2);
-    int cameraCenterY = (this->screenHeight/ 2);
+    int viewCenterX = (this->screenWidth / 2);
+    int viewCenterY = (this->screenHeight/ 2);
     double scale = this->camera.getScale();
     // background
-    this->backgroundTexture->render(this->renderer, cameraCenterX - (this->backgroundTexture->getCenterX() * scale), cameraCenterY - (this->backgroundTexture->getCenterY() * scale), scale);
+    this->backgroundTexture->render(this->renderer, viewCenterX - (this->backgroundTexture->getCenterX() * scale), viewCenterY - (this->backgroundTexture->getCenterY() * scale), scale);
     // tiles
-    Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
-    tile->render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
-    delete tile;
+    this->map.render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
+    /*Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
+    tile->render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale);
+    delete tile;*/
 
     // entities
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
+        this->entities[i].render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
     }
-    this->player.render(this->renderer, cameraCenterX, cameraCenterY, cameraPositionX, cameraPositionY, scale);
+    this->player.render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

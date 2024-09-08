@@ -4,6 +4,7 @@
 #include <SDL_render.h>
 #include "../Texture.hpp"
 #include "../systems/CollisionManager.hpp"
+#include "../systems/Camera.hpp"
 
 class CollisionManager;
 
@@ -18,7 +19,7 @@ public:
     bool canMove();
     bool isMoving();
     void move(CollisionManager *collisionManager);
-    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale);
+    void render(SDL_Renderer *renderer, int viewCenterX, int viewCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale, Camera *camera);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

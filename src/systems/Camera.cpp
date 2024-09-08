@@ -14,7 +14,7 @@ void Camera::init(int width, int height, double minScale, double maxScale, int p
     this->height = height;
     this->scale = 1.0;
     this->minScale = minScale;
-    this->maxScale = 1/maxScale;
+    this->maxScale = 1 / maxScale;
     this->scaleSpeed = 0.1;
     this->positionX = positionX;
     this->positionY = positionY;
@@ -123,7 +123,17 @@ bool Camera::move()
     return success;
 }
 
-void Camera::setPosition(int x, int y){
+bool Camera::isVisible(SDL_Rect rect, int viewPositionX, int viewPositionY)
+{
+    if (viewPositionX < 0 || viewPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
+    {
+        return false;
+    }
+    return true;
+}
+
+void Camera::setPosition(int x, int y)
+{
     this->positionX = x;
     this->positionY = y;
 }

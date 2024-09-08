@@ -2,6 +2,7 @@
 #define tile_hpp
 
 #include "../Texture.hpp"
+#include "../systems/Camera.hpp"
 
 class Tile
 {
@@ -9,10 +10,11 @@ public:
     Tile(Texture *texture, SDL_Rect box);
     ~Tile();
 
-    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale);
+    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale, Camera *camera);
     int getCenterX();
     int getCenterY();
     int getTextureId();
+    SDL_Rect getBox();
 
 private:
     Texture *texture;

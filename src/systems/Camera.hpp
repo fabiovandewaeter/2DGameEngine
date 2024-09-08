@@ -18,6 +18,8 @@ public:
     bool update();
     bool move();
     
+    bool isVisible(SDL_Rect rect, int viewPositionX, int viewPositionY);
+    
     void setPosition(int x, int y);
     int getPositionX();
     int getPositionY();
