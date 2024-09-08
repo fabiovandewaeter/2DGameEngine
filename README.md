@@ -1,4 +1,10 @@
-# Overlord-Ultime
+# 2D GameEngine SDL
+
+## Description
+
+A small 2D game engine written in c++ and using SDL
+
+The basic functionalities of a game engine are recreated from scratch in order to obtain maximum performance on specific game functionalities that I want to create
 
 ## Commands
 
