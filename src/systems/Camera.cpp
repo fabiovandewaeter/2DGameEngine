@@ -123,6 +123,10 @@ bool Camera::move()
     return success;
 }
 
+void convertInGameToCameraCoordinates(SDL_Rect &rect){
+    
+}
+
 bool Camera::isVisible(SDL_Rect &rect)
 {
     int cameraPositionX = this->positionX;

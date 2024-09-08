@@ -1,8 +1,12 @@
 #ifndef map_hpp
 #define map_hpp
 
+#define TILE_SIZE 16
+#define CHUNK_SIZE TILE_SIZE*TILE_SIZE
+
 #include <vector>
 #include "Tile.hpp"
+#include "Chunk.hpp"
 #include "../systems/Camera.hpp"
 #include "../systems/TextureManager.hpp"
 
@@ -13,13 +17,13 @@ public:
     ~Map();
 
     void init(Texture *tileTextures);
-    void loadTiles();
+    void loadChunks();
+    void generateChunk(int positionX, int positionY);
     void render(SDL_Renderer *renderer, Camera *camera);
 
 private:
-    std::vector<Tile*> allTiles;
-    std::vector<Tile*> updatedTiles;
-    int tileSize;
+    std::vector<Chunk *> allChunks;
+    std::vector<Chunk *> nearbyChunks;
     Texture *tileTextures;
 };
 

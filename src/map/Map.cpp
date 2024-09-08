@@ -3,29 +3,28 @@
 Map::Map() {}
 Map::~Map()
 {
-    int size = this->allTiles.size();
+    int size = this->allChunks.size();
 
     for (int i = 0; i < size; i++)
     {
-        delete this->allTiles[i];
+        delete this->allChunks[i];
     }
-    this->updatedTiles.clear();
-    this->allTiles.clear();
+    this->nearbyChunks.clear();
+    this->allChunks.clear();
 }
 
 void Map::init(Texture *tileTextures)
 {
-    this->tileSize = 16;
     this->tileTextures = tileTextures;
-    loadTiles();
+    loadChunks();
 }
 
-void Map::loadTiles()
+void Map::loadChunks()
 {
-    int x = 0, y = 0;
+    /*int x = 0, y = 0;
     int deltaPixels = this->tileSize;
 
-    this->updatedTiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, 0, this->tileSize, this->tileSize}));
+    this->nearbyChunks.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, 0, this->tileSize, this->tileSize}));
 
     int p = 100;
 
@@ -33,55 +32,62 @@ void Map::loadTiles()
     {
         for (int i = 1; i < p; i++)
         {
-            this->updatedTiles.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){i * this->tileSize, j * this->tileSize, this->tileSize, this->tileSize}));
+            this->nearbyChunks.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){i * this->tileSize, j * this->tileSize, this->tileSize, this->tileSize}));
         }
     }
     for (int j = 1; j < p; j++)
     {
         for (int i = 1; i < p; i++)
         {
-            this->updatedTiles.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){-i * this->tileSize, -j * this->tileSize, this->tileSize, this->tileSize}));
+            this->nearbyChunks.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){-i * this->tileSize, -j * this->tileSize, this->tileSize, this->tileSize}));
         }
     }
     for (int j = 1; j < p; j++)
     {
         for (int i = 1; i < p; i++)
         {
-            this->updatedTiles.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){-i * this->tileSize, j * this->tileSize, this->tileSize, this->tileSize}));
+            this->nearbyChunks.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){-i * this->tileSize, j * this->tileSize, this->tileSize, this->tileSize}));
         }
     }
     for (int j = 1; j < p; j++)
     {
         for (int i = 1; i < p; i++)
         {
-            this->updatedTiles.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){i * this->tileSize, -j * this->tileSize, this->tileSize, this->tileSize}));
+            this->nearbyChunks.push_back(new Tile(&this->tileTextures[1], (SDL_Rect){i * this->tileSize, -j * this->tileSize, this->tileSize, this->tileSize}));
         }
     }
 
     for (int i = 1; i < p; i++)
     {
-        this->updatedTiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize, 0, this->tileSize, this->tileSize}));
+        this->nearbyChunks.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize, 0, this->tileSize, this->tileSize}));
     }
     for (int i = 1; i < p; i++)
     {
-        this->updatedTiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, i * this->tileSize, this->tileSize, this->tileSize}));
+        this->nearbyChunks.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, i * this->tileSize, this->tileSize, this->tileSize}));
     }
     for (int i = 1; i < p; i++)
     {
-        this->updatedTiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){-i * this->tileSize, 0, this->tileSize, this->tileSize}));
+        this->nearbyChunks.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){-i * this->tileSize, 0, this->tileSize, this->tileSize}));
     }
     for (int i = 1; i < p; i++)
     {
-        this->updatedTiles.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, -i * this->tileSize, this->tileSize, this->tileSize}));
-    }
+        this->nearbyChunks.push_back(new Tile(&this->tileTextures[0], (SDL_Rect){0, -i * this->tileSize, this->tileSize, this->tileSize}));
+    }*/
+   int n = 1;
+   
+    generateChunk(TILE_SIZE, TILE_SIZE);
+}
+
+void Map::generateChunk(int positionX, int positionY){
+    this->nearbyChunks.push_back(new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures));
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)
 {
-    int size = this->updatedTiles.size();
+    int size = this->nearbyChunks.size();
 
     for (int i = 0; i < size; i++)
     {
-        this->updatedTiles[i]->render(renderer, camera);
+        this->nearbyChunks[i]->render(renderer, camera);
     }
 }

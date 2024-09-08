@@ -7,6 +7,7 @@
 class Tile
 {
 public:
+    Tile();
     Tile(Texture *texture, SDL_Rect box);
     ~Tile();
 
