@@ -16,10 +16,9 @@ public:
     bool loadFromFile(const char *path, SDL_Renderer *renderer);
     // Deallocates texture
     void free();
-    // render with default image width and height
-    void render(SDL_Renderer *renderer, int x, int y, double scale);
+
     // render image with choosen width and height
-    void render(SDL_Renderer *renderer, int x, int y, int width, int height, double scale);
+    void render(SDL_Renderer *renderer, SDL_Rect renderBox);
 
     // Gets image dimensions
     int getWidth();

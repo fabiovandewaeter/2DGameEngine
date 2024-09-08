@@ -19,7 +19,7 @@ public:
     bool canMove();
     bool isMoving();
     void move(CollisionManager *collisionManager);
-    void render(SDL_Renderer *renderer, int viewCenterX, int viewCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale, Camera *camera);
+    void render(SDL_Renderer *renderer, Camera *camera);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

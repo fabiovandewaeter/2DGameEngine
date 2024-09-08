@@ -16,10 +16,10 @@ void Map::init(int tileWidth, int tileHeight)
     this->tileHeight;
 }
 
-void Map::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale, Camera *camera)
+void Map::render(SDL_Renderer *renderer, Camera *camera)
 {
     for (Tile *tile : this->tiles)
     {
-        tile->render(renderer, cameraCenterX, cameraCenterY, cameraCoordinateX, cameraCoordinateY, scale, camera);
+        tile->render(renderer, camera);            
     }
 }

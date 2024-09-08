@@ -61,10 +61,6 @@ void Player::handleEvents(SDL_Event *event)
         this->velY = sprint2 * (downVelY2 - upVelY2);
     }
 }
-void Player::render2(SDL_Renderer *renderer, double scale)
-{
-    this->texture->render(renderer, this->hitBox.x, this->hitBox.y, scale);
-}
 
 void Player::setPosition(int x, int y)
 {

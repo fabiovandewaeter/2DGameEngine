@@ -123,12 +123,26 @@ bool Camera::move()
     return success;
 }
 
-bool Camera::isVisible(SDL_Rect rect, int viewPositionX, int viewPositionY)
+bool Camera::isVisible(SDL_Rect &rect)
 {
-    if (viewPositionX < 0 || viewPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
+    int cameraPositionX = this->positionX;
+    int cameraPositionY = this->positionY;
+    int viewCenterX = this->width / 2;
+    int viewCenterY = this->height / 2;
+
+    int viewPositionX = (viewCenterX - cameraPositionX * scale) - (rect.x * scale);
+    int viewPositionY = (viewCenterY - cameraPositionY * scale) - (rect.y * scale);
+    int viewBottomRightPositionX = (viewCenterX - cameraPositionX * scale) - ((rect.x - rect.w) * scale);
+    int viewBottomRightPositionY = (viewCenterY - cameraPositionY * scale) - ((rect.y - rect.h) * scale);
+    if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
     {
+        printf("sorti\n");
         return false;
     }
+    rect.x = viewPositionX;
+    rect.y = viewPositionY;
+    rect.w *= scale;
+    rect.h *= scale;
     return true;
 }
 

@@ -12,7 +12,7 @@ public:
     ~Map();
 
     void init(int tileWidth, int tileHeight);
-    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraCoordinateX, int cameraCoordinateY, double scale, Camera *camera);
+    void render(SDL_Renderer *renderer, Camera *camera);
 private:
     std::vector<Tile *> tiles;
     int tileWidth, tileHeight;

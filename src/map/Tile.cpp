@@ -7,13 +7,12 @@ Tile::Tile(Texture *texture, SDL_Rect box)
 }
 Tile::~Tile() {}
 
-void Tile::render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale, Camera *camera)
+void Tile::render(SDL_Renderer *renderer, Camera *camera)
 {
-    int viewPositionX = (cameraCenterX - cameraPositionX * scale) - (this->box.x * scale);
-    int viewPositionY = (cameraCenterY - cameraPositionY * scale) - (this->box.y * scale);
-    if (camera->isVisible(this->box, viewPositionX, viewPositionY))
+    SDL_Rect renderBox = this->box;
+    if (camera->isVisible(renderBox))
     {
-        this->texture->render(renderer, viewPositionX, viewPositionY, this->box.w, this->box.h, scale);
+        this->texture->render(renderer, renderBox);
     }
 }
 

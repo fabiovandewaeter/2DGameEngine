@@ -41,13 +41,12 @@ void Entity::move(CollisionManager *collisionManager)
     }
 }
 
-void Entity::render(SDL_Renderer *renderer, int viewCenterX, int viewCenterY, int cameraPositionX, int cameraPositionY, double scale, Camera *camera)
+void Entity::render(SDL_Renderer *renderer, Camera *camera)
 {
-    int viewPositionX = (viewCenterX - cameraPositionX * scale) - ((this->getCenterX() + this->hitBox.x) * scale);
-    int viewPositionY = (viewCenterY - cameraPositionY * scale) - ((this->getCenterY() + this->hitBox.y) * scale);
-    if (camera->isVisible(this->hitBox, viewPositionX, viewPositionY))
+    SDL_Rect renderBox = this->hitBox;
+    if (camera->isVisible(renderBox))
     {
-        this->texture->render(renderer, viewPositionX, viewPositionY, this->hitBox.w, this->hitBox.h, scale);
+        this->texture->render(renderer, renderBox);
     }
 }
 

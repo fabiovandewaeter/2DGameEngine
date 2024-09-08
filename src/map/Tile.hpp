@@ -10,7 +10,7 @@ public:
     Tile(Texture *texture, SDL_Rect box);
     ~Tile();
 
-    void render(SDL_Renderer *renderer, int cameraCenterX, int cameraCenterY, int cameraPositionX, int cameraPositionY, double scale, Camera *camera);
+    void render(SDL_Renderer *renderer, Camera *camera);
     int getCenterX();
     int getCenterY();
     int getTextureId();

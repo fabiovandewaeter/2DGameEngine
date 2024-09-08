@@ -126,18 +126,19 @@ void Game::render()
     int viewCenterY = (this->screenHeight/ 2);
     double scale = this->camera.getScale();
     // background
-    this->backgroundTexture->render(this->renderer, viewCenterX - (this->backgroundTexture->getCenterX() * scale), viewCenterY - (this->backgroundTexture->getCenterY() * scale), scale);
+    SDL_Rect renderBox = {(int)(viewCenterX - (this->backgroundTexture->getCenterX() * scale)), (int)(viewCenterY - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth()*scale), (int)(this->backgroundTexture->getHeight()*scale)};
+    this->backgroundTexture->render(this->renderer, renderBox);
     // tiles
-    this->map.render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
+    this->map.render(this->renderer, &this->camera);
     /*Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
     tile->render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale);
     delete tile;*/
 
     // entities
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++){
-        this->entities[i].render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
+        this->entities[i].render(this->renderer, &this->camera);
     }
-    this->player.render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale, &this->camera);
+    this->player.render(this->renderer, &this->camera);
 
     SDL_RenderPresent(this->renderer);
     //printFPS();

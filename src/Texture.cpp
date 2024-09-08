@@ -67,17 +67,10 @@ bool Texture::loadFromFile(const char *path, SDL_Renderer *renderer)
     return texture != NULL;
 }
 
-void Texture::render(SDL_Renderer *renderer, int x, int y, double scale)
+void Texture::render(SDL_Renderer *renderer, SDL_Rect renderBox)
 {
     // Set rendering space and render to screen
-    SDL_Rect renderQuad = {x, y, (int)(width * scale), (int)(height * scale)};
-    SDL_RenderCopy(renderer, texture, NULL, &renderQuad);
-}
-void Texture::render(SDL_Renderer *renderer, int x, int y, int width, int height, double scale)
-{
-    // Set rendering space and render to screen
-    SDL_Rect renderQuad = {x, y, (int)(width * scale), (int)(height * scale)};
-    SDL_RenderCopy(renderer, texture, NULL, &renderQuad);
+    SDL_RenderCopy(renderer, texture, NULL, &renderBox);
 }
 
 int Texture::getWidth()

@@ -18,7 +18,9 @@ public:
     bool update();
     bool move();
     
-    bool isVisible(SDL_Rect rect, int viewPositionX, int viewPositionY);
+    //bool isVisible(SDL_Rect rect, int viewPositionX, int viewPositionY);
+    // calculates rect rendering coordinates and returns true if it is in the camera view
+    bool isVisible(SDL_Rect &rect);
     
     void setPosition(int x, int y);
     int getPositionX();
