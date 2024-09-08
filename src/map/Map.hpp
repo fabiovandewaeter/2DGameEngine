@@ -17,7 +17,8 @@ public:
     void render(SDL_Renderer *renderer, Camera *camera);
 
 private:
-    std::vector<Tile*> tiles;
+    std::vector<Tile*> allTiles;
+    std::vector<Tile*> updatedTiles;
     int tileSize;
     Texture *tileTextures;
 };

@@ -29,7 +29,7 @@ void handleTickSpeed(Uint64 &frameStart)
 
 int main(int argc, char *argv[]) {
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
-    game.setUPS(60);
+    game.setUPS(6000000);
 
     while (game.running()){
         Uint64 frameStart = getNormalizedTick();

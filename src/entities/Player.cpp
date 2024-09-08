@@ -17,16 +17,16 @@ void Player::handleEvents(SDL_Event *event)
         switch (event->key.keysym.sym)
         {
         case SDLK_i:
-            upVelY2 = -this->velocity;
+            upVelY2 = this->velocity;
             break;
         case SDLK_k:
-            downVelY2 = -this->velocity;
+            downVelY2 = this->velocity;
             break;
         case SDLK_j:
-            leftVelX2 = -this->velocity;
+            leftVelX2 = this->velocity;
             break;
         case SDLK_l:
-            rightVelX2 = -this->velocity;
+            rightVelX2 = this->velocity;
             break;
         case SDLK_LSHIFT:
             sprint2 = 2;

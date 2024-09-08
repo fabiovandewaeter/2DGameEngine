@@ -15,7 +15,7 @@ void Camera::init(int width, int height, double minScale, double maxScale, int p
     this->scale = 1.0;
     this->minScale = minScale;
     this->maxScale = 1 / maxScale;
-    this->scaleSpeed = 0.1;
+    this->scaleSpeed = 1;
     this->positionX = positionX;
     this->positionY = positionY;
     this->velocity = 1;
@@ -130,10 +130,11 @@ bool Camera::isVisible(SDL_Rect &rect)
     int viewCenterX = this->width / 2;
     int viewCenterY = this->height / 2;
 
-    int viewPositionX = (viewCenterX - cameraPositionX * scale) - (rect.x * scale);
-    int viewPositionY = (viewCenterY - cameraPositionY * scale) - (rect.y * scale);
-    int viewBottomRightPositionX = (viewCenterX - cameraPositionX * scale) - ((rect.x - rect.w) * scale);
-    int viewBottomRightPositionY = (viewCenterY - cameraPositionY * scale) - ((rect.y - rect.h) * scale);
+    int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * scale);
+    int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * scale);
+    int viewBottomRightPositionX = (viewCenterX - cameraPositionX * scale) + ((rect.x + rect.w) * scale);
+    int viewBottomRightPositionY = (viewCenterY - cameraPositionY * scale) + ((rect.y + rect.h) * scale);
+
     if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || viewPositionX > this->width || viewPositionY > this->height)
     {
         return false;

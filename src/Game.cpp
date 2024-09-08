@@ -75,7 +75,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->entityTextures = this->textureManager.getEntityTextures();
     this->tileTextures = this->textureManager.getTileTextures();
     loadEntities();
-    this->camera.init(width, height, 2.0, 2.0, 0, 0);
+    //this->camera.init(width, height, 2.0, 2.0, 0, 0);
+    this->camera.init(width, height, 10, 10, 0, 0);
     this->map.init(this->tileTextures);
 }
 
@@ -133,9 +134,6 @@ void Game::render()
     this->backgroundTexture->render(this->renderer, (SDL_Rect){(int)(viewCenterX - (this->backgroundTexture->getCenterX() * scale)), (int)(viewCenterY - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
     // tiles
     this->map.render(this->renderer, &this->camera);
-    /*Tile *tile = new Tile(&this->tileTextures[1], (SDL_Rect){0, 0, 16, 16});
-    tile->render(this->renderer, viewCenterX, viewCenterY, cameraPositionX, cameraPositionY, scale);
-    delete tile;*/
 
     // entities
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++)

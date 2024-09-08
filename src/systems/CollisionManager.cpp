@@ -20,7 +20,8 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
 {
     SDL_Rect hitBox = entity->getHitBox();
     SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
-    for (size_t i = 0; i < this->allEntities.size(); i++)
+    int size = this->allEntities.size();
+    for (size_t i = 0; i < size; i++)
     {
         Entity *otherEntity = this->allEntities[i];
         if (entity != otherEntity && otherEntity->isSolid())
