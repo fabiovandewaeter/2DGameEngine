@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <cmath>
 #include "Tile.hpp"
 #include "Chunk.hpp"
 #include "../systems/Camera.hpp"

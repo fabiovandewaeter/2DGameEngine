@@ -28,7 +28,8 @@ void Player::handleEvents(SDL_Event *event)
             rightVelX2 = VELOCITY_MULTIPLIER;
             break;
         case SDLK_LSHIFT:
-            sprint2 = 2;
+        case SDLK_RSHIFT:
+            sprint2 = SPRINT_MULTIPLIER;
             break;
         }
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
@@ -53,6 +54,7 @@ void Player::handleEvents(SDL_Event *event)
             rightVelX2 = 0;
             break;
         case SDLK_LSHIFT:
+        case SDLK_RSHIFT:
             sprint2 = 1;
             break;
         }

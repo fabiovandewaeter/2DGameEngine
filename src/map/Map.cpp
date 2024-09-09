@@ -20,47 +20,7 @@ void Map::init(Texture *tileTextures, Texture *staticObjectTextures)
 
 void Map::loadChunks()
 {
-    int number = 100;
-    for (int j = 0; j < number; j++)
-    {
-        int i = 0;
-        // bas-droite
-        for (int k = 0; k < number; k++)
-        {
-            generateChunk(TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
-            i++;
-        }
-    }
-    for (int j = 1; j < number + 1; j++)
-    {
-        int i = 0;
-        // haut-droite
-        for (int k = 0; k < number; k++)
-        {
-            generateChunk(TILE_SIZE * CHUNK_SIZE * i, -j * TILE_SIZE * CHUNK_SIZE);
-            i++;
-        }
-    }
-    for (int j = 1; j < number + 1; j++)
-    {
-        int i = 1;
-        // haut-gauche
-        for (int k = 0; k < number; k++)
-        {
-            generateChunk(-TILE_SIZE * CHUNK_SIZE * i, -j * TILE_SIZE * CHUNK_SIZE);
-            i++;
-        }
-    }
-    for (int j = 0; j < number; j++)
-    {
-        int i = 1;
-        // bas-gauche
-        for (int k = 0; k < number; k++)
-        {
-            generateChunk(-TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
-            i++;
-        }
-    }
+    //generateChunk(TILE_SIZE * CHUNK_SIZE * 0, 0 * TILE_SIZE * CHUNK_SIZE);
 }
 
 void Map::generateChunk(int positionX, int positionY)
@@ -71,8 +31,8 @@ void Map::generateChunk(int positionX, int positionY)
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    //std::string coordinates = std::to_string(positionX) + "," + std::to_string(positionY);
     this->allChunks[coordinates] = newChunk;
+    std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)
@@ -86,34 +46,20 @@ void Map::render(SDL_Renderer *renderer, Camera *camera)
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    int i = x / (TILE_SIZE * CHUNK_SIZE);
-    int j = y / (TILE_SIZE * CHUNK_SIZE);
-    if (x < 0)
-    {
-        i -= 1;
-    }
-    if (y < 0)
-    {
-        j -= 1;
-    }
-    x = i;
-    y = j;
+    x = std::floor(static_cast<float>(x) / CHUNK_SIZE / TILE_SIZE);
+    y = std::floor(static_cast<float>(y) / CHUNK_SIZE / TILE_SIZE);
 }
 
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done
 Chunk *Map::getChunk(int x, int y)
 {
-    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNK_SIZE*j)                        (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j)
-    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)     (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)
-
     int i = x, j = y;
     convertToChunkCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
-        printf("?????\n");
-        generateChunk(x, y);
+        generateChunk(i * TILE_SIZE * CHUNK_SIZE, j * TILE_SIZE * CHUNK_SIZE);
     }
     return this->allChunks[coordinates];
 }
