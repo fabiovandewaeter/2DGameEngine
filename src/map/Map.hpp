@@ -22,6 +22,7 @@ public:
     void generateChunk(int positionX, int positionY);
     void render(SDL_Renderer *renderer, Camera *camera);
 
+    void convertToChunkCoordinates(int &x, int &y);
     Chunk *getChunk(int x, int y);
 
 private:

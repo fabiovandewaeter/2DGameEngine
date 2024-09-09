@@ -65,7 +65,14 @@ void Map::loadChunks()
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    this->nearbyChunks.push_back(new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures));
+    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures);
+    this->nearbyChunks.push_back(newChunk);
+
+    int i = positionX, j = positionY;
+    convertToChunkCoordinates(i, j);
+    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    //std::string coordinates = std::to_string(positionX) + "," + std::to_string(positionY);
+    this->allChunks[coordinates] = newChunk;
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)
@@ -77,11 +84,8 @@ void Map::render(SDL_Renderer *renderer, Camera *camera)
     }
 }
 
-// returns the chunk that contains the coordinates ; generates the chunk if it is not already done
-Chunk *Map::getChunk(int x, int y)
+void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNK_SIZE*j)                        (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j)
-    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)     (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)
     int i = x / (TILE_SIZE * CHUNK_SIZE);
     int j = y / (TILE_SIZE * CHUNK_SIZE);
     if (x < 0)
@@ -92,13 +96,24 @@ Chunk *Map::getChunk(int x, int y)
     {
         j -= 1;
     }
+    x = i;
+    y = j;
+}
 
+// returns the chunk that contains the coordinates ; generates the chunk if it is not already done
+Chunk *Map::getChunk(int x, int y)
+{
+    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNK_SIZE*j)                        (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j)
+    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)     (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)
+
+    int i = x, j = y;
+    convertToChunkCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
 
-    std::cout << x << " " << y << " " << i << " " << j << " " << coordinates << std::endl;
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
-        generateChunk(i, j);
+        printf("?????\n");
+        generateChunk(x, y);
     }
     return this->allChunks[coordinates];
 }
