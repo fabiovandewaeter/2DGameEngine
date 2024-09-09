@@ -72,7 +72,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
     loadMedia();
     loadEntities();
-    this->camera.init(width, height, 10, 10, 0, 0);
+    this->camera.init(width, height, 10, 200000000, 0, 0);
     this->map.init(this->tileTextures, this->staticObjectTextures);
 }
 
