@@ -70,16 +70,20 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
+    loadMedia();
+    loadEntities();
+    this->camera.init(width, height, 10, 10, 0, 0);
+    this->map.init(this->tileTextures, this->staticObjectTextures);
+}
+
+void Game::loadMedia()
+{
     this->textureManager.loadMedia(this->renderer);
     this->backgroundTexture = this->textureManager.getBackgroundTexture();
     this->entityTextures = this->textureManager.getEntityTextures();
     this->tileTextures = this->textureManager.getTileTextures();
-    loadEntities();
-    //this->camera.init(width, height, 2.0, 2.0, 0, 0);
-    this->camera.init(width, height, 10, 10, 0, 0);
-    this->map.init(this->tileTextures);
+    this->staticObjectTextures = this->textureManager.getStaticObjectTextures();
 }
-
 void Game::loadEntities()
 {
     int i = 0;
@@ -125,14 +129,10 @@ void Game::render()
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
-    int cameraPositionX = this->camera.getPositionX();
-    int cameraPositionY = this->camera.getPositionY();
-    int viewCenterX = (this->screenWidth / 2);
-    int viewCenterY = (this->screenHeight / 2);
     double scale = this->camera.getScale();
     // background
-    this->backgroundTexture->render(this->renderer, (SDL_Rect){(int)(viewCenterX - (this->backgroundTexture->getCenterX() * scale)), (int)(viewCenterY - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
-    // tiles
+    this->backgroundTexture->render(this->renderer, (SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
+    // tiles and static objects
     this->map.render(this->renderer, &this->camera);
 
     // entities

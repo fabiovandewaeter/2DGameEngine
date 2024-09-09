@@ -24,6 +24,7 @@ public:
     ~Game();
 
     void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+    void loadMedia();
     void loadEntities();
     void handleEvents();
     void update();
@@ -52,6 +53,7 @@ private:
     Texture *backgroundTexture;
     Texture *entityTextures;
     Texture *tileTextures;
+    Texture *staticObjectTextures;
 
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);

@@ -7,6 +7,7 @@ TextureManager::~TextureManager()
 }
 void TextureManager::free()
 {
+    this->backgroundTexture.free();
     for (int i = 0; i < NUMBER_OF_ENTITY_TEXTURES; i++)
     {
         this->entityTextures[i].free();
@@ -15,7 +16,10 @@ void TextureManager::free()
     {
         this->tileTextures[i].free();
     }
-    this->backgroundTexture.free();
+    for (int i = 0; i < NUMBER_OF_STATIC_OBJECT_TEXTURES; i++)
+    {
+        this->staticObjectTextures[i].free();
+    }
 }
 
 void TextureManager::loadMedia(SDL_Renderer *renderer)
@@ -26,26 +30,31 @@ void TextureManager::loadMedia(SDL_Renderer *renderer)
 
     loadEntityTextures(renderer);
     loadTileTextures(renderer);
+    loadStaticObjectTextures(renderer);
 }
 
 void TextureManager::loadEntityTextures(SDL_Renderer *renderer)
 {
     int i = 0;
-    // player texture
     this->entityTextures[i].loadFromFile("assets/img/player.png", renderer);
     i++;
-    // entity0 texture
     this->entityTextures[i].loadFromFile("assets/img/entity0.png", renderer);
     i++;
 }
 void TextureManager::loadTileTextures(SDL_Renderer *renderer)
 {
     int i = 0;
-    // grass0 texture
     this->tileTextures[i].loadFromFile("assets/img/tiles/grass0.png", renderer);
     i++;
-    // grass1 texture
     this->tileTextures[i].loadFromFile("assets/img/tiles/grass1.png", renderer);
+    i++;
+}
+void TextureManager::loadStaticObjectTextures(SDL_Renderer *renderer)
+{
+    int i = 0;
+    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/wall_stone.png", renderer);
+    i++;
+    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/wall_wood.png", renderer);
     i++;
 }
 
@@ -60,4 +69,8 @@ Texture *TextureManager::getEntityTextures()
 Texture *TextureManager::getTileTextures()
 {
     return this->tileTextures;
+}
+Texture *TextureManager::getStaticObjectTextures()
+{
+    return this->staticObjectTextures;
 }

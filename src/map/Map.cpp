@@ -12,9 +12,10 @@ Map::~Map()
     this->allChunks.clear();
 }
 
-void Map::init(Texture *tileTextures)
+void Map::init(Texture *tileTextures, Texture *staticObjectTextures)
 {
     this->tileTextures = tileTextures;
+    this->staticObjectTextures = staticObjectTextures;
     loadChunks();
 }
 
@@ -65,7 +66,7 @@ void Map::loadChunks()
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    this->nearbyChunks.push_back(new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures));
+    this->nearbyChunks.push_back(new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures));
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)

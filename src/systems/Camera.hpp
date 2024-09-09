@@ -15,8 +15,8 @@ public:
 
     void init(int width, int height, double minScale, double maxScale, int positionX, int positionY);
     void handleEvents(SDL_Event *event);
-    bool update();
-    bool move();
+    void update();
+    void move();
     
     void convertInGameToCameraCoordinates(SDL_Rect &rect);
     // calculates rect rendering coordinates and returns true if it is in the camera view

@@ -16,7 +16,7 @@ public:
     Map();
     ~Map();
 
-    void init(Texture *tileTextures);
+    void init(Texture *tileTextures, Texture *staticObjectTextures);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void render(SDL_Renderer *renderer, Camera *camera);
@@ -25,6 +25,7 @@ private:
     std::vector<Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;
     Texture *tileTextures;
+    Texture *staticObjectTextures;
 };
 
 #endif

@@ -109,20 +109,15 @@ void Camera::handleEvents(SDL_Event *event)
     }
 }
 
-bool Camera::update()
+void Camera::update()
 {
-    return move();
+    move();
 }
 
-bool Camera::move()
+void Camera::move()
 {
-    bool success = true;
-
-    // EXAMPLE: check if he stunned ...
     this->positionX += this->velocity * velX;
     this->positionY += this->velocity * velY;
-
-    return success;
 }
 
 void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)

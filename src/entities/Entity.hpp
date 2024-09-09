@@ -1,6 +1,8 @@
 #ifndef entity_hpp
 #define entity_hpp
 
+#define VELOCITY_MULTIPLIER 1
+
 #include <SDL_render.h>
 #include "../Texture.hpp"
 #include "../systems/CollisionManager.hpp"
@@ -29,14 +31,12 @@ public:
     int getPositionY();
     int getCenterX();
     int getCenterY();
-    Texture *getTexture();
     SDL_Rect getHitBox();
     bool isSolid();
 
 protected:
     Texture *texture;
     int velX, velY;
-    int velocity;
     SDL_Rect hitBox;
     bool solid;
 };

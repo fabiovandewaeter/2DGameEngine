@@ -9,7 +9,6 @@ void Entity::init(Texture *texture, SDL_Rect hitBox, bool solid)
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
-    this->velocity = 1;
     this->solid = solid;
 }
 
@@ -20,7 +19,7 @@ void Entity::update(CollisionManager *collisionManager)
 
 bool Entity::canMove()
 {
-    // EXAMPLE: check if he is stunned ...
+    // EXAMPLE: check if it is stunned ...
     return true;
 }
 bool Entity::isMoving()
@@ -31,8 +30,8 @@ void Entity::move(CollisionManager *collisionManager)
 {
     if (canMove() && isMoving())
     {
-        int newPosX = this->getPositionX() + (this->velocity * this->velX);
-        int newPosY = this->getPositionY() + (this->velocity * this->velY);
+        int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+        int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
 
         SDL_Rect newRect = collisionManager->handleCollisionsFor(this, newPosX, newPosY);
 
@@ -79,10 +78,6 @@ int Entity::getCenterX()
 int Entity::getCenterY()
 {
     return this->hitBox.h / 2;
-}
-Texture *Entity::getTexture()
-{
-    return this->texture;
 }
 SDL_Rect Entity::getHitBox()
 {

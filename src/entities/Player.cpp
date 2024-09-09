@@ -1,6 +1,5 @@
 #include "Player.hpp"
 
-const double BASE_SCALE2 = 1.0;
 // 1 if false and sprintVelocity if true
 int sprint2 = 1;
 int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
@@ -17,16 +16,16 @@ void Player::handleEvents(SDL_Event *event)
         switch (event->key.keysym.sym)
         {
         case SDLK_i:
-            upVelY2 = this->velocity;
+            upVelY2 = VELOCITY_MULTIPLIER;
             break;
         case SDLK_k:
-            downVelY2 = this->velocity;
+            downVelY2 = VELOCITY_MULTIPLIER;
             break;
         case SDLK_j:
-            leftVelX2 = this->velocity;
+            leftVelX2 = VELOCITY_MULTIPLIER;
             break;
         case SDLK_l:
-            rightVelX2 = this->velocity;
+            rightVelX2 = VELOCITY_MULTIPLIER;
             break;
         case SDLK_LSHIFT:
             sprint2 = 2;
