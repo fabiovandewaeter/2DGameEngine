@@ -5,6 +5,7 @@
 #define CHUNK_SIZE 16
 
 #include <vector>
+#include <unordered_map>
 #include "Tile.hpp"
 #include "Chunk.hpp"
 #include "../systems/Camera.hpp"
@@ -21,8 +22,10 @@ public:
     void generateChunk(int positionX, int positionY);
     void render(SDL_Renderer *renderer, Camera *camera);
 
+    Chunk *getChunk(int x, int y);
+
 private:
-    std::vector<Chunk *> allChunks;
+    std::unordered_map<std::string, Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;
     Texture *tileTextures;
     Texture *staticObjectTextures;

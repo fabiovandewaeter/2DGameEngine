@@ -10,7 +10,7 @@ StaticObject::~StaticObject() {}
 void StaticObject::init(Texture *texture, SDL_Rect hitBox){
     this->texture = texture;
     this->hitBox = hitBox;
-    this->solid = true;
+    this->solid = false;
 }
 
 void StaticObject::render(SDL_Renderer *renderer, Camera *camera)

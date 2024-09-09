@@ -47,7 +47,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             }
         }
     }
-    return collision ? newHitBox : hitBox;
+    return collision ? hitBox : newHitBox;
 }
 
 void CollisionManager::addEntity(Entity *entity)

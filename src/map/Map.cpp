@@ -3,10 +3,9 @@
 Map::Map() {}
 Map::~Map()
 {
-    int size = this->allChunks.size();
-    for (int i = 0; i < size; i++)
+    for (auto &pair : this->allChunks)
     {
-        delete this->allChunks[i];
+        delete pair.second;
     }
     this->nearbyChunks.clear();
     this->allChunks.clear();
@@ -32,7 +31,7 @@ void Map::loadChunks()
             i++;
         }
     }
-    for (int j = 1; j < number+1; j++)
+    for (int j = 1; j < number + 1; j++)
     {
         int i = 0;
         // haut-droite
@@ -42,7 +41,7 @@ void Map::loadChunks()
             i++;
         }
     }
-    for (int j = 1; j < number+1; j++)
+    for (int j = 1; j < number + 1; j++)
     {
         int i = 1;
         // haut-gauche
@@ -76,4 +75,30 @@ void Map::render(SDL_Renderer *renderer, Camera *camera)
     {
         this->nearbyChunks[i]->render(renderer, camera);
     }
+}
+
+// returns the chunk that contains the coordinates ; generates the chunk if it is not already done
+Chunk *Map::getChunk(int x, int y)
+{
+    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNK_SIZE*j)                        (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j)
+    // (TILE_SIZE*CHUNKE_SIZE*i, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)     (TILE_SIZE*CHUNKE_SIZE*i + TILE_SIZE*CHUNK_SIZE, TILE_SIZE*CHUNKE_SIZE*j + TILE_SIZE*CHUNK_SIZE)
+    int i = x / (TILE_SIZE * CHUNK_SIZE);
+    int j = y / (TILE_SIZE * CHUNK_SIZE);
+    if (x < 0)
+    {
+        i -= 1;
+    }
+    if (y < 0)
+    {
+        j -= 1;
+    }
+
+    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+
+    std::cout << x << " " << y << " " << i << " " << j << " " << coordinates << std::endl;
+    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    {
+        generateChunk(i, j);
+    }
+    return this->allChunks[coordinates];
 }
