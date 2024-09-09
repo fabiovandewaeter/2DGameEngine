@@ -20,7 +20,7 @@ void Map::init(Texture *tileTextures, Texture *staticObjectTextures)
 
 void Map::loadChunks()
 {
-    //generateChunk(TILE_SIZE * CHUNK_SIZE * 0, 0 * TILE_SIZE * CHUNK_SIZE);
+    generateChunk(TILE_SIZE * CHUNK_SIZE * 0, 0 * TILE_SIZE * CHUNK_SIZE);
 }
 
 void Map::generateChunk(int positionX, int positionY)
@@ -46,8 +46,8 @@ void Map::render(SDL_Renderer *renderer, Camera *camera)
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    x = std::floor(static_cast<float>(x) / CHUNK_SIZE / TILE_SIZE);
-    y = std::floor(static_cast<float>(y) / CHUNK_SIZE / TILE_SIZE);
+    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE * TILE_SIZE));
+    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * TILE_SIZE));
 }
 
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done

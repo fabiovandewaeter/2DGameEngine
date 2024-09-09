@@ -19,7 +19,7 @@ void Camera::init(int width, int height, double minScale, double maxScale, int p
     this->positionX = positionX;
     this->positionY = positionY;
     this->velocity = 1;
-    this->sprintVelocity = 2;
+    this->sprintVelocity = 50;
 }
 
 void Camera::handleEvents(SDL_Event *event)
@@ -52,6 +52,10 @@ void Camera::handleEvents(SDL_Event *event)
             break;
         case SDLK_0:
             this->scale = BASE_SCALE;
+            break;
+        case SDLK_DELETE:
+            this->positionX = 0;
+            this->positionY = 0;
             break;
         }
         this->velX = sprint * (rightVelX - leftVelX);

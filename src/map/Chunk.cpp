@@ -30,7 +30,7 @@ void Chunk::loadTiles()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            this->tiles[16 * i + j] = new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+            this->tiles[SIZE * i + j] = new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
         }
     }
 }

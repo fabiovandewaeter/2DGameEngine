@@ -31,6 +31,10 @@ void Player::handleEvents(SDL_Event *event)
         case SDLK_RSHIFT:
             sprint2 = SPRINT_MULTIPLIER;
             break;
+        case SDLK_DELETE:
+            this->hitBox.x = 0;
+            this->hitBox.y = 0;
+            break;
         }
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
         this->velY = sprint2 * (downVelY2 - upVelY2);
