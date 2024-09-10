@@ -20,7 +20,17 @@ void Map::init(Texture *tileTextures, Texture *staticObjectTextures)
 
 void Map::loadChunks()
 {
-    generateChunk(TILE_SIZE * CHUNK_SIZE * 0, 0 * TILE_SIZE * CHUNK_SIZE);
+    loadSquareMap(50);
+}
+void Map::loadSquareMap(int size)
+{
+    for (int i = -size / 2; i < size / 2; i++)
+    {
+        for (int j = -size / 2; j < size / 2; j++)
+        {
+            generateChunk(TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
+        }
+    }
 }
 
 void Map::generateChunk(int positionX, int positionY)

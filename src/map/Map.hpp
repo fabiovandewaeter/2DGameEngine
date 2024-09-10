@@ -21,6 +21,7 @@ public:
     void init(Texture *tileTextures, Texture *staticObjectTextures);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
+    void loadSquareMap(int size);
     void render(SDL_Renderer *renderer, Camera *camera);
 
     void convertToChunkCoordinates(int &x, int &y);
