@@ -10,7 +10,7 @@ StaticObject::~StaticObject() {}
 void StaticObject::init(Texture *texture, SDL_Rect hitBox){
     this->texture = texture;
     this->hitBox = hitBox;
-    this->solid = false;
+    this->solid = true;
 }
 
 void StaticObject::render(SDL_Renderer *renderer, Camera *camera)
@@ -27,5 +27,6 @@ SDL_Rect StaticObject::getHitBox(){
     return this->hitBox;
 }
 bool StaticObject::isSolid(){
+    std::cout << this->solid << std::endl;
     return this->solid;
 }

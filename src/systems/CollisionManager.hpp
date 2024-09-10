@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <vector>
 #include "../entities/Entity.hpp"
+#include "../map/Map.hpp"
 #include "../objects/staticObjects/StaticObject.hpp"
 
 class Entity;
@@ -14,7 +15,7 @@ public:
     CollisionManager();
     ~CollisionManager();
 
-    void init(std::vector<Entity *> entities, std::vector<StaticObject *> staticObjects);
+    void init(std::vector<Entity *> entities, Map *map);
     bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
     SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
 
@@ -22,7 +23,7 @@ public:
 
 private:
     std::vector<Entity*> allEntities;
-    std::vector<StaticObject*> allStaticObjects;
+    Map *map;
 };
 
 #endif

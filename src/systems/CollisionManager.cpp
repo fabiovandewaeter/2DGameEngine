@@ -3,10 +3,10 @@
 CollisionManager::CollisionManager() {}
 CollisionManager::~CollisionManager() {}
 
-void CollisionManager::init(std::vector<Entity *> entities, std::vector<StaticObject *> staticObjects)
+void CollisionManager::init(std::vector<Entity *> entities, Map *map)
 {
     this->allEntities.insert(this->allEntities.end(), entities.begin(), entities.end());
-    this->allStaticObjects.insert(this->allStaticObjects.end(), staticObjects.begin(), staticObjects.end());
+    this->map = map;
 }
 
 bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
@@ -22,28 +22,31 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     bool collision = false;
     SDL_Rect hitBox = entity->getHitBox();
     SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
-    int size = this->allEntities.size();
-    for (int i = 0; i < size && !collision; i++)
+    if (this->map->isChunkGenerated(newPosX, newPosY))
     {
-        Entity *otherEntity = this->allEntities[i];
-        if (entity != otherEntity && otherEntity->isSolid())
+    int size = this->allEntities.size();
+        for (int i = 0; i < size && !collision; i++)
         {
-            if (checkCollision(newHitBox, otherEntity->getHitBox()))
+            Entity *otherEntity = this->allEntities[i];
+            if (entity != otherEntity && otherEntity->isSolid())
             {
-                collision = true;
+                if (checkCollision(newHitBox, otherEntity->getHitBox()))
+                {
+                    collision = true;
+                }
             }
         }
-    }
-    size = this->allStaticObjects.size();
-    for (int i = 0; i < size && !collision; i++)
-    {
-        StaticObject *staticObject = this->allStaticObjects[i];
-        if (staticObject->isSolid())
+        Chunk *chunk = this->map->getChunk(newPosX, newPosY);
+        if (chunk->isStaticObject(newPosX, newPosY))
         {
-            if (checkCollision(newHitBox, staticObject->getHitBox()))
+            StaticObject *staticObject = chunk->getStaticObject(newPosX, newPosY);
+            if (staticObject->isSolid())
             {
-                printf("true\n");
-                collision = true;
+                if (checkCollision(newHitBox, staticObject->getHitBox()))
+                {
+                    printf("true\n");
+                    collision = true;
+                }
             }
         }
     }

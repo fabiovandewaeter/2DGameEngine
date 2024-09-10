@@ -25,6 +25,7 @@ public:
     void render(SDL_Renderer *renderer, Camera *camera);
 
     void convertToChunkCoordinates(int &x, int &y);
+    bool isChunkGenerated(int x, int y);
     Chunk *getChunk(int x, int y);
 
 private:

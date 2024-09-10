@@ -42,7 +42,6 @@ void Map::generateChunk(int positionX, int positionY)
     convertToChunkCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     this->allChunks[coordinates] = newChunk;
-    std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
 }
 
 void Map::render(SDL_Renderer *renderer, Camera *camera)
@@ -60,6 +59,21 @@ void Map::convertToChunkCoordinates(int &x, int &y)
     y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * TILE_SIZE));
 }
 
+// returns true if the chunk exist
+bool Map::isChunkGenerated(int x, int y)
+{
+    return true;
+    int i = x, j = y;
+    convertToChunkCoordinates(i, j);
+    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+
+    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    {
+        return false;
+    }
+    return true;
+}
+
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done
 Chunk *Map::getChunk(int x, int y)
 {
@@ -70,6 +84,7 @@ Chunk *Map::getChunk(int x, int y)
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
         generateChunk(i * TILE_SIZE * CHUNK_SIZE, j * TILE_SIZE * CHUNK_SIZE);
+        std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
     }
     return this->allChunks[coordinates];
 }

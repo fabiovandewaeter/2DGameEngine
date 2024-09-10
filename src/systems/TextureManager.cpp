@@ -56,6 +56,8 @@ void TextureManager::loadStaticObjectTextures(SDL_Renderer *renderer)
     i++;
     this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/wall_wood.png", renderer);
     i++;
+    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/door_wood.png", renderer);
+    i++;
 }
 
 Texture *TextureManager::getBackgroundTexture()
