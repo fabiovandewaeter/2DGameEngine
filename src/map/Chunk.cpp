@@ -61,7 +61,7 @@ void Chunk::render(SDL_Renderer *renderer, Camera *camera)
     }
     for (auto &pair : this->allStaticObjects)
     {
-        delete pair.second;
+        pair.second->render(renderer, camera);
     }
 }
 
