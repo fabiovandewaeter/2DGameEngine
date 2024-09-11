@@ -45,7 +45,7 @@ void Chunk::loadStaticObjects()
     i++;
     i++;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
-    convertToTileCoordinates(x, y);
+    //convertToTileCoordinates(x, y);
 }
 
 void Chunk::render(SDL_Renderer *renderer, Camera *camera)
