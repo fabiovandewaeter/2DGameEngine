@@ -35,16 +35,17 @@ void Chunk::loadTiles()
 }
 void Chunk::loadStaticObjects()
 {
-    int i = 2, j = 0 ;
+    int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    i++;
     i++;
     coordinates = std::to_string(i) + "," + std::to_string(j);
     this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
     i++;
-    int x = 2*this->tileSize, y = 0*this->tileSize;
+    i++;
+    int x = 2 * this->tileSize, y = 0 * this->tileSize;
     convertToTileCoordinates(x, y);
-    std::cout << x << " | " << y << std::endl;
 }
 
 void Chunk::render(SDL_Renderer *renderer, Camera *camera)
@@ -66,12 +67,14 @@ void Chunk::render(SDL_Renderer *renderer, Camera *camera)
 
 void Chunk::convertToTileCoordinates(int &x, int &y)
 {
-    x = static_cast<int>(std::floor(static_cast<float>(x) / this->tileSize))%SIZE;
-    y = static_cast<int>(std::floor(static_cast<float>(y) / this->tileSize))%SIZE;
-    if (x < 0){
+    x = static_cast<int>(std::floor(static_cast<float>(x) / this->tileSize)) % SIZE;
+    y = static_cast<int>(std::floor(static_cast<float>(y) / this->tileSize)) % SIZE;
+    if (x < 0)
+    {
         x = SIZE + x;
     }
-    if (y < 0){
+    if (y < 0)
+    {
         y = SIZE + y;
     }
 }
@@ -87,7 +90,6 @@ bool Chunk::isStaticObject(int x, int y)
     int i = x, j = y;
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    std::cout << coordinates << std::endl;
     if (this->allStaticObjects.find(coordinates) == this->allStaticObjects.end())
     {
         return false;

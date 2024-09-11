@@ -24,7 +24,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
-    int size = this->allEntities.size();
+        int size = this->allEntities.size();
         for (int i = 0; i < size && !collision; i++)
         {
             Entity *otherEntity = this->allEntities[i];
@@ -32,25 +32,34 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             {
                 if (checkCollision(newHitBox, otherEntity->getHitBox()))
                 {
-                    collision = true;
+                    return hitBox;
                 }
             }
         }
-        Chunk *chunk = this->map->getChunk(newPosX, newPosY);
-        if (chunk->isStaticObject(newPosX, newPosY))
+        // check destination for all 4 corners of the entity
+        int newX, newY;
+        Chunk *chunk;
+        for (int i = 0; i < 2; i++)
         {
-            StaticObject *staticObject = chunk->getStaticObject(newPosX, newPosY);
-            if (staticObject->isSolid())
+            for (int j = 0; j < 2; j++)
             {
-                if (checkCollision(newHitBox, staticObject->getHitBox()))
+                newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
+                chunk = this->map->getChunk(newX, newY);
+                if (chunk->isStaticObject(newX, newY))
                 {
-                    printf("true\n");
-                    collision = true;
+                    StaticObject *staticObject = chunk->getStaticObject(newX, newY);
+                    if (staticObject->isSolid())
+                    {
+                        if (checkCollision(newHitBox, staticObject->getHitBox()))
+                        {
+                            return hitBox;
+                        }
+                    }
                 }
             }
         }
     }
-    return collision ? hitBox : newHitBox;
+    return newHitBox;
 }
 
 void CollisionManager::addEntity(Entity *entity)

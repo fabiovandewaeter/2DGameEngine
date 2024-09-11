@@ -27,6 +27,5 @@ SDL_Rect StaticObject::getHitBox(){
     return this->hitBox;
 }
 bool StaticObject::isSolid(){
-    std::cout << this->solid << std::endl;
     return this->solid;
 }
