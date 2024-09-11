@@ -143,7 +143,7 @@ void Game::render()
         this->entities[i].render(this->renderer, &this->camera);
     }
     this->player.render(this->renderer, &this->camera);
-    this->map.getChunk(this->player.getPositionX(), this->player.getPositionY());
+    this->map.getChunk(this->player.getPositionX(), this->player.getPositionY())->getTile(this->player.getPositionX(), this->player.getPositionY());
 
     SDL_RenderPresent(this->renderer);
     // printFPS();
