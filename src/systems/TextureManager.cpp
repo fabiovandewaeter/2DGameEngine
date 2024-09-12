@@ -48,6 +48,10 @@ void TextureManager::loadTileTextures(SDL_Renderer *renderer)
     i++;
     this->tileTextures[i].loadFromFile("assets/img/tiles/grass1.png", renderer);
     i++;
+    this->tileTextures[i].loadFromFile("assets/img/tiles/grass2.png", renderer);
+    i++;
+    this->tileTextures[i].loadFromFile("assets/img/tiles/grass3.png", renderer);
+    i++;
 }
 void TextureManager::loadStaticObjectTextures(SDL_Renderer *renderer)
 {

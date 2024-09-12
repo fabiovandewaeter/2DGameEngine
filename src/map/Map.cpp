@@ -11,10 +11,11 @@ Map::~Map()
     this->allChunks.clear();
 }
 
-void Map::init(Texture *tileTextures, Texture *staticObjectTextures)
+void Map::init(Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise)
 {
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;
+    this->perlinNoise = perlinNoise;
     loadChunks();
 }
 
@@ -35,7 +36,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures);
+    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures, this->perlinNoise);
     this->nearbyChunks.push_back(newChunk);
 
     int i = positionX, j = positionY;

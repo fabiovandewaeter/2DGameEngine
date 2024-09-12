@@ -9,16 +9,18 @@
 #include "Tile.hpp"
 #include "../objects/staticObjects/StaticObject.hpp"
 #include "../objects/staticObjects/Wall.hpp"
+#include "../systems/PerlinNoise.hpp"
 
 class Tile;
 
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, Texture *tileTextures, Texture *staticObjectTextures);
+    Chunk(int positionX, int positionY, int tileSize, Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise);
     ~Chunk();
 
     void loadTiles();
+    void loadTilesWithPerlinNoise();
     void loadStaticObjects();
     void render(SDL_Renderer *renderer, Camera *camera);
 
@@ -32,11 +34,12 @@ private:
     Texture *tileTextures;
     int tileSize;
 
-    std::unordered_map<std::string, StaticObject*> allStaticObjects;
+    std::unordered_map<std::string, StaticObject *> allStaticObjects;
     Texture *staticObjectTextures;
 
     int positionX, positionY;
     SDL_Rect box;
+    PerlinNoise *perlinNoise;
 };
 
 #endif

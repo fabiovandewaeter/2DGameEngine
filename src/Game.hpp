@@ -14,6 +14,7 @@
 #include "systems/CollisionManager.hpp"
 #include "systems/IOManager.hpp"
 #include "systems/TextureManager.hpp"
+#include "systems/PerlinNoise.hpp"
 #include "map/Map.hpp"
 #include "map/Tile.hpp"
 
@@ -62,6 +63,7 @@ private:
     CollisionManager collisionManager;
     IOManager ioManager;
     Map map;
+    PerlinNoise perlinNoise;
 };
 
 #endif

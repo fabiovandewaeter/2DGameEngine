@@ -11,6 +11,7 @@
 #include "Chunk.hpp"
 #include "../systems/Camera.hpp"
 #include "../systems/TextureManager.hpp"
+#include "../systems/PerlinNoise.hpp"
 
 class Map
 {
@@ -18,7 +19,7 @@ public:
     Map();
     ~Map();
 
-    void init(Texture *tileTextures, Texture *staticObjectTextures);
+    void init(Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
@@ -33,6 +34,7 @@ private:
     std::vector<Chunk *> nearbyChunks;
     Texture *tileTextures;
     Texture *staticObjectTextures;
+    PerlinNoise *perlinNoise;
 };
 
 #endif
