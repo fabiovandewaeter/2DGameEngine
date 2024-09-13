@@ -27,6 +27,11 @@ make
 make install
 export LD_LIBRARY_PATH=$HOME/libs/SDL2/lib:$LD_LIBRARY_PATH
 ```
+* SDL_image:
+```
+wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
+./configure --prefix=$HOME/libs/SDL2
+```
 
 ```
 g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/objects/staticObjects/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image
