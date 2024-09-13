@@ -23,6 +23,10 @@ void StaticObject::render(SDL_Renderer *renderer, Camera *camera)
     }
 }
 
+void StaticObject::destroy(){
+    delete this;
+}
+
 SDL_Rect StaticObject::getHitBox(){
     return this->hitBox;
 }

@@ -15,6 +15,8 @@ void MouseManager::handleEvents(SDL_Event *event)
 	if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
 	{
 		int x, y;
+		int i, j;
+		Chunk *chunk;
 		SDL_GetMouseState(&x, &y);
 		switch (event->type)
 		{
@@ -22,15 +24,25 @@ void MouseManager::handleEvents(SDL_Event *event)
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
+			this->camera->convertCameraToInGameCoordinates(x, y);
+			i = x;
+			j = y;
+			chunk = this->map->getChunk(x, y);
+			chunk->convertToTileCoordinates(i, j);
+			if (event->button.button == SDL_BUTTON_LEFT)
+			{
+				chunk->addStaticObject(i, j);
+			}
+			else if (event->button.button == SDL_BUTTON_RIGHT)
+			{
+				chunk->destroyStaticObject(i, j);
+			}
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			break;
 		}
-		this->camera->convertCameraToInGameCoordinates(x, y);
-		int i = x, j = y;
-		Chunk *chunk = this->map->getChunk(x, y);
-		chunk->convertToTileCoordinates(i, j);
-		std::cout << "pixels : " << x << " " << y << " tile: " << i << " " << j << std::endl;
+
+		// std::cout << "pixels : " << x << " " << y << " tile: " << i << " " << j << std::endl;
 	}
 }

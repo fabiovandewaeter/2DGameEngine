@@ -46,16 +46,20 @@ void Chunk::loadTilesWithPerlinNoise()
             double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
-            if (res < 1.0/numberOfTileTextures){
+            if (res < 1.0 / numberOfTileTextures)
+            {
                 textureIndex = 0;
             }
-            else if (res < 2*(1.0/numberOfTileTextures)){
+            else if (res < 2 * (1.0 / numberOfTileTextures))
+            {
                 textureIndex = 1;
             }
-            else if (res < 3*(1.0/numberOfTileTextures)){
+            else if (res < 3 * (1.0 / numberOfTileTextures))
+            {
                 textureIndex = 2;
             }
-            else if (res < 4*(1.0/numberOfTileTextures)){
+            else if (res < 4 * (1.0 / numberOfTileTextures))
+            {
                 textureIndex = 3;
             }
             this->allTiles[SIZE * i + j] = new Tile(&this->tileTextures[textureIndex], (SDL_Rect){x, y, this->tileSize, this->tileSize});
@@ -117,7 +121,6 @@ Tile *Chunk::getTile(int x, int y)
 bool Chunk::isStaticObject(int x, int y)
 {
     int i = x, j = y;
-    convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     if (this->allStaticObjects.find(coordinates) == this->allStaticObjects.end())
     {
@@ -131,4 +134,23 @@ StaticObject *Chunk::getStaticObject(int x, int y)
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     return this->allStaticObjects[coordinates];
+}
+void Chunk::addStaticObject(int x, int y)
+{
+    if (!isStaticObject(x, y))
+    {
+        int i = x, j = y;
+        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    }
+}
+void Chunk::destroyStaticObject(int x, int y)
+{
+    if (isStaticObject(x, y))
+    {
+        int i = x, j = y;
+        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        this->allStaticObjects[coordinates]->destroy();
+        this->allStaticObjects.erase(coordinates);
+    }
 }

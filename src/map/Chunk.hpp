@@ -28,6 +28,8 @@ public:
     Tile *getTile(int x, int y);
     bool isStaticObject(int x, int y);
     StaticObject *getStaticObject(int x, int y);
+    void addStaticObject(int x, int y);
+    void destroyStaticObject(int x, int y);
 
 private:
     Tile *allTiles[SIZE * SIZE];
