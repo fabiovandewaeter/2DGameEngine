@@ -11,9 +11,8 @@ Map::~Map()
     this->allChunks.clear();
 }
 
-void Map::init(SDL_Renderer *renderer, Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise)
+void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise)
 {
-    this->renderer = renderer;
     this->camera = camera;
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;

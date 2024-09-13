@@ -19,7 +19,7 @@ public:
     Map();
     ~Map();
 
-    void init(SDL_Renderer *renderer, Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise);
+    void init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
@@ -31,7 +31,6 @@ public:
     Chunk *getChunk(int x, int y);
 
 private:
-    SDL_Renderer *renderer;
     Camera *camera;
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *staticObjectTextures;
