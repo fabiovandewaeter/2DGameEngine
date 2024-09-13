@@ -14,7 +14,7 @@ public:
     void init(Texture *texture, SDL_Rect hitBox);
 
     void destroy();
-    void render(SDL_Renderer *renderer, Camera *camera);
+    void render(Camera *camera);
 
     SDL_Rect getHitBox();
     bool isSolid();

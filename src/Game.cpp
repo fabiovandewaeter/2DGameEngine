@@ -70,10 +70,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
+
     loadMedia();
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
-    this->map.init(this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
+    this->map.init(this->renderer, &this->camera, this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
     std::vector<Entity*> entities;
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
@@ -81,7 +82,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 void Game::loadMedia()
 {
-    this->textureManager.loadMedia(this->renderer);
+    this->textureManager.init(this->renderer);
+    this->textureManager.loadMedia();
     this->backgroundTexture = this->textureManager.getBackgroundTexture();
     this->entityTextures = this->textureManager.getEntityTextures();
     this->tileTextures = this->textureManager.getTileTextures();
@@ -91,9 +93,9 @@ void Game::loadEntities()
 {
     int i = 0;
     // player
-    this->player.init(&this->entityTextures[0], (SDL_Rect){0, 0, 16, 16}, false);
+    this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[i].init(&this->entityTextures[1], (SDL_Rect){50, 50, 16, 16}, true);
+    this->entities[i].init((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, true);
     i++;
 
     this->collisionManager.addEntity(&this->player);
@@ -135,16 +137,16 @@ void Game::render()
 
     double scale = this->camera.getScale();
     // background
-    this->backgroundTexture->render(this->renderer, (SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
+    this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
     // tiles and static objects
-    this->map.render(this->renderer, &this->camera);
+    this->map.render();
 
     // entities
     for (int i = 0; i < NUMBER_OF_ENTITIES; i++)
     {
-        this->entities[i].render(this->renderer, &this->camera);
+        this->entities[i].render(&this->camera);
     }
-    this->player.render(this->renderer, &this->camera);
+    this->player.render(&this->camera);
     this->map.getChunk(this->player.getPositionX(), this->player.getPositionY())->getTile(this->player.getPositionX(), this->player.getPositionY());
 
     SDL_RenderPresent(this->renderer);
@@ -154,6 +156,7 @@ void Game::render()
 void Game::clean()
 {
     this->textureManager.free();
+    this->map.free();
 
     // Destroy window
     SDL_DestroyRenderer(this->renderer);

@@ -21,7 +21,7 @@ public:
     bool canMove();
     bool isMoving();
     void move(CollisionManager *collisionManager);
-    void render(SDL_Renderer *renderer, Camera *camera);
+    void render(Camera *camera);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

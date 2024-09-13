@@ -1,6 +1,7 @@
 #ifndef tile_hpp
 #define tile_hpp
 
+#include <vector>
 #include "../Texture.hpp"
 #include "../systems/Camera.hpp"
 
@@ -11,7 +12,7 @@ public:
     Tile(Texture *texture, SDL_Rect box);
     ~Tile();
 
-    void render(SDL_Renderer *renderer, Camera *camera);
+    void render(Camera *camera);
     int getCenterX();
     int getCenterY();
     int getTextureId();

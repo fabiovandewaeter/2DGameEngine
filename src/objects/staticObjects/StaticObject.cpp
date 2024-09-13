@@ -13,13 +13,13 @@ void StaticObject::init(Texture *texture, SDL_Rect hitBox){
     this->solid = true;
 }
 
-void StaticObject::render(SDL_Renderer *renderer, Camera *camera)
+void StaticObject::render(Camera *camera)
 {
     SDL_Rect renderBox = this->hitBox;
     camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
-        this->texture->render(renderer, renderBox);
+        this->texture->render(renderBox);
     }
 }
 

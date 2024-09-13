@@ -16,13 +16,13 @@ class Tile;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise);
+    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise);
     ~Chunk();
 
     void loadTiles();
     void loadTilesWithPerlinNoise();
     void loadStaticObjects();
-    void render(SDL_Renderer *renderer, Camera *camera);
+    void render(Camera *camera);
 
     void convertToTileCoordinates(int &x, int &y);
     Tile *getTile(int x, int y);
@@ -33,11 +33,11 @@ public:
 
 private:
     Tile *allTiles[SIZE * SIZE];
-    Texture *tileTextures;
+    std::vector<Texture *> *tileTextures;
     int tileSize;
 
     std::unordered_map<std::string, StaticObject *> allStaticObjects;
-    Texture *staticObjectTextures;
+    std::vector<Texture *> *staticObjectTextures;
 
     int positionX, positionY;
     SDL_Rect box;

@@ -1,15 +1,16 @@
 #include "Texture.hpp"
 
-int idCounter = 0;
-
-Texture::Texture()
+int counter = 0;
+Texture::Texture() {}
+Texture::Texture(SDL_Renderer *renderer)
 {
     // Initialize
     texture = NULL;
     width = 0;
     height = 0;
-    this->id = idCounter;
-    idCounter++;
+    this->renderer = renderer;
+    this->id = counter;
+    counter++;
 }
 Texture::~Texture()
 {
@@ -28,7 +29,7 @@ void Texture::free()
     }
 }
 
-bool Texture::loadFromFile(const char *path, SDL_Renderer *renderer)
+Texture *Texture::loadFromFile(const char *path)
 {
     // Get rid of preexisting texture
     free();
@@ -53,24 +54,23 @@ bool Texture::loadFromFile(const char *path, SDL_Renderer *renderer)
         }
         else
         {
-            // Get image dimensions
             width = loadedSurface->w;
             height = loadedSurface->h;
         }
-
-        // Get rid of old loaded surface
         SDL_FreeSurface(loadedSurface);
     }
-
-    // Return success
     texture = newTexture;
-    return texture != NULL;
+    return this;
+}
+Texture *Texture::loadFromRenderedText(std::string text, SDL_Color textColor){
+    
+    return this;
 }
 
-void Texture::render(SDL_Renderer *renderer, SDL_Rect renderBox)
+void Texture::render(SDL_Rect renderBox)
 {
     // Set rendering space and render to screen
-    SDL_RenderCopy(renderer, texture, NULL, &renderBox);
+    SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
 }
 
 int Texture::getWidth()
@@ -86,11 +86,13 @@ void Texture::setSize(int width, int height)
     this->width = width;
     this->height = height;
 }
-int Texture::getCenterX(){
-    return this->getWidth()/2;
+int Texture::getCenterX()
+{
+    return this->getWidth() / 2;
 }
-int Texture::getCenterY(){
-    return this->getHeight()/2;
+int Texture::getCenterY()
+{
+    return this->getHeight() / 2;
 }
 int Texture::getId(){
     return this->id;

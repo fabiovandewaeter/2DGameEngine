@@ -53,9 +53,9 @@ private:
     Player player;
     Entity entities[NUMBER_OF_ENTITIES];
     Texture *backgroundTexture;
-    Texture *entityTextures;
-    Texture *tileTextures;
-    Texture *staticObjectTextures;
+    std::vector<Texture *> *entityTextures;
+    std::vector<Texture *> *tileTextures;
+    std::vector<Texture *> *staticObjectTextures;
 
     SDL_Surface *loadSurface(const char *path);
     SDL_Texture *loadTexture(const char *path);

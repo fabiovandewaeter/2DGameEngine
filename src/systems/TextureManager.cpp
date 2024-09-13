@@ -1,82 +1,80 @@
 #include "TextureManager.hpp"
 
-TextureManager::TextureManager() {}
+TextureManager::TextureManager(){}
+TextureManager::TextureManager(SDL_Renderer *renderer)
+{
+    init(renderer);
+}
 TextureManager::~TextureManager()
 {
     free();
 }
 void TextureManager::free()
 {
-    this->backgroundTexture.free();
-    for (int i = 0; i < NUMBER_OF_ENTITY_TEXTURES; i++)
+    this->backgroundTexture->free();
+    int size = this->entityTextures.size();
+    for (int i = 0; i < size; i++)
     {
-        this->entityTextures[i].free();
+        this->entityTextures[i]->free();
     }
-    for (int i = 0; i < NUMBER_OF_TILE_TEXTURES; i++)
+    size = this->tileTextures.size();
+    for (int i = 0; i < size; i++)
     {
-        this->tileTextures[i].free();
+        this->tileTextures[i]->free();
     }
-    for (int i = 0; i < NUMBER_OF_STATIC_OBJECT_TEXTURES; i++)
+    size = this->staticObjectTextures.size();
+    for (int i = 0; i < size; i++)
     {
-        this->staticObjectTextures[i].free();
+        this->staticObjectTextures[i]->free();
     }
 }
 
-void TextureManager::loadMedia(SDL_Renderer *renderer)
+void TextureManager::init(SDL_Renderer *renderer){
+    this->renderer = renderer;
+}
+void TextureManager::loadMedia()
 {
     // background texture
-    this->backgroundTexture.loadFromFile("assets/img/background.png", renderer);
-    this->backgroundTexture.setSize(1280 * 5, 720 * 5);
+    this->backgroundTexture = (new Texture(this->renderer))->loadFromFile("assets/img/background.png");
+    this->backgroundTexture->setSize(1280 * 5, 720 * 5);
 
-    loadEntityTextures(renderer);
-    loadTileTextures(renderer);
-    loadStaticObjectTextures(renderer);
+    loadEntityTextures();
+    loadTileTextures();
+    loadStaticObjectTextures();
 }
 
-void TextureManager::loadEntityTextures(SDL_Renderer *renderer)
+void TextureManager::loadEntityTextures()
 {
-    int i = 0;
-    this->entityTextures[i].loadFromFile("assets/img/player.png", renderer);
-    i++;
-    this->entityTextures[i].loadFromFile("assets/img/entity0.png", renderer);
-    i++;
+    this->entityTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/player.png"));
+    this->entityTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/entity0.png"));
 }
-void TextureManager::loadTileTextures(SDL_Renderer *renderer)
+void TextureManager::loadTileTextures()
 {
-    int i = 0;
-    this->tileTextures[i].loadFromFile("assets/img/tiles/grass0.png", renderer);
-    i++;
-    this->tileTextures[i].loadFromFile("assets/img/tiles/grass1.png", renderer);
-    i++;
-    this->tileTextures[i].loadFromFile("assets/img/tiles/grass2.png", renderer);
-    i++;
-    this->tileTextures[i].loadFromFile("assets/img/tiles/grass3.png", renderer);
-    i++;
+    this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass0.png"));
+    this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass1.png"));
+    this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass2.png"));
+    this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass3.png"));
 }
-void TextureManager::loadStaticObjectTextures(SDL_Renderer *renderer)
+void TextureManager::loadStaticObjectTextures()
 {
-    int i = 0;
-    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/wall_stone.png", renderer);
-    i++;
-    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/wall_wood.png", renderer);
-    i++;
-    this->staticObjectTextures[i].loadFromFile("assets/img/objects/staticObjects/door_wood.png", renderer);
-    i++;
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/wall_stone.png"));
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/wall_wood.png"));
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/door_wood.png"));
 }
 
 Texture *TextureManager::getBackgroundTexture()
 {
-    return &this->backgroundTexture;
+    return this->backgroundTexture;
 }
-Texture *TextureManager::getEntityTextures()
+std::vector<Texture *> *TextureManager::getEntityTextures()
 {
-    return this->entityTextures;
+    return &this->entityTextures;
 }
-Texture *TextureManager::getTileTextures()
+std::vector<Texture *> *TextureManager::getTileTextures()
 {
-    return this->tileTextures;
+    return &this->tileTextures;
 }
-Texture *TextureManager::getStaticObjectTextures()
+std::vector<Texture *> *TextureManager::getStaticObjectTextures()
 {
-    return this->staticObjectTextures;
+    return &this->staticObjectTextures;
 }

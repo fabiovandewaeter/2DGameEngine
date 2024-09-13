@@ -11,8 +11,10 @@ Map::~Map()
     this->allChunks.clear();
 }
 
-void Map::init(Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise)
+void Map::init(SDL_Renderer *renderer, Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise)
 {
+    this->renderer = renderer;
+    this->camera = camera;
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;
     this->perlinNoise = perlinNoise;
@@ -45,13 +47,17 @@ void Map::generateChunk(int positionX, int positionY)
     this->allChunks[coordinates] = newChunk;
 }
 
-void Map::render(SDL_Renderer *renderer, Camera *camera)
+void Map::render()
 {
     int size = this->nearbyChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->nearbyChunks[i]->render(renderer, camera);
+        this->nearbyChunks[i]->render(this->camera);
     }
+}
+void Map::free()
+{
+    printf("FAIRE LE FREE DE MAP\n");
 }
 
 void Map::convertToChunkCoordinates(int &x, int &y)

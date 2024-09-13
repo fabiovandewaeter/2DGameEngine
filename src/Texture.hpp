@@ -11,14 +11,16 @@ class Texture
 {
 public:
     Texture();
+    Texture(SDL_Renderer *renderer);
     ~Texture();
 
-    bool loadFromFile(const char *path, SDL_Renderer *renderer);
+    Texture *loadFromFile(const char *path);
+    Texture *loadFromRenderedText(std::string path, SDL_Color textColor);
     // Deallocates texture
     void free();
 
     // render image with choosen width and height
-    void render(SDL_Renderer *renderer, SDL_Rect renderBox);
+    void render(SDL_Rect renderBox);
 
     // Gets image dimensions
     int getWidth();
@@ -31,11 +33,10 @@ public:
 private:
     // The actual hardware texture
     SDL_Texture *texture;
+    SDL_Renderer *renderer;
 
     // Image dimensions
-    int width;
-    int height;
-    
+    int width, height;
     int id;
 };
 

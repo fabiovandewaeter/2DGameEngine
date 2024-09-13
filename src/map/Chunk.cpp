@@ -1,6 +1,6 @@
 #include "Chunk.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise)
+Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise)
 {
     this->positionX;
     this->positionY;
@@ -31,7 +31,7 @@ void Chunk::loadTiles()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            this->allTiles[SIZE * i + j] = new Tile(&this->tileTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
         }
     }
 }
@@ -62,7 +62,7 @@ void Chunk::loadTilesWithPerlinNoise()
             {
                 textureIndex = 3;
             }
-            this->allTiles[SIZE * i + j] = new Tile(&this->tileTextures[textureIndex], (SDL_Rect){x, y, this->tileSize, this->tileSize});
+            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[textureIndex], (SDL_Rect){x, y, this->tileSize, this->tileSize});
         }
     }
 }
@@ -70,18 +70,18 @@ void Chunk::loadStaticObjects()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
     i++;
     i++;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
     i++;
     i++;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
     // convertToTileCoordinates(x, y);
 }
 
-void Chunk::render(SDL_Renderer *renderer, Camera *camera)
+void Chunk::render(Camera *camera)
 {
     SDL_Rect renderBox = this->box;
     camera->convertInGameToCameraCoordinates(renderBox);
@@ -89,12 +89,12 @@ void Chunk::render(SDL_Renderer *renderer, Camera *camera)
     {
         for (int i = 0; i < SIZE * SIZE; i++)
         {
-            this->allTiles[i]->render(renderer, camera);
+            this->allTiles[i]->render(camera);
         }
     }
     for (auto &pair : this->allStaticObjects)
     {
-        pair.second->render(renderer, camera);
+        pair.second->render(camera);
     }
 }
 
@@ -138,7 +138,7 @@ void Chunk::addStaticObject(int x, int y)
     if (!isStaticObject(x, y))
     {
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+        this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[1], (SDL_Rect){x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize});
     }
 }
 void Chunk::destroyStaticObject(int x, int y)

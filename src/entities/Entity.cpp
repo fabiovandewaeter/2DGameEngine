@@ -40,13 +40,13 @@ void Entity::move(CollisionManager *collisionManager)
     }
 }
 
-void Entity::render(SDL_Renderer *renderer, Camera *camera)
+void Entity::render(Camera *camera)
 {
     SDL_Rect renderBox = this->hitBox;
     camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
-        this->texture->render(renderer, renderBox);
+        this->texture->render(renderBox);
     }
 }
 

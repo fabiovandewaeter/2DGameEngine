@@ -1,34 +1,34 @@
 #ifndef texture_manager_hpp
 #define texture_manager_hpp
 
-#define NUMBER_OF_ENTITY_TEXTURES 2
-#define NUMBER_OF_TILE_TEXTURES 4
-#define NUMBER_OF_STATIC_OBJECT_TEXTURES 3
-
+#include <vector>
 #include "../Texture.hpp"
 
 class TextureManager
 {
 public:
     TextureManager();
+    TextureManager(SDL_Renderer *renderer);
     ~TextureManager();
     void free();
 
-    void loadMedia(SDL_Renderer *renderer);
-    void loadEntityTextures(SDL_Renderer *renderer);
-    void loadTileTextures(SDL_Renderer *renderer);
-    void loadStaticObjectTextures(SDL_Renderer *renderer);
+    void init(SDL_Renderer *renderer);
+    void loadMedia();
+    void loadEntityTextures();
+    void loadTileTextures();
+    void loadStaticObjectTextures();
 
     Texture *getBackgroundTexture();
-    Texture *getEntityTextures();
-    Texture *getTileTextures();
-    Texture *getStaticObjectTextures();
+    std::vector<Texture *> *getEntityTextures();
+    std::vector<Texture *> *getTileTextures();
+    std::vector<Texture *> *getStaticObjectTextures();
 
 private:
-    Texture backgroundTexture;
-    Texture entityTextures[NUMBER_OF_ENTITY_TEXTURES];
-    Texture tileTextures[NUMBER_OF_TILE_TEXTURES];
-    Texture staticObjectTextures[NUMBER_OF_STATIC_OBJECT_TEXTURES];
+    SDL_Renderer *renderer;
+    Texture *backgroundTexture;
+    std::vector<Texture *> entityTextures;
+    std::vector<Texture *> tileTextures;
+    std::vector<Texture *> staticObjectTextures;
 };
 
 #endif

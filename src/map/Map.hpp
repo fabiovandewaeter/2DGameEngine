@@ -19,22 +19,25 @@ public:
     Map();
     ~Map();
 
-    void init(Texture *tileTextures, Texture *staticObjectTextures, PerlinNoise *perlinNoise);
+    void init(SDL_Renderer *renderer, Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
-    void render(SDL_Renderer *renderer, Camera *camera);
+    void render();
+    void free();
 
     void convertToChunkCoordinates(int &x, int &y);
     bool isChunkGenerated(int x, int y);
     Chunk *getChunk(int x, int y);
 
 private:
+    SDL_Renderer *renderer;
+    Camera *camera;
+    std::vector<Texture *> *tileTextures;
+    std::vector<Texture *> *staticObjectTextures;
+    PerlinNoise *perlinNoise;
     std::unordered_map<std::string, Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;
-    Texture *tileTextures;
-    Texture *staticObjectTextures;
-    PerlinNoise *perlinNoise;
 };
 
 #endif
