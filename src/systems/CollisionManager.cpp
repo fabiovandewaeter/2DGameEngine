@@ -45,6 +45,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             {
                 newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
                 chunk = this->map->getChunk(newX, newY);
+                chunk->convertToTileCoordinates(newX, newY);
                 if (chunk->isStaticObject(newX, newY))
                 {
                     StaticObject *staticObject = chunk->getStaticObject(newX, newY);

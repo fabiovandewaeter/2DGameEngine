@@ -40,3 +40,4 @@ g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/objects/sta
 ## SDL libraries
 - SDL2
 - SDL_image
+- SDL_ttf

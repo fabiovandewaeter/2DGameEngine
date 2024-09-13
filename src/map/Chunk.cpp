@@ -130,26 +130,22 @@ bool Chunk::isStaticObject(int x, int y)
 }
 StaticObject *Chunk::getStaticObject(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     return this->allStaticObjects[coordinates];
 }
 void Chunk::addStaticObject(int x, int y)
 {
     if (!isStaticObject(x, y))
     {
-        int i = x, j = y;
-        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        this->allStaticObjects[coordinates] = new Wall(&this->staticObjectTextures[1], (SDL_Rect){x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize});
     }
 }
 void Chunk::destroyStaticObject(int x, int y)
 {
     if (isStaticObject(x, y))
     {
-        int i = x, j = y;
-        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allStaticObjects[coordinates]->destroy();
         this->allStaticObjects.erase(coordinates);
     }
