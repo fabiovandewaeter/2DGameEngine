@@ -11,7 +11,6 @@ public:
 
 	void init(Camera *camera);
 
-	void convertCameraToInGameCoordinates(int &x, int &y);
 private:
 	Camera *camera;
 };

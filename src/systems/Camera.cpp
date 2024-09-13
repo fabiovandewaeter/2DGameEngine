@@ -140,6 +140,8 @@ void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)
     rect.w *= scale;
     rect.h *= scale;
 }
+void Camera::convertCameraToInGameCoordinates(int &x, int &y){
+}
 
 bool Camera::isVisible(SDL_Rect rect)
 {
