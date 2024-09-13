@@ -141,6 +141,13 @@ void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)
     rect.h *= scale;
 }
 void Camera::convertCameraToInGameCoordinates(int &x, int &y){
+    int cameraPositionX = this->positionX;
+    int cameraPositionY = this->positionY;
+    int viewCenterX = this->width / 2;
+    int viewCenterY = this->height / 2;
+
+    x = (viewCenterX - cameraPositionX * scale - x)/this->scale ;
+    y = (viewCenterY - cameraPositionY * scale - y)/this->scale ;
 }
 
 bool Camera::isVisible(SDL_Rect rect)

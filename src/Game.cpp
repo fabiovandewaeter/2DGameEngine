@@ -76,6 +76,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->map.init(this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
     std::vector<Entity*> entities;
     this->collisionManager.init(entities, &this->map);
+    this->mouseManager(&this->camera);
 }
 
 void Game::loadMedia()
@@ -112,6 +113,7 @@ void Game::handleEvents()
         }
         this->camera.handleEvents(&event);
         this->player.handleEvents(&event);
+	this->mouseManager.handleEvents(&event);
     }
 }
 

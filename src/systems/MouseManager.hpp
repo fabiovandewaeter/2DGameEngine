@@ -10,6 +10,7 @@ public:
 	~MouseManager();
 
 	void init(Camera *camera);
+	void handleEvents(SDL_Event &event);
 
 private:
 	Camera *camera;

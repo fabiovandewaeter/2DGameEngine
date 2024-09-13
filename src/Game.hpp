@@ -15,6 +15,7 @@
 #include "systems/IOManager.hpp"
 #include "systems/TextureManager.hpp"
 #include "systems/PerlinNoise.hpp"
+#include "systems/MouseManager.hpp"
 #include "map/Map.hpp"
 #include "map/Tile.hpp"
 
@@ -64,6 +65,7 @@ private:
     IOManager ioManager;
     Map map;
     PerlinNoise perlinNoise;
+    MouseManager mouseManager;
 };
 
 #endif
