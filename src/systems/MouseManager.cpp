@@ -8,15 +8,15 @@ void MouseManager::init(Camera *camera){
 }
 
 // source : https://lazyfoo.net/tutorials/SDL/17_mouse_events/index.php
-void MouseManager::handleEvents(SDL_Event &event){
+void MouseManager::handleEvents(SDL_Event *event){
 	//If mouse event happened
-	if( e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP )
+	if( event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP )
 	{
 		//Get mouse position
 		int x, y;
 		SDL_GetMouseState( &x, &y );        //Check if mouse is in button
 						    //Set mouse over sprite
-		switch( e->type )
+		switch( event->type )
 		{
 			case SDL_MOUSEMOTION:
 				break;
@@ -27,5 +27,7 @@ void MouseManager::handleEvents(SDL_Event &event){
 			case SDL_MOUSEBUTTONUP:
 				break;
 		}
+	this->camera->convertCameraToInGameCoordinates(x, y);
+	std::cout << x << " " << y << std::endl;
 	}
 }

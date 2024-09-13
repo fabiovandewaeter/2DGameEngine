@@ -5,15 +5,15 @@
 
 class MouseManager
 {
-public:
-	MouseManager();
-	~MouseManager();
+	public:
+		MouseManager();
+		~MouseManager();
 
-	void init(Camera *camera);
-	void handleEvents(SDL_Event &event);
+		void init(Camera *camera);
+		void handleEvents(SDL_Event*event);
 
-private:
-	Camera *camera;
+	private:
+		Camera *camera;
 };
 
 #endif
