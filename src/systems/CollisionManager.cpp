@@ -67,3 +67,11 @@ void CollisionManager::addEntity(Entity *entity)
 {
     this->allEntities.push_back(entity);
 }
+void CollisionManager::addEntities(std::vector<Entity *> *entities)
+{
+    int size = entities->size();
+    for (int i = 0; i < size; i++)
+    {
+        this->allEntities.push_back((*entities)[i]);
+    }
+}

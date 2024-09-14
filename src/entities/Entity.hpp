@@ -14,6 +14,7 @@ class Entity
 {
 public:
     Entity();
+    Entity(Texture *texture, SDL_Rect hitBox, bool solid);
     ~Entity();
 
     void init(Texture *texture, SDL_Rect hitbox, bool solid);

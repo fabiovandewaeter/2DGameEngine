@@ -70,12 +70,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
-
     loadMedia();
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
-    this->map.init(this->renderer, &this->camera, this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
-    std::vector<Entity*> entities;
+    this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
 }
@@ -91,17 +89,16 @@ void Game::loadMedia()
 }
 void Game::loadEntities()
 {
-    int i = 0;
     // player
     this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, false);
     // entity0
-    this->entities[i].init((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, true);
-    i++;
+    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, true));
 
-    this->collisionManager.addEntity(&this->player);
-    for (int i = 1; i < NUMBER_OF_ENTITIES; i++)
+    this->collisionManager.addEntities(&this->entities);
+    int size = this->entities.size();
+    for (int i = 1; i < size; i++)
     {
-        this->collisionManager.addEntity(&this->entities[i]);
+        this->collisionManager.addEntity(this->entities[i]);
     }
 }
 
@@ -115,7 +112,7 @@ void Game::handleEvents()
         }
         this->camera.handleEvents(&event);
         this->player.handleEvents(&event);
-	this->mouseManager.handleEvents(&event);
+        this->mouseManager.handleEvents(&event);
     }
 }
 
@@ -123,9 +120,10 @@ void Game::update()
 {
     this->player.update(&this->collisionManager);
     this->camera.update();
-    for (int i = 0; i < NUMBER_OF_ENTITIES; i++)
+    int size = this->entities.size();
+    for (int i = 0; i < size; i++)
     {
-        this->entities[i].update(&this->collisionManager);
+        this->entities[i]->update(&this->collisionManager);
     }
     printUPS();
 }
@@ -142,9 +140,10 @@ void Game::render()
     this->map.render();
 
     // entities
-    for (int i = 0; i < NUMBER_OF_ENTITIES; i++)
+    int size = this->entities.size();
+    for (int i = 0; i < size; i++)
     {
-        this->entities[i].render(&this->camera);
+        this->entities[i]->render(&this->camera);
     }
     this->player.render(&this->camera);
     this->map.getChunk(this->player.getPositionX(), this->player.getPositionY())->getTile(this->player.getPositionX(), this->player.getPositionY());

@@ -20,6 +20,7 @@ public:
     SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
 
     void addEntity(Entity *entity);
+    void addEntities(std::vector<Entity*> *entities);
 
 private:
     std::vector<Entity*> allEntities;

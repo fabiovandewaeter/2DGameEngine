@@ -1,6 +1,10 @@
 #include "Entity.hpp"
 
 Entity::Entity() {}
+Entity::Entity(Texture *texture, SDL_Rect hitBox, bool solid)
+{
+    init(texture, hitBox, solid);
+}
 Entity::~Entity() {}
 
 void Entity::init(Texture *texture, SDL_Rect hitBox, bool solid)

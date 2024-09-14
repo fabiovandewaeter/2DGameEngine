@@ -1,8 +1,6 @@
 #ifndef game_hpp
 #define game_hpp
 
-#define NUMBER_OF_ENTITIES 1
-
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
@@ -51,7 +49,7 @@ private:
     Uint64 frameDelay;
 
     Player player;
-    Entity entities[NUMBER_OF_ENTITIES];
+    std::vector<Entity*> entities;
     Texture *backgroundTexture;
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;
