@@ -13,14 +13,16 @@ public:
     TextManager();
     ~TextManager();
 
-    void init();
+    void init(SDL_Renderer *renderer);
     void loadAllCharactersTextures();
 
-    Texture *generateTextTexture(std::string text);
+    Texture *generateTextTexture(const char *text);
+    void free();
 
 private:
-    Texture *allCharacterTextures[NUMBER_OF_CHARACTERS];
+    SDL_Renderer *renderer;
     TTF_Font *font;
+    Texture *allCharacterTextures[NUMBER_OF_CHARACTERS];
 };
 
 #endif

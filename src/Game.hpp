@@ -11,6 +11,7 @@
 #include "systems/Camera.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/IOManager.hpp"
+#include "systems/TextManager.hpp"
 #include "systems/TextureManager.hpp"
 #include "systems/PerlinNoise.hpp"
 #include "systems/MouseManager.hpp"
@@ -55,15 +56,16 @@ private:
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *staticObjectTextures;
 
-    SDL_Surface *loadSurface(const char *path);
-    SDL_Texture *loadTexture(const char *path);
-
+    TextManager textManager;
     TextureManager textureManager;
     CollisionManager collisionManager;
     IOManager ioManager;
     Map map;
     PerlinNoise perlinNoise;
     MouseManager mouseManager;
+
+    SDL_Surface *loadSurface(const char *path);
+    SDL_Texture *loadTexture(const char *path);
 };
 
 #endif

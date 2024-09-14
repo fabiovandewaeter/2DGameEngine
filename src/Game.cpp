@@ -59,6 +59,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
             std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
             isRunning = false;
         }
+        // Initialize SDL_ttf
+        if (TTF_Init() == -1)
+        {
+            printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        }
     }
     // window icon
     SDL_Surface *iconSurface = SDL_LoadBMP("assets/icon/window_icon.bmp");
@@ -74,6 +79,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
+    this->textManager.init(this->renderer);
 }
 
 void Game::loadMedia()
@@ -88,7 +94,7 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, false);
-    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, true));
+    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, false));
     this->collisionManager.addEntities(&this->entities);
     int size = this->entities.size();
     for (int i = 1; i < size; i++)
@@ -111,8 +117,10 @@ void Game::handleEvents()
     }
 }
 Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
+Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
 void Game::update()
 {
+    // if (limiter("UPS", counterUPSLimiter, 1000 / this->fixedUPS, lastTimeUPSLimiter))
     this->player.update(&this->collisionManager);
     this->camera.update();
     int size = this->entities.size();
@@ -120,15 +128,14 @@ void Game::update()
     {
         this->entities[i]->update(&this->collisionManager);
     }
-    // printUPS();
     countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
 Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
-Uint64 lastTimeFPSLimiter = SDL_GetTicks64(), counterFPSLimiter = 0, intervalFPSLimiter = 1000/60;
+Uint64 lastTimeFPSLimiter = SDL_GetTicks64(), counterFPSLimiter = 0;
 void Game::render()
 {
-    if (limiter("FPS", counterFPSLimiter, intervalFPSLimiter, lastTimeFPSLimiter))
+    if (limiter("FPS", counterFPSLimiter, 1000 / this->fixedFPS, lastTimeFPSLimiter))
     {
         SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
         SDL_RenderClear(this->renderer);

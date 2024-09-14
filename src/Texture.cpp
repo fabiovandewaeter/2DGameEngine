@@ -5,21 +5,19 @@ Texture::Texture() {}
 Texture::Texture(SDL_Renderer *renderer)
 {
     // Initialize
-    texture = NULL;
-    width = 0;
-    height = 0;
+    this->texture = NULL;
+    this->width = 0;
+    this->height = 0;
     this->renderer = renderer;
     this->id = counter;
     counter++;
 }
 Texture::~Texture()
 {
-    // Deallocate
     free();
 }
 void Texture::free()
 {
-    // Free texture if it exists
     if (texture != NULL)
     {
         SDL_DestroyTexture(texture);
@@ -47,29 +45,57 @@ Texture *Texture::loadFromFile(const char *path)
         // Color key image
         SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
         // Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+        newTexture = SDL_CreateTextureFromSurface(this->renderer, loadedSurface);
         if (newTexture == NULL)
         {
             printf("Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError());
         }
         else
         {
-            width = loadedSurface->w;
-            height = loadedSurface->h;
+            this->width = loadedSurface->w;
+            this->height = loadedSurface->h;
         }
         SDL_FreeSurface(loadedSurface);
     }
     texture = newTexture;
     return this;
 }
-Texture *Texture::loadFromRenderedText(std::string text, SDL_Color textColor){
-    
+Texture *Texture::loadFromRenderedText(TTF_Font *font, const char *text, SDL_Color textColor)
+{
+    free();
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, text, textColor);
+    if (textSurface == NULL)
+    {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+    }
+    else
+    {
+        // Create texture from surface pixels
+        this->texture = SDL_CreateTextureFromSurface(this->renderer, textSurface);
+        if (this->texture == NULL)
+        {
+            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        }
+        else
+        {
+            // Get image dimensions
+            this->width = textSurface->w;
+            this->height = textSurface->h;
+        }
+
+        // Get rid of old surface
+        SDL_FreeSurface(textSurface);
+    }
     return this;
 }
 
 void Texture::render(SDL_Rect renderBox)
 {
-    // Set rendering space and render to screen
+    if (renderBox.w == -1 || renderBox.h == -1)
+    {
+        SDL_Rect newRenderBox = {renderBox.x, renderBox.y, this->width, this->height};
+        SDL_RenderCopy(this->renderer, texture, NULL, &newRenderBox);
+    }
     SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
 }
 
@@ -94,6 +120,7 @@ int Texture::getCenterY()
 {
     return this->getHeight() / 2;
 }
-int Texture::getId(){
+int Texture::getId()
+{
     return this->id;
 }

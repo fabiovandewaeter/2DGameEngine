@@ -75,7 +75,6 @@ void Camera::handleEvents(SDL_Event *event)
         else if (event->wheel.y < 0)
         {
             double newScale = this->scale - this->scaleSpeed;
-            std::cout << this->maxScale << " " << newScale << std::endl;
             if (newScale > this->maxScale)
             {
                 this->scale = newScale;
