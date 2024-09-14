@@ -32,8 +32,8 @@ public:
     void clean();
 
     bool running();
-    void printFPS();
-    void printUPS();
+    bool limiter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime);
+    void countPrinter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime);
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
     Uint64 getFrameDelay();

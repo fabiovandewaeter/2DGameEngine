@@ -15,7 +15,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     this->fixedUPS = 60;
     this->screenWidth = width;
     this->screenHeight = height;
-
     // initialize window
     int flags = 0;
     if (fullscreen)
@@ -69,7 +68,6 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     }
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
-
     loadMedia();
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
@@ -89,11 +87,8 @@ void Game::loadMedia()
 }
 void Game::loadEntities()
 {
-    // player
     this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, false);
-    // entity0
     this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, true));
-
     this->collisionManager.addEntities(&this->entities);
     int size = this->entities.size();
     for (int i = 1; i < size; i++)
@@ -115,7 +110,7 @@ void Game::handleEvents()
         this->mouseManager.handleEvents(&event);
     }
 }
-
+Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
 void Game::update()
 {
     this->player.update(&this->collisionManager);
@@ -125,31 +120,35 @@ void Game::update()
     {
         this->entities[i]->update(&this->collisionManager);
     }
-    printUPS();
+    // printUPS();
+    countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
+Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
+Uint64 lastTimeFPSLimiter = SDL_GetTicks64(), counterFPSLimiter = 0, intervalFPSLimiter = 1000/60;
 void Game::render()
 {
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-    SDL_RenderClear(this->renderer);
-
-    double scale = this->camera.getScale();
-    // background
-    this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
-    // tiles and static objects
-    this->map.render();
-
-    // entities
-    int size = this->entities.size();
-    for (int i = 0; i < size; i++)
+    if (limiter("FPS", counterFPSLimiter, intervalFPSLimiter, lastTimeFPSLimiter))
     {
-        this->entities[i]->render(&this->camera);
-    }
-    this->player.render(&this->camera);
-    this->map.getChunk(this->player.getPositionX(), this->player.getPositionY())->getTile(this->player.getPositionX(), this->player.getPositionY());
+        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+        SDL_RenderClear(this->renderer);
 
-    SDL_RenderPresent(this->renderer);
-    // printFPS();
+        double scale = this->camera.getScale();
+        this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
+        // tiles and static objects
+        this->map.render();
+
+        // entities
+        int size = this->entities.size();
+        for (int i = 0; i < size; i++)
+        {
+            this->entities[i]->render(&this->camera);
+        }
+        this->player.render(&this->camera);
+
+        SDL_RenderPresent(this->renderer);
+        countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
+    }
 }
 
 void Game::clean()
@@ -157,11 +156,8 @@ void Game::clean()
     this->textureManager.free();
     this->map.free();
 
-    // Destroy window
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
-
-    // Quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
 
@@ -185,30 +181,29 @@ Uint64 Game::getFrameDelay()
 {
     return this->frameDelay;
 }
-unsigned int frameCount = 0, updateCount = 0;
-float fps = 0, ups = 0;
-Uint64 lastTimeFPS = SDL_GetTicks64(), currentTimeFPS, lastTimeUPS = lastTimeFPS, currentTimeUPS;
-void Game::printFPS()
+bool Game::limiter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime)
 {
-    frameCount++;
-    currentTimeFPS = SDL_GetTicks64();
-    if (currentTimeFPS - lastTimeFPS >= 1000)
-    { // 1000 ms = 1 seconde
-        fps = frameCount / ((currentTimeFPS - lastTimeFPS) / 1000.0f);
-        std::cout << "FPS: " << fps << std::endl;
-        lastTimeFPS = currentTimeFPS;
-        frameCount = 0;
+    bool res = false;
+    counter++;
+    Uint64 currentTime = SDL_GetTicks64();
+    Uint64 deltaTime = currentTime - lastTime;
+    if (deltaTime >= interval)
+    {
+        lastTime = currentTime;
+        counter = 0;
+        res = true;
     }
+    return res;
 }
-void Game::printUPS()
+void Game::countPrinter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime)
 {
-    updateCount++;
-    currentTimeUPS = SDL_GetTicks64();
-    if (currentTimeUPS - lastTimeUPS >= 1000)
+    counter++;
+    Uint64 currentTime = SDL_GetTicks64();
+    Uint64 deltaTime = currentTime - lastTime;
+    if (deltaTime >= interval)
     { // 1000 ms = 1 seconde
-        ups = updateCount / ((currentTimeUPS - lastTimeUPS) / 1000.0f);
-        std::cout << "UPS: " << ups << std::endl;
-        lastTimeUPS = currentTimeUPS;
-        updateCount = 0;
+        std::cout << name << ": " << counter / (deltaTime / 1000.0f) << std::endl;
+        lastTime = currentTime;
+        counter = 0;
     }
 }
