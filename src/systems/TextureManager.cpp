@@ -41,15 +41,19 @@ void TextureManager::loadMedia()
     loadEntityTextures();
     loadTileTextures();
     loadStaticObjectTextures();
+    loadStructureTextures();
 }
 
 void TextureManager::loadEntityTextures()
 {
+    // player
     this->entityTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/player.png"));
+    // entities
     this->entityTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/entity0.png"));
 }
 void TextureManager::loadTileTextures()
 {
+    // grass
     this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass0.png"));
     this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass1.png"));
     this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass2.png"));
@@ -57,9 +61,16 @@ void TextureManager::loadTileTextures()
 }
 void TextureManager::loadStaticObjectTextures()
 {
+    // walls
     this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_stone.png"));
     this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_wood.png"));
+    // doors
     this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/door_wood.png"));
+}
+void TextureManager::loadStructureTextures()
+{
+    // core
+    this->structureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/core.png"));
 }
 
 Texture *TextureManager::getBackgroundTexture()
@@ -77,4 +88,8 @@ std::vector<Texture *> *TextureManager::getTileTextures()
 std::vector<Texture *> *TextureManager::getStaticObjectTextures()
 {
     return &this->staticObjectTextures;
+}
+std::vector<Texture *> *TextureManager::getStructureTextures()
+{
+    return &this->structureTextures;
 }

@@ -90,6 +90,8 @@ void Game::loadMedia()
     this->entityTextures = this->textureManager.getEntityTextures();
     this->tileTextures = this->textureManager.getTileTextures();
     this->staticObjectTextures = this->textureManager.getStaticObjectTextures();
+    this->structureTextures = this->textureManager.getStructureTextures();
+
 }
 void Game::loadEntities()
 {

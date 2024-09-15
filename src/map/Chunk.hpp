@@ -9,6 +9,7 @@
 #include "Tile.hpp"
 #include "../staticObjects/StaticObject.hpp"
 #include "../staticObjects/Wall.hpp"
+#include "../structures/Structure.hpp"
 #include "../systems/PerlinNoise.hpp"
 
 class Tile;
@@ -24,11 +25,12 @@ public:
     void loadStaticObjects();
     void render(Camera *camera);
 
-    void convertToTileCoordinates(int &x, int &y);
     Tile *getTile(int x, int y);
     bool isStaticObject(int x, int y);
     StaticObject *getStaticObject(int x, int y);
-    void addStaticObject(int x, int y);
+    void addStaticObject(int x, int y, StaticObject *staticObject);
+    void addStructure(int x, int y, Structure*structure);
+    void addWall(int x, int y);
     void destroyStaticObject(int x, int y);
 
 private:
@@ -42,6 +44,8 @@ private:
     int positionX, positionY;
     SDL_Rect box;
     PerlinNoise *perlinNoise;
+
+    void convertToTileCoordinates(int &x, int &y);
 };
 
 #endif

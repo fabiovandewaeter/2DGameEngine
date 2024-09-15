@@ -17,11 +17,13 @@ public:
     void loadEntityTextures();
     void loadTileTextures();
     void loadStaticObjectTextures();
+    void loadStructureTextures();
 
     Texture *getBackgroundTexture();
     std::vector<Texture *> *getEntityTextures();
     std::vector<Texture *> *getTileTextures();
     std::vector<Texture *> *getStaticObjectTextures();
+    std::vector<Texture *> *getStructureTextures();
 
 private:
     SDL_Renderer *renderer;
@@ -29,6 +31,7 @@ private:
     std::vector<Texture *> entityTextures;
     std::vector<Texture *> tileTextures;
     std::vector<Texture *> staticObjectTextures;
+    std::vector<Texture *> structureTextures;
 };
 
 #endif

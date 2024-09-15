@@ -28,10 +28,9 @@ void MouseManager::handleEvents(SDL_Event *event)
 			i = x;
 			j = y;
 			chunk = this->map->getChunk(x, y);
-			chunk->convertToTileCoordinates(i, j);
 			if (event->button.button == SDL_BUTTON_LEFT)
 			{
-				chunk->addStaticObject(i, j);
+				chunk->addWall(i, j);
 			}
 			else if (event->button.button == SDL_BUTTON_RIGHT)
 			{

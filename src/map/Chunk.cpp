@@ -121,6 +121,7 @@ Tile *Chunk::getTile(int x, int y)
 bool Chunk::isStaticObject(int x, int y)
 {
     int i = x, j = y;
+    convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     if (this->allStaticObjects.find(coordinates) == this->allStaticObjects.end())
     {
@@ -130,22 +131,35 @@ bool Chunk::isStaticObject(int x, int y)
 }
 StaticObject *Chunk::getStaticObject(int x, int y)
 {
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
+    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     return this->allStaticObjects[coordinates];
 }
-void Chunk::addStaticObject(int x, int y)
+void Chunk::addStaticObject(int x, int y, StaticObject *staticObject)
 {
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
     if (!isStaticObject(x, y))
     {
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[1], (SDL_Rect){x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        this->allStaticObjects[coordinates] = staticObject;
     }
+}
+void Chunk::addWall(int x, int y)
+{
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
+    SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+    addStaticObject(x, y, new Wall((*this->staticObjectTextures)[1], box));
 }
 void Chunk::destroyStaticObject(int x, int y)
 {
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
     if (isStaticObject(x, y))
     {
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
         this->allStaticObjects[coordinates]->destroy();
         this->allStaticObjects.erase(coordinates);
     }

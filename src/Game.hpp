@@ -17,6 +17,8 @@
 #include "systems/MouseManager.hpp"
 #include "map/Map.hpp"
 #include "map/Tile.hpp"
+#include "structures/Structure.hpp"
+#include "structures/Core.hpp"
 
 class Game
 {
@@ -55,6 +57,7 @@ private:
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *staticObjectTextures;
+    std::vector<Texture *> *structureTextures;
 
     TextManager textManager;
     TextureManager textureManager;

@@ -26,7 +26,6 @@ public:
     void render();
     void free();
 
-    void convertToChunkCoordinates(int &x, int &y);
     bool isChunkGenerated(int x, int y);
     Chunk *getChunk(int x, int y);
 
@@ -37,6 +36,8 @@ private:
     PerlinNoise *perlinNoise;
     std::unordered_map<std::string, Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;
+
+    void convertToChunkCoordinates(int &x, int &y);
 };
 
 #endif
