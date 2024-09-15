@@ -19,7 +19,7 @@ public:
     Map();
     ~Map();
 
-    void init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise);
+    void init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
@@ -33,6 +33,7 @@ private:
     Camera *camera;
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *staticObjectTextures;
+    std::vector<Texture *> *structureTextures;
     PerlinNoise *perlinNoise;
     std::unordered_map<std::string, Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;

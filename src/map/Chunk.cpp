@@ -1,12 +1,13 @@
 #include "Chunk.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, PerlinNoise *perlinNoise)
+Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise)
 {
     this->positionX;
     this->positionY;
     this->tileSize = tileSize;
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;
+    this->structureTextures = structureTextures;
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     // loadTiles();
@@ -144,6 +145,16 @@ void Chunk::addStaticObject(int x, int y, StaticObject *staticObject)
     {
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
         this->allStaticObjects[coordinates] = staticObject;
+    }
+}
+void Chunk::addStructure(int x, int y, Structure *structure)
+{
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
+    if (!isStaticObject(x, y))
+    {
+        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        this->allStructures[coordinates] = structure;
     }
 }
 void Chunk::addWall(int x, int y)

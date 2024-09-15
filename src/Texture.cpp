@@ -27,7 +27,7 @@ void Texture::free()
     }
 }
 
-Texture *Texture::loadFromFile(const char *path)
+Texture *Texture::loadFromFile(std::string path)
 {
     // Get rid of preexisting texture
     free();
@@ -35,7 +35,7 @@ Texture *Texture::loadFromFile(const char *path)
     SDL_Texture *newTexture = NULL;
 
     // Load image at specified path
-    SDL_Surface *loadedSurface = IMG_Load(path);
+    SDL_Surface *loadedSurface = IMG_Load(path.c_str());
     if (loadedSurface == NULL)
     {
         printf("Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError());
@@ -60,10 +60,10 @@ Texture *Texture::loadFromFile(const char *path)
     texture = newTexture;
     return this;
 }
-Texture *Texture::loadFromRenderedText(TTF_Font *font, const char *text, SDL_Color textColor)
+Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor)
 {
     free();
-    SDL_Surface *textSurface = TTF_RenderText_Solid(font, text, textColor);
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
     if (textSurface == NULL)
     {
         printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

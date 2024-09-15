@@ -15,8 +15,8 @@ public:
     Texture(SDL_Renderer *renderer);
     ~Texture();
 
-    Texture *loadFromFile(const char *path);
-    Texture *loadFromRenderedText(TTF_Font *font, const char *text, SDL_Color textColor);
+    Texture *loadFromFile(std::string path);
+    Texture *loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor);
     void free();
     void render(SDL_Rect renderBox);
 

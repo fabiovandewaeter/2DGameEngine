@@ -8,6 +8,7 @@ class StaticObject
 {
 public:
     StaticObject();
+    StaticObject(Texture *texture, const char *name, unsigned int HP);
     StaticObject(Texture *texture, SDL_Rect hitBox, const char *name, unsigned int HP);
     ~StaticObject();
 

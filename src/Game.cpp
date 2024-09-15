@@ -9,7 +9,7 @@ Game::~Game()
 {
 }
 
-void Game::init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen)
+void Game::init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
     this->fixedFPS = 60;
     this->fixedUPS = 60;
@@ -26,7 +26,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     {
         std::cout << "Subsystems Initialised" << std::endl;
         // Create window
-        this->window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+        this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
         if (this->window)
         {
             std::cout << "Window created" << std::endl;
@@ -76,7 +76,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
-    this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, &this->perlinNoise);
+    this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, this->structureTextures, &this->perlinNoise);
+    this->map.getChunk(0, 0)->addStructure(5*16, 5*16, new Core((*this->structureTextures)[0], "Core1", 1000))
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
@@ -91,7 +92,6 @@ void Game::loadMedia()
     this->tileTextures = this->textureManager.getTileTextures();
     this->staticObjectTextures = this->textureManager.getStaticObjectTextures();
     this->structureTextures = this->textureManager.getStructureTextures();
-
 }
 void Game::loadEntities()
 {

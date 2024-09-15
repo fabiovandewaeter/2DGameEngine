@@ -6,8 +6,9 @@
 class Core : public Structure
 {
 public:
-    Core(Texture *texture, SDL_Rect hitBox, const char *name, unsigned int HP);
-    ~Core();
+    Core(Texture *texture, std::string name, unsigned int HP);
+    Core(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP);
+
 private:
 };
 

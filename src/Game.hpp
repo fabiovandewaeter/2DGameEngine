@@ -26,7 +26,7 @@ public:
     Game();
     ~Game();
 
-    void init(const char *title, int xpos, int ypos, int width, int height, bool fullscreen);
+    void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen);
     void loadMedia();
     void loadEntities();
     void handleEvents();
@@ -67,8 +67,8 @@ private:
     PerlinNoise perlinNoise;
     MouseManager mouseManager;
 
-    SDL_Surface *loadSurface(const char *path);
-    SDL_Texture *loadTexture(const char *path);
+    SDL_Surface *loadSurface(std::string path);
+    SDL_Texture *loadTexture(std::string path);
 };
 
 #endif
