@@ -7,8 +7,8 @@
 #include <unordered_map>
 #include <cmath>
 #include "Tile.hpp"
-#include "../objects/staticObjects/StaticObject.hpp"
-#include "../objects/staticObjects/Wall.hpp"
+#include "../staticObjects/StaticObject.hpp"
+#include "../staticObjects/Wall.hpp"
 #include "../systems/PerlinNoise.hpp"
 
 class Tile;

@@ -1,16 +1,19 @@
 #include "StaticObject.hpp"
 
 StaticObject::StaticObject() {}
-StaticObject::StaticObject(Texture *texture, SDL_Rect hitbox)
+StaticObject::StaticObject(Texture *texture, SDL_Rect hitBox, const char *name, unsigned int HP)
 {
-    init(texture, hitBox);
+    init(texture, hitBox, name, HP);
 }
 StaticObject::~StaticObject() {}
 
-void StaticObject::init(Texture *texture, SDL_Rect hitBox){
+void StaticObject::init(Texture *texture, SDL_Rect hitBox, const char *name, unsigned int HP)
+{
     this->texture = texture;
     this->hitBox = hitBox;
     this->solid = true;
+    this->name = name;
+    this->HP = HP;
 }
 
 void StaticObject::render(Camera *camera)
@@ -23,13 +26,16 @@ void StaticObject::render(Camera *camera)
     }
 }
 
-void StaticObject::destroy(){
+void StaticObject::destroy()
+{
     delete this;
 }
 
-SDL_Rect StaticObject::getHitBox(){
+SDL_Rect StaticObject::getHitBox()
+{
     return this->hitBox;
 }
-bool StaticObject::isSolid(){
+bool StaticObject::isSolid()
+{
     return this->solid;
 }

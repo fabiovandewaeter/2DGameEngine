@@ -22,7 +22,7 @@ void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector
 
 void Map::loadChunks()
 {
-    loadSquareMap(50);
+    loadSquareMap(10);
 }
 void Map::loadSquareMap(int size)
 {

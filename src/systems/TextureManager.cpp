@@ -57,9 +57,9 @@ void TextureManager::loadTileTextures()
 }
 void TextureManager::loadStaticObjectTextures()
 {
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/wall_stone.png"));
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/wall_wood.png"));
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/objects/staticObjects/door_wood.png"));
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_stone.png"));
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_wood.png"));
+    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/door_wood.png"));
 }
 
 Texture *TextureManager::getBackgroundTexture()
