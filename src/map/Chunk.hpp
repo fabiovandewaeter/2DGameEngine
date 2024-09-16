@@ -29,6 +29,7 @@ public:
     bool isStaticObject(int x, int y);
     StaticObject *getStaticObject(int x, int y);
     void addStaticObject(int x, int y, StaticObject *staticObject);
+    bool isStructure(int x, int y);
     void addStructure(int x, int y, Structure*structure);
     void addWall(int x, int y);
     void destroyStaticObject(int x, int y);

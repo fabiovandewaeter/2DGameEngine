@@ -19,3 +19,12 @@ void Structure::init(Texture *texture, SDL_Rect hitBox, std::string name, unsign
 void Structure::setHitBox(SDL_Rect hitBox){
     this->hitBox = hitBox;
 }
+void Structure::render(Camera *camera)
+{
+    SDL_Rect renderBox = this->hitBox;
+    camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisible(renderBox))
+    {
+        this->texture->render(renderBox);
+    }
+}

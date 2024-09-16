@@ -30,10 +30,12 @@ void MouseManager::handleEvents(SDL_Event *event)
 			chunk = this->map->getChunk(x, y);
 			if (event->button.button == SDL_BUTTON_LEFT)
 			{
+				std::cout << x << " " << y << " " << i << " " << j << std::endl;
 				chunk->addWall(i, j);
 			}
 			else if (event->button.button == SDL_BUTTON_RIGHT)
 			{
+				std::cout << x << " " << y << " " << i << " " << j << std::endl;
 				chunk->destroyStaticObject(i, j);
 			}
 			break;
@@ -41,7 +43,5 @@ void MouseManager::handleEvents(SDL_Event *event)
 		case SDL_MOUSEBUTTONUP:
 			break;
 		}
-
-		// std::cout << "pixels : " << x << " " << y << " tile: " << i << " " << j << std::endl;
 	}
 }

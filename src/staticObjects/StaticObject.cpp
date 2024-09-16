@@ -39,3 +39,6 @@ bool StaticObject::isSolid()
 {
     return this->solid;
 }
+void StaticObject::setHitBox(SDL_Rect hitBox){
+    this->hitBox = hitBox;
+}

@@ -77,7 +77,11 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
     this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, this->structureTextures, &this->perlinNoise);
-    this->map.getChunk(0, 0)->addStructure(5*16, 5*16, new Core((*this->structureTextures)[0], "Core1", 1000))
+
+    printf("ON VOIT PAS LE CORE");
+    this->map.getChunk(0, 0)->addStructure(0, 0, new Core((*this->structureTextures)[0], "Core1", 1000));
+    //this->map.getChunk(0, 0)->addStaticObject(0, 0, new Wall((*this->structureTextures)[0], "Core1", 1000));
+
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
@@ -130,7 +134,7 @@ void Game::update()
     {
         this->entities[i]->update(&this->collisionManager);
     }
-    countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
+    //countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
 Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
@@ -156,7 +160,7 @@ void Game::render()
         this->player.render(&this->camera);
 
         SDL_RenderPresent(this->renderer);
-        countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
+        //countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
     }
 }
 
