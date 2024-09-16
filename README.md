@@ -10,11 +10,11 @@ The basic functionalities of a game engine are recreated from scratch in order t
 
 Windows :
 
-`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/staticObjects/*.cpp src/structures/*.cpp -o Windows_bin/main -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ; .\Windows_bin\main.exe`
+`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -o Windows_bin/main -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf ; .\Windows_bin\main.exe`
 
 MacOs:
 
-`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/staticObjects/*.cpp src/structures/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image -lSDL2_ttf ; ./a.out`
+`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image -lSDL2_ttf ; ./a.out`
 
 Linux (no root):
 
@@ -33,7 +33,7 @@ wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
 ./configure --prefix=$HOME/libs/SDL2
 ```
 
-`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/staticObjects/*.cpp src/structures/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image -lSDL2_ttf`
+`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image -lSDL2_ttf`
 
 ## SDL libraries
 - SDL2
