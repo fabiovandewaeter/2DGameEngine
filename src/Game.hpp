@@ -18,7 +18,7 @@
 #include "map/Map.hpp"
 #include "map/Tile.hpp"
 #include "structures/Structure.hpp"
-#include "structures/Core.hpp"
+#include "structures/activeStructures/Core.hpp"
 
 class Game
 {
@@ -52,12 +52,12 @@ private:
     Uint64 frameDelay;
 
     Player player;
-    std::vector<Entity*> entities;
+    std::vector<Entity *> entities;
     Texture *backgroundTexture;
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;
-    std::vector<Texture *> *staticObjectTextures;
-    std::vector<Texture *> *structureTextures;
+    std::vector<Texture *> *passiveStructureTextures;
+    std::vector<Texture *> *activeStructureTextures;
 
     TextManager textManager;
     TextureManager textureManager;

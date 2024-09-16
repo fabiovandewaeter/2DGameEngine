@@ -1,6 +1,6 @@
 #include "TextureManager.hpp"
 
-TextureManager::TextureManager(){}
+TextureManager::TextureManager() {}
 TextureManager::TextureManager(SDL_Renderer *renderer)
 {
     init(renderer);
@@ -22,14 +22,15 @@ void TextureManager::free()
     {
         this->tileTextures[i]->free();
     }
-    size = this->staticObjectTextures.size();
+    size = this->passiveStructureTextures.size();
     for (int i = 0; i < size; i++)
     {
-        this->staticObjectTextures[i]->free();
+        this->passiveStructureTextures[i]->free();
     }
 }
 
-void TextureManager::init(SDL_Renderer *renderer){
+void TextureManager::init(SDL_Renderer *renderer)
+{
     this->renderer = renderer;
 }
 void TextureManager::loadMedia()
@@ -40,8 +41,8 @@ void TextureManager::loadMedia()
 
     loadEntityTextures();
     loadTileTextures();
-    loadStaticObjectTextures();
-    loadStructureTextures();
+    loadPassiveStructureTextures();
+    loadActiveStructureTextures();
 }
 
 void TextureManager::loadEntityTextures()
@@ -59,18 +60,18 @@ void TextureManager::loadTileTextures()
     this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass2.png"));
     this->tileTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/tiles/grass3.png"));
 }
-void TextureManager::loadStaticObjectTextures()
+void TextureManager::loadPassiveStructureTextures()
 {
     // walls
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_stone.png"));
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/wall_wood.png"));
+    this->passiveStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/passiveStructures/wall_stone.png"));
+    this->passiveStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/passiveStructures/wall_wood.png"));
     // doors
-    this->staticObjectTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/staticObjects/door_wood.png"));
+    this->passiveStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/passiveStructures/door_wood.png"));
 }
-void TextureManager::loadStructureTextures()
+void TextureManager::loadActiveStructureTextures()
 {
     // core
-    this->structureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/core.png"));
+    this->activeStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/activeStructures/core.png"));
 }
 
 Texture *TextureManager::getBackgroundTexture()
@@ -85,11 +86,11 @@ std::vector<Texture *> *TextureManager::getTileTextures()
 {
     return &this->tileTextures;
 }
-std::vector<Texture *> *TextureManager::getStaticObjectTextures()
+std::vector<Texture *> *TextureManager::getPassiveStructureTextures()
 {
-    return &this->staticObjectTextures;
+    return &this->passiveStructureTextures;
 }
-std::vector<Texture *> *TextureManager::getStructureTextures()
+std::vector<Texture *> *TextureManager::getActiveStructureTextures()
 {
-    return &this->structureTextures;
+    return &this->activeStructureTextures;
 }

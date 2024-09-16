@@ -7,9 +7,8 @@
 #include <unordered_map>
 #include <cmath>
 #include "Tile.hpp"
-#include "../staticObjects/StaticObject.hpp"
-#include "../staticObjects/Wall.hpp"
 #include "../structures/Structure.hpp"
+#include "../structures/passiveStructures/Wall.hpp"
 #include "../systems/PerlinNoise.hpp"
 
 class Tile;
@@ -17,32 +16,32 @@ class Tile;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise);
+    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise);
     ~Chunk();
 
     void loadTiles();
     void loadTilesWithPerlinNoise();
-    void loadStaticObjects();
+    void loadPassiveStructures();
+    void loadActiveStructures();
     void render(Camera *camera);
 
     Tile *getTile(int x, int y);
-    bool isStaticObject(int x, int y);
-    StaticObject *getStaticObject(int x, int y);
-    void addStaticObject(int x, int y, StaticObject *staticObject);
-    bool isStructure(int x, int y);
-    void addStructure(int x, int y, Structure*structure);
+    Structure *getPassiveStructure(int x, int y);
+    Structure *getActiveStructure(int x, int y);
+    bool isPassiveStructure(int x, int y);
+    bool isActiveStructure(int x, int y);
+    void addPassiveStructure(int x, int y, Structure *passiveStructure);
+    void addActiveStructure(int x, int y, Structure *activeStructure);
     void addWall(int x, int y);
-    void destroyStaticObject(int x, int y);
+    void destroyPassiveStructure(int x, int y);
 
 private:
     Tile *allTiles[SIZE * SIZE];
     std::vector<Texture *> *tileTextures;
     int tileSize;
 
-    std::unordered_map<std::string, StaticObject *> allStaticObjects;
-    std::vector<Texture *> *staticObjectTextures;
-    std::unordered_map<std::string, Structure*> allStructures;
-    std::vector<Texture *> *structureTextures;
+    std::unordered_map<std::string, Structure *> allPassiveStructures, allActiveStructures;
+    std::vector<Texture *> *passiveStructureTextures, *activeStructureTextures;
 
     int positionX, positionY;
     SDL_Rect box;

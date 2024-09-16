@@ -1,18 +1,19 @@
 #include "Chunk.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise)
+Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise)
 {
     this->positionX;
     this->positionY;
     this->tileSize = tileSize;
     this->tileTextures = tileTextures;
-    this->staticObjectTextures = staticObjectTextures;
-    this->structureTextures = structureTextures;
+    this->passiveStructureTextures = passiveStructureTextures;
+    this->activeStructureTextures = activeStructureTextures;
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     // loadTiles();
     loadTilesWithPerlinNoise();
-    loadStaticObjects();
+    loadPassiveStructures();
+    loadActiveStructures();
 }
 Chunk::~Chunk()
 {
@@ -20,7 +21,11 @@ Chunk::~Chunk()
     {
         delete this->allTiles[i];
     }
-    for (auto &pair : this->allStaticObjects)
+    for (auto &pair : this->allPassiveStructures)
+    {
+        delete pair.second;
+    }
+    for (auto &pair : this->allActiveStructures)
     {
         delete pair.second;
     }
@@ -67,19 +72,21 @@ void Chunk::loadTilesWithPerlinNoise()
         }
     }
 }
-void Chunk::loadStaticObjects()
+void Chunk::loadPassiveStructures()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, true);
     i++;
     i++;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStaticObjects[coordinates] = new Wall((*this->staticObjectTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, true);
     i++;
     i++;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
-    // convertToTileCoordinates(x, y);
+}
+void Chunk::loadActiveStructures()
+{
 }
 
 void Chunk::render(Camera *camera)
@@ -93,11 +100,11 @@ void Chunk::render(Camera *camera)
             this->allTiles[i]->render(camera);
         }
     }
-    for (auto &pair : this->allStaticObjects)
+    for (auto &pair : this->allPassiveStructures)
     {
         pair.second->render(camera);
     }
-    for (auto &pair : this->allStructures)
+    for (auto &pair : this->allActiveStructures)
     {
         pair.second->render(camera);
     }
@@ -123,71 +130,78 @@ Tile *Chunk::getTile(int x, int y)
     convertToTileCoordinates(i, j);
     return this->allTiles[SIZE * i + j];
 }
-StaticObject *Chunk::getStaticObject(int x, int y)
+Structure *Chunk::getPassiveStructure(int x, int y)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    return this->allStaticObjects[coordinates];
+    return this->allPassiveStructures[coordinates];
 }
-bool Chunk::isStaticObject(int x, int y)
+Structure *Chunk::getActiveStructure(int x, int y)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    if (this->allStaticObjects.find(coordinates) == this->allStaticObjects.end())
+    return this->allPassiveStructures[coordinates];
+}
+bool Chunk::isPassiveStructure(int x, int y)
+{
+    int i = x, j = y;
+    convertToTileCoordinates(i, j);
+    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    if (this->allPassiveStructures.find(coordinates) == this->allPassiveStructures.end())
     {
         return false;
     }
     return true;
 }
-bool Chunk::isStructure(int x, int y)
+bool Chunk::isActiveStructure(int x, int y)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    if (this->allStructures.find(coordinates) == this->allStructures.end())
+    if (this->allActiveStructures.find(coordinates) == this->allActiveStructures.end())
     {
         return false;
     }
     return true;
 }
-void Chunk::addStaticObject(int x, int y, StaticObject *staticObject)
+void Chunk::addPassiveStructure(int x, int y, Structure *staticObject)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
-    if (!isStaticObject(i, j))
+    if (!isPassiveStructure(i, j))
     {
         SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         staticObject->setHitBox(box);
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allStaticObjects[coordinates] = staticObject;
+        this->allPassiveStructures[coordinates] = staticObject;
     }
 }
-void Chunk::addStructure(int x, int y, Structure *structure)
+void Chunk::addActiveStructure(int x, int y, Structure *structure)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
-    if (!isStructure(i, j))
+    if (!isActiveStructure(i, j))
     {
         SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allStructures[coordinates] = structure;
+        this->allActiveStructures[coordinates] = structure;
     }
 }
 void Chunk::addWall(int x, int y)
 {
-    addStaticObject(x, y, new Wall((*this->staticObjectTextures)[1], (SDL_Rect){-1, -1, -1, -1}));
+    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){-1, -1, -1, -1}, true));
 }
-void Chunk::destroyStaticObject(int x, int y)
+void Chunk::destroyPassiveStructure(int x, int y)
 {
     int i = x, j = y;
     convertToTileCoordinates(i, j);
-    if (isStaticObject(x, y))
+    if (isPassiveStructure(x, y))
     {
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allStaticObjects[coordinates]->destroy();
-        this->allStaticObjects.erase(coordinates);
+        this->allPassiveStructures[coordinates]->destroy();
+        this->allPassiveStructures.erase(coordinates);
     }
 }

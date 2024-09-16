@@ -16,22 +16,22 @@ public:
     void loadMedia();
     void loadEntityTextures();
     void loadTileTextures();
-    void loadStaticObjectTextures();
-    void loadStructureTextures();
+    void loadPassiveStructureTextures();
+    void loadActiveStructureTextures();
 
     Texture *getBackgroundTexture();
     std::vector<Texture *> *getEntityTextures();
     std::vector<Texture *> *getTileTextures();
-    std::vector<Texture *> *getStaticObjectTextures();
-    std::vector<Texture *> *getStructureTextures();
+    std::vector<Texture *> *getPassiveStructureTextures();
+    std::vector<Texture *> *getActiveStructureTextures();
 
 private:
     SDL_Renderer *renderer;
     Texture *backgroundTexture;
     std::vector<Texture *> entityTextures;
     std::vector<Texture *> tileTextures;
-    std::vector<Texture *> staticObjectTextures;
-    std::vector<Texture *> structureTextures;
+    std::vector<Texture *> passiveStructureTextures;
+    std::vector<Texture *> activeStructureTextures;
 };
 
 #endif

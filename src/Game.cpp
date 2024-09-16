@@ -76,12 +76,8 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
-    this->map.init(&this->camera, this->tileTextures, this->staticObjectTextures, this->structureTextures, &this->perlinNoise);
-
-    printf("ON VOIT PAS LE CORE");
-    this->map.getChunk(0, 0)->addStructure(0, 0, new Core((*this->structureTextures)[0], "Core1", 1000));
-    //this->map.getChunk(0, 0)->addStaticObject(0, 0, new Wall((*this->structureTextures)[0], "Core1", 1000));
-
+    this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise);
+    this->map.getChunk(0, 0)->addActiveStructure(0, 0, new Core((*this->activeStructureTextures)[0], "Core1", 1000, true));
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
@@ -94,8 +90,8 @@ void Game::loadMedia()
     this->backgroundTexture = this->textureManager.getBackgroundTexture();
     this->entityTextures = this->textureManager.getEntityTextures();
     this->tileTextures = this->textureManager.getTileTextures();
-    this->staticObjectTextures = this->textureManager.getStaticObjectTextures();
-    this->structureTextures = this->textureManager.getStructureTextures();
+    this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
+    this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
 }
 void Game::loadEntities()
 {

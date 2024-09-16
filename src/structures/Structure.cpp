@@ -1,24 +1,21 @@
 #include "Structure.hpp"
 
-Structure::Structure(){}
-Structure::Structure(Texture *texture, std::string name, unsigned int HP){
-    init(texture, (SDL_Rect){0, 0, 0, 0}, name, HP);
+Structure::Structure() {}
+Structure::Structure(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid)
+{
+    init(texture, hitBox, name, HP, solid);
 }
-Structure::Structure(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP){
+Structure::~Structure() {}
 
-    init(texture, hitBox, name, HP);
-}
-Structure::~Structure(){}
-
-void Structure::init(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP){
+void Structure::init(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid)
+{
     this->texture = texture;
     this->hitBox = hitBox;
     this->name = name;
     this->HP = HP;
+    this->solid = solid;
 }
-void Structure::setHitBox(SDL_Rect hitBox){
-    this->hitBox = hitBox;
-}
+
 void Structure::render(Camera *camera)
 {
     SDL_Rect renderBox = this->hitBox;
@@ -27,4 +24,22 @@ void Structure::render(Camera *camera)
     {
         this->texture->render(renderBox);
     }
+}
+
+void Structure::destroy()
+{
+    delete this;
+}
+
+SDL_Rect Structure::getHitBox()
+{
+    return this->hitBox;
+}
+bool Structure::isSolid()
+{
+    return this->solid;
+}
+void Structure::setHitBox(SDL_Rect hitBox)
+{
+    this->hitBox = hitBox;
 }

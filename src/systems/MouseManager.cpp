@@ -30,13 +30,11 @@ void MouseManager::handleEvents(SDL_Event *event)
 			chunk = this->map->getChunk(x, y);
 			if (event->button.button == SDL_BUTTON_LEFT)
 			{
-				std::cout << x << " " << y << " " << i << " " << j << std::endl;
 				chunk->addWall(i, j);
 			}
 			else if (event->button.button == SDL_BUTTON_RIGHT)
 			{
-				std::cout << x << " " << y << " " << i << " " << j << std::endl;
-				chunk->destroyStaticObject(i, j);
+				chunk->destroyPassiveStructure(i, j);
 			}
 			break;
 

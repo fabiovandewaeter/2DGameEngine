@@ -45,12 +45,23 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             {
                 newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
                 chunk = this->map->getChunk(newX, newY);
-                if (chunk->isStaticObject(newX, newY))
+                if (chunk->isPassiveStructure(newX, newY))
                 {
-                    StaticObject *staticObject = chunk->getStaticObject(newX, newY);
-                    if (staticObject->isSolid())
+                    Structure *passiveStructure = chunk->getPassiveStructure(newX, newY);
+                    if (passiveStructure->isSolid())
                     {
-                        if (checkCollision(newHitBox, staticObject->getHitBox()))
+                        if (checkCollision(newHitBox, passiveStructure->getHitBox()))
+                        {
+                            return hitBox;
+                        }
+                    }
+                }
+                if (chunk->isActiveStructure(newX, newY))
+                {
+                    Structure *activeStructure = chunk->getActiveStructure(newX, newY);
+                    if (activeStructure->isSolid())
+                    {
+                        if (checkCollision(newHitBox, activeStructure->getHitBox()))
                         {
                             return hitBox;
                         }

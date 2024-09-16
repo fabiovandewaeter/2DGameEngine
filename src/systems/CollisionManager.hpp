@@ -5,7 +5,7 @@
 #include <vector>
 #include "../entities/Entity.hpp"
 #include "../map/Map.hpp"
-#include "../staticObjects/StaticObject.hpp"
+#include "../structures/Structure.hpp"
 
 class Entity;
 
