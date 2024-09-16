@@ -70,6 +70,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             }
         }
     }
+                printf("8\n");
     return newHitBox;
 }
 

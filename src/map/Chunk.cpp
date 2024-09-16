@@ -142,7 +142,7 @@ Structure *Chunk::getActiveStructure(int x, int y)
     int i = x, j = y;
     convertToTileCoordinates(i, j);
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    return this->allPassiveStructures[coordinates];
+    return this->allActiveStructures[coordinates];
 }
 bool Chunk::isPassiveStructure(int x, int y)
 {
