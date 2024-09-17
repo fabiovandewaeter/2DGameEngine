@@ -6,8 +6,12 @@
 #include "../entities/Entity.hpp"
 #include "../map/Map.hpp"
 #include "../structures/Structure.hpp"
+#include "EntityManager.hpp"
 
 class Entity;
+class Map;
+class Chunk;
+class EntityManager;
 
 class CollisionManager
 {
@@ -15,16 +19,15 @@ public:
     CollisionManager();
     ~CollisionManager();
 
-    void init(std::vector<Entity *> entities, Map *map);
+    void init(Map *map, EntityManager *entityManager);
+    // returns true if there is a collision
     bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
+    bool checkCollisionFromCoordinates(int x, int y, SDL_Rect rect);
     SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
 
-    void addEntity(Entity *entity);
-    void addEntities(std::vector<Entity*> *entities);
-
 private:
-    std::vector<Entity*> allEntities;
     Map *map;
+    EntityManager *entityManager;
 };
 
 #endif

@@ -3,10 +3,10 @@
 CollisionManager::CollisionManager() {}
 CollisionManager::~CollisionManager() {}
 
-void CollisionManager::init(std::vector<Entity *> entities, Map *map)
+void CollisionManager::init(Map *map, EntityManager *entityManager)
 {
-    this->allEntities.insert(this->allEntities.end(), entities.begin(), entities.end());
     this->map = map;
+    this->entityManager = entityManager;
 }
 
 bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
@@ -16,26 +16,30 @@ bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
              rectA.y + rectA.h <= rectB.y ||
              rectA.y >= rectB.y + rectB.h);
 }
-
+bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect)
+{
+    return !(x <= rect.x ||
+             x >= rect.x + rect.w ||
+             y <= rect.y ||
+             y >= rect.y + rect.h);
+}
 SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
 {
+    std::cout << "IL FAUT DEPLACER CA DANS LES ENTITIES OU LE ENTITYMANAGER QUAND IL Y AURA UN QUADTREE OU UN SEGMENTTREE" << std::endl;
+    // entities
+    std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
+    int size = entities.size();
+    for (int i = 0; i< size; i++){
+        if (checkCollision(entity->getHitBox(), entities[i]->getHitBox())){
+            entities[i]->collisionWith(entity);
+        }
+    }
     bool collision = false;
     SDL_Rect hitBox = entity->getHitBox();
     SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
+    // structures
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
-        int size = this->allEntities.size();
-        for (int i = 0; i < size && !collision; i++)
-        {
-            Entity *otherEntity = this->allEntities[i];
-            if (entity != otherEntity && otherEntity->isSolid())
-            {
-                if (checkCollision(newHitBox, otherEntity->getHitBox()))
-                {
-                    return hitBox;
-                }
-            }
-        }
         // check destination for all 4 corners of the entity
         int newX, newY;
         Chunk *chunk;
@@ -56,6 +60,10 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
                         }
                     }
                 }
+                int size = entities.size();
+                for (int k = 0; k < size; k++)
+                {
+                }
                 if (chunk->isActiveStructure(newX, newY))
                 {
                     Structure *activeStructure = chunk->getActiveStructure(newX, newY);
@@ -70,19 +78,5 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             }
         }
     }
-                printf("8\n");
     return newHitBox;
-}
-
-void CollisionManager::addEntity(Entity *entity)
-{
-    this->allEntities.push_back(entity);
-}
-void CollisionManager::addEntities(std::vector<Entity *> *entities)
-{
-    int size = entities->size();
-    for (int i = 0; i < size; i++)
-    {
-        this->allEntities.push_back((*entities)[i]);
-    }
 }

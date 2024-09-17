@@ -1,19 +1,19 @@
 #include "Entity.hpp"
 
 Entity::Entity() {}
-Entity::Entity(Texture *texture, SDL_Rect hitBox, bool solid)
+Entity::Entity(Texture *texture, SDL_Rect hitBox)
 {
-    init(texture, hitBox, solid);
+    init(texture, hitBox);
 }
 Entity::~Entity() {}
 
-void Entity::init(Texture *texture, SDL_Rect hitBox, bool solid)
+void Entity::init(Texture *texture, SDL_Rect hitBox)
 {
     this->texture = texture;
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
-    this->solid = solid;
+    this->solid = false;
 }
 
 void Entity::update(CollisionManager *collisionManager)
@@ -36,9 +36,7 @@ void Entity::move(CollisionManager *collisionManager)
     {
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-
         SDL_Rect newRect = collisionManager->handleCollisionsFor(this, newPosX, newPosY);
-
         this->hitBox.x = newRect.x;
         this->hitBox.y = newRect.y;
     }
@@ -53,41 +51,21 @@ void Entity::render(Camera *camera)
         this->texture->render(renderBox);
     }
 }
+void Entity::collisionWith(Entity *entity)
+{
+    std::cout << "Collision with an Entity" << std::endl;
+}
 
 void Entity::setVelocity(int velocityX, int velocityY)
 {
     this->velX = velocityX;
     this->velY = velocityY;
 }
-void Entity::setVelocityX(int velocityX)
-{
-    this->velX = velocityX;
-}
-void Entity::setVelocityY(int velocityY)
-{
-    this->velY = velocityY;
-}
-int Entity::getPositionX()
-{
-    return this->hitBox.x;
-}
-int Entity::getPositionY()
-{
-    return this->hitBox.y;
-}
-int Entity::getCenterX()
-{
-    return this->hitBox.w / 2;
-}
-int Entity::getCenterY()
-{
-    return this->hitBox.h / 2;
-}
-SDL_Rect Entity::getHitBox()
-{
-    return this->hitBox;
-}
-bool Entity::isSolid()
-{
-    return this->solid;
-}
+void Entity::setVelocityX(int velocityX) { this->velX = velocityX; }
+void Entity::setVelocityY(int velocityY) { this->velY = velocityY; }
+int Entity::getPositionX() { return this->hitBox.x; }
+int Entity::getPositionY() { return this->hitBox.y; }
+int Entity::getCenterX() { return this->hitBox.w / 2; }
+int Entity::getCenterY() { return this->hitBox.h / 2; }
+SDL_Rect Entity::getHitBox() { return this->hitBox; }
+bool Entity::isSolid() { return this->solid; }

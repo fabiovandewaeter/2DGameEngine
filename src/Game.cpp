@@ -73,14 +73,15 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     }
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
-    loadMedia();
-    loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
-    this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise);
-    this->map.getChunk(0, 0)->addActiveStructure(16, 16, new Core((*this->activeStructureTextures)[0], 1000));
-    this->collisionManager.init(entities, &this->map);
+    this->collisionManager.init(&this->map, &this->entityManager);
+    loadMedia();
+    this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
+    this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
+    this->map.getChunk(0, 0)->addActiveStructure(16 * 2, 16 * 2, new Core((*this->activeStructureTextures)[0], 1000));
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
+    loadEntities();
 }
 
 void Game::loadMedia()
@@ -95,14 +96,9 @@ void Game::loadMedia()
 }
 void Game::loadEntities()
 {
-    this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, false);
-    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, false));
-    this->collisionManager.addEntities(&this->entities);
-    int size = this->entities.size();
-    for (int i = 1; i < size; i++)
-    {
-        this->collisionManager.addEntity(this->entities[i]);
-    }
+    this->entityManager.loadEntities();
+    this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16});
+    this->entityManager.addEntity(&this->player);
 }
 
 void Game::handleEvents()
@@ -125,12 +121,8 @@ void Game::update()
     // if (limiter("UPS", counterUPSLimiter, 1000 / this->fixedUPS, lastTimeUPSLimiter))
     this->player.update(&this->collisionManager);
     this->camera.update();
-    int size = this->entities.size();
-    for (int i = 0; i < size; i++)
-    {
-        this->entities[i]->update(&this->collisionManager);
-    }
-    //countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
+    this->entityManager.update();
+    // countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
 Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
@@ -148,15 +140,11 @@ void Game::render()
         this->map.render();
 
         // entities
-        int size = this->entities.size();
-        for (int i = 0; i < size; i++)
-        {
-            this->entities[i]->render(&this->camera);
-        }
+        this->entityManager.render();
         this->player.render(&this->camera);
 
         SDL_RenderPresent(this->renderer);
-        //countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
+        // countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
     }
 }
 

@@ -17,8 +17,8 @@ public:
     Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);*/
     ~Structure();
 
-    void init(Texture *texture, unsigned int HP, bool solid);
-    void init(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);
+    void init(Texture *texture, unsigned int range, unsigned int HP, bool solid);
+    void init(Texture *texture, SDL_Rect hitBox, unsigned int range, unsigned int HP, bool solid);
 
     void destroy();
     void render(Camera *camera);
@@ -30,6 +30,7 @@ public:
 private:
     Texture *texture;
     SDL_Rect hitBox;
+    unsigned int range;
     bool solid;
     unsigned int HP;
     description description;

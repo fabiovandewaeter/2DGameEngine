@@ -15,6 +15,7 @@
 #include "systems/TextureManager.hpp"
 #include "systems/PerlinNoise.hpp"
 #include "systems/MouseManager.hpp"
+#include "systems/EntityManager.hpp"
 #include "map/Map.hpp"
 #include "map/Tile.hpp"
 #include "structures/Structure.hpp"
@@ -52,7 +53,6 @@ private:
     Uint64 frameDelay;
 
     Player player;
-    std::vector<Entity *> entities;
     Texture *backgroundTexture;
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;
@@ -66,6 +66,7 @@ private:
     Map map;
     PerlinNoise perlinNoise;
     MouseManager mouseManager;
+    EntityManager entityManager;
 
     SDL_Surface *loadSurface(std::string path);
     SDL_Texture *loadTexture(std::string path);

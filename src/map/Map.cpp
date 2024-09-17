@@ -11,13 +11,14 @@ Map::~Map()
     this->allChunks.clear();
 }
 
-void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise)
+void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->camera = camera;
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;
     this->structureTextures = structureTextures;
     this->perlinNoise = perlinNoise;
+    this->collisionManager = collisionManager;
     loadChunks();
 }
 
@@ -38,7 +39,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise);
+    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);

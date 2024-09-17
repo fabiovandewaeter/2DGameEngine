@@ -10,13 +10,15 @@
 #include "../structures/Structure.hpp"
 #include "../structures/passiveStructures/Wall.hpp"
 #include "../systems/PerlinNoise.hpp"
+#include "../systems/CollisionManager.hpp"
 
 class Tile;
 
+class CollisionManager;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise);
+    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
     void loadTiles();

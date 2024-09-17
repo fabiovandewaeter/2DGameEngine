@@ -11,15 +11,16 @@ Structure::Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool so
 }*/
 Structure::~Structure() {}
 
-void Structure::init(Texture *texture, unsigned int HP, bool solid)
+void Structure::init(Texture *texture, unsigned int range, unsigned int HP, bool solid)
 {
     this->texture = texture;
     this->HP = HP;
     this->solid = solid;
+    this->range = range;
 }
-void Structure::init(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid)
+void Structure::init(Texture *texture, SDL_Rect hitBox, unsigned int range, unsigned int HP, bool solid)
 {
-    init(texture, HP, solid);
+    init(texture, range, HP, solid);
     this->hitBox = hitBox;
 }
 

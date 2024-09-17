@@ -1,6 +1,6 @@
 #include "Chunk.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise)
+Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX;
     this->positionY;
@@ -76,11 +76,11 @@ void Chunk::loadPassiveStructures()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, true);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i++;
     i++;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, true);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i++;
     i++;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
@@ -185,7 +185,7 @@ void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
 }
 void Chunk::addWall(int x, int y)
 {
-    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){-1, -1, -1, -1}, true));
+    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], 100));
 }
 void Chunk::destroyPassiveStructure(int x, int y)
 {
