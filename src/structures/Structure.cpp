@@ -1,19 +1,26 @@
 #include "Structure.hpp"
 
 Structure::Structure() {}
-Structure::Structure(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid)
+/*Structure::Structure(Texture *texture, unsigned int HP, bool solid)
 {
-    init(texture, hitBox, name, HP, solid);
+    init(texture, HP, solid);
 }
+Structure::Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid)
+{
+    init(texture, hitBox, HP, solid);
+}*/
 Structure::~Structure() {}
 
-void Structure::init(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid)
+void Structure::init(Texture *texture, unsigned int HP, bool solid)
 {
     this->texture = texture;
-    this->hitBox = hitBox;
-    this->name = name;
     this->HP = HP;
     this->solid = solid;
+}
+void Structure::init(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid)
+{
+    init(texture, HP, solid);
+    this->hitBox = hitBox;
 }
 
 void Structure::render(Camera *camera)

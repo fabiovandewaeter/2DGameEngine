@@ -6,8 +6,8 @@
 class Wall : public Structure
 {
 public:
-    Wall(Texture *texture, SDL_Rect hitBox, bool solid);
-    ~Wall();
+    Wall(Texture *texture, unsigned int HP);
+    Wall(Texture *texture, SDL_Rect hitBox, unsigned int HP);
 
 private:
 };

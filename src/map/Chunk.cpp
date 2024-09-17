@@ -126,29 +126,25 @@ void Chunk::convertToTileCoordinates(int &x, int &y)
 // returns the tile that contains the coordinates
 Tile *Chunk::getTile(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    return this->allTiles[SIZE * i + j];
+    convertToTileCoordinates(x, y);
+    return this->allTiles[SIZE * x + y];
 }
 Structure *Chunk::getPassiveStructure(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    convertToTileCoordinates(x, y);
+    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     return this->allPassiveStructures[coordinates];
 }
 Structure *Chunk::getActiveStructure(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    convertToTileCoordinates(x, y);
+    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     return this->allActiveStructures[coordinates];
 }
 bool Chunk::isPassiveStructure(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    convertToTileCoordinates(x, y);
+    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     if (this->allPassiveStructures.find(coordinates) == this->allPassiveStructures.end())
     {
         return false;
@@ -157,9 +153,8 @@ bool Chunk::isPassiveStructure(int x, int y)
 }
 bool Chunk::isActiveStructure(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    convertToTileCoordinates(x, y);
+    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     if (this->allActiveStructures.find(coordinates) == this->allActiveStructures.end())
     {
         return false;
@@ -168,29 +163,23 @@ bool Chunk::isActiveStructure(int x, int y)
 }
 void Chunk::addPassiveStructure(int x, int y, Structure *passiveStructure)
 {
-    int i = x, j = y;
     if (!isPassiveStructure(x, y) && !isActiveStructure(x, y))
     {
-        convertToTileCoordinates(i, j);
-        printf("TRUE\n");
-        SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+        convertToTileCoordinates(x, y);
+        SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         passiveStructure->setHitBox(box);
-        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allPassiveStructures[coordinates] = passiveStructure;
-    }
-    else {
-        printf("FALSE\n");
     }
 }
 void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
 {
-    int i = x, j = y;
     if (!isActiveStructure(x, y) && !isPassiveStructure(x, y))
     {
-        convertToTileCoordinates(i, j);
-        SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+        convertToTileCoordinates(x, y);
+        SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         activeStructure->setHitBox(box);
-        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allActiveStructures[coordinates] = activeStructure;
     }
 }
@@ -200,11 +189,10 @@ void Chunk::addWall(int x, int y)
 }
 void Chunk::destroyPassiveStructure(int x, int y)
 {
-    int i = x, j = y;
-    convertToTileCoordinates(i, j);
     if (isPassiveStructure(x, y))
     {
-        std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+        convertToTileCoordinates(x, y);
+        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allPassiveStructures[coordinates]->destroy();
         this->allPassiveStructures.erase(coordinates);
     }

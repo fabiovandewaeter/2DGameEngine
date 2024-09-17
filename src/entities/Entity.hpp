@@ -7,6 +7,7 @@
 #include "../Texture.hpp"
 #include "../systems/CollisionManager.hpp"
 #include "../systems/Camera.hpp"
+#include "states/State.hpp"
 
 class CollisionManager;
 
@@ -40,6 +41,8 @@ protected:
     int velX, velY;
     SDL_Rect hitBox;
     bool solid;
+    
+    State *state;
 };
 
 #endif

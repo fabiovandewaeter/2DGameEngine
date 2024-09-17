@@ -77,7 +77,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadEntities();
     this->camera.init(width, height, 10, 200000000, 0, 0);
     this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise);
-    this->map.getChunk(0, 0)->addActiveStructure(16, 16, new Core((*this->activeStructureTextures)[0], "Core1", 1000, true));
+    this->map.getChunk(0, 0)->addActiveStructure(16, 16, new Core((*this->activeStructureTextures)[0], 1000));
     this->collisionManager.init(entities, &this->map);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);

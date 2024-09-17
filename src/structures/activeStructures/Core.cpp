@@ -1,9 +1,9 @@
 #include "Core.hpp"
 
-Core::Core(Texture *texture, std::string name, unsigned int HP, bool solid){
-    init(texture, (SDL_Rect){0, 0, 0, 0}, name, HP, solid);
+Core::Core(Texture *texture, unsigned int HP){
+    init(texture, HP, true);
 }
-Core::Core(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid){
+Core::Core(Texture *texture, SDL_Rect hitBox, unsigned int HP){
 
-    init(texture, hitBox, name, HP, solid);
+    init(texture, hitBox, HP, true);
 }

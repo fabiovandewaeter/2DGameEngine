@@ -1,7 +1,10 @@
 #include "Wall.hpp"
 
-Wall::Wall(Texture *texture, SDL_Rect hitBox, bool solid)
+Wall::Wall(Texture *texture, unsigned int HP)
 {
-    init(texture, hitBox, "Wall", 100, solid);
+    init(texture, HP, true);
 }
-Wall::~Wall() {}
+Wall::Wall(Texture *texture, SDL_Rect hitBox, unsigned int HP)
+{
+    init(texture, hitBox, HP, true);
+}

@@ -4,15 +4,21 @@
 #include "../Texture.hpp"
 #include "../systems/Camera.hpp"
 
+struct description{
+    std::string name;
+    std::string details;
+};
+
 class Structure
 {
 public:
     Structure();
-    Structure(Texture *texture, std::string name, unsigned int HP, bool solid);
-    Structure(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid);
+    /*Structure(Texture *texture, unsigned int HP, bool solid);
+    Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);*/
     ~Structure();
 
-    void init(Texture *texture, SDL_Rect hitBox, std::string name, unsigned int HP, bool solid);
+    void init(Texture *texture, unsigned int HP, bool solid);
+    void init(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);
 
     void destroy();
     void render(Camera *camera);
@@ -25,9 +31,8 @@ private:
     Texture *texture;
     SDL_Rect hitBox;
     bool solid;
-
-    std::string name;
     unsigned int HP;
+    description description;
 };
 
 #endif
