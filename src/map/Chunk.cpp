@@ -166,28 +166,32 @@ bool Chunk::isActiveStructure(int x, int y)
     }
     return true;
 }
-void Chunk::addPassiveStructure(int x, int y, Structure *staticObject)
+void Chunk::addPassiveStructure(int x, int y, Structure *passiveStructure)
 {
     int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    if (!isPassiveStructure(i, j))
+    if (!isPassiveStructure(x, y) && !isActiveStructure(x, y))
     {
+        convertToTileCoordinates(i, j);
+        printf("TRUE\n");
         SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
-        staticObject->setHitBox(box);
+        passiveStructure->setHitBox(box);
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allPassiveStructures[coordinates] = staticObject;
+        this->allPassiveStructures[coordinates] = passiveStructure;
+    }
+    else {
+        printf("FALSE\n");
     }
 }
-void Chunk::addActiveStructure(int x, int y, Structure *structure)
+void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
 {
     int i = x, j = y;
-    convertToTileCoordinates(i, j);
-    if (!isActiveStructure(i, j))
+    if (!isActiveStructure(x, y) && !isPassiveStructure(x, y))
     {
+        convertToTileCoordinates(i, j);
         SDL_Rect box = {i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize};
-        structure->setHitBox(box);
+        activeStructure->setHitBox(box);
         std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-        this->allActiveStructures[coordinates] = structure;
+        this->allActiveStructures[coordinates] = activeStructure;
     }
 }
 void Chunk::addWall(int x, int y)
