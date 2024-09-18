@@ -3,17 +3,22 @@
 Entity::Entity() {}
 Entity::Entity(Texture *texture, SDL_Rect hitBox)
 {
-    init(texture, hitBox);
+    init(texture, hitBox, new RestState(this));
+}
+Entity::Entity(Texture *texture, SDL_Rect hitBox, State*state)
+{
+    init(texture, hitBox, state);
 }
 Entity::~Entity() {}
 
-void Entity::init(Texture *texture, SDL_Rect hitBox)
+void Entity::init(Texture *texture, SDL_Rect hitBox, State *state)
 {
     this->texture = texture;
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
     this->solid = false;
+    this->state
 }
 
 void Entity::update(CollisionManager *collisionManager)

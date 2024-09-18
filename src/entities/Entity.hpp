@@ -7,7 +7,8 @@
 #include "../Texture.hpp"
 #include "../systems/CollisionManager.hpp"
 #include "../systems/Camera.hpp"
-//#include "states/State.hpp"
+#include "states/State.hpp"
+#include "states/RestState.hpp"
 
 class CollisionManager;
 
@@ -16,9 +17,10 @@ class Entity
 public:
     Entity();
     Entity(Texture *texture, SDL_Rect hitBox);
+    Entity(Texture *texture, SDL_Rect hitBox, State *state);
     ~Entity();
 
-    void init(Texture *texture, SDL_Rect hitbox);
+    void init(Texture *texture, SDL_Rect hitbox, State *state);
     void update(CollisionManager *collisionManager);
     bool canMove();
     bool isMoving();
@@ -43,7 +45,7 @@ protected:
     SDL_Rect hitBox;
     bool solid;
     
-    //State *state;
+    State *state;
 };
 
 #endif

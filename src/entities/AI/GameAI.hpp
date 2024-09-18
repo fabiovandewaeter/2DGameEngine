@@ -1,6 +1,9 @@
 #ifndef game_ai_hpp
 #define game_ai_hpp
 
+#include <vector>
+#include "../Entity.hpp"
+
 class GameAI
 {
 public:
@@ -16,6 +19,8 @@ public:
 private:
     void sendScouts(int x, int y);
     void sendArmy(int x, int y);
+    
+    std::vector<Entity *> entities;
 };
 
 #endif

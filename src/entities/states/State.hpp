@@ -5,9 +5,11 @@
 
 class State{
 public:
+    State();
     State(Entity *entity);
     ~State();
     
+    void init(Entity *entity);
     void update();
 private:
     Entity *entity;
