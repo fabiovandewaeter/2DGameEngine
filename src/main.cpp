@@ -30,8 +30,22 @@ void handleTickSpeed(Uint64 &frameStart)
 
 int main(int argc, char *argv[])
 {
-    game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
-    //game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, false);
+
+    int width = 800;
+    int height = 600;
+    if (argc > 1)
+    {
+        width = std::atoi(argv[1]);
+    }
+    if (argc > 2)
+    {
+        height = std::atoi(argv[2]);
+    }
+    std::cout << "Window width: " << width << std::endl;
+    std::cout << "Window height: " << height << std::endl;
+
+    game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false);
+    // game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, false);
     game.setUPS(60);
 
     while (game.running())
