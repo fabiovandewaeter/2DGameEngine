@@ -14,7 +14,7 @@ Windows :
 
 MacOs:
 
-`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -lSDL2 -lSDL2_image -lSDL2_ttf ; ./a.out`
+`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -lSDL2 -lSDL2_image -lSDL2_ttf ; ./a.out`
 
 Linux (no root):
 
