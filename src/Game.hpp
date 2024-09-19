@@ -6,7 +6,7 @@
 #include <iostream>
 #include <time.h>
 
-#include "Texture.hpp"
+/*#include "Texture.hpp"
 #include "entities/Player.hpp"
 #include "systems/Camera.hpp"
 #include "systems/CollisionManager.hpp"
@@ -17,10 +17,9 @@
 #include "systems/MouseManager.hpp"
 #include "systems/EntityManager.hpp"
 #include "map/Map.hpp"
-class Tile;
-//#include "map/Tile.hpp"
-//#include "structures/Structure.hpp"
-#include "structures/activeStructures/Core.hpp"
+#include "map/Tile.hpp"
+#include "structures/Structure.hpp"
+#include "structures/activeStructures/Core.hpp"*/
 
 class Game
 {
