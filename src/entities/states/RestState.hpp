@@ -6,7 +6,9 @@
 class RestState : public State
 {
 public:
+    RestState();
     RestState(Entity *entity);
+    ~RestState();
 private:
 };
 

@@ -1,7 +1,8 @@
 #ifndef state_hpp
 #define state_hpp
 
-#include "../Entity.hpp"
+
+class Entity;
 
 class State{
 public:

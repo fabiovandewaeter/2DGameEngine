@@ -7,6 +7,11 @@ int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 Player::Player() {}
 Player::~Player() {}
 
+void Player::init(Texture *texture, SDL_Rect hitBox)
+{
+    Entity::init(texture, hitBox, new RestState(this));
+}
+
 void Player::handleEvents(SDL_Event *event)
 {
     // If a key was pressed

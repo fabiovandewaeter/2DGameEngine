@@ -13,6 +13,7 @@ public:
     Player();
     ~Player();
 
+    void init(Texture *texture, SDL_Rect hitBox);
     void handleEvents(SDL_Event *event);
     
     void setPosition(int x, int y);

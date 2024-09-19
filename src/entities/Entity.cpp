@@ -18,7 +18,7 @@ void Entity::init(Texture *texture, SDL_Rect hitBox, State *state)
     this->velX = 0;
     this->velY = 0;
     this->solid = false;
-    this->state
+    this->state = state;
 }
 
 void Entity::update(CollisionManager *collisionManager)

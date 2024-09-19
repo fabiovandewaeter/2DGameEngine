@@ -7,6 +7,7 @@ class ControlledState : public State
 {
 public:
     ControlledState(Entity *entity);
+    ~ControlledState();
 
 private:
 };

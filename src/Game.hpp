@@ -17,8 +17,9 @@
 #include "systems/MouseManager.hpp"
 #include "systems/EntityManager.hpp"
 #include "map/Map.hpp"
-#include "map/Tile.hpp"
-#include "structures/Structure.hpp"
+class Tile;
+//#include "map/Tile.hpp"
+//#include "structures/Structure.hpp"
 #include "structures/activeStructures/Core.hpp"
 
 class Game

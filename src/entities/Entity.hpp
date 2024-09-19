@@ -11,6 +11,7 @@
 #include "states/RestState.hpp"
 
 class CollisionManager;
+class State;
 
 class Entity
 {
