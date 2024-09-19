@@ -1,9 +1,11 @@
 #ifndef tile_hpp
 #define tile_hpp
 
+#include <SDL.h>
 #include <vector>
-#include "../Texture.hpp"
-#include "../systems/Camera.hpp"
+
+class Texture;
+class Camera;
 
 class Tile
 {

@@ -1,5 +1,10 @@
 #include "Game.hpp"
 
+#include "structures/activeStructures/Core.hpp"
+#include "map/Map.hpp"
+#include "map/Chunk.hpp"
+#include "Texture.hpp"
+
 SDL_Event event;
 
 Game::Game()

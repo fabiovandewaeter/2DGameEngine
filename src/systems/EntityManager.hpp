@@ -2,10 +2,10 @@
 #define entity_manager_hpp
 
 #include <vector>
-#include "../entities/Entity.hpp"
-#include "CollisionManager.hpp"
-#include "Camera.hpp"
 
+class Camera;
+class CollisionManager;
+class Texture;
 class Entity;
 
 class EntityManager

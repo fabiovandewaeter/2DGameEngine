@@ -4,7 +4,8 @@
 #define NUMBER_OF_CHARACTERS 94
 
 #include <SDL_ttf.h>
-#include "../Texture.hpp"
+
+class Texture;
 
 // generate text
 class TextManager

@@ -1,4 +1,6 @@
 #include "Structure.hpp"
+#include "../systems/Camera.hpp"
+#include "../Texture.hpp"
 
 Structure::Structure() {}
 /*Structure::Structure(Texture *texture, unsigned int HP, bool solid)

@@ -1,8 +1,10 @@
 #ifndef mouse_manager_hpp
 #define mouse_manager_hpp
 
-#include "Camera.hpp"
-#include "../map/Map.hpp"
+#include <SDL.h>
+
+class Camera;
+class Map;
 
 class MouseManager
 {

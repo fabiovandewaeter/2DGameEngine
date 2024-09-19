@@ -3,15 +3,10 @@
 
 #include <SDL.h>
 #include <vector>
-#include "../entities/Entity.hpp"
-#include "../map/Map.hpp"
-#include "../structures/Structure.hpp"
-#include "EntityManager.hpp"
 
-class Entity;
 class Map;
-class Chunk;
 class EntityManager;
+class Entity;
 
 class CollisionManager
 {

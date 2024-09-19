@@ -1,8 +1,11 @@
 #ifndef structure_hpp
 #define structure_hpp
 
-#include "../Texture.hpp"
-#include "../systems/Camera.hpp"
+#include <SDL.h>
+#include <string>
+
+class Texture;
+class Camera;
 
 struct description{
     std::string name;

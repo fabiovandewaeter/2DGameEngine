@@ -7,14 +7,14 @@
 #include <vector>
 #include <unordered_map>
 #include <cmath>
-#include "Tile.hpp"
-#include "Chunk.hpp"
-#include "../systems/Camera.hpp"
-#include "../systems/TextureManager.hpp"
-#include "../systems/PerlinNoise.hpp"
-#include "../systems/CollisionManager.hpp"
+#include <string>
 
+class Camera;
+class Texture;
+class PerlinNoise;
+class CollisionManager;
 class Chunk;
+
 class Map
 {
 public:

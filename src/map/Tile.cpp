@@ -1,5 +1,8 @@
 #include "Tile.hpp"
 
+#include "../systems/Camera.hpp"
+#include "../Texture.hpp"
+
 Tile::Tile() {}
 Tile::Tile(Texture *texture, SDL_Rect box)
 {

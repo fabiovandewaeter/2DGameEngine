@@ -1,8 +1,10 @@
 #ifndef texture_manager_hpp
 #define texture_manager_hpp
 
+#include <SDL.h>
 #include <vector>
-#include "../Texture.hpp"
+
+class Texture;
 
 class TextureManager
 {

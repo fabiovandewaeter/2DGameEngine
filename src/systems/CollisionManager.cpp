@@ -1,5 +1,12 @@
 #include "CollisionManager.hpp"
 
+#include <iostream>
+#include "EntityManager.hpp"
+#include "../entities/Entity.hpp"
+#include "../map/Map.hpp"
+#include "../map/Chunk.hpp"
+#include "../structures/Structure.hpp"
+
 CollisionManager::CollisionManager() {}
 CollisionManager::~CollisionManager() {}
 

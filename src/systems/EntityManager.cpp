@@ -1,5 +1,10 @@
 #include "EntityManager.hpp"
 
+#include "Camera.hpp"
+#include "CollisionManager.hpp"
+#include "../Texture.hpp"
+#include "../entities/Entity.hpp"
+
 EntityManager::EntityManager() {}
 EntityManager::~EntityManager() {}
 

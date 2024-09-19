@@ -1,5 +1,7 @@
 #include "TextureManager.hpp"
 
+#include "../Texture.hpp"
+
 TextureManager::TextureManager() {}
 TextureManager::TextureManager(SDL_Renderer *renderer)
 {

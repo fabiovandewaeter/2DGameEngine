@@ -2,7 +2,8 @@
 #define game_ai_hpp
 
 #include <vector>
-#include "../Entity.hpp"
+
+class Entity;
 
 class GameAI
 {

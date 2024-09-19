@@ -4,14 +4,11 @@
 #define VELOCITY_MULTIPLIER 1
 
 #include <SDL_render.h>
-#include "../Texture.hpp"
-#include "../systems/CollisionManager.hpp"
-#include "../systems/Camera.hpp"
-#include "states/State.hpp"
-#include "states/RestState.hpp"
 
-class CollisionManager;
+class Texture;
 class State;
+class CollisionManager;
+class Camera;
 
 class Entity
 {

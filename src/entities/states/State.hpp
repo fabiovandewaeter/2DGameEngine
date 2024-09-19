@@ -1,7 +1,6 @@
 #ifndef state_hpp
 #define state_hpp
 
-
 class Entity;
 
 class State{

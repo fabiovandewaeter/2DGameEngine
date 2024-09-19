@@ -3,18 +3,19 @@
 
 #define SIZE 16
 
+#include <SDL.h>
+#include <string>
 #include <vector>
 #include <unordered_map>
 #include <cmath>
-#include "Tile.hpp"
-#include "../structures/Structure.hpp"
-#include "../structures/passiveStructures/Wall.hpp"
-#include "../systems/PerlinNoise.hpp"
-#include "../systems/CollisionManager.hpp"
 
-class Tile;
-
+class Texture;
+class PerlinNoise;
 class CollisionManager;
+class Camera;
+class Tile;
+class Structure;
+
 class Chunk
 {
 public:

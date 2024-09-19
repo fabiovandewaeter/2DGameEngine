@@ -1,5 +1,7 @@
 #include "TextManager.hpp"
 
+#include "../Texture.hpp"
+
 TextManager::TextManager() {}
 TextManager::~TextManager()
 {
