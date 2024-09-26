@@ -6,6 +6,7 @@
 
 class Texture;
 class Camera;
+class Entity;
 
 struct description{
     std::string name;
@@ -25,6 +26,7 @@ public:
 
     void destroy();
     void render(Camera *camera);
+    void onCollision(Entity *entity);
 
     SDL_Rect getHitBox();
     void setHitBox(SDL_Rect hitBox);

@@ -40,6 +40,9 @@ void Structure::destroy()
 {
     delete this;
 }
+void Structure::onCollision(Entity *entity){
+    std::cout << "Structure#onCollision()" << std::endl;
+}
 
 SDL_Rect Structure::getHitBox()
 {

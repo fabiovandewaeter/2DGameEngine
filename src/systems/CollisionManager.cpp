@@ -55,6 +55,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             {
                 newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
                 chunk = this->map->getChunk(newX, newY);
+                // passive structures
                 if (chunk->isPassiveStructure(newX, newY))
                 {
                     Structure *passiveStructure = chunk->getPassiveStructure(newX, newY);
@@ -62,14 +63,12 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
                     {
                         if (checkCollision(newHitBox, passiveStructure->getHitBox()))
                         {
+                            passiveStructure->onCollision(entity);
                             return hitBox;
                         }
                     }
                 }
-                int size = entities.size();
-                for (int k = 0; k < size; k++)
-                {
-                }
+                // active structures
                 if (chunk->isActiveStructure(newX, newY))
                 {
                     Structure *activeStructure = chunk->getActiveStructure(newX, newY);
@@ -77,6 +76,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
                     {
                         if (checkCollision(newHitBox, activeStructure->getHitBox()))
                         {
+                            activeStructure->onCollision(entity);
                             return hitBox;
                         }
                     }

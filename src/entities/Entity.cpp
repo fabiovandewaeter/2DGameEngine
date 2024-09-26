@@ -63,7 +63,7 @@ void Entity::render(Camera *camera)
 }
 void Entity::onCollision(Entity *entity)
 {
-    std::cout << "Collision with an Entity" << std::endl;
+    std::cout << "Entity#onCollision()" << std::endl;
 }
 
 void Entity::setVelocity(int velocityX, int velocityY)
