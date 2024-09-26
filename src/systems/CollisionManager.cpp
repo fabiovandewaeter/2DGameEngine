@@ -32,7 +32,6 @@ bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect
 }
 SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
 {
-    std::cout << "IL FAUT DEPLACER CA DANS LES ENTITIES OU LE ENTITYMANAGER QUAND IL Y AURA UN QUADTREE OU UN SEGMENTTREE" << std::endl;
     // entities
     std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
     int size = entities.size();

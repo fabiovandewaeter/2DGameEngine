@@ -127,7 +127,7 @@ void Game::update()
     this->player.update(&this->collisionManager);
     this->camera.update();
     this->entityManager.update();
-    // countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
+     countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
 Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
@@ -149,7 +149,7 @@ void Game::render()
         this->player.render(&this->camera);
 
         SDL_RenderPresent(this->renderer);
-        // countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
+         countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
     }
 }
 
