@@ -24,7 +24,7 @@ public:
     bool isMoving();
     void move(CollisionManager *collisionManager);
     void render(Camera *camera);
-    void collisionWith(Entity *);
+    void onCollision(Entity *);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

@@ -61,7 +61,7 @@ void Entity::render(Camera *camera)
         this->texture->render(renderBox);
     }
 }
-void Entity::collisionWith(Entity *entity)
+void Entity::onCollision(Entity *entity)
 {
     std::cout << "Collision with an Entity" << std::endl;
 }

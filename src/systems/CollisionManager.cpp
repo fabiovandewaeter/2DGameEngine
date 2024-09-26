@@ -36,8 +36,8 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
     int size = entities.size();
     for (int i = 0; i< size; i++){
-        if (checkCollision(entity->getHitBox(), entities[i]->getHitBox())){
-            entities[i]->collisionWith(entity);
+        if ((entity != entities[i]) && (checkCollision(entity->getHitBox(), entities[i]->getHitBox()))){
+            entities[i]->onCollision(entity);
         }
     }
     bool collision = false;
