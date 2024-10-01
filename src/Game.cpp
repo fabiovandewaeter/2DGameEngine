@@ -83,7 +83,8 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
-    this->map.getChunk(0, 0)->addActiveStructure(16 * 2, 16 * 2, new Core((*this->activeStructureTextures)[0], 1000));
+    this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, 1000);
+    this->map.getChunk(0, 0)->addActiveStructure(16 * 2, 16 * 2, core);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
     loadEntities();
@@ -119,6 +120,7 @@ void Game::handleEvents()
         this->mouseManager.handleEvents(&event);
     }
 }
+
 Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
 Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
 void Game::update()
@@ -127,7 +129,8 @@ void Game::update()
     this->player.update(&this->collisionManager);
     this->camera.update();
     this->entityManager.update();
-     countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
+    this->core->update();
+    countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
 
 Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;

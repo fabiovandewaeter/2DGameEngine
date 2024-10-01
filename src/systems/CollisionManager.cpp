@@ -30,13 +30,41 @@ bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect
              y <= rect.y ||
              y >= rect.y + rect.h);
 }
+bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
+{
+    if (this->map->isChunkGenerated(rect.x, rect.y))
+    {
+        Chunk *chunk = this->map->getChunk(rect.x, rect.y);
+        // passive structures
+        if (chunk->isPassiveStructure(rect.x, rect.y))
+        {
+            Structure *passiveStructure = chunk->getPassiveStructure(rect.x, rect.y);
+            if (checkCollision(rect, passiveStructure->getHitBox()))
+            {
+                return passiveStructure->isSolid() ? true : false;
+            }
+        }
+        // active structures
+        if (chunk->isActiveStructure(rect.x, rect.y))
+        {
+            Structure *activeStructure = chunk->getActiveStructure(rect.x, rect.y);
+            if (checkCollisionFromCoordinates(rect.x, rect.y, activeStructure->getHitBox()))
+            {
+                return activeStructure->isSolid() ? true : false;
+            }
+        }
+    }
+    return false;
+}
 SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
 {
     // entities
     std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
     int size = entities.size();
-    for (int i = 0; i< size; i++){
-        if ((entity != entities[i]) && (checkCollision(entity->getHitBox(), entities[i]->getHitBox()))){
+    for (int i = 0; i < size; i++)
+    {
+        if ((entity != entities[i]) && (checkCollision(entity->getHitBox(), entities[i]->getHitBox())))
+        {
             entities[i]->onCollision(entity);
         }
     }
@@ -47,6 +75,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
         // check destination for all 4 corners of the entity
+        std::cout << "VOIR SI ON PEUT FAIRE JUSTE DES checkCollisionFromCoordinates()" << std::endl;
         int newX, newY;
         Chunk *chunk;
         for (int i = 0; i < 2; i++)
@@ -59,26 +88,20 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
                 if (chunk->isPassiveStructure(newX, newY))
                 {
                     Structure *passiveStructure = chunk->getPassiveStructure(newX, newY);
-                    if (passiveStructure->isSolid())
+                    if (checkCollision(newHitBox, passiveStructure->getHitBox()))
                     {
-                        if (checkCollision(newHitBox, passiveStructure->getHitBox()))
-                        {
-                            passiveStructure->onCollision(entity);
-                            return hitBox;
-                        }
+                        passiveStructure->onCollision(entity);
+                        return passiveStructure->isSolid() ? hitBox : newHitBox;
                     }
                 }
                 // active structures
                 if (chunk->isActiveStructure(newX, newY))
                 {
                     Structure *activeStructure = chunk->getActiveStructure(newX, newY);
-                    if (activeStructure->isSolid())
+                    if (checkCollision(newHitBox, activeStructure->getHitBox()))
                     {
-                        if (checkCollision(newHitBox, activeStructure->getHitBox()))
-                        {
-                            activeStructure->onCollision(entity);
-                            return hitBox;
-                        }
+                        activeStructure->onCollision(entity);
+                        return activeStructure->isSolid() ? hitBox : newHitBox;
                     }
                 }
             }

@@ -7,8 +7,8 @@
 
 Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
-    this->positionX;
-    this->positionY;
+    this->positionX = positionX;
+    this->positionY = positionY;
     this->tileSize = tileSize;
     this->tileTextures = tileTextures;
     this->passiveStructureTextures = passiveStructureTextures;
@@ -81,10 +81,10 @@ void Chunk::loadPassiveStructures()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], nullptr, (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i+=2;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], nullptr, (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i+=2;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
 }
@@ -188,7 +188,7 @@ void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
 }
 void Chunk::addWall(int x, int y)
 {
-    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], 100));
+    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], nullptr, 100));
 }
 void Chunk::destroyPassiveStructure(int x, int y)
 {

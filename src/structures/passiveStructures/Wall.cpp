@@ -1,10 +1,10 @@
 #include "Wall.hpp"
 
-Wall::Wall(Texture *texture, unsigned int HP)
+Wall::Wall(Texture *texture, CollisionManager *collisionManager, unsigned int HP)
 {
-    init(texture, 0, HP, true);
+    init(texture, collisionManager, 0, HP, true);
 }
-Wall::Wall(Texture *texture, SDL_Rect hitBox, unsigned int HP)
+Wall::Wall(Texture *texture, CollisionManager *collisionManager, SDL_Rect hitBox, unsigned int HP)
 {
-    init(texture, hitBox, 0, HP, true);
+    init(texture, collisionManager, hitBox, 0, HP, true);
 }

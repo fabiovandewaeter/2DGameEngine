@@ -18,6 +18,7 @@
 #include "systems/EntityManager.hpp"
 
 class Texture;
+class Core;
 
 class Game
 {
@@ -56,6 +57,8 @@ private:
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *passiveStructureTextures;
     std::vector<Texture *> *activeStructureTextures;
+
+    Core *core;
 
     TextManager textManager;
     TextureManager textureManager;

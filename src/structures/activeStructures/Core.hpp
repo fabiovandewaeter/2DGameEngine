@@ -6,8 +6,11 @@
 class Core : public Structure
 {
 public:
-    Core(Texture *texture, unsigned int HP);
-    Core(Texture *texture, SDL_Rect hitBox, unsigned int HP);
+    Core(Texture *texture, CollisionManager *collisionManager, unsigned int HP);
+    Core(Texture *texture, CollisionManager *collisionManager, SDL_Rect hitBox, unsigned int HP);
+
+    void update();
+    void spawnEntities();
 
 private:
 };
