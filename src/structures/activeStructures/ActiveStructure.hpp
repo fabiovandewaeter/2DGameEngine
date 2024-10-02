@@ -2,6 +2,7 @@
 #define active_structure_hpp
 
 #include "../Structure.hpp"
+#include <vector>
 
 class EntityManager;
 class TextureManager;

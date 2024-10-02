@@ -1,11 +1,12 @@
 #ifndef game_hpp
 #define game_hpp
 
+
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <time.h>
-
 #include "entities/Player.hpp"
 #include "map/Map.hpp"
 #include "systems/Camera.hpp"
@@ -16,6 +17,7 @@
 #include "systems/PerlinNoise.hpp"
 #include "systems/MouseManager.hpp"
 #include "systems/EntityManager.hpp"
+#include "systems/AudioManager.hpp"
 
 class Texture;
 class Core;
@@ -58,6 +60,8 @@ private:
     std::vector<Texture *> *passiveStructureTextures;
     std::vector<Texture *> *activeStructureTextures;
 
+    std::vector<Mix_Music *> *music;
+
     Core *core;
 
     TextManager textManager;
@@ -68,6 +72,7 @@ private:
     PerlinNoise perlinNoise;
     MouseManager mouseManager;
     EntityManager entityManager;
+    AudioManager audioManager;
 
     SDL_Surface *loadSurface(std::string path);
     SDL_Texture *loadTexture(std::string path);

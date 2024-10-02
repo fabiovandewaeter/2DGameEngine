@@ -31,19 +31,13 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     {
         std::cout << "Subsystems Initialised" << std::endl;
         // Create window
-        this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
-        if (this->window)
-        {
-            std::cout << "Window created" << std::endl;
-        }
-        else
+        if (!(this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags)))
         {
             std::cout << "FAIL : Window NOT created" << std::endl;
             isRunning = false;
-        };
+        }
         // Create renderer
-        this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED);
-        if (this->renderer)
+        if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
         {
             SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
             std::cout << "Renderer created" << std::endl;
@@ -55,11 +49,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
         }
         // Initialize PNG loading
         int imgFlags = IMG_INIT_PNG;
-        if ((IMG_Init(imgFlags) & imgFlags))
-        {
-            std::cout << "SDL_image initialized" << std::endl;
-        }
-        else
+        if (!(IMG_Init(imgFlags) & imgFlags))
         {
             std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
             isRunning = false;
@@ -68,6 +58,13 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
         if (TTF_Init() == -1)
         {
             printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+            isRunning = false;
+        }
+        // Initialize SDL_mixer
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+            isRunning = false;
         }
     }
     // window icon
@@ -92,6 +89,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
 void Game::loadMedia()
 {
+    // textures
     this->textureManager.init(this->renderer);
     this->textureManager.loadMedia();
     this->backgroundTexture = this->textureManager.getBackgroundTexture();
@@ -99,6 +97,11 @@ void Game::loadMedia()
     this->tileTextures = this->textureManager.getTileTextures();
     this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
     this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
+    
+    // audio
+    this->audioManager.init();
+    this->audioManager.loadMedia();
+    this->music = this->audioManager.getMusic();
 }
 void Game::loadEntities()
 {
@@ -160,13 +163,13 @@ void Game::clean()
 {
     this->textureManager.free();
     this->map.free();
+    this->audioManager.free();
 
     SDL_DestroyRenderer(this->renderer);
     SDL_DestroyWindow(this->window);
+    Mix_Quit();
     IMG_Quit();
     SDL_Quit();
-
-    std::cout << "Game Cleaned" << std::endl;
 }
 
 bool Game::running()

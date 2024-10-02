@@ -16,10 +16,6 @@ public:
 
     void init(SDL_Renderer *renderer);
     void loadMedia();
-    void loadEntityTextures();
-    void loadTileTextures();
-    void loadPassiveStructureTextures();
-    void loadActiveStructureTextures();
 
     Texture *getBackgroundTexture();
     std::vector<Texture *> *getEntityTextures();
@@ -34,6 +30,11 @@ private:
     std::vector<Texture *> tileTextures;
     std::vector<Texture *> passiveStructureTextures;
     std::vector<Texture *> activeStructureTextures;
+
+    void loadEntityTextures();
+    void loadTileTextures();
+    void loadPassiveStructureTextures();
+    void loadActiveStructureTextures();
 };
 
 #endif
