@@ -98,3 +98,11 @@ Chunk *Map::getChunk(int x, int y)
     }
     return this->allChunks[coordinates];
 }
+int Map::getTileSize()
+{
+    return TILE_SIZE;
+}
+int Map::getChunkSize()
+{
+    return CHUNK_SIZE;
+}

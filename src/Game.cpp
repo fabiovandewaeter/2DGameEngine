@@ -83,7 +83,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
-    this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, &this->entityManager, this->entityTextures, 1000);
+    this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, &this->entityManager, &this->map, 1000);
     this->map.getChunk(0, 0)->addActiveStructure(16 * 2, 16 * 2, core);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
@@ -152,7 +152,7 @@ void Game::render()
         this->player.render(&this->camera);
 
         SDL_RenderPresent(this->renderer);
-         countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
+        countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
     }
 }
 

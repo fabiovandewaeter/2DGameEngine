@@ -1,6 +1,7 @@
 #ifndef entity_manager_hpp
 #define entity_manager_hpp
 
+#include <SDL.h>
 #include <vector>
 
 class Camera;
@@ -21,6 +22,7 @@ public:
 
     void addEntity(Entity *entity);
     std::vector<Entity *> getPotentialEntities(Entity *entity);
+    Entity *generateDefaultEntity(SDL_Rect hitBox);
 
 private:
     std::vector<Entity *> entities;

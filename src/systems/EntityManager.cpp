@@ -4,6 +4,7 @@
 #include "CollisionManager.hpp"
 #include "../Texture.hpp"
 #include "../entities/Entity.hpp"
+#include "../entities/Entity.hpp"
 
 EntityManager::EntityManager() {}
 EntityManager::~EntityManager() {}
@@ -44,4 +45,8 @@ void EntityManager::addEntity(Entity *entity)
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     return this->entities;
+}
+Entity *EntityManager::generateDefaultEntity(SDL_Rect hitBox)
+{
+    return new Entity((*this->entityTextures)[0], hitBox);
 }

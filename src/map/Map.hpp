@@ -30,6 +30,8 @@ public:
 
     bool isChunkGenerated(int x, int y);
     Chunk *getChunk(int x, int y);
+    int getTileSize();
+    int getChunkSize();
 
 private:
     Camera *camera;
@@ -37,7 +39,7 @@ private:
     std::vector<Texture *> *staticObjectTextures;
     std::vector<Texture *> *structureTextures;
     PerlinNoise *perlinNoise;
-    CollisionManager * collisionManager;
+    CollisionManager *collisionManager;
     std::unordered_map<std::string, Chunk *> allChunks;
     std::vector<Chunk *> nearbyChunks;
 

@@ -6,17 +6,13 @@
 #include "../../systems/TextureManager.hpp"
 #include "../../entities/Entity.hpp"
 
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, std::vector<Texture *> *entityTextures, unsigned int HP)
+Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, unsigned int HP)
 {
-    init(texture, collisionManager, 1, HP, true);
-    this->entityManager = entityManager;
-    this->entityTextures = entityTextures;
+    init(texture, collisionManager, entityManager, map, (SDL_Rect){-1, -1, -1, -1}, HP);
 }
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, std::vector<Texture *> *entityTextures, SDL_Rect hitBox, unsigned int HP)
+Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP)
 {
-    init(texture, collisionManager, hitBox, 1, HP, true);
-    this->entityManager = entityManager;
-    this->entityTextures = entityTextures;
+    init(texture, collisionManager, entityManager, map, hitBox, HP);
 }
 
 void Core::update()
@@ -32,15 +28,23 @@ void Core::spawnEntities()
 {
     if (spawnCooldownCounter >= SPAWN_COOLDOWN)
     {
-        SDL_Rect rect = {this->hitBox.x + 1, this->hitBox.y + 1, this->hitBox.w, this->hitBox.h};
-        if (!this->collisionManager->checkCollisionWithSolidStructure(rect))
+        std::vector<SDL_Rect> potentialSpawnTiles = this->getPotentialSpawnTiles();
+        int size = potentialSpawnTiles.size();
+        bool finished = false;
+        int i = 0;
+        while (i < size && !finished)
         {
-            std::cout << "OUI" << std::endl;
-            this->entityManager->addEntity(new Entity((*this->entityTextures)[1], rect));
-        }
-        else
-        {
-            std::cout << "NON" << std::endl;
+            if (!this->collisionManager->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
+            {
+                std::cout << "OUI" << std::endl;
+                this->entityManager->addEntity(this->entityManager->generateDefaultEntity(potentialSpawnTiles[i]));
+                finished = true;
+            }
+            else
+            {
+                std::cout << "NON" << std::endl;
+            }
+            i++;
         }
         spawnCooldownCounter = 0;
     }
