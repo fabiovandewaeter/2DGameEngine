@@ -14,6 +14,7 @@ public:
 
     void update();
     void spawnEntities();
+    void onClick();
 
 private:
     EntityManager *entityManager;

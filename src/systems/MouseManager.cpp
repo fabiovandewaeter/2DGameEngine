@@ -3,6 +3,7 @@
 #include "../map/Map.hpp"
 #include "../map/Chunk.hpp"
 #include "Camera.hpp"
+#include "../structures/Structure.hpp"
 
 MouseManager::MouseManager() {}
 MouseManager::~MouseManager() {}
@@ -34,7 +35,12 @@ void MouseManager::handleEvents(SDL_Event *event)
 			chunk = this->map->getChunk(x, y);
 			if (event->button.button == SDL_BUTTON_LEFT)
 			{
-				chunk->addWall(i, j);
+				if (chunk->isActiveStructure(i, j)){
+					chunk->getActiveStructure(i, j)->onClick();
+				}
+				else {
+					chunk->addWall(i, j);
+				}
 			}
 			else if (event->button.button == SDL_BUTTON_RIGHT)
 			{

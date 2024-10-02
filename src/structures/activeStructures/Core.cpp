@@ -21,7 +21,7 @@ Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *
 
 void Core::update()
 {
-    if (isActive())
+    if (this->active)
     {
         spawnEntities();
     }
@@ -48,4 +48,9 @@ void Core::spawnEntities()
     {
         spawnCooldownCounter++;
     }
+}
+void Core::onClick()
+{
+    std::cout << "CLICK" << std::endl;
+    this->active = !this->active;
 }

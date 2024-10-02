@@ -47,6 +47,7 @@ void Structure::onCollision(Entity *entity)
 {
     std::cout << "Structure#onCollision()" << std::endl;
 }
+void Structure::onClick() {std::cout << "pas bon" << std::endl;}
 
 SDL_Rect Structure::getHitBox()
 {

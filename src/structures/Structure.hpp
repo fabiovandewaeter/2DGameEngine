@@ -30,6 +30,7 @@ public:
     void destroy();
     void render(Camera *camera);
     void onCollision(Entity *entity);
+    virtual void onClick();
 
     SDL_Rect getHitBox();
     bool isSolid();
@@ -40,6 +41,7 @@ public:
 protected:
     SDL_Rect hitBox;
     CollisionManager *collisionManager;
+    bool active;
 
 private:
     Texture *texture;
@@ -47,7 +49,6 @@ private:
     bool solid;
     unsigned int HP;
     description description;
-    bool active;
 };
 
 #endif
