@@ -3,16 +3,21 @@
 
 #include "../Structure.hpp"
 
+class EntityManager;
+class TextureManager;
+
 class Core : public Structure
 {
 public:
-    Core(Texture *texture, CollisionManager *collisionManager, unsigned int HP);
-    Core(Texture *texture, CollisionManager *collisionManager, SDL_Rect hitBox, unsigned int HP);
+    Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, std::vector<Texture *> *entityTextures, unsigned int HP);
+    Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, std::vector<Texture *> *entityTextures, SDL_Rect hitBox, unsigned int HP);
 
     void update();
     void spawnEntities();
 
 private:
+    EntityManager *entityManager;
+    std::vector<Texture *> *entityTextures;
 };
 
 #endif

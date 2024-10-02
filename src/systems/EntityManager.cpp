@@ -39,6 +39,7 @@ void EntityManager::render()
 void EntityManager::addEntity(Entity *entity)
 {
     this->entities.push_back(entity);
+    std::cout << this->entities.size() << std::endl;
 }
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
