@@ -29,20 +29,15 @@ void Core::spawnEntities()
     if (spawnCooldownCounter >= SPAWN_COOLDOWN)
     {
         std::vector<SDL_Rect> potentialSpawnTiles = this->getPotentialSpawnTiles();
+        int i = 0;
         int size = potentialSpawnTiles.size();
         bool finished = false;
-        int i = 0;
         while (i < size && !finished)
         {
             if (!this->collisionManager->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
             {
-                std::cout << "OUI" << std::endl;
                 this->entityManager->addEntity(this->entityManager->generateDefaultEntity(potentialSpawnTiles[i]));
                 finished = true;
-            }
-            else
-            {
-                std::cout << "NON" << std::endl;
             }
             i++;
         }
@@ -55,6 +50,6 @@ void Core::spawnEntities()
 }
 void Core::onClick()
 {
-    std::cout << "CLICK" << std::endl;
+    std::cout << "Core::onClick()" << std::endl;
     this->active = !this->active;
 }
