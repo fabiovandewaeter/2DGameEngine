@@ -39,3 +39,4 @@ wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
 - SDL2
 - SDL_image
 - SDL_ttf
+- SDL_mixer
