@@ -4,6 +4,7 @@
 #include "Pattern.hpp"
 
 #include <vector>
+#include "../../systems/EntityManager.hpp"
 
 class SquarePattern : public Pattern
 {
@@ -12,8 +13,6 @@ public:
     ~SquarePattern();
 
     std::vector<Entity *> affectedEntities(int x, int y) override;
-
-private:
 };
 
 #endif

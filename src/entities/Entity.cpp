@@ -5,10 +5,11 @@
 #include "../systems/Camera.hpp"
 #include "../Texture.hpp"
 
-Entity::Entity(Texture *texture, SDL_Rect hitBox)
+Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
 {
     this->texture = texture;
     this->hitBox = hitBox;
+    this->HP = HP;
     this->velX = 0;
     this->velY = 0;
     this->state = new RestState(this);
@@ -54,6 +55,10 @@ void Entity::onCollision(Entity *entity)
 {
     std::cout << "Entity#onCollision()" << std::endl;
 }
+void Entity::hit(int damage)
+{
+    this->HP -= damage;
+}
 
 void Entity::setVelocity(int velocityX, int velocityY)
 {
@@ -67,3 +72,4 @@ int Entity::getPositionY() { return this->hitBox.y; }
 int Entity::getCenterX() { return this->hitBox.w / 2; }
 int Entity::getCenterY() { return this->hitBox.h / 2; }
 SDL_Rect Entity::getHitBox() { return this->hitBox; }
+int Entity::getHP() { return this->HP; }

@@ -10,7 +10,7 @@
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, SDL_Rect hitBox);
+    Player(Texture *texture, SDL_Rect hitBox, int HP);
     ~Player();
 
     void handleEvents(SDL_Event *event);

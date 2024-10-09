@@ -75,7 +75,6 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
         // check destination for all 4 corners of the entity
-        std::cout << "VOIR SI ON PEUT FAIRE JUSTE DES checkCollisionFromCoordinates()" << std::endl;
         int newX, newY;
         Chunk *chunk;
         for (int i = 0; i < 2; i++)

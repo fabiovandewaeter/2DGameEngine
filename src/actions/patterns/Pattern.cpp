@@ -1,6 +1,8 @@
 #include "Pattern.hpp"
 
-Pattern::Pattern(EntityManager *EntityManager, int radius)
+#include <iostream>
+
+Pattern::Pattern(EntityManager *entityManager, int radius)
 {
     this->entityManager = entityManager;
     this->radius = radius;

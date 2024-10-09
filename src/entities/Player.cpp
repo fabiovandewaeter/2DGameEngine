@@ -6,7 +6,7 @@
 int sprint2 = 1;
 int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
-Player::Player(Texture *texture, SDL_Rect hitBox) : Entity(texture, hitBox) {}
+Player::Player(Texture *texture, SDL_Rect hitBox, int HP) : Entity(texture, hitBox, HP) {}
 Player::~Player() {}
 
 void Player::handleEvents(SDL_Event *event)

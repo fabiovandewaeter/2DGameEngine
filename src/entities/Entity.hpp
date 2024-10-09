@@ -13,7 +13,7 @@ class Camera;
 class Entity
 {
 public:
-    Entity(Texture *texture, SDL_Rect hitBox);
+    Entity(Texture *texture, SDL_Rect hitBox, int HP);
     ~Entity();
 
     void update(CollisionManager *collisionManager);
@@ -26,18 +26,21 @@ public:
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
     void setVelocityY(int velocityY);
+    void hit(int damage);
 
     int getPositionX();
     int getPositionY();
     int getCenterX();
     int getCenterY();
     SDL_Rect getHitBox();
+    int getHP();
 
 protected:
     Texture *texture;
     int velX, velY;
     SDL_Rect hitBox;
     State *state;
+    int HP;
 };
 
 #endif

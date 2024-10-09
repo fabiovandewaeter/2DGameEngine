@@ -18,7 +18,7 @@ void EntityManager::init(Camera *camera, CollisionManager *collisionManager, std
 
 void EntityManager::loadEntities()
 {
-    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}));
+    this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, 100));
 }
 void EntityManager::update()
 {
@@ -68,5 +68,5 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
 }
 Entity *EntityManager::generateDefaultEntity(SDL_Rect hitBox)
 {
-    return new Entity((*this->entityTextures)[0], hitBox);
+    return new Entity((*this->entityTextures)[0], hitBox, 100);
 }

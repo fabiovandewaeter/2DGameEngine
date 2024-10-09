@@ -107,7 +107,7 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     this->entityManager.loadEntities();
-    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16});
+    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
     this->entityManager.addEntity(this->player);
 }
 
