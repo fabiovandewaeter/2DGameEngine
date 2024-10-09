@@ -10,7 +10,6 @@ public:
     Turret(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP);
 
     void update();
-    void spawnEntities();
     void onClick();
 };
 
