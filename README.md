@@ -8,15 +8,23 @@ The basic functionalities of a game engine are recreated from scratch in order t
 
 ## Commands
 
-Windows :
+### Windows
 
 `g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -o Windows_bin/main -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer ; .\Windows_bin\main.exe`
 
-MacOs:
+### MacOs
 
-`g++ src/*.cpp src/entities/*.cpp src/systems/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer ; ./a.out`
+#### Install
 
-Linux (no root):
+- `brew install sdl2_image`
+- `brew install sdl2_tt`
+- `brew install sdl2_mixer`
+
+`g++ src/*.cpp src/map/*.cpp src/entities/*.cpp src/systems/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/entities/AI/*.cpp src/entities/states/*.cpp -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer ; ./a.out 500 500
+
+### Linux (no root)
+
+#### Install
 
 * SDL2
 ```
