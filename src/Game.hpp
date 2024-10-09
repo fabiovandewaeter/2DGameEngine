@@ -7,7 +7,6 @@
 #include <SDL_mixer.h>
 #include <iostream>
 #include <time.h>
-#include "entities/Player.hpp"
 #include "map/Map.hpp"
 #include "systems/Camera.hpp"
 #include "systems/TextManager.hpp"
@@ -21,6 +20,7 @@
 
 class Texture;
 class Core;
+class Player;
 
 class Game
 {
@@ -53,7 +53,7 @@ private:
     unsigned int fixedUPS;
     Uint64 frameDelay;
 
-    Player player;
+    Player *player;
     Texture *backgroundTexture;
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;

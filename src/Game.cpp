@@ -3,6 +3,7 @@
 #include "structures/activeStructures/Core.hpp"
 #include "map/Map.hpp"
 #include "map/Chunk.hpp"
+#include "entities/Player.hpp"
 #include "Texture.hpp"
 
 SDL_Event event;
@@ -80,8 +81,8 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
-    this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, &this->entityManager, &this->map, 1000);
-    this->map.getChunk(0, 0)->addActiveStructure(16 * 2, 16 * 2, core);
+    this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, &this->entityManager, &this->map, (SDL_Rect){16 * 2, 16 * 2, 0, 0}, 1000);
+    this->map.getChunk(0, 0)->addActiveStructure(core);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
     loadEntities();
@@ -97,7 +98,7 @@ void Game::loadMedia()
     this->tileTextures = this->textureManager.getTileTextures();
     this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
     this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
-    
+
     // audio
     this->audioManager.init();
     this->audioManager.loadMedia();
@@ -106,8 +107,8 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     this->entityManager.loadEntities();
-    this->player.init((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16});
-    this->entityManager.addEntity(&this->player);
+    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16});
+    this->entityManager.addEntity(this->player);
 }
 
 void Game::handleEvents()
@@ -119,7 +120,7 @@ void Game::handleEvents()
             this->isRunning = false;
         }
         this->camera.handleEvents(&event);
-        this->player.handleEvents(&event);
+        this->player->handleEvents(&event);
         this->mouseManager.handleEvents(&event);
     }
 }
@@ -129,7 +130,7 @@ Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
 void Game::update()
 {
     // if (limiter("UPS", counterUPSLimiter, 1000 / this->fixedUPS, lastTimeUPSLimiter))
-    this->player.update(&this->collisionManager);
+    this->player->update(&this->collisionManager);
     this->camera.update();
     this->entityManager.update();
     this->core->update();
@@ -152,7 +153,7 @@ void Game::render()
 
         // entities
         this->entityManager.render();
-        this->player.render(&this->camera);
+        this->player->render(&this->camera);
 
         SDL_RenderPresent(this->renderer);
         countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);

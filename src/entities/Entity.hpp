@@ -13,12 +13,9 @@ class Camera;
 class Entity
 {
 public:
-    Entity();
     Entity(Texture *texture, SDL_Rect hitBox);
-    Entity(Texture *texture, SDL_Rect hitBox, State *state);
     ~Entity();
 
-    void init(Texture *texture, SDL_Rect hitbox, State *state);
     void update(CollisionManager *collisionManager);
     bool canMove();
     bool isMoving();
@@ -35,14 +32,11 @@ public:
     int getCenterX();
     int getCenterY();
     SDL_Rect getHitBox();
-    bool isSolid();
 
 protected:
     Texture *texture;
     int velX, velY;
     SDL_Rect hitBox;
-    bool solid;
-    
     State *state;
 };
 

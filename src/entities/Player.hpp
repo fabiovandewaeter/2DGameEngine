@@ -10,12 +10,11 @@
 class Player : public Entity
 {
 public:
-    Player();
+    Player(Texture *texture, SDL_Rect hitBox);
     ~Player();
 
-    void init(Texture *texture, SDL_Rect hitBox);
     void handleEvents(SDL_Event *event);
-    
+
     void setPosition(int x, int y);
 
 private:

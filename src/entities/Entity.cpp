@@ -5,26 +5,15 @@
 #include "../systems/Camera.hpp"
 #include "../Texture.hpp"
 
-Entity::Entity() {}
 Entity::Entity(Texture *texture, SDL_Rect hitBox)
-{
-    init(texture, hitBox, new RestState(this));
-}
-Entity::Entity(Texture *texture, SDL_Rect hitBox, State*state)
-{
-    init(texture, hitBox, state);
-}
-Entity::~Entity() {}
-
-void Entity::init(Texture *texture, SDL_Rect hitBox, State *state)
 {
     this->texture = texture;
     this->hitBox = hitBox;
     this->velX = 0;
     this->velY = 0;
-    this->solid = false;
-    this->state = state;
+    this->state = new RestState(this);
 }
+Entity::~Entity() {}
 
 void Entity::update(CollisionManager *collisionManager)
 {
@@ -78,4 +67,3 @@ int Entity::getPositionY() { return this->hitBox.y; }
 int Entity::getCenterX() { return this->hitBox.w / 2; }
 int Entity::getCenterY() { return this->hitBox.h / 2; }
 SDL_Rect Entity::getHitBox() { return this->hitBox; }
-bool Entity::isSolid() { return this->solid; }

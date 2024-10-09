@@ -6,14 +6,7 @@
 #include "../../systems/TextureManager.hpp"
 #include "../../entities/Entity.hpp"
 
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, unsigned int HP)
-{
-    init(texture, collisionManager, entityManager, map, (SDL_Rect){-1, -1, -1, -1}, HP);
-}
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP)
-{
-    init(texture, collisionManager, entityManager, map, hitBox, HP);
-}
+Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP) : ActiveStructure(texture, collisionManager, entityManager, map, hitBox, HP, true){}
 
 void Core::update()
 {

@@ -3,7 +3,6 @@
 #include "../systems/Camera.hpp"
 #include "../Texture.hpp"
 
-Tile::Tile() {}
 Tile::Tile(Texture *texture, SDL_Rect box)
 {
     this->texture = texture;
@@ -21,19 +20,7 @@ void Tile::render(Camera *camera)
     }
 }
 
-int Tile::getCenterX()
-{
-    return this->box.w / 2;
-}
-int Tile::getCenterY()
-{
-    return this->box.h / 2;
-}
-int Tile::getTextureId()
-{
-    return this->texture->getId();
-}
-SDL_Rect Tile::getBox()
-{
-    return this->box;
-}
+int Tile::getCenterX() { return this->box.w / 2; }
+int Tile::getCenterY() { return this->box.h / 2; }
+int Tile::getTextureId() { return this->texture->getId(); }
+SDL_Rect Tile::getBox() { return this->box; }

@@ -81,10 +81,10 @@ void Chunk::loadPassiveStructures()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], nullptr, (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i+=2;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], nullptr, (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
     i+=2;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
 }
@@ -164,8 +164,11 @@ bool Chunk::isActiveStructure(int x, int y)
     }
     return true;
 }
-void Chunk::addPassiveStructure(int x, int y, Structure *passiveStructure)
+void Chunk::addPassiveStructure(Structure *passiveStructure)
 {
+    SDL_Rect hitBox = passiveStructure->getHitBox();
+    int x = hitBox.x;
+    int y = hitBox.y;
     if (!isPassiveStructure(x, y) && !isActiveStructure(x, y))
     {
         convertToTileCoordinates(x, y);
@@ -175,8 +178,11 @@ void Chunk::addPassiveStructure(int x, int y, Structure *passiveStructure)
         this->allPassiveStructures[coordinates] = passiveStructure;
     }
 }
-void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
+void Chunk::addActiveStructure(Structure *activeStructure)
 {
+    SDL_Rect hitBox = activeStructure->getHitBox();
+    int x = hitBox.x;
+    int y = hitBox.y;
     if (!isActiveStructure(x, y) && !isPassiveStructure(x, y))
     {
         convertToTileCoordinates(x, y);
@@ -188,7 +194,8 @@ void Chunk::addActiveStructure(int x, int y, Structure *activeStructure)
 }
 void Chunk::addWall(int x, int y)
 {
-    addPassiveStructure(x, y, new Wall((*this->passiveStructureTextures)[1], nullptr, 100));
+    convertToTileCoordinates(x, y);
+    addPassiveStructure(new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100));
 }
 void Chunk::destroyPassiveStructure(int x, int y)
 {

@@ -33,8 +33,8 @@ public:
     Structure *getActiveStructure(int x, int y);
     bool isPassiveStructure(int x, int y);
     bool isActiveStructure(int x, int y);
-    void addPassiveStructure(int x, int y, Structure *passiveStructure);
-    void addActiveStructure(int x, int y, Structure *activeStructure);
+    void addPassiveStructure(Structure *passiveStructure);
+    void addActiveStructure(Structure *activeStructure);
     void addWall(int x, int y);
     void destroyPassiveStructure(int x, int y);
 

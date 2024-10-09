@@ -2,16 +2,14 @@
 
 #include "../../map/Map.hpp"
 
-ActiveStructure::ActiveStructure() {}
-ActiveStructure::~ActiveStructure() {}
-
-void ActiveStructure::init(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP)
+ActiveStructure::ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP, bool solid) : Structure(texture, hitBox, HP, solid)
 {
-    Structure::init(texture, collisionManager, hitBox, 1, HP, true);
     this->collisionManager = collisionManager;
     this->entityManager = entityManager;
     this->map = map;
+    this->active = true;
 }
+ActiveStructure::~ActiveStructure() {}
 
 void ActiveStructure::spawnEntities() {}
 std::vector<SDL_Rect> ActiveStructure::getPotentialSpawnTiles()

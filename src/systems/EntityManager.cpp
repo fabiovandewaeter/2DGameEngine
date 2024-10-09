@@ -42,9 +42,29 @@ void EntityManager::addEntity(Entity *entity)
     this->entities.push_back(entity);
     std::cout << this->entities.size() << std::endl;
 }
+bool EntityManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
+{
+    return !(rectA.x + rectA.w <= rectB.x ||
+             rectA.x >= rectB.x + rectB.w ||
+             rectA.y + rectA.h <= rectB.y ||
+             rectA.y >= rectB.y + rectB.h);
+}
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     return this->entities;
+}
+std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
+{
+    std::vector<Entity *> res;
+    int size = this->entities.size();
+    for (int i = 0; i < size; i++)
+    {
+        if (checkCollision(this->entities[i]->getHitBox(), area))
+        {
+            res.push_back(this->entities[i]);
+        }
+    }
+    return res;
 }
 Entity *EntityManager::generateDefaultEntity(SDL_Rect hitBox)
 {

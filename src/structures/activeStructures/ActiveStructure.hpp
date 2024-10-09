@@ -11,19 +11,17 @@ class Map;
 class ActiveStructure : public Structure
 {
 public:
-    ActiveStructure();
-    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, unsigned int HP);
-    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP);
+    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP, bool solid);
     ~ActiveStructure();
-    
-    void init(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP);
 
     virtual void spawnEntities();
     std::vector<SDL_Rect> getPotentialSpawnTiles();
 
 protected:
+    CollisionManager *collisionManager;
     EntityManager *entityManager;
     Map *map;
+    bool active;
 };
 
 #endif
