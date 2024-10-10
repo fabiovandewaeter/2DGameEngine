@@ -12,7 +12,6 @@ public:
     ~Effect();
 
     virtual void applyEffect(Entity *entity) = 0;
-    void applyEffect(std::vector<Entity *> entities);
 
 protected:
 };

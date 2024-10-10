@@ -12,7 +12,7 @@ public:
     Pattern(EntityManager *entityManager, int radius);
     ~Pattern();
 
-    virtual std::vector<Entity *> affectedEntities(int x, int y) = 0;
+    virtual std::vector<Entity *> getAffectedEntities(int x, int y) = 0;
 
 protected:
     EntityManager *entityManager;

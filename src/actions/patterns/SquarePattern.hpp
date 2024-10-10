@@ -12,7 +12,7 @@ public:
     SquarePattern(EntityManager *entityManager, int radius);
     ~SquarePattern();
 
-    std::vector<Entity *> affectedEntities(int x, int y) override;
+    std::vector<Entity *> getAffectedEntities(int x, int y) override;
 };
 
 #endif
