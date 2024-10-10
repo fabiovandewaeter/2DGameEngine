@@ -74,6 +74,8 @@ void TextureManager::loadActiveStructureTextures()
 {
     // core
     this->activeStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/activeStructures/core.png"));
+    // turret
+    this->activeStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/activeStructures/turret.png"));
 }
 
 Texture *TextureManager::getBackgroundTexture()

@@ -2,22 +2,27 @@
 #define action_hpp
 
 #include <vector>
+#include <SDL_stdinc.h>
 
 class Entity;
-class Effect;
 class Pattern;
+class Effect;
+class TickManager;
 
 class Action
 {
 public:
-    Action();
+    Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown);
     ~Action();
 
     void apply(int x, int y);
 
 private:
-    std::vector<Effect *> effects;
     Pattern *pattern;
+    std::vector<Effect *> effects;
+    int cooldown;
+    int cooldownStartTick;
+    TickManager *tickManager;
 };
 
 #endif

@@ -157,7 +157,6 @@ void Chunk::addStructure(Structure *structure)
 }
 void Chunk::addWall(int x, int y)
 {
-    convertToTileCoordinates(x, y);
     addStructure(new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100, this->map));
 }
 void Chunk::destroyStructure(int x, int y)

@@ -20,6 +20,7 @@
 
 class Texture;
 class Core;
+class Turret;
 class Player;
 
 class Game
@@ -63,6 +64,7 @@ private:
     std::vector<Mix_Music *> *music;
 
     Core *core;
+    Turret *turret;
 
     TextManager textManager;
     TextureManager textureManager;
