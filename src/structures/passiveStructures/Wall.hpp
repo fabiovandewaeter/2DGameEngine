@@ -1,12 +1,12 @@
 #ifndef wall_hpp
 #define wall_hpp
 
-#include "../Structure.hpp"
+#include "PassiveStructure.hpp"
 
-class Wall : public Structure
+class Wall : public PassiveStructure
 {
 public:
-    Wall(Texture *texture, SDL_Rect hitBox, unsigned int HP);
+    Wall(Texture *texture, SDL_Rect hitBox, unsigned int HP, Map *map);
 
 private:
 };

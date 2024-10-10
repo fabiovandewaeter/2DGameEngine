@@ -82,7 +82,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
     this->core = new Core((*this->activeStructureTextures)[0], &this->collisionManager, &this->entityManager, &this->map, (SDL_Rect){16 * 2, 16 * 2, 0, 0}, 1000);
-    this->map.getChunk(0, 0)->addActiveStructure(core);
+    this->map.getChunk(0, 0)->addStructure(core);
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
     loadEntities();

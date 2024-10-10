@@ -35,22 +35,13 @@ bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
     if (this->map->isChunkGenerated(rect.x, rect.y))
     {
         Chunk *chunk = this->map->getChunk(rect.x, rect.y);
-        // passive structures
-        if (chunk->isPassiveStructure(rect.x, rect.y))
+        // structures
+        if (chunk->isStructure(rect.x, rect.y))
         {
-            Structure *passiveStructure = chunk->getPassiveStructure(rect.x, rect.y);
-            if (checkCollision(rect, passiveStructure->getHitBox()))
+            Structure *structure = chunk->getStructure(rect.x, rect.y);
+            if (checkCollision(rect, structure->getHitBox()))
             {
-                return passiveStructure->isSolid() ? true : false;
-            }
-        }
-        // active structures
-        if (chunk->isActiveStructure(rect.x, rect.y))
-        {
-            Structure *activeStructure = chunk->getActiveStructure(rect.x, rect.y);
-            if (checkCollisionFromCoordinates(rect.x, rect.y, activeStructure->getHitBox()))
-            {
-                return activeStructure->isSolid() ? true : false;
+                return structure->isSolid() ? true : false;
             }
         }
     }
@@ -83,24 +74,14 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             {
                 newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
                 chunk = this->map->getChunk(newX, newY);
-                // passive structures
-                if (chunk->isPassiveStructure(newX, newY))
+                // structures
+                if (chunk->isStructure(newX, newY))
                 {
-                    Structure *passiveStructure = chunk->getPassiveStructure(newX, newY);
-                    if (checkCollision(newHitBox, passiveStructure->getHitBox()))
+                    Structure *structure = chunk->getStructure(newX, newY);
+                    if (checkCollision(newHitBox, structure->getHitBox()))
                     {
-                        passiveStructure->onCollision(entity);
-                        return passiveStructure->isSolid() ? hitBox : newHitBox;
-                    }
-                }
-                // active structures
-                if (chunk->isActiveStructure(newX, newY))
-                {
-                    Structure *activeStructure = chunk->getActiveStructure(newX, newY);
-                    if (checkCollision(newHitBox, activeStructure->getHitBox()))
-                    {
-                        activeStructure->onCollision(entity);
-                        return activeStructure->isSolid() ? hitBox : newHitBox;
+                        structure->onCollision(entity);
+                        return structure->isSolid() ? hitBox : newHitBox;
                     }
                 }
             }

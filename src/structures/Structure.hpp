@@ -8,18 +8,20 @@ class Texture;
 class Camera;
 class Entity;
 class CollisionManager;
+class Map;
 
 class Structure
 {
 public:
-    Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);
+    Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid, Map *map);
     ~Structure();
 
     void update();
     void destroy();
     void render(Camera *camera);
     void onCollision(Entity *entity);
-    virtual void onClick();
+    virtual void onLeftClick();
+    virtual void onRightClick();
 
     SDL_Rect getHitBox();
     bool isSolid();
@@ -31,6 +33,8 @@ protected:
     Texture *texture;
     bool solid;
     unsigned int HP;
+    Map *map;
+
 };
 
 #endif

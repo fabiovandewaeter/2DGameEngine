@@ -41,8 +41,3 @@ void Core::spawnEntities()
         spawnCooldownCounter++;
     }
 }
-void Core::onClick()
-{
-    std::cout << "Core::onClick()" << std::endl;
-    this->active = !this->active;
-}

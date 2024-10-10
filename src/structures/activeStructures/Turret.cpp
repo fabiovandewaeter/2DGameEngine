@@ -15,9 +15,3 @@ void Turret::update()
         spawnEntities();
     }
 }
-
-void Turret::onClick()
-{
-    std::cout << "Turret::onClick()" << std::endl;
-    this->active = !this->active;
-}

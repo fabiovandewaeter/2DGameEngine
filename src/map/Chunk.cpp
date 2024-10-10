@@ -5,11 +5,12 @@
 #include "../systems/Camera.hpp"
 #include "../structures/passiveStructures/Wall.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
     this->tileSize = tileSize;
+    this->map = map;
     this->tileTextures = tileTextures;
     this->passiveStructureTextures = passiveStructureTextures;
     this->activeStructureTextures = activeStructureTextures;
@@ -26,11 +27,7 @@ Chunk::~Chunk()
     {
         delete this->allTiles[i];
     }
-    for (auto &pair : this->allPassiveStructures)
-    {
-        delete pair.second;
-    }
-    for (auto &pair : this->allActiveStructures)
+    for (auto &pair : this->allStructures)
     {
         delete pair.second;
     }
@@ -81,10 +78,10 @@ void Chunk::loadPassiveStructures()
 {
     int i = 2, j = 0;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100, this->map);
     i+=2;
     coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allPassiveStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
+    this->allStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100, this->map);
     i+=2;
     int x = 2 * this->tileSize, y = 0 * this->tileSize;
 }
@@ -103,11 +100,7 @@ void Chunk::render(Camera *camera)
             this->allTiles[i]->render(camera);
         }
     }
-    for (auto &pair : this->allPassiveStructures)
-    {
-        pair.second->render(camera);
-    }
-    for (auto &pair : this->allActiveStructures)
+    for (auto &pair : this->allStructures)
     {
         pair.second->render(camera);
     }
@@ -132,78 +125,48 @@ Tile *Chunk::getTile(int x, int y)
     convertToTileCoordinates(x, y);
     return this->allTiles[SIZE * x + y];
 }
-Structure *Chunk::getPassiveStructure(int x, int y)
+Structure *Chunk::getStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
     std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    return this->allPassiveStructures[coordinates];
+    return this->allStructures[coordinates];
 }
-Structure *Chunk::getActiveStructure(int x, int y)
+bool Chunk::isStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
     std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    return this->allActiveStructures[coordinates];
-}
-bool Chunk::isPassiveStructure(int x, int y)
-{
-    convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    if (this->allPassiveStructures.find(coordinates) == this->allPassiveStructures.end())
+    if (this->allStructures.find(coordinates) == this->allStructures.end())
     {
         return false;
     }
     return true;
 }
-bool Chunk::isActiveStructure(int x, int y)
+void Chunk::addStructure(Structure *structure)
 {
-    convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    if (this->allActiveStructures.find(coordinates) == this->allActiveStructures.end())
-    {
-        return false;
-    }
-    return true;
-}
-void Chunk::addPassiveStructure(Structure *passiveStructure)
-{
-    SDL_Rect hitBox = passiveStructure->getHitBox();
+    SDL_Rect hitBox = structure->getHitBox();
     int x = hitBox.x;
     int y = hitBox.y;
-    if (!isPassiveStructure(x, y) && !isActiveStructure(x, y))
+    if (!isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
         SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
-        passiveStructure->setHitBox(box);
+        structure->setHitBox(box);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allPassiveStructures[coordinates] = passiveStructure;
-    }
-}
-void Chunk::addActiveStructure(Structure *activeStructure)
-{
-    SDL_Rect hitBox = activeStructure->getHitBox();
-    int x = hitBox.x;
-    int y = hitBox.y;
-    if (!isActiveStructure(x, y) && !isPassiveStructure(x, y))
-    {
-        convertToTileCoordinates(x, y);
-        SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
-        activeStructure->setHitBox(box);
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allActiveStructures[coordinates] = activeStructure;
+        this->allStructures[coordinates] = structure;
     }
 }
 void Chunk::addWall(int x, int y)
 {
     convertToTileCoordinates(x, y);
-    addPassiveStructure(new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100));
+    addStructure(new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100, this->map));
 }
-void Chunk::destroyPassiveStructure(int x, int y)
+void Chunk::destroyStructure(int x, int y)
 {
-    if (isPassiveStructure(x, y))
+    if (isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allPassiveStructures[coordinates]->destroy();
-        this->allPassiveStructures.erase(coordinates);
+        this->allStructures[coordinates]->destroy();
+        this->allStructures.erase(coordinates);
     }
 }

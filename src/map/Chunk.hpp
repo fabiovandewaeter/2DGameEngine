@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <cmath>
 
+class Map;
 class Texture;
 class PerlinNoise;
 class CollisionManager;
@@ -19,7 +20,7 @@ class Structure;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
     void loadTiles();
@@ -29,21 +30,19 @@ public:
     void render(Camera *camera);
 
     Tile *getTile(int x, int y);
-    Structure *getPassiveStructure(int x, int y);
-    Structure *getActiveStructure(int x, int y);
-    bool isPassiveStructure(int x, int y);
-    bool isActiveStructure(int x, int y);
-    void addPassiveStructure(Structure *passiveStructure);
-    void addActiveStructure(Structure *activeStructure);
+    Structure *getStructure(int x, int y);
+    bool isStructure(int x, int y);
+    void addStructure(Structure *structure);
     void addWall(int x, int y);
-    void destroyPassiveStructure(int x, int y);
+    void destroyStructure(int x, int y);
 
 private:
     Tile *allTiles[SIZE * SIZE];
     std::vector<Texture *> *tileTextures;
     int tileSize;
 
-    std::unordered_map<std::string, Structure *> allPassiveStructures, allActiveStructures;
+    Map *map;
+    std::unordered_map<std::string, Structure *> allStructures;
     std::vector<Texture *> *passiveStructureTextures, *activeStructureTextures;
 
     int positionX, positionY;

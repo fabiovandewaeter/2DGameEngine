@@ -42,7 +42,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
+    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);

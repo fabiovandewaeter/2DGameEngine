@@ -16,11 +16,11 @@ public:
 
     virtual void spawnEntities();
     std::vector<SDL_Rect> getPotentialSpawnTiles();
+    void onLeftClick() override;
 
 protected:
     CollisionManager *collisionManager;
     EntityManager *entityManager;
-    Map *map;
     bool active;
 };
 

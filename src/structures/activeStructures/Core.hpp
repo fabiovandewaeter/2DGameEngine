@@ -11,7 +11,6 @@ public:
 
     void update();
     void spawnEntities();
-    void onClick();
 };
 
 #endif

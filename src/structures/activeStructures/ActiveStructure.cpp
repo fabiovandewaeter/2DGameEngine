@@ -2,11 +2,10 @@
 
 #include "../../map/Map.hpp"
 
-ActiveStructure::ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP, bool solid) : Structure(texture, hitBox, HP, solid)
+ActiveStructure::ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP, bool solid) : Structure(texture, hitBox, HP, solid, map)
 {
     this->collisionManager = collisionManager;
     this->entityManager = entityManager;
-    this->map = map;
     this->active = true;
 }
 ActiveStructure::~ActiveStructure() {}
@@ -27,4 +26,8 @@ std::vector<SDL_Rect> ActiveStructure::getPotentialSpawnTiles()
     potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x - tileSize, this->hitBox.y, this->hitBox.w, this->hitBox.h});
 
     return potentialSpawnTiles;
+}
+void ActiveStructure::onLeftClick()
+{
+    this->active = !this->active;
 }

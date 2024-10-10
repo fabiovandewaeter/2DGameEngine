@@ -35,8 +35,8 @@ void MouseManager::handleEvents(SDL_Event *event)
 			chunk = this->map->getChunk(x, y);
 			if (event->button.button == SDL_BUTTON_LEFT)
 			{
-				if (chunk->isActiveStructure(i, j)){
-					chunk->getActiveStructure(i, j)->onClick();
+				if (chunk->isStructure(i, j)){
+					chunk->getStructure(i, j)->onLeftClick();
 				}
 				else {
 					chunk->addWall(i, j);
@@ -44,7 +44,9 @@ void MouseManager::handleEvents(SDL_Event *event)
 			}
 			else if (event->button.button == SDL_BUTTON_RIGHT)
 			{
-				chunk->destroyPassiveStructure(i, j);
+				if (chunk->isStructure(i, j)){
+					chunk->getStructure(i, j)->onRightClick();
+				}
 			}
 			break;
 
