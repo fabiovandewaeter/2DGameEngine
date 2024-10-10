@@ -5,6 +5,7 @@
 #include "../../systems/EntityManager.hpp"
 #include "../../systems/TextureManager.hpp"
 #include "../../entities/Entity.hpp"
+#include "../../Map/Map.hpp"
 
 Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, Map *map, SDL_Rect hitBox, unsigned int HP) : ActiveStructure(texture, collisionManager, entityManager, map, hitBox, HP, true) {}
 
@@ -40,4 +41,20 @@ void Core::spawnEntities()
     {
         spawnCooldownCounter++;
     }
+}
+std::vector<SDL_Rect> Core::getPotentialSpawnTiles()
+{
+    int tileSize = this->map->getTileSize();
+    std::vector<SDL_Rect> potentialSpawnTiles;
+
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x - tileSize, this->hitBox.y - tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x, this->hitBox.y - tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x + tileSize, this->hitBox.y - tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x + tileSize, this->hitBox.y, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x + tileSize, this->hitBox.y + tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x, this->hitBox.y + tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x - tileSize, this->hitBox.y + tileSize, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_Rect){this->hitBox.x - tileSize, this->hitBox.y, this->hitBox.w, this->hitBox.h});
+
+    return potentialSpawnTiles;
 }

@@ -12,6 +12,5 @@ void Turret::update()
 {
     if (this->active)
     {
-        spawnEntities();
     }
 }
