@@ -105,16 +105,22 @@ void Chunk::render(Camera *camera)
         pair.second->render(camera);
     }
 }
+
 void Chunk::update()
 {
+    std::vector<std::string> toRemove;
     for (auto &[coords, structure] : allStructures)
     {
         structure->update();
         if (structure->isDestroyed())
         {
-            this->allStructures[coords]->destroy();
-            this->allStructures.erase(coords);
+            toRemove.push_back(coords);
         }
+    }
+    for (const auto &coords : toRemove)
+    {
+        delete this->allStructures[coords];
+        this->allStructures.erase(coords);
     }
 }
 
@@ -173,8 +179,10 @@ void Chunk::addWall(int x, int y)
 }
 void Chunk::destroyStructure(int x, int y)
 {
+    printf("2\n");
     if (isStructure(x, y))
     {
+    printf("3\n");
         convertToTileCoordinates(x, y);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allStructures[coordinates]->destroy();
