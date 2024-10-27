@@ -22,11 +22,11 @@ public:
     void move(CollisionManager *collisionManager);
     void render(Camera *camera);
     void onCollision(Entity *);
+    void hit(int damage);
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
     void setVelocityY(int velocityY);
-    void hit(int damage);
 
     int getPositionX();
     int getPositionY();

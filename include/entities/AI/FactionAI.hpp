@@ -1,15 +1,15 @@
-#ifndef game_ai_hpp
-#define game_ai_hpp
+#ifndef faction_ai_hpp
+#define faction_ai_hpp
 
 #include <vector>
 
 class Entity;
 
-class GameAI
+class FactionAI
 {
 public:
-    GameAI();
-    ~GameAI();
+    FactionAI();
+    ~FactionAI();
 
     void update();
     void collectResources();
