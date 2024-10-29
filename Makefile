@@ -8,11 +8,13 @@ TARGET = $(BIN_DIR)/main
 
 # Récupère automatiquement tous les fichiers .cpp et génère les fichiers objets correspondants
 ifeq ($(OS),Windows_NT)
-    # Windows
-    SRC_FILES := $(shell powershell -Command "Get-ChildItem -Recurse -Path '$(SRC_DIR)' -Filter '*.cpp' | Select-Object -ExpandProperty FullName")
+#SRC_FILES := $(shell powershell -Command "Get-ChildItem -Recurse -Path '$(SRC_DIR)' -Filter '*.cpp' | Select-Object -ExpandProperty FullName")
+#SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path src -File -Recurse | ForEach-Object { $_.FullName.Replace((Get-Location).Path + \"\\\", '').Replace(\"\\\", '/') }")
+#SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path '$(SRC_DIR)' -File -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.FullName.Replace((Get-Location).Path + '\', '').Replace('\', '/') }")
+SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path '$(SRC_DIR)' -File -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.FullName.Replace((Get-Location).Path + '\', '').Replace('\', '/') }")
 else
     # macOS ou autres Unix
-    SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
+SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
 endif
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
@@ -23,7 +25,7 @@ SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # Cibles spécifiques à Windows
 windows: CXXFLAGS += -L Windows_lib
-windows: SDL_LIBS += -lmingw32 -lSDL2main
+windows: SDL_LIBS := -lmingw32 -lSDL2main $(SDL_LIBS)
 windows: $(TARGET)
 
 # Cibles spécifiques à macOS
@@ -31,31 +33,13 @@ macos: CXXFLAGS += -I$(HOME)/libs/SDL2/include -L$(HOME)/libs/SDL2/lib \
                    -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/
 macos: SDL_LIBS += -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib
 macos: $(TARGET)
-
-
-SRC = src
-OBJ = obj
-
-SOURCES = $(wildcard $(SRC)/*.cpp)
-OBJECTS = $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SOURCES))
-
-all: $(OBJECTS)
-	echo "test1"
-	g++ $^ -o $@
-
-IL PASSE PAS PAR CELUI DU BAS
-$(OBJ)/%.o: $(SRC)/%.cpp
-	echo "test2"
-	@if not exist $(OBJ) mkdir $(OBJ)
-	g++ -I$(SRC) -c $< -o $@
-
+${info Files $(SRC_FILES)}
 # Compilation finale (linking)
 $(TARGET): $(OBJ_FILES)
 	$(CXX) $(OBJ_FILES) -o $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
 # Compilation des fichiers objets
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	echo "test"
 	@if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 	echo $(CXXFLAGS)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
