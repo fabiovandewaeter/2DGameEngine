@@ -4,14 +4,16 @@ SRC_DIR = src
 BIN_DIR = Windows_bin
 OBJ_DIR = obj
 TARGET = $(BIN_DIR)/main
-
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
 # Récupère automatiquement tous les fichiers .cpp et génère les fichiers objets correspondants
 ifeq ($(OS),Windows_NT)
 #SRC_FILES := $(shell powershell -Command "Get-ChildItem -Recurse -Path '$(SRC_DIR)' -Filter '*.cpp' | Select-Object -ExpandProperty FullName")
 #SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path src -File -Recurse | ForEach-Object { $_.FullName.Replace((Get-Location).Path + \"\\\", '').Replace(\"\\\", '/') }")
 #SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path '$(SRC_DIR)' -File -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.FullName.Replace((Get-Location).Path + '\', '').Replace('\', '/') }")
-SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path '$(SRC_DIR)' -File -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.FullName.Replace((Get-Location).Path + '\', '').Replace('\', '/') }")
+#SRC_FILES := $(shell powershell -Command "Get-ChildItem -Path '$(SRC_DIR)' -File -Recurse | Select-Object -ExpandProperty FullName | ForEach-Object { $_.FullName.Replace((Get-Location).Path + '\', '').Replace('\', '/') }")
+#SRC_FILES := $(shell find . -name '*.cpp')
+SRC_FILES := $(call rwildcard,src,*.cpp)
 else
     # macOS ou autres Unix
 SRC_FILES := $(shell find $(SRC_DIR) -name "*.cpp")
@@ -33,15 +35,19 @@ macos: CXXFLAGS += -I$(HOME)/libs/SDL2/include -L$(HOME)/libs/SDL2/lib \
                    -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/
 macos: SDL_LIBS += -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib
 macos: $(TARGET)
-${info Files $(SRC_FILES)}
+#${info Files $(SRC_FILES)}
+#$(call rwildcard,src,*.cpp)
 # Compilation finale (linking)
 $(TARGET): $(OBJ_FILES)
 	$(CXX) $(OBJ_FILES) -o $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
 # Compilation des fichiers objets
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
-	echo $(CXXFLAGS)
+ifeq ($(OS),Windows_NT)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 # Règle pour nettoyer les fichiers objets et l'exécutable
