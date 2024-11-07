@@ -67,6 +67,8 @@ void Entity::setVelocity(int velocityX, int velocityY)
 }
 void Entity::setVelocityX(int velocityX) { this->velX = velocityX; }
 void Entity::setVelocityY(int velocityY) { this->velY = velocityY; }
+void Entity::setFaction(Faction *faction) { this->faction = faction; }
+
 int Entity::getPositionX() { return this->hitBox.x; }
 int Entity::getPositionY() { return this->hitBox.y; }
 int Entity::getCenterX() { return this->hitBox.w / 2; }

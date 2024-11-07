@@ -189,3 +189,4 @@ void Chunk::destroyStructure(int x, int y)
         this->allStructures.erase(coordinates);
     }
 }
+void Chunk::setFaction(Faction *faction) { this->faction = faction; }

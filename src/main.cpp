@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
     int width = 800;
     int height = 600;
     unsigned int UPS = 60;
-    std::cout << argc << " " << argv[1] << std::endl;
     if (argc == 2)
     {
         UPS = std::atoi(argv[1]);
@@ -28,6 +27,7 @@ int main(int argc, char *argv[])
     }
     std::cout << "Window width: " << width << std::endl;
     std::cout << "Window height: " << height << std::endl;
+    std::cout << "UPS: " << UPS << std::endl;
 
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false);
     // game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, false);

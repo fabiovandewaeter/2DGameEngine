@@ -9,6 +9,7 @@ class Texture;
 class State;
 class CollisionManager;
 class Camera;
+class Faction;
 
 class Entity
 {
@@ -27,6 +28,7 @@ public:
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);
     void setVelocityY(int velocityY);
+    void setFaction(Faction *faction);
 
     int getPositionX();
     int getPositionY();
@@ -41,6 +43,7 @@ protected:
     SDL_Rect hitBox;
     State *state;
     int HP;
+    Faction *faction;
 };
 
 #endif

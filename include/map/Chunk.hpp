@@ -16,6 +16,7 @@ class CollisionManager;
 class Camera;
 class Tile;
 class Structure;
+class Faction;
 
 class Chunk
 {
@@ -36,6 +37,7 @@ public:
     void addStructure(Structure *structure);
     void addWall(int x, int y);
     void destroyStructure(int x, int y);
+    void setFaction(Faction *faction);
 
 private:
     Tile *allTiles[SIZE * SIZE];
@@ -49,6 +51,8 @@ private:
     int positionX, positionY;
     SDL_Rect box;
     PerlinNoise *perlinNoise;
+
+    Faction *faction;
 
     void convertToTileCoordinates(int &x, int &y);
 };
