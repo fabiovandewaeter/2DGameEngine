@@ -77,7 +77,12 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     }
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
+
+    // NEED FIX
+    std::cout << "camera zoom need fix" << std::endl;
     this->camera.init(width, height, 10, 200000000, 0, 0);
+    // NEED FIX
+
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
@@ -133,11 +138,7 @@ void Game::update()
     this->player->update(&this->collisionManager);
     this->camera.update();
     this->entityManager.update();
-
     this->map.update();
-
-    //this->core->update();
-    //this->turret->update();
 
     countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
 }
@@ -146,23 +147,21 @@ Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
 Uint64 lastTimeFPSLimiter = SDL_GetTicks64(), counterFPSLimiter = 0;
 void Game::render()
 {
-    if (limiter("FPS", counterFPSLimiter, 1000 / this->fixedFPS, lastTimeFPSLimiter))
-    {
-        SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-        SDL_RenderClear(this->renderer);
+    // if (limiter("FPS", counterFPSLimiter, 1000 / this->fixedFPS, lastTimeFPSLimiter))
+    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+    SDL_RenderClear(this->renderer);
 
-        double scale = this->camera.getScale();
-        this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
-        // tiles and static objects
-        this->map.render();
+    double scale = this->camera.getScale();
+    this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
+    // tiles and static objects
+    this->map.render();
 
-        // entities
-        this->entityManager.render();
-        this->player->render(&this->camera);
+    // entities
+    this->entityManager.render();
+    this->player->render(&this->camera);
 
-        SDL_RenderPresent(this->renderer);
-        countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
-    }
+    SDL_RenderPresent(this->renderer);
+    countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
 }
 
 void Game::clean()
