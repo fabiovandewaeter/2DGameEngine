@@ -19,8 +19,8 @@ void AudioManager::init()
 }
 void AudioManager::loadMedia()
 {
-    this->music.push_back(Mix_LoadMUS("assets/audio/music/Evangelion.wav"));
-    Mix_PlayMusic(this->music[0], -1);
+    /*this->music.push_back(Mix_LoadMUS("assets/audio/music/Evangelion.wav"));
+    Mix_PlayMusic(this->music[0], -1);*/
 }
 
 std::vector<Mix_Music *> *AudioManager::getMusic()

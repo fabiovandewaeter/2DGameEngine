@@ -1,6 +1,6 @@
 CXX = g++
 SRC_DIR = src
-BIN_DIR = Windows_bin
+BIN_DIR = bin
 OBJ_DIR = obj
 TARGET = $(BIN_DIR)/main
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d)) # recursive wildcare ; example : $(call rwildcard,src,*.cpp)
