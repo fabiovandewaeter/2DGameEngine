@@ -1,4 +1,4 @@
-#include "entities/factions/Faction.hpp"
+#include "entities/Faction.hpp"
 
 #include "entities/Entity.hpp"
 #include "map/Chunk.hpp"

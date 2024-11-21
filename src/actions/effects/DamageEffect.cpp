@@ -8,6 +8,6 @@ DamageEffect::~DamageEffect() {}
 
 void DamageEffect::applyEffect(Entity *entity)
 {
-    std::cout << entity->getHP() << std::endl;
+    std::cout << "DamageEffect : " << entity->getHP() << std::endl;
     entity->hit(damage);
 }

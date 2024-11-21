@@ -97,12 +97,10 @@ void Texture::render(int x, int y)
 void Texture::render(int x, int y, int w, int h)
 {
     SDL_Rect renderBox = {x, y, w, h};
-    //std::cout << renderBox.x << " " << renderBox.y << " " << renderBox.w << " " << renderBox.h << std::endl;
     render(renderBox);
 }
 void Texture::render(SDL_Rect renderBox)
 {
-    std::cout << renderBox.x << " " << renderBox.y << " " << renderBox.w << " " << renderBox.h << std::endl;
     // 1px padding
     renderBox.x -= 1;
     renderBox.y -= 1;
