@@ -99,3 +99,9 @@ make install
 ##### run
 
 `./a.out`
+
+## How to add things
+
+### images
+
+add 1 px of padding to iamges
