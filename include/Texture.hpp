@@ -18,6 +18,8 @@ public:
     Texture *loadFromFile(std::string path);
     Texture *loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor);
     void free();
+    void render(int x, int y);
+    void render(int x, int y, int w, int h);
     void render(SDL_Rect renderBox);
 
     int getWidth();

@@ -1,6 +1,8 @@
 #ifndef tile_hpp
 #define tile_hpp
 
+#define TILE_SIZE 16
+
 #include <SDL2/SDL_rect.h>
 #include <vector>
 
@@ -10,18 +12,18 @@ class Camera;
 class Tile
 {
 public:
-    Tile(Texture *texture, SDL_Rect box);
+    Tile(Texture *texture, int x, int y);
     ~Tile();
 
     void render(Camera *camera);
     int getCenterX();
     int getCenterY();
     int getTextureId();
-    SDL_Rect getBox();
+    static int getTileSize();
 
 private:
     Texture *texture;
-    SDL_Rect box;
+    int x, y;
 };
 
 #endif

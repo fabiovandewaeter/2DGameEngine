@@ -89,13 +89,25 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
+void Texture::render(int x, int y)
+{
+    SDL_Rect renderBox = {x, y, this->width, this->height};
+    render(renderBox);
+}
+void Texture::render(int x, int y, int w, int h)
+{
+    SDL_Rect renderBox = {x, y, w, h};
+    //std::cout << renderBox.x << " " << renderBox.y << " " << renderBox.w << " " << renderBox.h << std::endl;
+    render(renderBox);
+}
 void Texture::render(SDL_Rect renderBox)
 {
-    if (renderBox.w == -1 || renderBox.h == -1)
-    {
-        SDL_Rect newRenderBox = {renderBox.x, renderBox.y, this->width, this->height};
-        SDL_RenderCopy(this->renderer, texture, NULL, &newRenderBox);
-    }
+    std::cout << renderBox.x << " " << renderBox.y << " " << renderBox.w << " " << renderBox.h << std::endl;
+    // 1px padding
+    renderBox.x -= 1;
+    renderBox.y -= 1;
+    renderBox.w += 2;
+    renderBox.h += 2;
     SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
 }
 

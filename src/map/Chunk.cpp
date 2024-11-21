@@ -39,7 +39,7 @@ void Chunk::loadTiles()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize});
+            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[0], i * this->tileSize + this->box.x, j * this->tileSize + this->box.y);
         }
     }
 }
@@ -70,7 +70,7 @@ void Chunk::loadTilesWithPerlinNoise()
             {
                 textureIndex = 3;
             }
-            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[textureIndex], (SDL_Rect){x, y, this->tileSize, this->tileSize});
+            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[textureIndex], x, y);
         }
     }
 }

@@ -1,7 +1,6 @@
 #ifndef map_hpp
 #define map_hpp
 
-#define TILE_SIZE 16
 #define CHUNK_SIZE 16
 
 #include <vector>
@@ -21,7 +20,7 @@ public:
     Map();
     ~Map();
 
-    void init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    void init(Camera *camera, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
@@ -36,6 +35,7 @@ public:
 
 private:
     Camera *camera;
+    int tileSize;
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *staticObjectTextures;
     std::vector<Texture *> *structureTextures;

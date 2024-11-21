@@ -9,9 +9,10 @@ Map::~Map()
     free();
 }
 
-void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+void Map::init(Camera *camera, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->camera = camera;
+    this->tileSize = tileSize;
     this->tileTextures = tileTextures;
     this->staticObjectTextures = staticObjectTextures;
     this->structureTextures = structureTextures;
@@ -30,14 +31,14 @@ void Map::loadSquareMap(int size)
     {
         for (int j = -size / 2; j < size / 2; j++)
         {
-            generateChunk(TILE_SIZE * CHUNK_SIZE * i, j * TILE_SIZE * CHUNK_SIZE);
+            generateChunk(this->tileSize * CHUNK_SIZE * i, j * this->tileSize * CHUNK_SIZE);
         }
     }
 }
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, TILE_SIZE, this, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
+    Chunk *newChunk = new Chunk(positionX, positionY, this->tileSize, this, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);
@@ -73,8 +74,8 @@ void Map::free()
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE * TILE_SIZE));
-    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * TILE_SIZE));
+    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE * this->tileSize));
+    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * this->tileSize));
 }
 
 // returns true if the chunk exist
@@ -101,14 +102,14 @@ Chunk *Map::getChunk(int x, int y)
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
-        generateChunk(i * TILE_SIZE * CHUNK_SIZE, j * TILE_SIZE * CHUNK_SIZE);
+        generateChunk(i * this->tileSize * CHUNK_SIZE, j * this->tileSize * CHUNK_SIZE);
         std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
     }
     return this->allChunks[coordinates];
 }
 int Map::getTileSize()
 {
-    return TILE_SIZE;
+    return this->tileSize;
 }
 int Map::getChunkSize()
 {

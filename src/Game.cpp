@@ -4,6 +4,7 @@
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
 #include "map/Chunk.hpp"
+#include "map/Tile.hpp"
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
@@ -86,7 +87,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
-    this->map.init(&this->camera, this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
+    this->map.init(&this->camera, Tile::getTileSize(), this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
 
     this->mouseManager.init(&this->camera, &this->map);
     this->textManager.init(this->renderer);
@@ -130,6 +131,7 @@ void Game::handleEvents()
     }
 }
 
+std::vector<PerlinNoise> tempo;
 Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
 Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
 void Game::update()
@@ -152,7 +154,7 @@ void Game::render()
     SDL_RenderClear(this->renderer);
 
     double scale = this->camera.getScale();
-    this->backgroundTexture->render((SDL_Rect){(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale)});
+    this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale));
     // tiles and static objects
     this->map.render();
 
