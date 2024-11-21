@@ -6,6 +6,12 @@ A small 2D game engine written in c++ and using SDL
 
 The basic functionalities of a game engine are recreated with SDL in order to obtain maximum performance on specific game functionalities that I want to create
 
+## SDL libraries
+- SDL2
+- SDL_image
+- SDL_ttf
+- SDL_mixer
+
 ## Commands
 
 ### Windows
@@ -93,9 +99,3 @@ make install
 ##### run
 
 `./a.out`
-
-## SDL libraries
-- SDL2
-- SDL_image
-- SDL_ttf
-- SDL_mixer
