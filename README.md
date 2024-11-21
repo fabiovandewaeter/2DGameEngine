@@ -14,7 +14,13 @@ The basic functionalities of a game engine are recreated from scratch in order t
 
 #### no make
 
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -o Windows_bin/main -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer ; .\Windows_bin\main.exe 60`
+##### compile
+
+`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -o bin/ -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+
+##### run
+
+`./bin/main.exe`
 
 ### MacOs
 
@@ -29,7 +35,13 @@ The basic functionalities of a game engine are recreated from scratch in order t
 
 #### no make
 
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer ; ./a.out 500 500`
+##### compile
+
+`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+
+##### run
+
+`./a.out`
 
 ### Linux (no root)
 
@@ -74,7 +86,13 @@ make install
 
 #### no make
 
+##### compile
+
 `g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+
+##### run
+
+`./a.out`
 
 ## SDL libraries
 - SDL2
