@@ -6,12 +6,7 @@
 Map::Map() {}
 Map::~Map()
 {
-    for (auto &pair : this->allChunks)
-    {
-        delete pair.second;
-    }
-    this->nearbyChunks.clear();
-    this->allChunks.clear();
+    free();
 }
 
 void Map::init(Camera *camera, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
@@ -68,7 +63,12 @@ void Map::update()
 }
 void Map::free()
 {
-    printf("FAIRE LE FREE DE MAP\n");
+    for (auto &pair : this->allChunks)
+    {
+        delete pair.second;
+    }
+    this->allChunks.clear();
+    this->nearbyChunks.clear();
 }
 
 void Map::convertToChunkCoordinates(int &x, int &y)
