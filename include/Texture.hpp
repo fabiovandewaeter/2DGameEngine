@@ -1,6 +1,8 @@
 #ifndef texture_hpp
 #define texture_hpp
 
+#define TEXTURE_DEFAULT_SIZE 32
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -21,6 +23,7 @@ public:
     void render(int x, int y);
     void render(int x, int y, int w, int h);
     void render(SDL_Rect renderBox);
+    void render(SDL_Rect srcBox, SDL_Rect dstBox);
 
     int getWidth();
     int getHeight();
@@ -28,6 +31,7 @@ public:
     int getCenterX();
     int getCenterY();
     int getId();
+    int getTextureDefaultSize();
 
 private:
     SDL_Texture *texture;

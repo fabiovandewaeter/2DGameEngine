@@ -13,11 +13,28 @@ Tile::~Tile() {}
 
 void Tile::render(Camera *camera)
 {
-    SDL_Rect renderBox = (SDL_Rect){this->x, this->y, TILE_SIZE, TILE_SIZE};
-    camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
+    SDL_Rect dstBox = {this->x, this->y, TILE_SIZE, TILE_SIZE};
+    // 1px paddings to avoid gap when zoom out
+    camera->convertInGameToCameraCoordinates(dstBox);
+    dstBox.x -= 1;
+    dstBox.y -= 1;
+    dstBox.w += 2;
+    dstBox.h += 2;
+    if (camera->isVisible(dstBox))
     {
-        this->texture->render(renderBox);
+        // only the texture on the center and avoid all padding
+        SDL_Rect srcBox;
+        srcBox.x = this->texture->getCenterX() - TEXTURE_DEFAULT_SIZE/ 2;
+        srcBox.y = this->texture->getCenterY() - TEXTURE_DEFAULT_SIZE/ 2;
+        srcBox.w = TEXTURE_DEFAULT_SIZE;
+        srcBox.h = TEXTURE_DEFAULT_SIZE;
+
+        // 1px paddings to avoid gap when zoom out
+        /*srcBox.x -= 1;
+        srcBox.y -= 1;
+        srcBox.w += 2;
+        srcBox.h += 2;*/
+        this->texture->render(srcBox, dstBox);
     }
 }
 

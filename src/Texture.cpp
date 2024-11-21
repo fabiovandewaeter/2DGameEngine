@@ -106,31 +106,22 @@ void Texture::render(SDL_Rect renderBox)
     renderBox.y -= 1;
     renderBox.w += 2;
     renderBox.h += 2;
+
     SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
 }
+void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)
+{
+    SDL_RenderCopy(this->renderer, texture, &srcBox, &dstBox);
+}
 
-int Texture::getWidth()
-{
-    return width;
-}
-int Texture::getHeight()
-{
-    return height;
-}
+int Texture::getWidth() { return width; }
+int Texture::getHeight() { return height; }
 void Texture::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
 }
-int Texture::getCenterX()
-{
-    return this->getWidth() / 2;
-}
-int Texture::getCenterY()
-{
-    return this->getHeight() / 2;
-}
-int Texture::getId()
-{
-    return this->id;
-}
+int Texture::getCenterX() { return this->getWidth() / 2; }
+int Texture::getCenterY() { return this->getHeight() / 2; }
+int Texture::getId() { return this->id; }
+int Texture::getTextureDefaultSize() { return TEXTURE_DEFAULT_SIZE; }
