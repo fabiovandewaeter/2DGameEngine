@@ -3,7 +3,6 @@
 obj/
 main.exe
 a.out
-bin/main
+bin/*
 Windows_bin
 Windows_lib
-bin/*
