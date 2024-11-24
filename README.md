@@ -12,17 +12,28 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 - SDL_ttf
 - SDL_mixer
 
+
+
+
 ## Commands
 
 ### Windows
-#### make
+
+#### Repository for Windows SDL libraries files
+
+- tutorial : https://lazyfoo.net/tutorials/SDL/01_hello_SDL/windows/mingw/index.php
+
+- files : https://github.com/fabiovandewaeter/windows-sdl-libraries-files
+
+
+
+
+#### Compile with make
 `mingw32-make windows`
 
-#### no make
+#### Compile without make
 
-##### compile
-
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -o bin/ -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -o bin/ -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
 
 ##### run
 
@@ -30,20 +41,18 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 
 ### MacOs
 
-#### Install
+#### Install SDL libraries files
 
 - `brew install sdl2_image`
 - `brew install sdl2_tt`
 - `brew install sdl2_mixer`
 
-#### make
+#### Compile with make
 `make macos`
 
-#### no make
+#### Compile without make
 
-##### compile
-
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
 
 ##### run
 
@@ -51,7 +60,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 
 ### Linux (no root)
 
-#### Install
+#### Install SDL libraries files
 
 * SDL2
 ```bash
@@ -87,14 +96,13 @@ make
 make install
 ```
 
-#### make
+#### Compile with make
+
 `make macos`
 
-#### no make
+#### Compile without make
 
-##### compile
-
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/entities/factions/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
 
 ##### run
 
