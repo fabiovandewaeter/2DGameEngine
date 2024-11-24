@@ -3,6 +3,7 @@ SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
 TARGET = $(BIN_DIR)/main
+WINDOWS_TARGET = $(BIN_DIR)\main.exe
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d)) # recursive wildcare ; example : $(call rwildcard,src,*.cpp)
 
 # get all .cpp files
@@ -55,5 +56,9 @@ else
 	rm -f $(OBJ_FILES) $(TARGET)  # Pour Unix
 endif
 
-run: $(TARGET)
+run:
+ifeq ($(OS),Windows_NT)
+	.\$(WINDOWS_TARGET) 60
+else
 	./$(TARGET) 60
+endif

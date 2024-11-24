@@ -6,3 +6,4 @@ a.out
 bin/main
 Windows_bin
 Windows_lib
+bin/*
