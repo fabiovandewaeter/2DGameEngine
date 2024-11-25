@@ -8,6 +8,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 # get all .cpp files
 SRC_FILES := $(call rwildcard,src,*.cpp)
+HEADER_FILES := $(call rwildcard,include,*.hpp)
 
 # get the path of all .o to generate
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
@@ -32,7 +33,7 @@ linux: SDL_LIBS += -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 linux: $(TARGET)
 
 # compilation
-$(TARGET): $(OBJ_FILES)
+$(TARGET): $(OBJ_FILES) $(HEADER_FILES)
 ifeq ($(OS),Windows_NT)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else

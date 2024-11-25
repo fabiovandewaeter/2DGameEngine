@@ -20,7 +20,6 @@ public:
 
     void convertInGameToCameraCoordinates(SDL_Rect &rect);
     void convertCameraToInGameCoordinates(int &x, int &y);
-    // calculates rect rendering coordinates and returns true if it is in the camera view
     bool isVisible(SDL_Rect rect);
 
     void setPosition(int x, int y);
