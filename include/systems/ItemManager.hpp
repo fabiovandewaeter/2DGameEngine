@@ -25,7 +25,7 @@ public:
     std::vector<Item *> *getMineableResources();
 
 private:
-    std::unordered_map<std::string, std::vector<Item *>> allItems;
+    std::vector<Item *> allItems;
 
     void loadResources();
     void loadItems();

@@ -1,0 +1,36 @@
+{
+    "resources": [
+        {
+            "name": "Iron Ore",
+            "type": "mineable"
+        },
+        {
+            "name": "Stone",
+            "type": "mineable"
+        },
+        {
+            "name": "Dirt",
+            "type": "mineable"
+        },
+        {
+            "name": "Gold Ore",
+            "type": "mineable"
+        },
+        {
+            "name": "Meat",
+            "type": "droppale"
+        },
+        {
+            "name": "Arrow",
+            "type": "droppale"
+        },
+        {
+            "name": "Wheat",
+            "type": "collectible"
+        },
+        {
+            "name": "Wood",
+            "type": "collectible"
+        }
+    ]
+}

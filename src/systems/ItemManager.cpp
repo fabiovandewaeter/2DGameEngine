@@ -1,5 +1,9 @@
 #include "systems/ItemManager.hpp"
 
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <iostream>
+
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
 
@@ -13,8 +17,25 @@ void ItemManager::loadAllItems()
 }
 void ItemManager::loadResources()
 {
-    // load ressources from JSON
-    // this->allItems["resources"].add();
+    std::ifstream file("data/resources.json");
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open data/resources.json" << std::endl;
+        return;
+    }
+
+    json resourcesData;
+    file >> resourcesData;
+    file.close();
+
+    for (const auto &resource : resourcesData["resources"])
+    {
+        std::string name = resource["name"];
+        std::string type = resource["type"];
+
+        Item *newItem = new Item(name, type);
+        this->allItems.push_back(newItem);
+    }
 }
 void ItemManager::loadItems()
 {
