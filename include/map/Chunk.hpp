@@ -25,6 +25,7 @@ public:
     ~Chunk();
 
     void loadTiles();
+    void loadTilesDefault();
     void loadTilesWithPerlinNoise();
     void loadPassiveStructures();
     void loadActiveStructures();

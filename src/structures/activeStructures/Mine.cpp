@@ -7,5 +7,6 @@ void Mine::update()
 {
     if (this->active)
     {
+
     }
 }

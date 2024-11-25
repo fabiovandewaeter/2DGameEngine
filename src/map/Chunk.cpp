@@ -16,8 +16,7 @@ Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<T
     this->activeStructureTextures = activeStructureTextures;
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
-    // loadTiles();
-    loadTilesWithPerlinNoise();
+    loadTiles();
     loadPassiveStructures();
     loadActiveStructures();
 }
@@ -34,6 +33,10 @@ Chunk::~Chunk()
 }
 
 void Chunk::loadTiles()
+{
+    loadTilesWithPerlinNoise();
+}
+void Chunk::loadTilesDefault()
 {
     for (int i = 0; i < SIZE; i++)
     {
@@ -74,20 +77,8 @@ void Chunk::loadTilesWithPerlinNoise()
         }
     }
 }
-void Chunk::loadPassiveStructures()
-{
-    /*int i = 2, j = 0;
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStructures[coordinates] = new Wall((*this->passiveStructureTextures)[0], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
-    i += 2;
-    coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allStructures[coordinates] = new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){i * this->tileSize + this->box.x, j * this->tileSize + this->box.y, this->tileSize, this->tileSize}, 100);
-    i += 2;
-    int x = 2 * this->tileSize, y = 0 * this->tileSize;*/
-}
-void Chunk::loadActiveStructures()
-{
-}
+void Chunk::loadPassiveStructures() {}
+void Chunk::loadActiveStructures() {}
 
 void Chunk::render(Camera *camera)
 {
@@ -182,7 +173,7 @@ void Chunk::destroyStructure(int x, int y)
     printf("2\n");
     if (isStructure(x, y))
     {
-    printf("3\n");
+        printf("3\n");
         convertToTileCoordinates(x, y);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allStructures[coordinates]->destroy();
