@@ -1,6 +1,6 @@
 #include "systems/ItemManager.hpp"
 
-#include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -17,14 +17,14 @@ void ItemManager::loadAllItems()
 }
 void ItemManager::loadResources()
 {
-    std::ifstream file("data/resources.json");
+    /*std::ifstream file("data/resources.json");
     if (!file.is_open())
     {
         std::cerr << "Failed to open data/resources.json" << std::endl;
         return;
     }
 
-    json resourcesData;
+    //json resourcesData;
     file >> resourcesData;
     file.close();
 
@@ -35,7 +35,7 @@ void ItemManager::loadResources()
 
         Item *newItem = new Item(name, type);
         this->allItems.push_back(newItem);
-    }
+    }*/
 }
 void ItemManager::loadItems()
 {
