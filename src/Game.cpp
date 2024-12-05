@@ -17,7 +17,7 @@ Game::~Game()
 {
 }
 
-void Game::init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen)
+void Game::init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync)
 {
     this->fixedFPS = 60;
     this->fixedUPS = 60;
@@ -27,7 +27,11 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     int flags = 0;
     if (fullscreen)
     {
-        flags = SDL_WINDOW_FULLSCREEN;
+        flags = flags | SDL_WINDOW_FULLSCREEN;
+    }
+    if (vsync)
+    {
+        flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
     this->isRunning = true;
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)

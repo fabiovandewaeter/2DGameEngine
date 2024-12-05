@@ -23,15 +23,16 @@ void Map::init(Camera *camera, int tileSize, std::vector<Texture *> *tileTexture
 
 void Map::loadChunks()
 {
-    loadSquareMap(10);
+    loadSquareMap(20);
 }
 void Map::loadSquareMap(int size)
 {
-    for (int i = -size / 2; i < size / 2; i++)
+    int step = CHUNK_SIZE * this->tileSize;
+    for (int i = 0; i < size; i++)
     {
-        for (int j = -size / 2; j < size / 2; j++)
+        for (int j = 0; j < size; j++)
         {
-            generateChunk(this->tileSize * CHUNK_SIZE * i, j * this->tileSize * CHUNK_SIZE);
+            generateChunk(i * step-(step*size/2), j * step-(step*size/2));
         }
     }
 }

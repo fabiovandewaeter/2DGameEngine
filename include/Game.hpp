@@ -29,7 +29,7 @@ public:
     Game();
     ~Game();
 
-    void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen);
+    void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
     void loadMedia();
     void loadEntities();
     void handleEvents();
