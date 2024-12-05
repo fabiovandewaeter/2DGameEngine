@@ -22,8 +22,11 @@ public:
     bool isMoving();
     void move(CollisionManager *collisionManager);
     void render(Camera *camera);
+    void kill();
     void onCollision(Entity *);
     void hit(int damage);
+    virtual void onLeftClick();
+    virtual void onRightClick();
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

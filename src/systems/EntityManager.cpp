@@ -20,14 +20,28 @@ void EntityManager::loadEntities()
 {
     //this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, 100));
 }
-void EntityManager::update()
-{
+
+void EntityManager::update() {
     int size = this->entities.size();
-    for (int i = 0; i < size; i++)
-    {
+    std::vector<int> deadEntities;
+
+    // update entities
+    for (int i = 0; i < size; i++) {
         this->entities[i]->update(this->collisionManager);
+        if (this->entities[i]->getHP() <= 0) {
+            deadEntities.push_back(i);
+        }
+    }
+
+    // delete dead entities
+    for (int i = deadEntities.size() - 1; i >= 0; i--) {
+        int index = deadEntities[i];
+        Entity* tempo = this->entities[index];
+        this->entities.erase(this->entities.begin() + index);
+        delete tempo;
     }
 }
+
 void EntityManager::render()
 {
     int size = this->entities.size();

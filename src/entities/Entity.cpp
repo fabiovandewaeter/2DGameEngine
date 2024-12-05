@@ -4,6 +4,7 @@
 #include "systems/CollisionManager.hpp"
 #include "systems/Camera.hpp"
 #include "Texture.hpp"
+#include "entities/states/DeadState.hpp"
 
 Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
 {
@@ -30,17 +31,23 @@ bool Entity::isMoving()
 {
     return this->velX != 0 || this->velY != 0;
 }
+
 void Entity::move(CollisionManager *collisionManager)
 {
     if (canMove() && isMoving())
     {
+        // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+        SDL_Rect tempRect = collisionManager->handleCollisionsFor(this, newPosX, this->getPositionY());
+        this->hitBox.x = tempRect.x;
+
+        // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-        SDL_Rect newRect = collisionManager->handleCollisionsFor(this, newPosX, newPosY);
-        this->hitBox.x = newRect.x;
-        this->hitBox.y = newRect.y;
+        tempRect = collisionManager->handleCollisionsFor(this, this->getPositionX(), newPosY);
+        this->hitBox.y = tempRect.y;
     }
 }
+
 
 void Entity::render(Camera *camera)
 {
@@ -51,6 +58,10 @@ void Entity::render(Camera *camera)
         this->texture->render(renderBox);
     }
 }
+void Entity::kill(){
+    this->HP = 0;
+    this->state = new DeadState(this);
+}
 void Entity::onCollision(Entity *entity)
 {
     std::cout << "Entity#onCollision()" << std::endl;
@@ -59,6 +70,8 @@ void Entity::hit(int damage)
 {
     this->HP -= damage;
 }
+void Entity::onLeftClick() { kill(); }
+void Entity::onRightClick() { std::cout << "fait rien RIGHT" << std::endl; }
 
 void Entity::setVelocity(int velocityX, int velocityY)
 {
