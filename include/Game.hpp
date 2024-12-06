@@ -17,6 +17,7 @@
 #include "systems/MouseManager.hpp"
 #include "systems/EntityManager.hpp"
 #include "systems/AudioManager.hpp"
+#include "systems/ItemManager.hpp"
 
 class Texture;
 class Core;
@@ -32,6 +33,7 @@ public:
     void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
     void loadMedia();
     void loadEntities();
+    void loadItems();
     void handleEvents();
     void update();
     void render();
@@ -75,6 +77,7 @@ private:
     MouseManager mouseManager;
     EntityManager entityManager;
     AudioManager audioManager;
+    ItemManager itemManager;
 
     SDL_Surface *loadSurface(std::string path);
     SDL_Texture *loadTexture(std::string path);

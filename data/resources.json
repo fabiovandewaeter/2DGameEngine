@@ -32,5 +32,11 @@
             "name": "Wood",
             "type": "collectible"
         }
+    ],
+    "items": [
+        {
+            "name": "Sword",
+            "type": "weapon"
+        }
     ]
 }

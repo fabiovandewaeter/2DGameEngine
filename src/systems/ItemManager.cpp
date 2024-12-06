@@ -1,55 +1,64 @@
 #include "systems/ItemManager.hpp"
 
-//#include <nlohmann/json.hpp>
+#include "json.hpp"
 #include <fstream>
 #include <iostream>
+
+#include "items/Resource.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
 
-void ItemManager::free() {}
-
-void ItemManager::init() { loadAllItems(); }
-void ItemManager::loadAllItems()
+void ItemManager::free()
 {
-    loadItems();
-    loadResources();
+    int size = this->resources.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete this->resources[i];
+    }
 }
-void ItemManager::loadResources()
+
+void ItemManager::init() {}
+void ItemManager::load()
 {
-    /*std::ifstream file("data/resources.json");
+    std::ifstream file("data/resources.json");
     if (!file.is_open())
     {
         std::cerr << "Failed to open data/resources.json" << std::endl;
         return;
     }
 
-    //json resourcesData;
+    nlohmann::json_abi_v3_11_2::json resourcesData;
     file >> resourcesData;
     file.close();
 
+    loadResources(resourcesData);
+    loadItems(resourcesData);
+}
+void ItemManager::loadResources(nlohmann::json_abi_v3_11_2::json resourcesData)
+{
     for (const auto &resource : resourcesData["resources"])
     {
         std::string name = resource["name"];
         std::string type = resource["type"];
 
-        Item *newItem = new Item(name, type);
-        this->allItems.push_back(newItem);
-    }*/
+        Resource *newResource = new Resource(name, nullptr);
+        this->resources.push_back(newResource);
+        std::cout << name << std::endl;
+    }
 }
-void ItemManager::loadItems()
+void ItemManager::loadItems(nlohmann::json_abi_v3_11_2::json resourcesData)
 {
-    // load items from JSON
-    // this->allItems["items"].add();
+    for (const auto &resource : resourcesData["items"])
+    {
+        std::string name = resource["name"];
+        std::string type = resource["type"];
+
+        Item *newItem = new Item(name, nullptr);
+        this->resources.push_back(newItem);
+        std::cout << name << std::endl;
+    }
 }
 
-std::vector<Item *> *ItemManager::getAllItems() {}
-std::vector<Item *> *ItemManager::getItems()
-{ // return this->allItems["items"];
-}
-std::vector<Item *> *ItemManager::getResources()
-{ // return this->allItems["resources"];
-}
-std::vector<Item *> *ItemManager::getMineableResources()
-{ // return this->allItems["resources"].filter(minable);
-}
+std::vector<Item *> *ItemManager::getItems() { return &this->items; }
+std::vector<Resource *> *ItemManager::getResources() { return &this->resources; }

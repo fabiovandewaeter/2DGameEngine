@@ -6,6 +6,7 @@
 #include <string>
 
 class Item;
+class Resource;
 
 // load all resources defined in JSON files
 
@@ -17,18 +18,17 @@ public:
     void free();
 
     void init();
-    void loadAllItems();
+    void load();
 
-    std::vector<Item *> *getAllItems();
     std::vector<Item *> *getItems();
-    std::vector<Item *> *getResources();
-    std::vector<Item *> *getMineableResources();
+    std::vector<Resource *> *getResources();
 
 private:
-    std::vector<Item *> allItems;
+    std::vector<Item *> items;
+    std::vector<Resource *> resources;
 
-    void loadResources();
-    void loadItems();
+    void loadResources(nlohmann::json_abi_v3_11_2::json resourcesData);
+    void loadItems(nlohmann::json_abi_v3_11_2::json resourcesData);
 };
 
 #endif

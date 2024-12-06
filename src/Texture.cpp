@@ -97,7 +97,6 @@ void Texture::render(int x, int y)
 void Texture::render(int x, int y, int w, int h)
 {
     SDL_Rect renderBox = {x, y, w, h};
-    std::cout << x << " " << y << " " << w << " " << h << std::endl;
     render(renderBox);
 }
 void Texture::render(SDL_Rect renderBox)
