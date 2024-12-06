@@ -48,7 +48,6 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, int x, int y)
 		if (isEntityClicked)
 		{
 			clickedEntity->onLeftClick();
-			std::cout << "ENTITY KILLED" << std::endl;
 		}
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)
@@ -58,6 +57,7 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, int x, int y)
 			clickedEntity->onRightClick();
 		}
 	}
+	return isEntityClicked;
 }
 
 bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
@@ -68,10 +68,10 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
 	this->camera->convertCameraToInGameCoordinates(i, j);
 
 	chunk = this->map->getChunk(i, j);
-	bool isStructure = chunk->isStructure(i, j);
+	bool isStructureClicked = chunk->isStructure(i, j);
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
-		if (isStructure)
+		if (isStructureClicked)
 		{
 			chunk->getStructure(i, j)->onLeftClick();
 		}
@@ -82,11 +82,12 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)
 	{
-		if (isStructure)
+		if (isStructureClicked)
 		{
 			chunk->getStructure(i, j)->onRightClick();
 		}
 	}
+	return isStructureClicked;
 }
 
 void MouseManager::handleEvents(SDL_Event *event)

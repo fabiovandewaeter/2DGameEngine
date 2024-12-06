@@ -71,8 +71,8 @@ void Entity::hit(int damage)
 {
     this->HP -= damage;
 }
-void Entity::onLeftClick() { kill(); }
-void Entity::onRightClick() { std::cout << "fait rien RIGHT" << std::endl; }
+void Entity::onLeftClick() { std::cout << "fait rien RIGHT" << std::endl; }
+void Entity::onRightClick() { kill(); }
 
 void Entity::setVelocity(int velocityX, int velocityY)
 {
