@@ -1,10 +1,12 @@
 #include "systems/ItemManager.hpp"
 
 #include "json.hpp"
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 
 #include "items/Resource.hpp"
+#include "items/Item.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
@@ -55,7 +57,7 @@ void ItemManager::loadItems(nlohmann::json_abi_v3_11_2::json resourcesData)
         std::string type = resource["type"];
 
         Item *newItem = new Item(name, nullptr);
-        this->resources.push_back(newItem);
+        this->items.push_back(newItem);
         std::cout << name << std::endl;
     }
 }
