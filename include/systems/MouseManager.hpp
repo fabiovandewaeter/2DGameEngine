@@ -23,7 +23,7 @@ private:
 	Camera *camera;
 	Map *map;
 	EntityManager *entityManager;
-	CollisionManager * collisionManager;
+	CollisionManager *collisionManager;
 };
 
 #endif

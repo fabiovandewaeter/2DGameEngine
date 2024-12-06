@@ -15,7 +15,7 @@ void Camera::init(int width, int height, double minScale, double maxScale, int p
     this->scale = 1.0;
     this->minScale = minScale;
     this->maxScale = 1 / maxScale;
-    this->scaleSpeed = 0.1;
+    this->scaleSpeed = 1.0;
     this->positionX = positionX;
     this->positionY = positionY;
     this->velocity = 1;

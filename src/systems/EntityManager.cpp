@@ -69,6 +69,8 @@ std::vector<Entity *> EntityManager::getEntities()
 }
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
+    // NEED CHANGE
+    std::cout << "NEED CHANGE IN EntityManager::getPotentialEntities()" << std::endl;
     return this->entities;
 }
 std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)

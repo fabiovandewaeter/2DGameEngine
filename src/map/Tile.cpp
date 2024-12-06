@@ -11,7 +11,7 @@ Tile::Tile(Texture *texture, int x, int y)
 }
 Tile::~Tile() {}
 
-void Tile::render(Camera *camera)
+/*void Tile::render(Camera *camera)
 {
     SDL_Rect dstBox = {this->x, this->y, TILE_SIZE, TILE_SIZE};
     // 1px paddings to avoid gap when zoom out
@@ -29,12 +29,16 @@ void Tile::render(Camera *camera)
         srcBox.w = TEXTURE_DEFAULT_SIZE;
         srcBox.h = TEXTURE_DEFAULT_SIZE;
 
-        // 1px paddings to avoid gap when zoom out
-        /*srcBox.x -= 1;
-        srcBox.y -= 1;
-        srcBox.w += 2;
-        srcBox.h += 2;*/
         this->texture->render(srcBox, dstBox);
+    }
+}*/
+void Tile::render(Camera *camera)
+{
+    SDL_Rect renderBox = (SDL_Rect){this->x, this->y, TILE_SIZE, TILE_SIZE};
+    camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisible(renderBox))
+    {
+        this->texture->render(renderBox);
     }
 }
 
