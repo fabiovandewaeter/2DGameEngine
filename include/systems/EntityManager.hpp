@@ -22,6 +22,7 @@ public:
 
     void addEntity(Entity *entity);
     bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
+    std::vector<Entity *> getEntities();
     std::vector<Entity *> getPotentialEntities(Entity *entity);
     std::vector<Entity *> getEntitiesInArea(SDL_Rect area);
     Entity *generateDefaultEntity(SDL_Rect hitBox);

@@ -59,6 +59,7 @@ void Entity::render(Camera *camera)
     }
 }
 void Entity::kill(){
+    
     this->HP = 0;
     this->state = new DeadState(this);
 }

@@ -63,6 +63,10 @@ bool EntityManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
              rectA.y + rectA.h <= rectB.y ||
              rectA.y >= rectB.y + rectB.h);
 }
+std::vector<Entity *> EntityManager::getEntities()
+{
+    return this->entities;
+}
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     return this->entities;
@@ -74,7 +78,7 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
     for (int i = 0; i < size; i++)
     {
         SDL_Rect hitBox = this->entities[i]->getHitBox();
-    //std::cout << area.x << " " << area.y << " " << area.w << " " << area.h << " " << hitBox.x << " " << hitBox.y << " " << hitBox.w << " " << hitBox.h << std::endl;
+
         if (checkCollision(this->entities[i]->getHitBox(), area))
         {
             res.push_back(this->entities[i]);

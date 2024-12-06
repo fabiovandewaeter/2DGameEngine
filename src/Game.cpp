@@ -93,7 +93,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, Tile::getTileSize(), this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
 
-    this->mouseManager.init(&this->camera, &this->map);
+    this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     this->textManager.init(this->renderer);
     loadEntities();
 }
@@ -164,7 +164,6 @@ void Game::render()
 
     // entities
     this->entityManager.render();
-    this->player->render(&this->camera);
 
     SDL_RenderPresent(this->renderer);
     countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
