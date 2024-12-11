@@ -27,7 +27,7 @@ private:
     std::vector<Item *> items;
     std::vector<Resource *> resources;
 
-    void genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results);
+    int genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results);
     void loadResources(const rapidjson::Document& resourcesData);
     void loadItems(const rapidjson::Document& resourcesData);
 };

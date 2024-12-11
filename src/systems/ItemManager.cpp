@@ -47,16 +47,17 @@ void ItemManager::load()
     loadItems(resourcesData);
 }
 
-void ItemManager::genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results)
+int ItemManager::genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results)
 {
     if (!resourcesData.HasMember(type.c_str()) || !resourcesData[type.c_str()].IsArray())
     {
         std::cerr << "Invalid or missing " << type << " array in JSON" << std::endl;
-        return;
+        return 0;
     }
 
+    int quantityFound = 0;
     int sizeRequiredFields = requiredFields.size();
-    const auto& resourcesArray = resourcesData["resources"].GetArray();
+    const auto& resourcesArray = resourcesData[type.c_str()].GetArray();
     for (rapidjson::SizeType i = 0; i < resourcesArray.Size(); ++i)
     {
         const auto& resource = resourcesArray[i];
@@ -70,11 +71,12 @@ void ItemManager::genericLoader(const rapidjson::Document& resourcesData, const 
                 break;
             }
             else{
+                quantityFound++;
                 results.push_back(resource[field.c_str()].GetString());
-                std::cout << results[results.size()-1].c_str() << std::endl;
             }
         }
     }
+    return quantityFound;
 }
 
 void ItemManager::loadResources(const rapidjson::Document& resourcesData)
@@ -83,56 +85,27 @@ void ItemManager::loadResources(const rapidjson::Document& resourcesData)
     requiredFields.push_back("name");
     requiredFields.push_back("type");
     std::vector<std::string> results;
-    genericLoader(resourcesData, "resources", requiredFields, results);
-    /*if (!resourcesData.HasMember("resources") || !resourcesData["resources"].IsArray())
-    {
-        std::cerr << "Invalid or missing 'resources' array in JSON" << std::endl;
-        return;
+    int quantityFound = genericLoader(resourcesData, "resources", requiredFields, results);
+
+    int numberOfFields = requiredFields.size();
+    for (int i = 0; i < quantityFound; i += numberOfFields){
+        this->resources.push_back(new Resource(results[i], nullptr));
+        std::cout << quantityFound << " " << results[i] << std::endl;
     }
-
-    const auto& resourcesArray = resourcesData["resources"].GetArray();
-    for (rapidjson::SizeType i = 0; i < resourcesArray.Size(); ++i)
-    {
-        const auto& resource = resourcesArray[i];
-        if (!resource.HasMember("name") || !resource.HasMember("type"))
-        {
-            std::cerr << "Missing 'name' or 'type' in a resource entry" << std::endl;
-            continue;
-        }
-
-        std::string name = resource["name"].GetString();
-        std::string type = resource["type"].GetString();
-
-        Resource* newResource = new Resource(name, nullptr);
-        this->resources.push_back(newResource);
-        std::cout << name << std::endl;
-    }*/
 }
 
 void ItemManager::loadItems(const rapidjson::Document& resourcesData)
 {
-    if (!resourcesData.HasMember("items") || !resourcesData["items"].IsArray())
-    {
-        std::cerr << "Invalid or missing 'items' array in JSON" << std::endl;
-        return;
-    }
+    std::vector<std::string> requiredFields;
+    requiredFields.push_back("name");
+    requiredFields.push_back("type");
+    std::vector<std::string> results;
+    int quantityFound = genericLoader(resourcesData, "items", requiredFields, results);
 
-    const auto& itemsArray = resourcesData["items"].GetArray();
-    for (rapidjson::SizeType i = 0; i < itemsArray.Size(); ++i)
-    {
-        const auto& item = itemsArray[i];
-        if (!item.HasMember("name") || !item.HasMember("type"))
-        {
-            std::cerr << "Missing 'name' or 'type' in an item entry" << std::endl;
-            continue;
-        }
-
-        std::string name = item["name"].GetString();
-        std::string type = item["type"].GetString();
-
-        Item* newItem = new Item(name, nullptr);
-        this->items.push_back(newItem);
-        std::cout << name << std::endl;
+    int numberOfFields = requiredFields.size();
+    for (int i = 0; i < quantityFound; i += numberOfFields){
+        this->items.push_back(new Item(results[i], nullptr));
+        std::cout << quantityFound << " " << results[i] << std::endl;
     }
 }
 
