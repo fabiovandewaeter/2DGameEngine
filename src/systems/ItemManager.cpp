@@ -90,7 +90,7 @@ void ItemManager::loadResources(const rapidjson::Document& resourcesData)
     int numberOfFields = requiredFields.size();
     for (int i = 0; i < quantityFound; i += numberOfFields){
         this->resources.push_back(new Resource(results[i], nullptr));
-        std::cout << quantityFound << " " << results[i] << std::endl;
+        std::cout << "Resource loaded : " << results[i] << std::endl;
     }
 }
 
@@ -105,7 +105,7 @@ void ItemManager::loadItems(const rapidjson::Document& resourcesData)
     int numberOfFields = requiredFields.size();
     for (int i = 0; i < quantityFound; i += numberOfFields){
         this->items.push_back(new Item(results[i], nullptr));
-        std::cout << quantityFound << " " << results[i] << std::endl;
+        std::cout << "Item loaded : " << results[i] << std::endl;
     }
 }
 
