@@ -1,15 +1,15 @@
-#ifndef item_manager_hpp
-#define item_manager_hpp
+#ifndef ITEM_MANAGER_HPP
+#define ITEM_MANAGER_HPP
 
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <rapidjson/document.h>
 
 class Item;
 class Resource;
 
-// load all resources defined in JSON files
-
+// Manages the loading and management of items and resources defined in JSON files
 class ItemManager
 {
 public:
@@ -27,8 +27,9 @@ private:
     std::vector<Item *> items;
     std::vector<Resource *> resources;
 
-    void loadResources(nlohmann::json_abi_v3_11_2::json resourcesData);
-    void loadItems(nlohmann::json_abi_v3_11_2::json resourcesData);
+    void genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results);
+    void loadResources(const rapidjson::Document& resourcesData);
+    void loadItems(const rapidjson::Document& resourcesData);
 };
 
 #endif
