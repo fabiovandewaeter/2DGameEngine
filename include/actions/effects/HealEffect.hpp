@@ -6,7 +6,7 @@
 class HealEffect : public Effect
 {
 public:
-    HealEffect(int hp);
+    HealEffect(const int& hp);
     ~HealEffect();
 
     void applyEffect(Entity *entity) override;

@@ -14,7 +14,7 @@ class Faction;
 class Entity
 {
 public:
-    Entity(Texture *texture, SDL_Rect hitBox, int HP);
+    Entity(Texture *texture, SDL_Rect hitBox, const int& HP);
     ~Entity();
 
     void update(CollisionManager *collisionManager);
@@ -24,13 +24,13 @@ public:
     void render(Camera *camera);
     void kill();
     void onCollision(Entity *);
-    void hit(int damage);
+    void hit(const int& damage);
     virtual void onLeftClick();
     virtual void onRightClick();
 
-    void setVelocity(int velX, int velY);
-    void setVelocityX(int velocityX);
-    void setVelocityY(int velocityY);
+    void setVelocity(const int& velX, const int& velY);
+    void setVelocityX(const int& velocityX);
+    void setVelocityY(const int& velocityY);
     void setFaction(Faction *faction);
 
     int getPositionX();

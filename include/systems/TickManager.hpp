@@ -10,7 +10,7 @@ public:
 
     static TickManager *getInstance();
 
-    void handleTickSpeed(Uint64 gameFrameDelay);
+    void handleTickSpeed(const Uint64& gameFrameDelay);
     Uint64 getNormalizedTick();
     void setFrameStart();
     Uint64 getTicks();

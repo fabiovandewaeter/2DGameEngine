@@ -6,7 +6,7 @@
 class DamageEffect : public Effect
 {
 public:
-    DamageEffect(int damage);
+    DamageEffect(const int& damage);
     ~DamageEffect();
 
     void applyEffect(Entity *entity) override;

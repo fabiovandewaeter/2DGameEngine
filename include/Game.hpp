@@ -30,7 +30,7 @@ public:
     Game();
     ~Game();
 
-    void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
+    void init(std::string title, const int& xpos, const int& ypos, const int& width, const int& height, const bool& fullscreen, const bool& vsync);
     void loadMedia();
     void loadEntities();
     void loadItems();
@@ -40,10 +40,10 @@ public:
     void clean();
 
     bool running();
-    bool limiter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime);
-    void countPrinter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime);
-    void setFPS(unsigned int fps);
-    void setUPS(unsigned int ups);
+    bool limiter(std::string name, const Uint64 &counter, const Uint64 interval, const Uint64 &lastTime);
+    void countPrinter(std::string name, const Uint64 &counter, const Uint64 interval, const Uint64 &lastTime);
+    void setFPS(const unsigned int& fps);
+    void setUPS(const unsigned int& ups);
     Uint64 getFrameDelay();
 
 private:

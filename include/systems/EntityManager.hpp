@@ -21,11 +21,11 @@ public:
     void render();
 
     void addEntity(Entity *entity);
-    bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
+    bool checkCollision(const SDL_Rect &rectA, const SDL_Rect &rectB);
     std::vector<Entity *> getEntities();
     std::vector<Entity *> getPotentialEntities(Entity *entity);
-    std::vector<Entity *> getEntitiesInArea(SDL_Rect area);
-    Entity *generateDefaultEntity(SDL_Rect hitBox);
+    std::vector<Entity *> getEntitiesInArea(const SDL_Rect &area);
+    Entity *generateDefaultEntity(const SDL_Rect &hitBox);
 
 private:
     std::vector<Entity *> entities;

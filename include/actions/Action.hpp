@@ -15,7 +15,7 @@ public:
     Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown);
     ~Action();
 
-    void apply(int x, int y);
+    void apply(const int& x, const int& y);
 
 private:
     Pattern *pattern;
