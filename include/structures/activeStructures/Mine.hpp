@@ -1,6 +1,8 @@
 #ifndef mine_hpp
 #define mine_hpp
 
+#include <tuple>
+
 #include "ActiveStructure.hpp"
 
 class Faction;
@@ -14,6 +16,7 @@ public:
     ~Mine();
 
     void update();
+    std::tuple<Item *, int> getInventory();
 
 private:
     Item *minedResource;

@@ -15,3 +15,8 @@ void Mine::update()
         quantityResource++;
     }
 }
+
+std::tuple<Item *, int> Mine::getInventory()
+{
+    return std::make_tuple(this->minedResource, this->quantityResource);
+}
