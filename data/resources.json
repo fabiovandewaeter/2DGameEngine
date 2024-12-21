@@ -1,42 +1,28 @@
 {
     "resources": [
         {
-            "name": "Iron Ore",
-            "type": "mineable"
+            "name": "Iron Ore"
         },
         {
-            "name": "Stone",
-            "type": "mineable"
+            "name": "Stone"
         },
         {
-            "name": "Dirt",
-            "type": "mineable"
+            "name": "Dirt"
         },
         {
-            "name": "Gold Ore",
-            "type": "mineable"
+            "name": "Gold Ore"
         },
         {
-            "name": "Meat",
-            "type": "droppale"
+            "name": "Meat"
         },
         {
-            "name": "Arrow",
-            "type": "droppale"
+            "name": "Arrow"
         },
         {
-            "name": "Wheat",
-            "type": "collectible"
+            "name": "Wheat"
         },
         {
-            "name": "Wood",
-            "type": "collectible"
-        }
-    ],
-    "items": [
-        {
-            "name": "Sword",
-            "type": "weapon"
+            "name": "Wood"
         }
     ]
 }

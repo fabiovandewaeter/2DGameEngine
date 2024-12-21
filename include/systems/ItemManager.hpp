@@ -7,6 +7,8 @@
 #include <rapidjson/document.h>
 
 class Item;
+class Consumable;
+class Equipment;
 class Resource;
 
 // Manages the loading and management of items and resources defined in JSON files
@@ -20,16 +22,19 @@ public:
     void init();
     void load();
 
-    std::vector<Item *> *getItems();
+    std::vector<Equipment *> *getEquipments();
     std::vector<Resource *> *getResources();
+    std::unordered_map<std::string, Item *> *getAllItems();
 
 private:
-    std::vector<Item *> items;
+    std::vector<Equipment *> equipments;
     std::vector<Resource *> resources;
+    std::unordered_map<std::string, Item *> allItems;
 
-    int genericLoader(const rapidjson::Document &resourcesData, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results);
-    void loadResources(const rapidjson::Document& resourcesData);
-    void loadItems(const rapidjson::Document& resourcesData);
+    rapidjson::Document loadItemFile(std::string file_name);
+    int genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results);
+    void loadEquipments(std::string file_name);
+    void loadResources(std::string file_name);
 };
 
 #endif

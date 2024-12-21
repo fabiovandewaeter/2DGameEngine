@@ -3,17 +3,19 @@
 
 #include <string>
 
-class Texture;
+#include "Item.hpp"
 
-class Resource
+class Resource : public Item
 {
 public:
-    Resource(std::string name, Texture *texture);
+    Resource(std::string name, Texture *texture, int weight);
     ~Resource();
 
+    void attack(Entity *target) override;
+    void consume(Entity *target) override;
+    bool isEquippable() override { return false; }
+
 private:
-    std::string name;
-    Texture *texture;
 };
 
 #endif
