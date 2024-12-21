@@ -7,19 +7,17 @@
 #include <iostream>
 
 #include "items/Item.hpp"
-#include "items/Equipment.hpp"
-#include "items/Resource.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
 
 void ItemManager::free()
 {
-    int size = this->resources.size();
-    for (int i = 0; i < size; i++)
+    for (auto &pair : this->allItems)
     {
-        delete this->resources[i];
+        delete pair.second;
     }
+    this->allItems.clear();
 }
 
 void ItemManager::init() {}
@@ -99,8 +97,7 @@ void ItemManager::loadEquipments(std::string file_name)
     int numberOfFields = requiredFields.size();
     for (int i = 0; i < quantityFound; i += numberOfFields)
     {
-        Equipment *newEquipment = new Equipment(results[i], nullptr, 0);
-        this->equipments.push_back(newEquipment);
+        Item *newEquipment = new Item(results[i], nullptr, 0, true);
         this->allItems[results[i]] = newEquipment;
         std::cout << "Equipment loaded : " << results[i] << std::endl;
     }
@@ -115,12 +112,8 @@ void ItemManager::loadResources(std::string file_name)
     int numberOfFields = requiredFields.size();
     for (int i = 0; i < quantityFound; i += numberOfFields)
     {
-        Resource *newResource = new Resource(results[i], nullptr, 0);
-        this->resources.push_back(newResource);
+        Item *newResource = new Item(results[i], nullptr, 0, false);
         this->allItems[results[i]] = newResource;
         std::cout << "Resource loaded : " << results[i] << std::endl;
     }
 }
-
-std::vector<Equipment *> *ItemManager::getEquipments() { return &this->equipments; }
-std::vector<Resource *> *ItemManager::getResources() { return &this->resources; }

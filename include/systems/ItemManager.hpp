@@ -22,13 +22,9 @@ public:
     void init();
     void load();
 
-    std::vector<Equipment *> *getEquipments();
-    std::vector<Resource *> *getResources();
     std::unordered_map<std::string, Item *> *getAllItems();
 
 private:
-    std::vector<Equipment *> equipments;
-    std::vector<Resource *> resources;
     std::unordered_map<std::string, Item *> allItems;
 
     rapidjson::Document loadItemFile(std::string file_name);

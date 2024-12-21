@@ -9,17 +9,20 @@ class Entity;
 class Item
 {
 public:
-    Item(std::string name, Texture *texture, int weight);
+    Item(std::string name, Texture *texture, int weight, bool equippable);
     ~Item();
 
-    virtual void attack(Entity* target) = 0;
-    virtual void consume(Entity* target) = 0;
-    virtual bool isEquippable() = 0;
+    Item *clone();
+    Item *clone(std::string name, Texture *texture, int weight, bool equippable);
+    void attack(Entity *source, Entity *target);
+    void consume(Entity *source, Entity *target);
+    bool isEquippable();
 
 private:
     std::string name;
     Texture *texture;
     int weight;
+    bool equippable;
 };
 
 #endif
