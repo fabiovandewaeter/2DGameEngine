@@ -36,10 +36,7 @@ void Tile::render(Camera *camera)
 {
     SDL_Rect renderBox = (SDL_Rect){this->x, this->y, TILE_SIZE, TILE_SIZE};
     camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
-    {
-        this->texture->render(renderBox);
-    }
+    this->texture->render(renderBox);
 }
 
 int Tile::getCenterX() { return TILE_SIZE / 2; }
