@@ -47,7 +47,7 @@ void ItemManager::load()
     loadItems(resourcesData);
 }
 
-int ItemManager::genericLoader(const rapidjson::Document& resourcesData, const std::string type, const std::vector<std::string>& requiredFields, std::vector<std::string>& results)
+int ItemManager::genericLoader(const rapidjson::Document& resourcesData, std::string type, std::vector<std::string>& requiredFields, std::vector<std::string>& results)
 {
     if (!resourcesData.HasMember(type.c_str()) || !resourcesData[type.c_str()].IsArray())
     {

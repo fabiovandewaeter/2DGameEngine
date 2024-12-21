@@ -18,8 +18,8 @@ public:
     void update();
     void move();
 
-    void convertInGameToCameraCoordinates(SDL_Rect rect);
-    void convertCameraToInGameCoordinates(int x, int y);
+    void convertInGameToCameraCoordinates(SDL_Rect &rect);
+    void convertCameraToInGameCoordinates(int &x, int& y);
     bool isVisible(SDL_Rect rect);
 
     void setPosition(int x, int y);

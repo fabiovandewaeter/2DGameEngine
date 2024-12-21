@@ -31,7 +31,7 @@ Uint64 TickManager::getTicks()
 }
 
 // if the loop lasted less than on frame at the speed of game.fixedUPS, wait until the end
-void TickManager::handleTickSpeed(Uint64 gameFrameDelay)
+void TickManager::handleTickSpeed(const Uint64 &gameFrameDelay)
 {
     Uint64 deltaTime = getNormalizedTick() - frameStart;
 
