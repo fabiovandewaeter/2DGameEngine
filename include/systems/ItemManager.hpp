@@ -1,5 +1,5 @@
-#ifndef ITEM_MANAGER_HPP
-#define ITEM_MANAGER_HPP
+#ifndef item_manager_hpp
+#define item_manager_hpp
 
 #include <vector>
 #include <unordered_map>
@@ -22,10 +22,10 @@ public:
     void init();
     void load();
 
-    std::unordered_map<std::string, Item *> *getAllItems();
+    static Item* getItem(std::string name);
 
 private:
-    std::unordered_map<std::string, Item *> allItems;
+    static std::unordered_map<std::string, Item *> allItems;
 
     rapidjson::Document loadItemFile(std::string file_name);
     int genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results);

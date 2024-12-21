@@ -27,6 +27,18 @@ void ItemManager::load()
     loadResources("data/resources.json");
 }
 
+std::unordered_map<std::string, Item *> ItemManager::allItems;
+Item *ItemManager::getItem(std::string name)
+{
+    auto item = allItems.find(name);
+    if (item != allItems.end())
+    {
+        return item->second;
+    }
+    std::cout << "Item not found : " << name << std::endl;
+    return nullptr;
+}
+
 rapidjson::Document ItemManager::loadItemFile(std::string file_name)
 {
     FILE *file = fopen(file_name.c_str(), "r");

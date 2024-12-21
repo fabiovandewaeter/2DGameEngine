@@ -8,11 +8,13 @@
 
 class Texture;
 class Camera;
+class Item;
 
 class Tile
 {
 public:
     Tile(Texture *texture, int x, int y);
+    Tile(Texture *texture, int x, int y, Item *mineableResource);
     ~Tile();
 
     void render(Camera *camera);
@@ -20,10 +22,13 @@ public:
     int getCenterY();
     int getTextureId();
     static int getTileSize();
+    Item *getMineableResource();
 
 private:
     Texture *texture;
     int x, y;
+    static Item *defaultMineableResource;
+    Item *mineableResource;
 };
 
 #endif

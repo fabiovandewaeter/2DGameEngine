@@ -12,8 +12,6 @@ public:
     Item(std::string name, Texture *texture, int weight, bool equippable);
     ~Item();
 
-    Item *clone();
-    Item *clone(std::string name, Texture *texture, int weight, bool equippable);
     void attack(Entity *source, Entity *target);
     void consume(Entity *source, Entity *target);
     bool isEquippable();

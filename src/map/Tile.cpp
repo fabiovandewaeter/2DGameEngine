@@ -1,45 +1,34 @@
 #include "map/Tile.hpp"
 
 #include "systems/Camera.hpp"
+#include "systems/ItemManager.hpp"
 #include "Texture.hpp"
 
+Item* Tile::defaultMineableResource = ItemManager::getItem("Stone");
+
 Tile::Tile(Texture *texture, int x, int y)
+{
+    Tile(texture, x, y, Tile::defaultMineableResource);
+}
+Tile::Tile(Texture *texture, int x, int y, Item *mineableResource)
 {
     this->texture = texture;
     this->x = x;
     this->y = y;
+    this->mineableResource = mineableResource;
 }
 Tile::~Tile() {}
 
-/*void Tile::render(Camera *camera)
-{
-    SDL_Rect dstBox = {this->x, this->y, TILE_SIZE, TILE_SIZE};
-    // 1px paddings to avoid gap when zoom out
-    camera->convertInGameToCameraCoordinates(dstBox);
-    dstBox.x -= 1;
-    dstBox.y -= 1;
-    dstBox.w += 2;
-    dstBox.h += 2;
-    if (camera->isVisible(dstBox))
-    {
-        // only the texture on the center and avoid all padding
-        SDL_Rect srcBox;
-        srcBox.x = this->texture->getCenterX() - TEXTURE_DEFAULT_SIZE/ 2;
-        srcBox.y = this->texture->getCenterY() - TEXTURE_DEFAULT_SIZE/ 2;
-        srcBox.w = TEXTURE_DEFAULT_SIZE;
-        srcBox.h = TEXTURE_DEFAULT_SIZE;
-
-        this->texture->render(srcBox, dstBox);
-    }
-}*/
 void Tile::render(Camera *camera)
 {
     SDL_Rect renderBox = (SDL_Rect){this->x, this->y, TILE_SIZE, TILE_SIZE};
     camera->convertInGameToCameraCoordinates(renderBox);
     this->texture->render(renderBox);
+    std::cout << "test3" << std::endl;
 }
 
 int Tile::getCenterX() { return TILE_SIZE / 2; }
 int Tile::getCenterY() { return TILE_SIZE / 2; }
 int Tile::getTextureId() { return this->texture->getId(); }
 int Tile::getTileSize() { return TILE_SIZE; }
+Item *Tile::getMineableResource() { return this->mineableResource; }

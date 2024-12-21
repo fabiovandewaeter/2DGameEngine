@@ -109,7 +109,9 @@ void Texture::render(SDL_Rect renderBox)
 
     SDL_Rect srcRect = {renderBox.x, renderBox.y, renderBox.w, renderBox.h};*/
 
+    std::cout << "test1" << std::endl;
     SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
+    std::cout << "test2" << std::endl;
     //SDL_RenderCopy(this->renderer, texture, &srcRect, &renderBox);
 }
 void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)

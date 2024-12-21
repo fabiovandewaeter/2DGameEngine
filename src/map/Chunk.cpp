@@ -3,6 +3,7 @@
 #include "map/Tile.hpp"
 #include "systems/PerlinNoise.hpp"
 #include "systems/Camera.hpp"
+#include "systems/ItemManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
 
 Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
@@ -88,7 +89,9 @@ void Chunk::render(Camera *camera)
     {
         for (int i = 0; i < SIZE * SIZE; i++)
         {
+    std::cout << "test0" << std::endl;
             this->allTiles[i]->render(camera);
+    std::cout << "test4" << std::endl;
         }
     }
     for (auto &pair : this->allStructures)
