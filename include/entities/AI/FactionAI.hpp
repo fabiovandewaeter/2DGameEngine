@@ -18,8 +18,8 @@ public:
     void attack();
 
 private:
-    void sendScouts(const int& x, const int& y);
-    void sendArmy(const int& x, const int& y);
+    void sendScouts(int x, int y);
+    void sendArmy(int x, int y);
     
     std::vector<Entity *> entities;
 };

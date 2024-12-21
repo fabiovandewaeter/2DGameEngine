@@ -16,8 +16,8 @@ public:
 
 	void init(Camera *camera, Map *map, EntityManager *entityManager, CollisionManager *collisionManager);
 	void handleEvents(SDL_Event *event);
-	bool handleClickOnEntity(SDL_Event *event, const int &x, const int &y);
-	bool handleClickOnMap(SDL_Event *event, const int &x, const int &y);
+	bool handleClickOnEntity(SDL_Event *event, int x, int y);
+	bool handleClickOnMap(SDL_Event *event, int x, int y);
 
 private:
 	Camera *camera;

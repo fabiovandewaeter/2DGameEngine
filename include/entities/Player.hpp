@@ -9,12 +9,12 @@
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, const SDL_Rect& hitBox, const int& HP);
+    Player(Texture *texture, SDL_Rect hitBox, int HP);
     ~Player();
 
     void handleEvents(SDL_Event *event);
 
-    void setPosition(const int& x, const int& y);
+    void setPosition(int x, int y);
 
 private:
 };

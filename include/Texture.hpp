@@ -18,16 +18,16 @@ public:
     ~Texture();
 
     Texture *loadFromFile(std::string path);
-    Texture *loadFromRenderedText(TTF_Font *font, std::string text, const SDL_Color& textColor);
+    Texture *loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor);
     void free();
-    void render(const int& x, const int& y);
-    void render(const int& x, const int& y, const int& w, const int& h);
-    void render(const SDL_Rect& renderBox);
-    void render(const SDL_Rect& srcBox, const SDL_Rect& dstBox);
+    void render(int x, int y);
+    void render(int x, int y, int w, int h);
+    void render(SDL_Rect renderBox);
+    void render(SDL_Rect srcBox, SDL_Rect dstBox);
 
     int getWidth();
     int getHeight();
-    void setSize(const int& width, const int& height);
+    void setSize(int width, int height);
     int getCenterX();
     int getCenterY();
     int getId();

@@ -9,10 +9,10 @@
 class SquarePattern : public Pattern
 {
 public:
-    SquarePattern(EntityManager *entityManager, const int& radius);
+    SquarePattern(EntityManager *entityManager, int radius);
     ~SquarePattern();
 
-    std::vector<Entity *> getAffectedEntities(const int& x, const int& y) override;
+    std::vector<Entity *> getAffectedEntities(int x, int y) override;
 };
 
 #endif

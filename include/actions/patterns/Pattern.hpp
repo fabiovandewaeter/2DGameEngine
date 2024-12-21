@@ -9,10 +9,10 @@ class EntityManager;
 class Pattern
 {
 public:
-    Pattern(EntityManager *entityManager, const int& radius);
+    Pattern(EntityManager *entityManager, int radius);
     virtual ~Pattern();
 
-    virtual std::vector<Entity *> getAffectedEntities(const int& x, const int& y) = 0;
+    virtual std::vector<Entity *> getAffectedEntities(int x, int y) = 0;
 
 protected:
     EntityManager *entityManager;

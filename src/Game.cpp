@@ -204,21 +204,7 @@ Uint64 Game::getFrameDelay()
 {
     return this->frameDelay;
 }
-bool Game::limiter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime)
-{
-    bool res = false;
-    counter++;
-    Uint64 currentTime = SDL_GetTicks64();
-    Uint64 deltaTime = currentTime - lastTime;
-    if (deltaTime >= interval)
-    {
-        lastTime = currentTime;
-        counter = 0;
-        res = true;
-    }
-    return res;
-}
-void Game::countPrinter(std::string name, Uint64 &counter, Uint64 interval, Uint64 &lastTime)
+void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {
     counter++;
     Uint64 currentTime = SDL_GetTicks64();

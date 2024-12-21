@@ -13,16 +13,16 @@ public:
     Camera();
     ~Camera();
 
-    void init(const int &width, const int &height, const double& minScale, const double &maxScale, const int& positionX, const int &positionY);
+    void init(int width, int height, double minScale, double maxScale, int positionX, int positionY);
     void handleEvents(SDL_Event *event);
     void update();
     void move();
 
-    void convertInGameToCameraCoordinates(const SDL_Rect &rect);
-    void convertCameraToInGameCoordinates(const int &x, const int &y);
-    bool isVisible(const SDL_Rect &rect);
+    void convertInGameToCameraCoordinates(SDL_Rect rect);
+    void convertCameraToInGameCoordinates(int x, int y);
+    bool isVisible(SDL_Rect rect);
 
-    void setPosition(const int &x, const int& y);
+    void setPosition(int x, int y);
     int getPositionX();
     int getPositionY();
     int getWidth();

@@ -25,11 +25,11 @@ public:
 	PerlinNoise();
 	~PerlinNoise();
 
-	int noise2(const int &x, const int &y);
-	double lin_inter(const double &x, const double &y, const double &s);
-	double smooth_inter(const double &x, const double &y, const double &s);
-	double noise2d(const double &x, const double &y);
-	double perlin2d(const double &x, const double &y, const double &freq, const int &depth);
+	int noise2(int x, int y);
+	double lin_inter(double x, double y, double s);
+	double smooth_inter(double x, double y, double s);
+	double noise2d(double x, double y);
+	double perlin2d(double x, double y, double freq, int depth);
 
 private:
 };
