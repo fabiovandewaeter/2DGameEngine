@@ -14,11 +14,11 @@ HEADER_FILES := $(call rwildcard,include,*.hpp)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 # flags for compilation
-CXXFLAGS = -I include
+CXXFLAGS = -I include -O2
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # flags for compilation (only used by Windows)
-windows: CXXFLAGS += -L Windows_lib -O2
+windows: CXXFLAGS += -L Windows_lib
 windows: SDL_LIBS := -lmingw32 -lSDL2main $(SDL_LIBS)
 windows: $(TARGET)
 
