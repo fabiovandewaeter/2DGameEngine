@@ -14,7 +14,7 @@ HEADER_FILES := $(call rwildcard,include,*.hpp)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 # flags for compilation
-CXXFLAGS = -I include -O2
+CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic -fsanitize=address -fsanitize=undefined
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # flags for compilation (only used by Windows)
