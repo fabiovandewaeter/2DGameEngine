@@ -18,7 +18,7 @@ CXXFLAGS = -I include
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # flags for compilation (only used by Windows)
-windows: CXXFLAGS += -L Windows_lib
+windows: CXXFLAGS += -L Windows_lib -O3
 windows: SDL_LIBS := -lmingw32 -lSDL2main $(SDL_LIBS)
 windows: $(TARGET)
 
