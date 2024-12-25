@@ -59,7 +59,6 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
             entities[i]->onCollision(entity);
         }
     }
-    bool collision = false;
     SDL_Rect hitBox = entity->getHitBox();
     SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     // structures

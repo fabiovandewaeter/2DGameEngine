@@ -79,8 +79,6 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
     int size = this->entities.size();
     for (int i = 0; i < size; i++)
     {
-        SDL_Rect hitBox = this->entities[i]->getHitBox();
-
         if (checkCollision(this->entities[i]->getHitBox(), area))
         {
             res.push_back(this->entities[i]);

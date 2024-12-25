@@ -78,14 +78,12 @@ int ItemManager::genericLoader(std::string file_name, std::string type, std::vec
     for (rapidjson::SizeType i = 0; i < itemsArray.Size(); ++i)
     {
         const auto &item = itemsArray[i];
-        bool allRequiredFieldsPresent = true;
 
         for (int i = 0; i < sizeRequiredFields; i++)
         {
             std::string field = requiredFields[i];
             if (!item.HasMember(field.c_str()))
             {
-                allRequiredFieldsPresent = false;
                 std::cerr << "File : " << file_name << " | Missing " << field << " in a item entry" << std::endl;
                 break;
             }
