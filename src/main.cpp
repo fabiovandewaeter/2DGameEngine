@@ -1,4 +1,6 @@
+#ifdef PROFILER
 #include "tracy/Tracy.hpp"
+#endif
 
 #include "Game.hpp"
 
@@ -48,7 +50,9 @@ int main(int argc, char *argv[])
         game.render();
 
         tickManager->handleTickSpeed(game.getFrameDelay());
+#ifdef PROFILER
         FrameMark;
+#endif
     }
 
     game.clean();
