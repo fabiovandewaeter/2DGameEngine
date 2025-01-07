@@ -43,7 +43,7 @@ endif
 SANITIZER ?= 0
 
 ifeq ($(SANITIZER),1)
-    CXXFLAGS += $(SANITIZE_FLAGS)
+    CXXFLAGS += $(SANITIZE_FLAGS) -DPROFILER
 endif
 
 # Main target
