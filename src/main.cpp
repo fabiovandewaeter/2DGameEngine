@@ -1,3 +1,5 @@
+#include "tracy/Tracy.hpp"
+
 #include "Game.hpp"
 
 #include "systems/TickManager.hpp"
@@ -46,6 +48,7 @@ int main(int argc, char *argv[])
         game.render();
 
         tickManager->handleTickSpeed(game.getFrameDelay());
+        FrameMark;
     }
 
     game.clean();

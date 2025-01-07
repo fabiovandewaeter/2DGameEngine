@@ -1,3 +1,5 @@
+#include "tracy/Tracy.hpp"
+
 #include "systems/PerlinNoise.hpp"
 
 PerlinNoise::PerlinNoise(){}
@@ -25,6 +27,7 @@ double PerlinNoise::smooth_inter(double x, double y, double s)
 }
 double PerlinNoise::noise2d(double x, double y)
 {
+    ZoneScoped;
     const int  x_int = floor( x );
     const int  y_int = floor( y );
     const double  x_frac = x - x_int;

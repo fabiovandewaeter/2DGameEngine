@@ -100,6 +100,15 @@ make install
 
 `./a.out`
 
+##### Tracy profiler
+
+https://github.com/wolfpld/tracy
+
+`cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DTRACY_USE_LEGACY=ON -DLEGACY=ON`
+`cmake --build profiler/build --config Release --parallel`
+`cd profiler/build`
+`./tracy-profiler`
+
 ## How to add things
 
 ### images
