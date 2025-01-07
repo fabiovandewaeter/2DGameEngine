@@ -30,6 +30,11 @@ void ItemManager::load()
 std::unordered_map<std::string, Item *> ItemManager::allItems;
 Item *ItemManager::getItem(std::string name)
 {
+    if (allItems.empty())
+    {
+        std::cerr << "Error: allItems is not initialized." << std::endl;
+        return nullptr;
+    }
     auto item = allItems.find(name);
     if (item != allItems.end())
     {
