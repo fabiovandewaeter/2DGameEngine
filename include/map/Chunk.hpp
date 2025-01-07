@@ -10,6 +10,7 @@
 #include <cmath>
 
 class Map;
+class TextureManager;
 class Texture;
 class PerlinNoise;
 class CollisionManager;
@@ -21,7 +22,8 @@ class Faction;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    //Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
     void loadTiles();
@@ -42,6 +44,7 @@ public:
 
 private:
     Tile *allTiles[SIZE * SIZE];
+    TextureManager *textureManager;
     std::vector<Texture *> *tileTextures;
     int tileSize;
 

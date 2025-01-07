@@ -4,17 +4,20 @@
 #include "systems/PerlinNoise.hpp"
 #include "systems/Camera.hpp"
 #include "systems/ItemManager.hpp"
+#include "systems/TextureManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+//Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
     this->tileSize = tileSize;
     this->map = map;
-    this->tileTextures = tileTextures;
-    this->passiveStructureTextures = passiveStructureTextures;
-    this->activeStructureTextures = activeStructureTextures;
+    this->textureManager = textureManager;
+    this->tileTextures = textureManager->getTileTextures();
+    this->passiveStructureTextures = textureManager->getPassiveStructureTextures();
+    this->activeStructureTextures = textureManager->getActiveStructureTextures();
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
@@ -89,9 +92,7 @@ void Chunk::render(Camera *camera)
     {
         for (int i = 0; i < SIZE * SIZE; i++)
         {
-    std::cout << "test0" << std::endl;
             this->allTiles[i]->render(camera);
-    std::cout << "test4" << std::endl;
         }
     }
     for (auto &pair : this->allStructures)
@@ -173,10 +174,8 @@ void Chunk::addWall(int x, int y)
 }
 void Chunk::destroyStructure(int x, int y)
 {
-    printf("2\n");
     if (isStructure(x, y))
     {
-        printf("3\n");
         convertToTileCoordinates(x, y);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         this->allStructures[coordinates]->destroy();

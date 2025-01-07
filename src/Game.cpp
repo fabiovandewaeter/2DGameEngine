@@ -91,7 +91,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
-    this->map.init(&this->camera, Tile::getTileSize(), this->tileTextures, this->passiveStructureTextures, this->activeStructureTextures, &this->perlinNoise, &this->collisionManager);
+    this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
 
     this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     this->textManager.init(this->renderer);
@@ -122,7 +122,8 @@ void Game::loadEntities()
     this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
     this->entityManager.addEntity(this->player);
 }
-void Game::loadItems(){
+void Game::loadItems()
+{
     this->itemManager.load();
 }
 

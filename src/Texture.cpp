@@ -57,7 +57,7 @@ Texture *Texture::loadFromFile(std::string path)
         }
         SDL_FreeSurface(loadedSurface);
     }
-    texture = newTexture;
+    this->texture = newTexture;
     return this;
 }
 Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor)
@@ -109,14 +109,12 @@ void Texture::render(SDL_Rect renderBox)
 
     SDL_Rect srcRect = {renderBox.x, renderBox.y, renderBox.w, renderBox.h};*/
 
-    std::cout << "test1" << std::endl;
-    SDL_RenderCopy(this->renderer, texture, NULL, &renderBox);
-    std::cout << "test2" << std::endl;
+    SDL_RenderCopy(this->renderer, this->texture, NULL, &renderBox);
     //SDL_RenderCopy(this->renderer, texture, &srcRect, &renderBox);
 }
 void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)
 {
-    SDL_RenderCopy(this->renderer, texture, &srcBox, &dstBox);
+    SDL_RenderCopy(this->renderer, this->texture, &srcBox, &dstBox);
 }
 
 int Texture::getWidth() { return width; }

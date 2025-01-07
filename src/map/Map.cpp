@@ -9,13 +9,11 @@ Map::~Map()
     free();
 }
 
-void Map::init(Camera *camera, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+void Map::init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->camera = camera;
     this->tileSize = tileSize;
-    this->tileTextures = tileTextures;
-    this->staticObjectTextures = staticObjectTextures;
-    this->structureTextures = structureTextures;
+    this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
     this->collisionManager = collisionManager;
     loadChunks();
@@ -23,7 +21,7 @@ void Map::init(Camera *camera, int tileSize, std::vector<Texture *> *tileTexture
 
 void Map::loadChunks()
 {
-    loadSquareMap(20);
+    loadSquareMap(1);
 }
 void Map::loadSquareMap(int size)
 {
@@ -39,7 +37,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, this->tileSize, this, this->tileTextures, this->staticObjectTextures, this->structureTextures, this->perlinNoise, this->collisionManager);
+    Chunk *newChunk = new Chunk(positionX, positionY, this->tileSize, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);

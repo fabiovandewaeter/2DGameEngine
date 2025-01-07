@@ -9,6 +9,7 @@
 #include <string>
 
 class Camera;
+class TextureManager;
 class Texture;
 class PerlinNoise;
 class CollisionManager;
@@ -20,7 +21,7 @@ public:
     Map();
     ~Map();
 
-    void init(Camera *camera, int tileSize, std::vector<Texture *> *tileTextures, std::vector<Texture *> *staticObjectTextures, std::vector<Texture *> *structureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    void init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
@@ -36,9 +37,7 @@ public:
 private:
     Camera *camera;
     int tileSize;
-    std::vector<Texture *> *tileTextures;
-    std::vector<Texture *> *staticObjectTextures;
-    std::vector<Texture *> *structureTextures;
+    TextureManager *textureManager;
     PerlinNoise *perlinNoise;
     CollisionManager *collisionManager;
     std::unordered_map<std::string, Chunk *> allChunks;

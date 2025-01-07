@@ -8,7 +8,10 @@ Item* Tile::defaultMineableResource = ItemManager::getItem("Stone");
 
 Tile::Tile(Texture *texture, int x, int y)
 {
-    Tile(texture, x, y, Tile::defaultMineableResource);
+    this->texture = texture;
+    this->x = x;
+    this->y = y;
+    this->mineableResource = Tile::defaultMineableResource;
 }
 Tile::Tile(Texture *texture, int x, int y, Item *mineableResource)
 {
@@ -24,7 +27,6 @@ void Tile::render(Camera *camera)
     SDL_Rect renderBox = (SDL_Rect){this->x, this->y, TILE_SIZE, TILE_SIZE};
     camera->convertInGameToCameraCoordinates(renderBox);
     this->texture->render(renderBox);
-    std::cout << "test3" << std::endl;
 }
 
 int Tile::getCenterX() { return TILE_SIZE / 2; }
