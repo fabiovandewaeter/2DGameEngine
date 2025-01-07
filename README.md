@@ -40,7 +40,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 - `brew install sdl2_mixer`
 
 #### Compile with make
-`make macos`
+`make` or `make SANITIZER=1`
 
 #### Compile without make
 
