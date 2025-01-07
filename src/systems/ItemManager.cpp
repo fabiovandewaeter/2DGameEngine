@@ -1,3 +1,7 @@
+#ifdef PROFILER
+#include "tracy/Tracy.hpp"
+#endif
+
 #include "systems/ItemManager.hpp"
 
 #include <rapidjson/document.h>
@@ -23,6 +27,9 @@ void ItemManager::free()
 void ItemManager::init() {}
 void ItemManager::load()
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     loadEquipments("data/equipments.json");
     loadResources("data/resources.json");
 }

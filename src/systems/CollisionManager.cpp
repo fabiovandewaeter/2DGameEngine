@@ -1,3 +1,7 @@
+#ifdef PROFILER
+#include "tracy/Tracy.hpp"
+#endif
+
 #include "systems/CollisionManager.hpp"
 
 #include <iostream>
@@ -18,6 +22,9 @@ void CollisionManager::init(Map *map, EntityManager *entityManager)
 
 bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     return !(rectA.x + rectA.w <= rectB.x ||
              rectA.x >= rectB.x + rectB.w ||
              rectA.y + rectA.h <= rectB.y ||
@@ -25,6 +32,9 @@ bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
 }
 bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     return !(x <= rect.x ||
              x >= rect.x + rect.w ||
              y <= rect.y ||
@@ -32,6 +42,9 @@ bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect
 }
 bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     if (this->map->isChunkGenerated(rect.x, rect.y))
     {
         Chunk *chunk = this->map->getChunk(rect.x, rect.y);
@@ -49,6 +62,9 @@ bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
 }
 SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     // entities
     std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
     int size = entities.size();
