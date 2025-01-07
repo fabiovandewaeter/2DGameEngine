@@ -21,16 +21,29 @@ void Map::init(Camera *camera, int tileSize, TextureManager *textureManager, Per
 
 void Map::loadChunks()
 {
-    loadSquareMap(1);
+    loadSquareMap(2);
 }
 void Map::loadSquareMap(int size)
 {
     int step = CHUNK_SIZE * this->tileSize;
-    for (int i = 0; i < size; i++)
-    {
-        for (int j = 0; j < size; j++)
-        {
-            generateChunk(i * step-(step*size/2), j * step-(step*size/2));
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++){
+            generateChunk(i*step, j*step);
+        }
+    }
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++){
+            generateChunk(-i*step-step, j*step);
+        }
+    }
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++){
+            generateChunk(i*step, -j*step-step);
+        }
+    }
+    for (int i = 0; i < size; i++){
+        for (int j = 0; j < size; j++){
+            generateChunk(-i*step-step, -j*step-step);
         }
     }
 }
