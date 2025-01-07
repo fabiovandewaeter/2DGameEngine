@@ -57,6 +57,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(CXX) $(OBJ_FILES) -o $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
+	make run
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)
