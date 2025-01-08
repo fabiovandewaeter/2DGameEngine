@@ -105,8 +105,15 @@ make install
 https://github.com/wolfpld/tracy
 
 `cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DTRACY_USE_LEGACY=ON -DLEGACY=ON`
+
+`export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)`
+
+`cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DLEGACY=ON -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations" -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_CXX_COMPILER=gcc-14 -DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -DCMAKE_ASM_COMPILER=/opt/homebrew/bin/as -DCMAKE_GIT_EXECUTABLE=/opt/homebrew/bin/git`
+
 `cmake --build profiler/build --config Release --parallel`
+
 `cd profiler/build`
+
 `./tracy-profiler`
 
 ## How to add things
