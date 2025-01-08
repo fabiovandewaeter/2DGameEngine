@@ -1,5 +1,5 @@
 #ifdef PROFILER
-#include "tracy/Tracy.hpp"
+#include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
 #include "systems/CollisionManager.hpp"

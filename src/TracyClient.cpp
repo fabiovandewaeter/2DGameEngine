@@ -11,7 +11,7 @@
 
 // Define TRACY_ENABLE to enable profiler.
 
-#include "common/TracySystem.cpp"
+#include "tracy_profiler/common/TracySystem.cpp"
 
 #ifdef TRACY_ENABLE
 
@@ -19,34 +19,34 @@
 #  pragma warning(push, 0)
 #endif
 
-#include "common/tracy_lz4.cpp"
-#include "client/TracyProfiler.cpp"
-#include "client/TracyCallstack.cpp"
-#include "client/TracySysPower.cpp"
-#include "client/TracySysTime.cpp"
-#include "client/TracySysTrace.cpp"
-#include "common/TracySocket.cpp"
-#include "client/tracy_rpmalloc.cpp"
-#include "client/TracyDxt1.cpp"
-#include "client/TracyAlloc.cpp"
-#include "client/TracyOverride.cpp"
-#include "client/TracyKCore.cpp"
+#include "tracy_profiler/common/tracy_lz4.cpp"
+#include "tracy_profiler/client/TracyProfiler.cpp"
+#include "tracy_profiler/client/TracyCallstack.cpp"
+#include "tracy_profiler/client/TracySysPower.cpp"
+#include "tracy_profiler/client/TracySysTime.cpp"
+#include "tracy_profiler/client/TracySysTrace.cpp"
+#include "tracy_profiler/common/TracySocket.cpp"
+#include "tracy_profiler/client/tracy_rpmalloc.cpp"
+#include "tracy_profiler/client/TracyDxt1.cpp"
+#include "tracy_profiler/client/TracyAlloc.cpp"
+#include "tracy_profiler/client/TracyOverride.cpp"
+#include "tracy_profiler/client/TracyKCore.cpp"
 
 #if defined(TRACY_HAS_CALLSTACK)
 #  if TRACY_HAS_CALLSTACK == 2 || TRACY_HAS_CALLSTACK == 3 || TRACY_HAS_CALLSTACK == 4 || TRACY_HAS_CALLSTACK == 6
-#    include "libbacktrace/alloc.cpp"
-#    include "libbacktrace/dwarf.cpp"
-#    include "libbacktrace/fileline.cpp"
-#    include "libbacktrace/mmapio.cpp"
-#    include "libbacktrace/posix.cpp"
-#    include "libbacktrace/sort.cpp"
-#    include "libbacktrace/state.cpp"
+#    include "tracy_profiler/libbacktrace/alloc.cpp"
+#    include "tracy_profiler/libbacktrace/dwarf.cpp"
+#    include "tracy_profiler/libbacktrace/fileline.cpp"
+#    include "tracy_profiler/libbacktrace/mmapio.cpp"
+#    include "tracy_profiler/libbacktrace/posix.cpp"
+#    include "tracy_profiler/libbacktrace/sort.cpp"
+#    include "tracy_profiler/libbacktrace/state.cpp"
 #    if TRACY_HAS_CALLSTACK == 4
-#      include "libbacktrace/macho.cpp"
+#      include "tracy_profiler/libbacktrace/macho.cpp"
 #    else
-#      include "libbacktrace/elf.cpp"
+#      include "tracy_profiler/libbacktrace/elf.cpp"
 #    endif
-#    include "common/TracyStackFrames.cpp"
+#    include "tracy_profiler/common/TracyStackFrames.cpp"
 #  endif
 #endif
 
