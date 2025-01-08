@@ -2,10 +2,24 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
+#include "microui.hpp"
+
 #include "Game.hpp"
 
 #include "systems/TickManager.hpp"
 
+
+void render_gui(mu_Context *ctx) {
+    if (mu_begin_window(ctx, "Inventaire", mu_rect(10, 10, 300, 200))) {
+        mu_label(ctx, "Slot 1: Objet A");
+        if (mu_button(ctx, "Utiliser")) {
+            printf("Objet utilisé\n");
+        }
+        mu_end_window(ctx);
+    }
+}
+
+mu_Context ctx;
 Game game;
 
 int main(int argc, char *argv[])
@@ -37,6 +51,7 @@ int main(int argc, char *argv[])
     std::cout << "UPS: " << UPS << std::endl;
     std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
 
+    mu_init(&ctx);
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false, vsync);
     game.setUPS(UPS);
 
@@ -47,6 +62,7 @@ int main(int argc, char *argv[])
         tickManager->setFrameStart();
         game.handleEvents();
         game.update();
+        render_gui(&ctx);
         game.render();
 
         tickManager->handleTickSpeed(game.getFrameDelay());

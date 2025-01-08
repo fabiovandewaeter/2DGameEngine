@@ -51,13 +51,13 @@ all: $(TARGET)
 	make run
 
 # Compilation
-$(TARGET): $(OBJ_FILES) $(HEADER_FILES)
+$(TARGET): $(OBJ_FILES) obj/microui.o $(HEADER_FILES)
 ifeq ($(PLATFORM),windows)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else
 	@mkdir -p $(dir $@)
 endif
-	$(CXX) $(OBJ_FILES) -o $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
+	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)
@@ -66,6 +66,9 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+obj/microui.o: $(SRC_DIR)/microui.c
+	gcc -c src/microui.c -o obj/microui.o -I include -O2 -Wall -Wextra -pedantic
 
 # Cleaning
 clean:
