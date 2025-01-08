@@ -1,8 +1,9 @@
 #ifdef PROFILER
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
-
+extern "C" {
 #include "microui.h"
+}
 
 #include "Game.hpp"
 

@@ -68,7 +68,7 @@ endif
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 obj/microui.o: $(SRC_DIR)/microui.c
-	gcc -c src/microui.c -o obj/microui.o -I include -O2 -Wall -Wextra -pedantic
+	gcc -c src/microui.c -o obj/microui.o -I include
 
 # Cleaning
 clean:
