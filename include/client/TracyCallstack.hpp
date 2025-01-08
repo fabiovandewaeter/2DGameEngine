@@ -9,7 +9,6 @@
 
 namespace tracy
 {
-static constexpr bool has_callstack() { return false; }
 static tracy_force_inline void* Callstack( int /*depth*/ ) { return nullptr; }
 }
 
@@ -38,8 +37,6 @@ static tracy_force_inline void* Callstack( int /*depth*/ ) { return nullptr; }
 
 namespace tracy
 {
-
-static constexpr bool has_callstack() { return true; }
 
 struct CallstackSymbolData
 {
