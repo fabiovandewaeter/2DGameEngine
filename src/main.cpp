@@ -9,7 +9,7 @@
 #include "systems/TickManager.hpp"
 
 
-/*void render_gui(mu_Context *ctx) {
+void render_gui(mu_Context *ctx) {
     if (mu_begin_window(ctx, "Inventaire", mu_rect(10, 10, 300, 200))) {
         mu_label(ctx, "Slot 1: Objet A");
         if (mu_button(ctx, "Utiliser")) {
@@ -17,7 +17,7 @@
         }
         mu_end_window(ctx);
     }
-}*/
+}
 
 
 mu_Context ctx;
@@ -58,37 +58,12 @@ int main(int argc, char *argv[])
 
     TickManager *tickManager = TickManager::getInstance();
 
-
-if (mu_begin_window(&ctx, "My Window", mu_rect(10, 10, 140, 86))) {
-  int t[2];
-  t[0] = 60;
-  t[1] =-1;
-  mu_layout_row(&ctx, 2, t, 0);
-
-  mu_label(&ctx, "First:");
-  if (mu_button(&ctx, "Button1")) {
-    printf("Button1 pressed\n");
-  }
-
-  mu_label(&ctx, "Second:");
-  if (mu_button(&ctx, "Button2")) {
-    mu_open_popup(&ctx, "My Popup");
-  }
-
-  if (mu_begin_popup(&ctx, "My Popup")) {
-    mu_label(&ctx, "Hello world!");
-    mu_end_popup(&ctx);
-  }
-
-  mu_end_window(&ctx);
-}
-
     while (game.running())
     {
         tickManager->setFrameStart();
         game.handleEvents();
         game.update();
-        //render_gui(&ctx);
+        render_gui(&ctx);
 
         game.render();
 
