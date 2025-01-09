@@ -44,6 +44,7 @@ public:
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
     Uint64 getFrameDelay();
+    SDL_Renderer *getRenderer();
 
 private:
     bool isRunning;

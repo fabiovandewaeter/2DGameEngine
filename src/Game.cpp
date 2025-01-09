@@ -201,10 +201,8 @@ void Game::setUPS(unsigned int ups)
     this->fixedUPS = ups;
     this->frameDelay = 10000000 / this->fixedUPS;
 }
-Uint64 Game::getFrameDelay()
-{
-    return this->frameDelay;
-}
+Uint64 Game::getFrameDelay() { return this->frameDelay; }
+SDL_Renderer *Game::getRenderer() { return this->renderer; }
 void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {
     counter++;

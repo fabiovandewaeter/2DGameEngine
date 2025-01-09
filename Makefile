@@ -55,13 +55,13 @@ else
 endif
 
 # Compilation
-$(TARGET): $(OBJ_FILES) obj/microui.o $(HEADER_FILES)
+$(TARGET): $(OBJ_FILES) obj/microui.o obj/renderer.o $(HEADER_FILES)
 ifeq ($(PLATFORM),windows)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else
 	@mkdir -p $(dir $@)
 endif
-	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
+	$(CXX) $(OBJ_FILES) obj/microui.o obj/renderer.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS) -lopengl32
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)
@@ -73,6 +73,8 @@ endif
 
 obj/microui.o: $(SRC_DIR)/microui.c
 	gcc -c src/microui.c -o obj/microui.o -I include
+obj/renderer.o: $(SRC_DIR)/renderer.c
+	gcc -c src/renderer.c -o obj/renderer.o -I include
 
 # Cleaning
 clean:
