@@ -31,7 +31,7 @@ SANITIZE_FLAGS = -fsanitize=address -fsanitize=undefined
 # Platform-specific flags
 ifeq ($(PLATFORM),windows)
     CXXFLAGS += -L Windows_lib
-    SDL_LIBS := -lmingw32 -lSDL2main $(SDL_LIBS)
+    SDL_LIBS := -lmingw32 -lSDL2main -lws2_32 -ldbghelp $(SDL_LIBS)
 else ifeq ($(PLATFORM),macos)
     CXXFLAGS += -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/
     SDL_LIBS += -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib
@@ -48,7 +48,11 @@ endif
 
 # Main target
 all: $(TARGET)
+ifeq ($(OS),Windows_NT)
+	mingw32-make run
+else
 	make run
+endif
 
 # Compilation
 $(TARGET): $(OBJ_FILES) obj/microui.o $(HEADER_FILES)
