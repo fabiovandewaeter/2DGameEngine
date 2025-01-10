@@ -6,8 +6,9 @@ extern "C"
 #include "microui.h"
 #include "renderer.h"
 }
-#include "Game.hpp"
+#include <array>
 
+#include "Game.hpp"
 #include "systems/TickManager.hpp"
 
 static SDL_Renderer *sdlRenderer;
@@ -100,7 +101,8 @@ static void test_window(mu_Context *ctx)
     /* tree */
     if (mu_header_ex(ctx, "Tree and Text", MU_OPT_EXPANDED))
     {
-      mu_layout_row(ctx, 2, (int[]){140, -1}, 0);
+    std::array<int, 2> layout = {140, -1};
+      mu_layout_row(ctx, 2, layout.data(), 0);
       mu_layout_begin_column(ctx);
       if (mu_begin_treenode(ctx, "Test 1"))
       {
@@ -126,7 +128,8 @@ static void test_window(mu_Context *ctx)
       }
       if (mu_begin_treenode(ctx, "Test 2"))
       {
-        mu_layout_row(ctx, 2, (int[]){54, 54}, 0);
+    std::array<int, 2> layout = {54, 54};
+        mu_layout_row(ctx, 2, layout.data(), 0);
         if (mu_button(ctx, "Button 3"))
         {
           write_log("Pressed button 3");
@@ -166,10 +169,12 @@ static void test_window(mu_Context *ctx)
     /* background color sliders */
     if (mu_header_ex(ctx, "Background Color", MU_OPT_EXPANDED))
     {
-      mu_layout_row(ctx, 2, (int[]){-78, -1}, 74);
+    std::array<int, 2> layout = {-78, -1};
+      mu_layout_row(ctx, 2, layout.data(), 74);
       /* sliders */
       mu_layout_begin_column(ctx);
-      mu_layout_row(ctx, 2, (int[]){46, -1}, 0);
+    std::array<int, 2> layout2 = {46, -1};
+      mu_layout_row(ctx, 2, layout2.data(), 0);
       mu_label(ctx, "Red:");
       mu_slider(ctx, &bg[0], 0, 255);
       mu_label(ctx, "Green:");
@@ -205,7 +210,8 @@ static void log_window(mu_Context *ctx)
     mu_layout_row(ctx, 1, (int[]){-1}, -25);
     mu_begin_panel(ctx, "Log Output");
     mu_Container *panel = mu_get_current_container(ctx);
-    mu_layout_row(ctx, 1, (int[]){-1}, -1);
+    std::array<int, 1> layout = {-1};
+    mu_layout_row(ctx, 1, layout.data(), -1);
     mu_text(ctx, logbuf);
     mu_end_panel(ctx);
     if (logbuf_updated)
@@ -217,7 +223,8 @@ static void log_window(mu_Context *ctx)
     /* input textbox + submit button */
     static char buf[128];
     int submitted = 0;
-    mu_layout_row(ctx, 2, (int[]){-70, -1}, 0);
+    std::array<int, 2> layout = {-70, -1};
+    mu_layout_row(ctx, 2, layout.data(), 0);
     if (mu_textbox(ctx, buf, sizeof(buf)) & MU_RES_SUBMIT)
     {
       mu_set_focus(ctx, ctx->last_id);
@@ -274,7 +281,8 @@ static void style_window(mu_Context *ctx)
   if (mu_begin_window(ctx, "Style Editor", mu_rect(350, 250, 300, 240)))
   {
     int sw = mu_get_current_container(ctx)->body.w * 0.14;
-    mu_layout_row(ctx, 6, (int[]){80, sw, sw, sw, sw, -1}, 0);
+    std::array<int, 6> layout = {80, sw, sw, sw, sw, -1};
+    mu_layout_row(ctx, 6, layout.data(), 0);
     for (int i = 0; colors[i].label; i++)
     {
       mu_label(ctx, colors[i].label);
