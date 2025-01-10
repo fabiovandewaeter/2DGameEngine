@@ -2,6 +2,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_ttf.h>
 #include <assert.h>
+#include <stdio.h>
 #include "renderer.h"
 #include "atlas.inl"
 
@@ -58,6 +59,7 @@ void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
+
 
 void r_draw_icon(int id, mu_Rect rect, mu_Color color) {
   mu_Rect src = atlas[id];
