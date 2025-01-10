@@ -5,17 +5,6 @@
 #include "renderer.h"
 #include "atlas.inl"
 
-#define BUFFER_SIZE 16384
-
-static GLfloat   tex_buf[BUFFER_SIZE *  8];
-static GLfloat  vert_buf[BUFFER_SIZE *  8];
-static GLubyte color_buf[BUFFER_SIZE * 16];
-static GLuint  index_buf[BUFFER_SIZE *  6];
-
-static int width  = 800;
-static int height = 600;
-static int buf_idx;
-
 static SDL_Window *window;
 static SDL_Renderer *renderer;
 static TTF_Font *font;
@@ -24,8 +13,14 @@ void r_init(SDL_Window *window1, SDL_Renderer *renderer1)
 {
   window = window1;
   renderer = renderer1;
+  font = TTF_OpenFont("assets/fonts/Raleway-Medium.ttf", 24);
+if (!font) {
+    return;
 }
+SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+
+}
 
 void r_draw_rect(mu_Rect rect, mu_Color color) {
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -52,6 +47,11 @@ void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
     }
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        SDL_FreeSurface(surface);
+        return;
+    }
+
     SDL_Rect dst_rect = { pos.x, pos.y, surface->w, surface->h };
     SDL_RenderCopy(renderer, texture, NULL, &dst_rect);
 
@@ -59,14 +59,11 @@ void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color) {
     SDL_DestroyTexture(texture);
 }
 
-
-
 void r_draw_icon(int id, mu_Rect rect, mu_Color color) {
   mu_Rect src = atlas[id];
   int x = rect.x + (rect.w - src.w) / 2;
   int y = rect.y + (rect.h - src.h) / 2;
 }
-
 
 int r_get_text_width(const char *text, int len) {
   int res = 0;
@@ -78,7 +75,6 @@ int r_get_text_width(const char *text, int len) {
   return res;
 }
 
-
 int r_get_text_height(void) {
   return 18;
 }
@@ -87,7 +83,6 @@ void r_set_clip_rect(mu_Rect rect) {
     SDL_Rect sdl_rect = { rect.x, rect.y, rect.w, rect.h };
     SDL_RenderSetClipRect(renderer, &sdl_rect);
 }
-
 
 void r_clear(mu_Color clr) {
     SDL_SetRenderDrawColor(renderer, clr.r, clr.g, clr.b, clr.a);
