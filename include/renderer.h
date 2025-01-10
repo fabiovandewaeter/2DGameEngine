@@ -2,8 +2,10 @@
 #define RENDERER_H
 
 #include "microui.h"
+#include "SDL2/SDL_video.h"
+#include "SDL2/SDL_render.h"
 
-void r_init(void);
+void r_init(SDL_Window *window1, SDL_Renderer *renderer1);
 void r_draw_rect(mu_Rect rect, mu_Color color);
 void r_draw_text(const char *text, mu_Vec2 pos, mu_Color color);
 void r_draw_icon(int id, mu_Rect rect, mu_Color color);
