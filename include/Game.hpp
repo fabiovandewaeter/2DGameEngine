@@ -18,6 +18,7 @@
 #include "systems/EntityManager.hpp"
 #include "systems/AudioManager.hpp"
 #include "systems/ItemManager.hpp"
+#include "systems/GUIManager.hpp"
 
 class Texture;
 class Core;
@@ -79,6 +80,7 @@ private:
     EntityManager entityManager;
     AudioManager audioManager;
     ItemManager itemManager;
+    GUIManager guiManager;
 
     SDL_Surface *loadSurface(std::string path);
     SDL_Texture *loadTexture(std::string path);

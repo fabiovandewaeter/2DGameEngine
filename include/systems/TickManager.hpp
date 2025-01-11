@@ -1,7 +1,7 @@
 #ifndef tick_manager_hpp
 #define tick_manager_hpp
 
-#include <SDL2/SDL.h>
+#include "SDL2/SDL_stdinc.h"
 
 class TickManager
 {
@@ -10,7 +10,7 @@ public:
 
     static TickManager *getInstance();
 
-    void handleTickSpeed(const Uint64& gameFrameDelay);
+    void handleTickSpeed(const Uint64 &gameFrameDelay);
     Uint64 getNormalizedTick();
     void setFrameStart();
     Uint64 getTicks();

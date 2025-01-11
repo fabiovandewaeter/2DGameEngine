@@ -98,6 +98,8 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadEntities();
     this->itemManager.init();
     loadItems();
+
+    this->guiManager.init(this->window, this->renderer);
 }
 
 void Game::loadMedia()
@@ -137,11 +139,19 @@ void Game::handleEvents()
         }
         this->camera.handleEvents(&event);
         this->player->handleEvents(&event);
-        this->mouseManager.handleEvents(&event);
+        bool res = this->guiManager.handleEvents(&event);
+        std::cout << res << std::endl;
+        if (res)
+        {
+            printf("in\n");
+        }
+        else{
+            printf("out\n");
+            this->mouseManager.handleEvents(&event); // doesnt clic on the map if clic on GUI
+        }
     }
 }
 
-std::vector<PerlinNoise> tempo;
 Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
 Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
 void Game::update()
@@ -170,6 +180,7 @@ void Game::render()
 
     // entities
     this->entityManager.render();
+    this->guiManager.render();
 
     SDL_RenderPresent(this->renderer);
     countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
@@ -187,15 +198,8 @@ void Game::clean()
     IMG_Quit();
     SDL_Quit();
 }
-
-bool Game::running()
-{
-    return this->isRunning;
-}
-void Game::setFPS(unsigned int fps)
-{
-    this->fixedFPS = fps;
-}
+bool Game::running() { return this->isRunning; }
+void Game::setFPS(unsigned int fps) { this->fixedFPS = fps; }
 void Game::setUPS(unsigned int ups)
 {
     this->fixedUPS = ups;

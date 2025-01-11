@@ -1,7 +1,7 @@
 #ifndef mouse_manager_hpp
 #define mouse_manager_hpp
 
-#include <SDL2/SDL.h>
+#include "SDL2/SDL_events.h"
 
 class Camera;
 class Map;

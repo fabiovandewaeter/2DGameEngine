@@ -1,4 +1,5 @@
 #include "systems/TickManager.hpp"
+#include "SDL2/SDL_timer.h"
 
 TickManager *TickManager::instance = nullptr;
 TickManager::TickManager()
