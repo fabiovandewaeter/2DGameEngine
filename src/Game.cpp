@@ -139,15 +139,9 @@ void Game::handleEvents()
         }
         this->camera.handleEvents(&event);
         this->player->handleEvents(&event);
-        bool res = this->guiManager.handleEvents(&event);
-        std::cout << res << std::endl;
-        if (res)
+        if (!this->guiManager.handleEvents(&event))
         {
-            printf("in\n");
-        }
-        else{
-            printf("out\n");
-            this->mouseManager.handleEvents(&event); // doesnt clic on the map if clic on GUI
+            this->mouseManager.handleEvents(&event); // doesnt click on the map if click on GUI
         }
     }
 }

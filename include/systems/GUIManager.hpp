@@ -21,12 +21,11 @@ public:
 
 private:
     SDL_Renderer *renderer;
-    char logbuf[64000];
-    int logbuf_updated = 0;
-    // float bg[3] = {90, 95, 100};
     mu_Context ctx;
     char button_map[256];
     char key_map[256];
+
+    void process_frame(mu_Context *ctx);
 };
 
 #endif

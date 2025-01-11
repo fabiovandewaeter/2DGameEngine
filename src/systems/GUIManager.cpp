@@ -181,7 +181,7 @@ static int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high
     return res;
 }
 
-static void process_frame(mu_Context *ctx)
+void GUIManager::process_frame(mu_Context *ctx)
 {
     mu_begin(ctx);
     test_window(ctx);
@@ -191,8 +191,6 @@ static void process_frame(mu_Context *ctx)
 void GUIManager::render()
 {
     process_frame(&this->ctx);
-
-    /* render */
     mu_Command *cmd = NULL;
     while (mu_next_command(&this->ctx, &cmd))
     {
