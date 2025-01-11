@@ -13,7 +13,7 @@ void r_init(SDL_Window *window1, SDL_Renderer *renderer1)
 {
     window = window1;
     renderer = renderer1;
-    font = TTF_OpenFont("assets/fonts/Raleway-Medium.ttf", 24);
+    font = TTF_OpenFont("assets/fonts/Raleway-Medium.ttf", 10);
     if (!font)
     {
         return;
