@@ -15,6 +15,7 @@ public:
     ~GUIManager();
 
     void init(SDL_Window *windows, SDL_Renderer *renderer);
+    bool isMouseOverGUI(int x, int y);
     bool handleEvents(SDL_Event *event);
     void render();
 

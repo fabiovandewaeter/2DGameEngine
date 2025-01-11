@@ -42,9 +42,21 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer)
     this->renderer = renderer;
 }
 
+bool GUIManager::isMouseOverGUI(int x, int y)
+{
+    mu_Container *hoveredContainer = this->ctx.hover_root;
+    if (hoveredContainer)
+    {
+        mu_Rect rect = hoveredContainer->rect;
+        return (x >= rect.x && x <= rect.x + rect.w &&
+                y >= rect.y && y <= rect.y + rect.h);
+    }
+    return false;
+}
+
 bool GUIManager::handleEvents(SDL_Event *event)
 {
-    bool res = false;
+    bool eventConsumed = false;
     switch (event->type)
     {
     case SDL_QUIT:
@@ -52,25 +64,33 @@ bool GUIManager::handleEvents(SDL_Event *event)
         break;
     case SDL_MOUSEMOTION:
         mu_input_mousemove(&this->ctx, event->motion.x, event->motion.y);
+        eventConsumed = true;
         break;
     case SDL_MOUSEWHEEL:
         mu_input_scroll(&this->ctx, 0, event->wheel.y * -30);
+        eventConsumed = true;
         break;
     case SDL_TEXTINPUT:
         mu_input_text(&this->ctx, event->text.text);
+        eventConsumed = true;
         break;
 
     case SDL_MOUSEBUTTONDOWN:
     case SDL_MOUSEBUTTONUP:
     {
-        int b = this->button_map[event->button.button & 0xff];
-        if (b && event->type == SDL_MOUSEBUTTONDOWN)
+        if (isMouseOverGUI(event->button.x, event->button.y))
         {
-            mu_input_mousedown(&this->ctx, event->button.x, event->button.y, b);
-        }
-        if (b && event->type == SDL_MOUSEBUTTONUP)
-        {
-            mu_input_mouseup(&this->ctx, event->button.x, event->button.y, b);
+            int b = this->button_map[event->button.button & 0xff];
+            if (b && event->type == SDL_MOUSEBUTTONDOWN)
+            {
+                mu_input_mousedown(&this->ctx, event->button.x, event->button.y, b);
+                eventConsumed = true;
+            }
+            if (b && event->type == SDL_MOUSEBUTTONUP)
+            {
+                mu_input_mouseup(&this->ctx, event->button.x, event->button.y, b);
+                eventConsumed = true;
+            }
         }
         break;
     }
@@ -82,16 +102,18 @@ bool GUIManager::handleEvents(SDL_Event *event)
         if (c && event->type == SDL_KEYDOWN)
         {
             mu_input_keydown(&this->ctx, c);
+            eventConsumed = true;
         }
         if (c && event->type == SDL_KEYUP)
         {
             mu_input_keyup(&this->ctx, c);
+            eventConsumed = true;
         }
         break;
     }
     }
 
-    return res;
+    return eventConsumed;
 }
 
 static void test_window(mu_Context *ctx)
