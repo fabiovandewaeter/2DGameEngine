@@ -25,6 +25,7 @@ public:
     void render(SDL_Rect renderBox);
     void render(SDL_Rect srcBox, SDL_Rect dstBox);
 
+    SDL_Texture *getTexture();
     int getWidth();
     int getHeight();
     void setSize(int width, int height);

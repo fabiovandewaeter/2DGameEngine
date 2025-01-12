@@ -22,6 +22,7 @@ public:
     std::vector<Texture *> *getTileTextures();
     std::vector<Texture *> *getPassiveStructureTextures();
     std::vector<Texture *> *getActiveStructureTextures();
+    std::vector<Texture *> *getGUITextures();
 
 private:
     SDL_Renderer *renderer;
@@ -30,11 +31,13 @@ private:
     std::vector<Texture *> tileTextures;
     std::vector<Texture *> passiveStructureTextures;
     std::vector<Texture *> activeStructureTextures;
+    std::vector<Texture *> GUITextures;
 
     void loadEntityTextures();
     void loadTileTextures();
     void loadPassiveStructureTextures();
     void loadActiveStructureTextures();
+    void loadGUITextures();
 };
 
 #endif

@@ -45,6 +45,7 @@ void TextureManager::loadMedia()
     loadTileTextures();
     loadPassiveStructureTextures();
     loadActiveStructureTextures();
+    loadGUITextures();
 }
 
 void TextureManager::loadEntityTextures()
@@ -77,24 +78,15 @@ void TextureManager::loadActiveStructureTextures()
     // turret
     this->activeStructureTextures.push_back((new Texture(this->renderer))->loadFromFile("assets/img/structures/activeStructures/turret.png"));
 }
+void TextureManager::loadGUITextures()
+{
+    this->GUITextures.push_back((new Texture(this->renderer))->loadFromFile("assets/icon/GUI/greater-than.png"));
+    this->GUITextures.push_back((new Texture(this->renderer))->loadFromFile("assets/icon/GUI/down.png"));
+}
 
-Texture *TextureManager::getBackgroundTexture()
-{
-    return this->backgroundTexture;
-}
-std::vector<Texture *> *TextureManager::getEntityTextures()
-{
-    return &this->entityTextures;
-}
-std::vector<Texture *> *TextureManager::getTileTextures()
-{
-    return &this->tileTextures;
-}
-std::vector<Texture *> *TextureManager::getPassiveStructureTextures()
-{
-    return &this->passiveStructureTextures;
-}
-std::vector<Texture *> *TextureManager::getActiveStructureTextures()
-{
-    return &this->activeStructureTextures;
-}
+Texture *TextureManager::getBackgroundTexture() { return this->backgroundTexture; }
+std::vector<Texture *> *TextureManager::getEntityTextures() { return &this->entityTextures; }
+std::vector<Texture *> *TextureManager::getTileTextures() { return &this->tileTextures; }
+std::vector<Texture *> *TextureManager::getPassiveStructureTextures() { return &this->passiveStructureTextures; }
+std::vector<Texture *> *TextureManager::getActiveStructureTextures() { return &this->activeStructureTextures; }
+std::vector<Texture *> *TextureManager::getGUITextures() { return &this->GUITextures; }

@@ -99,7 +99,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->itemManager.init();
     loadItems();
 
-    this->guiManager.init(this->window, this->renderer);
+    this->guiManager.init(this->window, this->renderer, &this->textureManager);
 }
 
 void Game::loadMedia()

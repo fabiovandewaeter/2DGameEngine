@@ -110,15 +110,16 @@ void Texture::render(SDL_Rect renderBox)
     SDL_Rect srcRect = {renderBox.x, renderBox.y, renderBox.w, renderBox.h};*/
 
     SDL_RenderCopy(this->renderer, this->texture, NULL, &renderBox);
-    //SDL_RenderCopy(this->renderer, texture, &srcRect, &renderBox);
+    // SDL_RenderCopy(this->renderer, texture, &srcRect, &renderBox);
 }
 void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, this->texture, &srcBox, &dstBox);
 }
 
-int Texture::getWidth() { return width; }
-int Texture::getHeight() { return height; }
+SDL_Texture *Texture::getTexture() { return this->texture; }
+int Texture::getWidth() { return this->width; }
+int Texture::getHeight() { return this->height; }
 void Texture::setSize(int width, int height)
 {
     this->width = width;

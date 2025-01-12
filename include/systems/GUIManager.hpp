@@ -1,6 +1,8 @@
 #ifndef gui_manager_hpp
 #define gui_manager_hpp
 
+#include <vector>
+
 #include "SDL2/SDL_events.h"
 #include "SDL2/SDL_video.h"
 #include "SDL2/SDL_render.h"
@@ -9,19 +11,23 @@ extern "C"
 #include "microui.h"
 }
 
+class TextureManager;
+class Texture;
+
 class GUIManager
 {
 public:
     GUIManager();
     ~GUIManager();
 
-    void init(SDL_Window *windows, SDL_Renderer *renderer);
+    void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager);
     bool isMouseOverGUI(int x, int y);
     bool handleEvents(SDL_Event *event);
     void render();
 
 private:
     SDL_Renderer *renderer;
+    std::vector<Texture *> *textures;
     mu_Context ctx;
     char button_map[256];
     char key_map[256];
