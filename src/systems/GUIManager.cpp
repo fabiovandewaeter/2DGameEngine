@@ -130,22 +130,6 @@ static void test_window(mu_Context *ctx)
         mu_Container *win = mu_get_current_container(ctx);
         win->rect.w = mu_max(win->rect.w, 240);
         win->rect.h = mu_max(win->rect.h, 300);
-
-        /* window info */
-        if (mu_header(ctx, "Window Info"))
-        {
-            mu_Container *win = mu_get_current_container(ctx);
-            char buf[64];
-            mu_layout_row(ctx, 2, (int[]){54, -1}, 0);
-            mu_label(ctx, "Position:");
-            sprintf(buf, "%d, %d", win->rect.x, win->rect.y);
-            mu_label(ctx, buf);
-            mu_label(ctx, "Size:");
-            sprintf(buf, "%d, %d", win->rect.w, win->rect.h);
-            mu_label(ctx, buf);
-        }
-
-        /* labels + buttons */
         if (mu_header_ex(ctx, "Test Buttons", MU_OPT_EXPANDED))
         {
             mu_layout_row(ctx, 3, (int[]){86, -110, -1}, 0);
