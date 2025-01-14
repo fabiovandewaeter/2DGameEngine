@@ -17,13 +17,6 @@ static int text_width(mu_Font font, const char *text, int len)
     {
         len = strlen(text);
     }
-    /*int res = 0;
-    for (const char *p = text; *p && len--; p++) {
-      if ((*p & 0xc0) == 0x80) { continue; }
-      int chr = mu_min((unsigned char) *p, 127);
-      res += atlas[ATLAS_FONT + chr].w;
-    }
-    return res;*/
     return len*5;
 }
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
@@ -132,7 +125,8 @@ static void test_window(mu_Context *ctx)
         win->rect.h = mu_max(win->rect.h, 300);
         if (mu_header_ex(ctx, "Test Buttons", MU_OPT_EXPANDED))
         {
-            mu_layout_row(ctx, 3, (int[]){86, -110, -1}, 0);
+            int tempo[3] = {86, -110, -1};
+            mu_layout_row(ctx, 3, tempo, 0);
             mu_label(ctx, "Test buttons 1:");
             if (mu_button(ctx, "Button 1"))
             {

@@ -64,7 +64,7 @@ ifeq ($(PLATFORM),windows)
 else
 	@mkdir -p $(dir $@)
 endif
-	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS) -lopengl32
+	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)
@@ -77,7 +77,6 @@ endif
 $(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
 	gcc -c $< -o $@ -I include
 
-# Cleaning
 clean:
 ifeq ($(PLATFORM),windows)
 	del /Q $(OBJ_FILES) $(TARGET)
@@ -85,7 +84,6 @@ else
 	rm -f $(OBJ_FILES) $(TARGET)
 endif
 
-# Run the program
 run:
 ifeq ($(PLATFORM),windows)
 	.\$(WINDOWS_TARGET) 60
