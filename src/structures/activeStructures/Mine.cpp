@@ -2,7 +2,7 @@
 
 #include "map/Tile.hpp"
 
-Mine::Mine(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, Tile *minedTile) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction)
+Mine::Mine(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, Tile *minedTile, TickManager*tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager)
 {
     this->minedResource = minedTile->getMineableResource();
     this->capacity = 50;

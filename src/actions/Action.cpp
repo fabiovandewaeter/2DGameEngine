@@ -4,13 +4,13 @@
 #include "actions/effects/Effect.hpp"
 #include "systems/TickManager.hpp"
 
-Action::Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown)
+Action::Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager)
 {
     this->pattern = pattern;
     this->effects = effects;
     this->cooldown = cooldown;
     this->cooldownStartTick = 0;
-    this->tickManager = TickManager::getInstance();
+    this->tickManager = tickManager;
 }
 Action::~Action()
 {

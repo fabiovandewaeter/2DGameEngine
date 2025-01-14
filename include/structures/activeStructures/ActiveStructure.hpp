@@ -9,11 +9,12 @@ class TextureManager;
 class Map;
 class Action;
 class Faction;
+class TickManager;
 
 class ActiveStructure : public Structure
 {
 public:
-    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, bool solid, Faction *faction);
+    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager);
     ~ActiveStructure();
 
     virtual void update() = 0;
@@ -25,6 +26,7 @@ protected:
     bool active;
     std::vector<Action *> actions;
     Faction *faction;
+    TickManager *tickManager;
 };
 
 #endif

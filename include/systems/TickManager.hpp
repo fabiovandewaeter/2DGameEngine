@@ -6,9 +6,8 @@
 class TickManager
 {
 public:
+    TickManager();
     ~TickManager();
-
-    static TickManager *getInstance();
 
     void handleTickSpeed(const Uint64 &gameFrameDelay);
     Uint64 getNormalizedTick();
@@ -16,9 +15,6 @@ public:
     Uint64 getTicks();
 
 private:
-    TickManager();
-    static TickManager *instance;
-
     Uint64 ticks;
     Uint64 frequency;
     Uint64 frameStart;

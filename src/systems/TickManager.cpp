@@ -1,22 +1,13 @@
 #include "systems/TickManager.hpp"
+
 #include "SDL2/SDL_timer.h"
 
-TickManager *TickManager::instance = nullptr;
 TickManager::TickManager()
 {
     ticks = 0;
     frequency = SDL_GetPerformanceFrequency();
 }
 TickManager::~TickManager() {}
-
-TickManager *TickManager::getInstance()
-{
-    if (instance == nullptr)
-    {
-        instance = new TickManager();
-    }
-    return instance;
-}
 
 Uint64 TickManager::getNormalizedTick()
 {

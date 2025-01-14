@@ -12,7 +12,7 @@ class Item;
 class Mine : public ActiveStructure
 {
 public:
-    Mine(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, Tile *minedTile);
+    Mine(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, Tile *minedTile, TickManager *tickManager);
     ~Mine();
 
     void update();

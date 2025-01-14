@@ -18,6 +18,7 @@
 #include "systems/AudioManager.hpp"
 #include "systems/ItemManager.hpp"
 #include "systems/GUIManager.hpp"
+#include "systems/TickManager.hpp"
 
 struct TimeData
 {
@@ -31,7 +32,6 @@ class Texture;
 class Core;
 class Turret;
 class Player;
-class TickManager;
 
 class Game
 {
@@ -62,7 +62,7 @@ private:
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;
-    TickManager *tickManager;
+    TickManager tickManager;
 
     Player *player;
     Texture *backgroundTexture;

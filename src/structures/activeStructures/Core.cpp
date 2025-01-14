@@ -7,7 +7,7 @@
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction) {}
+Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager) {}
 
 void Core::update()
 {

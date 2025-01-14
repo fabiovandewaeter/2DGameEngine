@@ -12,7 +12,7 @@ class TickManager;
 class Action
 {
 public:
-    Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown);
+    Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager);
     ~Action();
 
     void apply(int x, int y);

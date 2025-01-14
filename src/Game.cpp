@@ -4,7 +4,6 @@
 
 #include "Game.hpp"
 
-#include "systems/TickManager.hpp"
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
@@ -94,7 +93,6 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     std::cout << "camera zoom need fix" << std::endl;
     this->camera.init(width, height, 10, 200000000, 0, 0);
     // NEED FIX
-    this->tickManager = TickManager::getInstance();
 
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
@@ -111,46 +109,57 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 }
 
 SDL_mutex *mutex = SDL_CreateMutex();
-int updateThreadFunction(void *data)
+struct ThreadFunctionParameters
 {
-    Game *g = (Game *)data;
-    while (g->isRunning())
-    {
-        g->update();
-    }
-
-    return 0;
-}
+    Game *game;
+    TickManager *tickManager;
+};
 int handleEventsThreadFunction(void *data)
 {
-    Game *g = (Game *)data;
+    Game *g = (Game *)((ThreadFunctionParameters *)data)->game;
+    TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
     while (g->isRunning())
     {
+        tickManager->setFrameStart();
         g->handleEvents();
+        tickManager->handleTickSpeed(g->getFrameDelay());
     }
-
+    return 0;
+}
+int updateThreadFunction(void *data)
+{
+    Game *g = (Game *)((ThreadFunctionParameters *)data)->game;
+    TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
+    while (g->isRunning())
+    {
+        tickManager->setFrameStart();
+        g->update();
+        tickManager->handleTickSpeed(g->getFrameDelay());
+    }
     return 0;
 }
 
 void Game::run()
 {
-    SDL_Thread *threadID = SDL_CreateThread(updateThreadFunction, "LazyThread", (void *)this);
-    SDL_Thread *threadID2 = SDL_CreateThread(handleEventsThreadFunction, "LazyThread", (void *)this);
+    ThreadFunctionParameters handleEventsParameters = {this, new TickManager()};
+    ThreadFunctionParameters updateParameters = {this, new TickManager()};
+    SDL_Thread *threadID1 = SDL_CreateThread(handleEventsThreadFunction, "LazyThread", (void *)&handleEventsParameters);
+    SDL_Thread *threadID2 = SDL_CreateThread(updateThreadFunction, "LazyThread", (void *)&updateParameters);
     while (this->isRunning())
     {
-        tickManager->setFrameStart();
+        tickManager.setFrameStart();
 
-        //handleEvents();
-        //update();
+        // handleEvents();
+        // update();
         render();
 
-        tickManager->handleTickSpeed(getFrameDelay());
+        tickManager.handleTickSpeed(getFrameDelay());
 #ifdef PROFILER
         FrameMark;
 #endif
     }
 
-    SDL_WaitThread(threadID, NULL);
+    SDL_WaitThread(threadID1, NULL);
     SDL_WaitThread(threadID2, NULL);
     SDL_DestroyMutex(mutex);
 }
