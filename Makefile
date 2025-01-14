@@ -79,9 +79,13 @@ $(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
 
 clean:
 ifeq ($(PLATFORM),windows)
+	mv $(OBJ_DIR)/TracyClient.o ./
 	del /Q $(OBJ_FILES) $(TARGET)
+	mv ./TracyClient.o $(OBJ_DIR)
 else
+	mv $(OBJ_DIR)/TracyClient.o ./
 	rm -f $(OBJ_FILES) $(TARGET)
+	mv ./TracyClient.o $(OBJ_DIR)
 endif
 
 run:
