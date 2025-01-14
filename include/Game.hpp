@@ -1,7 +1,6 @@
 #ifndef game_hpp
 #define game_hpp
 
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -24,6 +23,7 @@ class Texture;
 class Core;
 class Turret;
 class Player;
+class TickManager;
 
 class Game
 {
@@ -35,6 +35,7 @@ public:
     void loadMedia();
     void loadEntities();
     void loadItems();
+    void run();
     void handleEvents();
     void update();
     void render();
@@ -57,6 +58,7 @@ private:
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;
+    TickManager *tickManager;
 
     Player *player;
     Texture *backgroundTexture;

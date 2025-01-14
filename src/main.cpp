@@ -1,9 +1,4 @@
-#ifdef PROFILER
-#include "tracy_profiler/tracy/Tracy.hpp"
-#endif
-
 #include "Game.hpp"
-#include "systems/TickManager.hpp"
 
 Game game;
 
@@ -38,21 +33,8 @@ int main(int argc, char *argv[])
     game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false, vsync);
     game.setUPS(UPS);
 
-    TickManager *tickManager = TickManager::getInstance();
-
-    while (game.running())
-    {
-        tickManager->setFrameStart();
-
-        game.handleEvents();
-        game.update();
-        game.render();
-
-        tickManager->handleTickSpeed(game.getFrameDelay());
-#ifdef PROFILER
-        FrameMark;
-#endif
-    }
+    // Game loop
+    game.run();
 
     game.clean();
     return 0;

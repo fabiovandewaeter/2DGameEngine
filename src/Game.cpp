@@ -1,5 +1,10 @@
+#ifdef PROFILER
+#include "tracy_profiler/tracy/Tracy.hpp"
+#endif
+
 #include "Game.hpp"
 
+#include "systems/TickManager.hpp"
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
@@ -87,6 +92,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     std::cout << "camera zoom need fix" << std::endl;
     this->camera.init(width, height, 10, 200000000, 0, 0);
     // NEED FIX
+    this->tickManager = TickManager::getInstance();
 
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
@@ -127,6 +133,23 @@ void Game::loadEntities()
 void Game::loadItems()
 {
     this->itemManager.load();
+}
+
+void Game::run()
+{
+    while (this->running())
+    {
+        tickManager->setFrameStart();
+
+        handleEvents();
+        update();
+        render();
+
+        tickManager->handleTickSpeed(getFrameDelay());
+#ifdef PROFILER
+        FrameMark;
+#endif
+    }
 }
 
 void Game::handleEvents()
