@@ -4,8 +4,6 @@
 
 #include "Game.hpp"
 
-#include <thread>
-
 #include "systems/TickManager.hpp"
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
@@ -14,6 +12,8 @@
 #include "map/Tile.hpp"
 #include "entities/Player.hpp"
 #include "Texture.hpp"
+
+#include "SDL2/SDL_thread.h"
 
 SDL_Event event;
 
@@ -110,43 +110,9 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->guiManager.init(this->window, this->renderer, &this->textureManager);
 }
 
-void Game::loadMedia()
-{
-    // textures
-    this->textureManager.init(this->renderer);
-    this->textureManager.loadMedia();
-    this->backgroundTexture = this->textureManager.getBackgroundTexture();
-    this->entityTextures = this->textureManager.getEntityTextures();
-    this->tileTextures = this->textureManager.getTileTextures();
-    this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
-    this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
-
-    // audio
-    this->audioManager.init();
-    this->audioManager.loadMedia();
-    this->music = this->audioManager.getMusic();
-}
-void Game::loadEntities()
-{
-    this->entityManager.loadEntities();
-    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
-    this->entityManager.addEntity(this->player);
-}
-void Game::loadItems()
-{
-    this->itemManager.load();
-}
-
 void Game::run()
 {
-    std::thread handleEventsThread(&Game::handleEventsWrapper, this);
-    std::thread updateThread(&Game::updateWrapper, this);
-    std::thread renderThread(&Game::renderWrapper, this);
-
-    handleEventsThread.join();
-    updateThread.join();
-    renderThread.join();
-    /*while (this->running())
+    while (this->isRunning())
     {
         tickManager->setFrameStart();
 
@@ -158,7 +124,7 @@ void Game::run()
 #ifdef PROFILER
         FrameMark;
 #endif
-    }*/
+    }
 }
 
 void Game::handleEvents()
@@ -178,24 +144,22 @@ void Game::handleEvents()
     }
 }
 
-Uint64 lastTimeUPS = SDL_GetTicks64(), counterUPS = 0, intervalUPS = 1000;
-Uint64 lastTimeUPSLimiter = SDL_GetTicks64(), counterUPSLimiter = 0;
+TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
-    // if (limiter("UPS", counterUPSLimiter, 1000 / this->fixedUPS, lastTimeUPSLimiter))
+    // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
     this->player->update(&this->collisionManager);
     this->camera.update();
     this->entityManager.update();
     this->map.update();
 
-    countPrinter("UPS", counterUPS, intervalUPS, lastTimeUPS);
+    countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
 
-Uint64 lastTimeFPS = SDL_GetTicks64(), counterFPS = 0, intervalFPS = 1000;
-Uint64 lastTimeFPSLimiter = SDL_GetTicks64(), counterFPSLimiter = 0;
+TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
-    // if (limiter("FPS", counterFPSLimiter, 1000 / this->fixedFPS, lastTimeFPSLimiter))
+    // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
     SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
@@ -209,32 +173,7 @@ void Game::render()
     this->guiManager.render();
 
     SDL_RenderPresent(this->renderer);
-    countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
-}
-
-void Game::handleEventsWrapper()
-{
-    while (this->running)
-    {
-        std::lock_guard<std::mutex> lock(entityMutex);
-        handleEvents();
-    }
-}
-void Game::updateWrapper()
-{
-    while (this->running)
-    {
-        std::lock_guard<std::mutex> lock(entityMutex);
-        update();
-    }
-}
-void Game::renderWrapper()
-{
-    while (this->running)
-    {
-        std::lock_guard<std::mutex> lock(entityMutex);
-        render();
-    }
+    countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 
 void Game::clean()
@@ -269,5 +208,52 @@ void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uin
         std::cout << name << ": " << counter / (deltaTime / 1000.0f) << std::endl;
         lastTime = currentTime;
         counter = 0;
+    }
+}
+void Game::loadMedia()
+{
+    // textures
+    this->textureManager.init(this->renderer);
+    this->textureManager.loadMedia();
+    this->backgroundTexture = this->textureManager.getBackgroundTexture();
+    this->entityTextures = this->textureManager.getEntityTextures();
+    this->tileTextures = this->textureManager.getTileTextures();
+    this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
+    this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
+
+    // audio
+    this->audioManager.init();
+    this->audioManager.loadMedia();
+    this->music = this->audioManager.getMusic();
+}
+void Game::loadEntities()
+{
+    this->entityManager.loadEntities();
+    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
+    this->entityManager.addEntity(this->player);
+}
+void Game::loadItems()
+{
+    this->itemManager.load();
+}
+void Game::handleEventsWrapper()
+{
+    while (this->running)
+    {
+        handleEvents();
+    }
+}
+void Game::updateWrapper()
+{
+    while (this->running)
+    {
+        update();
+    }
+}
+void Game::renderWrapper()
+{
+    while (this->running)
+    {
+        render();
     }
 }

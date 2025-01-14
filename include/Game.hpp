@@ -1,8 +1,6 @@
 #ifndef game_hpp
 #define game_hpp
 
-#include <mutex>
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -21,6 +19,14 @@
 #include "systems/ItemManager.hpp"
 #include "systems/GUIManager.hpp"
 
+struct TimeData
+{
+    Uint64 lastTime;
+    Uint64 counter;
+    Uint64 interval;
+    Uint64 lastTimeLimiter;
+    Uint64 counterLimiter;
+};
 class Texture;
 class Core;
 class Turret;
@@ -34,9 +40,6 @@ public:
     ~Game();
 
     void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
-    void loadMedia();
-    void loadEntities();
-    void loadItems();
     void run();
     void handleEvents();
     void update();
@@ -44,7 +47,6 @@ public:
     void clean();
 
     bool isRunning();
-    void countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime);
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
     Uint64 getFrameDelay();
@@ -61,7 +63,6 @@ private:
     unsigned int fixedUPS;
     Uint64 frameDelay;
     TickManager *tickManager;
-    std::mutex entityMutex;
 
     Player *player;
     Texture *backgroundTexture;
@@ -87,8 +88,11 @@ private:
     ItemManager itemManager;
     GUIManager guiManager;
 
-    SDL_Surface *loadSurface(std::string path);
-    SDL_Texture *loadTexture(std::string path);
+
+    void loadMedia();
+    void loadEntities();
+    void loadItems();
+    void countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime);
     void handleEventsWrapper();
     void updateWrapper();
     void renderWrapper();
