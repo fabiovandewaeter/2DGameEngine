@@ -179,7 +179,7 @@ void GUIManager::render()
             break;
         }
     }
-    r_present();
+    //r_present();
 }
 
 static SDL_Window *window;
