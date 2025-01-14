@@ -4,6 +4,8 @@
 
 #include "Game.hpp"
 
+#include "SDL2/SDL_thread.h"
+
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
@@ -11,8 +13,8 @@
 #include "map/Tile.hpp"
 #include "entities/Player.hpp"
 #include "Texture.hpp"
+#include <chrono>
 
-#include "SDL2/SDL_thread.h"
 
 SDL_Event event;
 
@@ -109,6 +111,9 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 }
 
 SDL_mutex *mutex = SDL_CreateMutex();
+SDL_cond *cond1 = SDL_CreateCond();
+SDL_cond *cond2 = SDL_CreateCond();
+SDL_cond *cond3 = SDL_CreateCond();
 struct ThreadFunctionParameters
 {
     Game *game;
@@ -120,9 +125,13 @@ int handleEventsThreadFunction(void *data)
     TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
     while (g->isRunning())
     {
+        SDL_mutexP(mutex);
         tickManager->setFrameStart();
         g->handleEvents();
         tickManager->handleTickSpeed(g->getFrameDelay());
+        SDL_mutexV(mutex);
+        std::chrono::milliseconds(50);
+        std::cout <<"handleEvents"<<std::endl;
     }
     return 0;
 }
@@ -132,9 +141,14 @@ int updateThreadFunction(void *data)
     TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
     while (g->isRunning())
     {
+        SDL_mutexP(mutex);
         tickManager->setFrameStart();
         g->update();
         tickManager->handleTickSpeed(g->getFrameDelay());
+        SDL_mutexV(mutex);
+        SDL_CondWait(cond2);
+        std::chrono::milliseconds(50);
+        std::cout <<"update"<<std::endl;
     }
     return 0;
 }
@@ -148,10 +162,13 @@ void Game::run()
     while (this->isRunning())
     {
         tickManager.setFrameStart();
-
+        SDL_mutexP(mutex);
         // handleEvents();
         // update();
         render();
+        SDL_mutexV(mutex);
+        std::chrono::milliseconds(50);
+        std::cout <<"run"<<std::endl;
 
         tickManager.handleTickSpeed(getFrameDelay());
 #ifdef PROFILER
@@ -162,6 +179,9 @@ void Game::run()
     SDL_WaitThread(threadID1, NULL);
     SDL_WaitThread(threadID2, NULL);
     SDL_DestroyMutex(mutex);
+    SDL_DestroyCond(cond1);
+    SDL_DestroyCond(cond2);
+    SDL_DestroyCond(cond3);
 }
 
 void Game::handleEvents()
