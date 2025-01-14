@@ -93,9 +93,6 @@ private:
     void loadEntities();
     void loadItems();
     void countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime);
-    void handleEventsWrapper();
-    void updateWrapper();
-    void renderWrapper();
 };
 
 #endif

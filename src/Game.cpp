@@ -110,14 +110,38 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->guiManager.init(this->window, this->renderer, &this->textureManager);
 }
 
+SDL_mutex *mutex = SDL_CreateMutex();
+int updateThreadFunction(void *data)
+{
+    Game *g = (Game *)data;
+    while (g->isRunning())
+    {
+        g->update();
+    }
+
+    return 0;
+}
+int handleEventsThreadFunction(void *data)
+{
+    Game *g = (Game *)data;
+    while (g->isRunning())
+    {
+        g->handleEvents();
+    }
+
+    return 0;
+}
+
 void Game::run()
 {
+    SDL_Thread *threadID = SDL_CreateThread(updateThreadFunction, "LazyThread", (void *)this);
+    SDL_Thread *threadID2 = SDL_CreateThread(handleEventsThreadFunction, "LazyThread", (void *)this);
     while (this->isRunning())
     {
         tickManager->setFrameStart();
 
-        handleEvents();
-        update();
+        //handleEvents();
+        //update();
         render();
 
         tickManager->handleTickSpeed(getFrameDelay());
@@ -125,6 +149,10 @@ void Game::run()
         FrameMark;
 #endif
     }
+
+    SDL_WaitThread(threadID, NULL);
+    SDL_WaitThread(threadID2, NULL);
+    SDL_DestroyMutex(mutex);
 }
 
 void Game::handleEvents()
@@ -160,15 +188,11 @@ TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
-    SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
     SDL_RenderClear(this->renderer);
 
     double scale = this->camera.getScale();
     this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale));
-    // tiles and static objects
     this->map.render();
-
-    // entities
     this->entityManager.render();
     this->guiManager.render();
 
@@ -205,7 +229,7 @@ void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uin
     Uint64 deltaTime = currentTime - lastTime;
     if (deltaTime >= interval)
     { // 1000 ms = 1 seconde
-        std::cout << name << ": " << counter / (deltaTime / 1000.0f) << std::endl;
+        std::cout << name << ": " << std::fixed << counter / (deltaTime / 1000.0f) << std::endl;
         lastTime = currentTime;
         counter = 0;
     }
@@ -235,25 +259,4 @@ void Game::loadEntities()
 void Game::loadItems()
 {
     this->itemManager.load();
-}
-void Game::handleEventsWrapper()
-{
-    while (this->running)
-    {
-        handleEvents();
-    }
-}
-void Game::updateWrapper()
-{
-    while (this->running)
-    {
-        update();
-    }
-}
-void Game::renderWrapper()
-{
-    while (this->running)
-    {
-        render();
-    }
 }
