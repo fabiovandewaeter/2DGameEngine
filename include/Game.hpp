@@ -1,6 +1,8 @@
 #ifndef game_hpp
 #define game_hpp
 
+#include <mutex>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -41,7 +43,7 @@ public:
     void render();
     void clean();
 
-    bool running();
+    bool isRunning();
     void countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime);
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
@@ -50,7 +52,7 @@ public:
     SDL_Renderer *getRenderer();
 
 private:
-    bool isRunning;
+    bool running;
     SDL_Window *window;
     SDL_Renderer *renderer;
     Camera camera;
@@ -59,6 +61,7 @@ private:
     unsigned int fixedUPS;
     Uint64 frameDelay;
     TickManager *tickManager;
+    std::mutex entityMutex;
 
     Player *player;
     Texture *backgroundTexture;
@@ -86,6 +89,9 @@ private:
 
     SDL_Surface *loadSurface(std::string path);
     SDL_Texture *loadTexture(std::string path);
+    void handleEventsWrapper();
+    void updateWrapper();
+    void renderWrapper();
 };
 
 #endif

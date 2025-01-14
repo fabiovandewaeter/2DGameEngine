@@ -4,6 +4,8 @@
 
 #include "Game.hpp"
 
+#include <thread>
+
 #include "systems/TickManager.hpp"
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
@@ -38,7 +40,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     {
         flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
-    this->isRunning = true;
+    this->running = true;
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         std::cout << "Subsystems Initialised" << std::endl;
@@ -46,7 +48,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
         if (!(this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags)))
         {
             std::cout << "FAIL : Window NOT created" << std::endl;
-            isRunning = false;
+            running = false;
         }
         // Create renderer
         if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
@@ -57,26 +59,26 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
         else
         {
             std::cout << "FAIL : Renderer NOT created" << std::endl;
-            isRunning = false;
+            running = false;
         }
         // Initialize PNG loading
         int imgFlags = IMG_INIT_PNG;
         if (!(IMG_Init(imgFlags) & imgFlags))
         {
             std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
-            isRunning = false;
+            running = false;
         }
         // Initialize SDL_ttf
         if (TTF_Init() == -1)
         {
             printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-            isRunning = false;
+            running = false;
         }
         // Initialize SDL_mixer
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
         {
             printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-            isRunning = false;
+            running = false;
         }
     }
     // window icon
@@ -137,7 +139,14 @@ void Game::loadItems()
 
 void Game::run()
 {
-    while (this->running())
+    std::thread handleEventsThread(&Game::handleEventsWrapper, this);
+    std::thread updateThread(&Game::updateWrapper, this);
+    std::thread renderThread(&Game::renderWrapper, this);
+
+    handleEventsThread.join();
+    updateThread.join();
+    renderThread.join();
+    /*while (this->running())
     {
         tickManager->setFrameStart();
 
@@ -149,7 +158,7 @@ void Game::run()
 #ifdef PROFILER
         FrameMark;
 #endif
-    }
+    }*/
 }
 
 void Game::handleEvents()
@@ -158,7 +167,7 @@ void Game::handleEvents()
     {
         if (event.type == SDL_QUIT)
         {
-            this->isRunning = false;
+            this->running = false;
         }
         this->camera.handleEvents(&event);
         this->player->handleEvents(&event);
@@ -203,6 +212,31 @@ void Game::render()
     countPrinter("FPS", counterFPS, intervalFPS, lastTimeFPS);
 }
 
+void Game::handleEventsWrapper()
+{
+    while (this->running)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        handleEvents();
+    }
+}
+void Game::updateWrapper()
+{
+    while (this->running)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        update();
+    }
+}
+void Game::renderWrapper()
+{
+    while (this->running)
+    {
+        std::lock_guard<std::mutex> lock(entityMutex);
+        render();
+    }
+}
+
 void Game::clean()
 {
     this->textureManager.free();
@@ -215,7 +249,7 @@ void Game::clean()
     IMG_Quit();
     SDL_Quit();
 }
-bool Game::running() { return this->isRunning; }
+bool Game::isRunning() { return this->running; }
 void Game::setFPS(unsigned int fps) { this->fixedFPS = fps; }
 void Game::setUPS(unsigned int ups)
 {
