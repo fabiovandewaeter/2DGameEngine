@@ -2,7 +2,7 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "Game.hpp"
+#include "game/Game.hpp"
 
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
@@ -11,7 +11,6 @@
 #include "map/Tile.hpp"
 #include "entities/Player.hpp"
 #include "Texture.hpp"
-
 
 Game::Game()
 {
@@ -91,17 +90,19 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->camera.init(width, height, 10, 200000000, 0, 0);
     // NEED FIX
 
+    this->gameLoader.loadMedia();
+
     this->collisionManager.init(&this->map, &this->entityManager);
-    loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
     this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     this->textManager.init(this->renderer);
-    loadEntities();
     this->itemManager.init();
-    loadItems();
-
     this->guiManager.init(this->window, this->renderer, &this->textureManager);
+
+    this->gameLoader.loadEntities();
+    this->gameLoader.loadItems();
+    this->player = this->entityManager.getPlayer();
 }
 
 void Game::run()
@@ -197,30 +198,4 @@ void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uin
         lastTime = currentTime;
         counter = 0;
     }
-}
-void Game::loadMedia()
-{
-    // textures
-    this->textureManager.init(this->renderer);
-    this->textureManager.loadMedia();
-    this->backgroundTexture = this->textureManager.getBackgroundTexture();
-    this->entityTextures = this->textureManager.getEntityTextures();
-    this->tileTextures = this->textureManager.getTileTextures();
-    this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
-    this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
-
-    // audio
-    this->audioManager.init();
-    this->audioManager.loadMedia();
-    this->music = this->audioManager.getMusic();
-}
-void Game::loadEntities()
-{
-    this->entityManager.loadEntities();
-    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
-    this->entityManager.addEntity(this->player);
-}
-void Game::loadItems()
-{
-    this->itemManager.load();
 }

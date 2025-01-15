@@ -1,6 +1,7 @@
 #include "systems/GUIManager.hpp"
 
 #define TEXT_HEIGHT 10
+#define CONFIGURATION_FILE "data/configurations/GUIManagerConfiguration.json"
 
 #include <SDL2/SDL_ttf.h>
 #include <array>

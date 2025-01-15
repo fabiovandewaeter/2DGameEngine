@@ -51,6 +51,11 @@ void EntityManager::render()
     }
 }
 
+void EntityManager::addPlayer(Player *player)
+{
+    this->player = player;
+    addEntity(player);
+}
 void EntityManager::addEntity(Entity *entity)
 {
     this->entities.push_back(entity);
