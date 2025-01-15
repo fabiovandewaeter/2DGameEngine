@@ -130,6 +130,40 @@ static void test_window(mu_Context *ctx)
         mu_Container *win = mu_get_current_container(ctx);
         win->rect.w = mu_max(win->rect.w, 240);
         win->rect.h = mu_max(win->rect.h, 300);
+                // Ajouter une section pour la liste de noms
+        std::vector<std::string> names;
+        names.push_back("test1");
+        names.push_back("test2");
+        names.push_back("test3");
+        names.push_back("test4");
+        names.push_back("test5");
+        names.push_back("test6");
+        if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
+        {
+            // Spécifiez la disposition pour une seule colonne
+            mu_layout_row(ctx, 1, nullptr, 0);
+
+            // Parcourir le vecteur et afficher chaque nom
+            for (const auto& name : names)
+            {
+                mu_label(ctx, name.c_str());
+            }
+        }
+                if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
+        {
+            // Spécifiez la disposition pour une seule colonne
+            mu_layout_row(ctx, 1, nullptr, 0);
+
+            // Parcourir le vecteur et afficher chaque nom comme bouton
+            for (const auto& name : names)
+            {
+                if (mu_button(ctx, name.c_str()))
+                {
+                    // Afficher le nom dans la console lorsqu'il est cliqué
+                    std::cout << "Nom cliqué : " << name << std::endl;
+                }
+            }
+        }
         if (mu_header_ex(ctx, "Test Buttons", MU_OPT_EXPANDED))
         {
             int tempo[3] = {86, -110, -1};
