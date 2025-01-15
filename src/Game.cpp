@@ -4,8 +4,6 @@
 
 #include "Game.hpp"
 
-#include "SDL2/SDL_thread.h"
-
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
@@ -13,8 +11,6 @@
 #include "map/Tile.hpp"
 #include "entities/Player.hpp"
 #include "Texture.hpp"
-#include <chrono>
-
 
 SDL_Event event;
 
@@ -110,78 +106,19 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->guiManager.init(this->window, this->renderer, &this->textureManager);
 }
 
-SDL_mutex *mutex = SDL_CreateMutex();
-SDL_cond *cond1 = SDL_CreateCond();
-SDL_cond *cond2 = SDL_CreateCond();
-SDL_cond *cond3 = SDL_CreateCond();
-struct ThreadFunctionParameters
-{
-    Game *game;
-    TickManager *tickManager;
-};
-int handleEventsThreadFunction(void *data)
-{
-    Game *g = (Game *)((ThreadFunctionParameters *)data)->game;
-    TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
-    while (g->isRunning())
-    {
-        SDL_mutexP(mutex);
-        tickManager->setFrameStart();
-        g->handleEvents();
-        tickManager->handleTickSpeed(g->getFrameDelay());
-        SDL_mutexV(mutex);
-        std::chrono::milliseconds(50);
-        std::cout <<"handleEvents"<<std::endl;
-    }
-    return 0;
-}
-int updateThreadFunction(void *data)
-{
-    Game *g = (Game *)((ThreadFunctionParameters *)data)->game;
-    TickManager *tickManager = (TickManager *)((ThreadFunctionParameters *)data)->tickManager;
-    while (g->isRunning())
-    {
-        SDL_mutexP(mutex);
-        tickManager->setFrameStart();
-        g->update();
-        tickManager->handleTickSpeed(g->getFrameDelay());
-        SDL_mutexV(mutex);
-        SDL_CondWait(cond2);
-        std::chrono::milliseconds(50);
-        std::cout <<"update"<<std::endl;
-    }
-    return 0;
-}
-
 void Game::run()
 {
-    ThreadFunctionParameters handleEventsParameters = {this, new TickManager()};
-    ThreadFunctionParameters updateParameters = {this, new TickManager()};
-    SDL_Thread *threadID1 = SDL_CreateThread(handleEventsThreadFunction, "LazyThread", (void *)&handleEventsParameters);
-    SDL_Thread *threadID2 = SDL_CreateThread(updateThreadFunction, "LazyThread", (void *)&updateParameters);
     while (this->isRunning())
     {
         tickManager.setFrameStart();
-        SDL_mutexP(mutex);
-        // handleEvents();
-        // update();
+        handleEvents();
+        update();
         render();
-        SDL_mutexV(mutex);
-        std::chrono::milliseconds(50);
-        std::cout <<"run"<<std::endl;
-
         tickManager.handleTickSpeed(getFrameDelay());
 #ifdef PROFILER
         FrameMark;
 #endif
     }
-
-    SDL_WaitThread(threadID1, NULL);
-    SDL_WaitThread(threadID2, NULL);
-    SDL_DestroyMutex(mutex);
-    SDL_DestroyCond(cond1);
-    SDL_DestroyCond(cond2);
-    SDL_DestroyCond(cond3);
 }
 
 void Game::handleEvents()

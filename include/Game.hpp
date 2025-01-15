@@ -88,7 +88,6 @@ private:
     ItemManager itemManager;
     GUIManager guiManager;
 
-
     void loadMedia();
     void loadEntities();
     void loadItems();

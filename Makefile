@@ -2,6 +2,8 @@ CXX = g++
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
+EXCLUDE_OBJ_FILES = $(OBJ_DIR)/microui.o $(OBJ_DIR)/TracyClient.o	# keep those obj files when make clean
+TO_DELETE_OBJ_FILES = $(filter-out $(EXCLUDE_OBJ_FILES), $(call rwildcard,$(OBJ_DIR),*.o))
 TARGET = $(BIN_DIR)/main
 WINDOWS_TARGET = $(BIN_DIR)\main.exe
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d)) # recursive wildcard
@@ -79,13 +81,9 @@ $(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
 
 clean:
 ifeq ($(PLATFORM),windows)
-	mv $(OBJ_DIR)/TracyClient.o ./
-	del /Q $(OBJ_FILES) $(TARGET)
-	mv ./TracyClient.o $(OBJ_DIR)
+	del /Q $(TO_DELETE_OBJ_FILES) $(TARGET)
 else
-	mv $(OBJ_DIR)/TracyClient.o ./
-	rm -f $(OBJ_FILES) $(TARGET)
-	mv ./TracyClient.o $(OBJ_DIR)
+	rm -f $(TO_DELETE_OBJ_FILES) $(TARGET)
 endif
 
 run:
