@@ -54,7 +54,7 @@ void EntityManager::render()
 void EntityManager::addPlayer(Player *player)
 {
     this->player = player;
-    addEntity(player);
+    addEntity((Entity *)player);
 }
 void EntityManager::addEntity(Entity *entity)
 {
@@ -95,3 +95,4 @@ Entity *EntityManager::generateDefaultEntity(SDL_Rect hitBox)
 {
     return new Entity((*this->entityTextures)[0], hitBox, 100);
 }
+Player *EntityManager::getPlayer() { return this->player; }

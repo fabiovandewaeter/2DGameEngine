@@ -1,14 +1,11 @@
 #ifndef game_hpp
 #define game_hpp
 
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_render.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <time.h>
-
-#include "game/GameLoader.hpp"
 #include "map/Map.hpp"
 #include "systems/Camera.hpp"
 #include "systems/TextManager.hpp"
@@ -67,7 +64,6 @@ private:
     Uint64 frameDelay;
     TickManager tickManager;
     SDL_Event event;
-    GameLoader gameLoader;
 
     Player *player;
     Texture *backgroundTexture;
@@ -75,7 +71,11 @@ private:
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *passiveStructureTextures;
     std::vector<Texture *> *activeStructureTextures;
+
     std::vector<Mix_Music *> *music;
+
+    Core *core;
+    Turret *turret;
 
     TextManager textManager;
     TextureManager textureManager;
@@ -89,6 +89,9 @@ private:
     ItemManager itemManager;
     GUIManager guiManager;
 
+    void loadMedia();
+    void loadEntities();
+    void loadItems();
     void countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime);
 };
 
