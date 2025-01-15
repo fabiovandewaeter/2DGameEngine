@@ -43,7 +43,8 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     ctx.text_width = text_width;
     ctx.text_height = text_height;
     this->renderer = renderer;
-    this->textures = textureManager->getGUITextures();
+    //this->textures = textureManager->getGUITextures();
+    this->textures = textureManager->getActiveStructureTextures();
 
     loadConfiguration();
 }
@@ -123,14 +124,14 @@ bool GUIManager::handleEvents(SDL_Event *event)
     return eventConsumed;
 }
 
-static void test_window(mu_Context *ctx)
+void GUIManager::test_window(mu_Context *ctx)
 {
     if (mu_begin_window(ctx, "Structures", mu_rect(40, 40, 300, 450)))
     {
         mu_Container *win = mu_get_current_container(ctx);
         win->rect.w = mu_max(win->rect.w, 240);
         win->rect.h = mu_max(win->rect.h, 300);
-                // Ajouter une section pour la liste de noms
+
         std::vector<std::string> names;
         names.push_back("test1");
         names.push_back("test2");
@@ -138,47 +139,37 @@ static void test_window(mu_Context *ctx)
         names.push_back("test4");
         names.push_back("test5");
         names.push_back("test6");
+        std::vector<int> iconIds = {1, 2, 3}; // IDs des textures dans TextureManager
+
         if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
         {
-            // Spécifiez la disposition pour une seule colonne
-            mu_layout_row(ctx, 1, nullptr, 0);
+            // Layout : deux colonnes (image + bouton)
+            int row_sizes[] = {30, -1}; // Largeur pour image et bouton
+            mu_layout_row(ctx, 2, row_sizes, 25);
 
-            // Parcourir le vecteur et afficher chaque nom
-            for (const auto& name : names)
+            for (size_t i = 0; i < names.size(); ++i)
             {
-                mu_label(ctx, name.c_str());
-            }
-        }
-                if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
-        {
-            // Spécifiez la disposition pour une seule colonne
-            mu_layout_row(ctx, 1, nullptr, 0);
-
-            // Parcourir le vecteur et afficher chaque nom comme bouton
-            for (const auto& name : names)
-            {
-                if (mu_button(ctx, name.c_str()))
+                // Dessiner l'image
+                mu_Rect img_rect = mu_layout_next(ctx);
+                SDL_Texture *iconTexture = (*this->textures)[iconIds[0]]->getTexture();
+                if (iconTexture)
                 {
-                    // Afficher le nom dans la console lorsqu'il est cliqué
-                    std::cout << "Nom cliqué : " << name << std::endl;
+                    //SDL_Rect dst_rect = {img_rect.x, img_rect.y, img_rect.w, img_rect.h};
+                    SDL_Rect dst_rect = {99, 99, 99, 99};
+                    SDL_RenderCopy(this->renderer, iconTexture, NULL, &dst_rect);
                 }
-            }
-        }
-        if (mu_header_ex(ctx, "Test Buttons", MU_OPT_EXPANDED))
-        {
-            int tempo[3] = {86, -110, -1};
-            mu_layout_row(ctx, 3, tempo, 0);
-            mu_label(ctx, "Test buttons 1:");
-            if (mu_button(ctx, "Button 1"))
-            {
-            }
-            if (mu_button(ctx, "Button 2"))
-            {
+
+                // Ajouter le bouton avec le nom
+                if (mu_button(ctx, names[i].c_str()))
+                {
+                    std::cout << "Nom cliqué : " << names[i] << std::endl;
+                }
             }
         }
         mu_end_window(ctx);
     }
 }
+
 
 static int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
 {

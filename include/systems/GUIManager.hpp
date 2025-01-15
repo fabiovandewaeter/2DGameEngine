@@ -35,6 +35,7 @@ private:
 
     void loadConfiguration();
 
+    void test_window(mu_Context *ctx);
     void process_frame(mu_Context *ctx);
     void r_init(SDL_Window *window1, SDL_Renderer *renderer1);
     void r_draw_rect(mu_Rect rect, mu_Color color);
