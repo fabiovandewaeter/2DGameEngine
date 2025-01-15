@@ -1,0 +1,10 @@
+{
+  "activeStructures": [
+    "Core"
+    ,"Mine"
+    ,"Turret"
+  ],
+  "passiveStructures": [
+    "Wall"
+  ]
+}

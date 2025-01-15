@@ -17,7 +17,7 @@ static int text_width(mu_Font font, const char *text, int len)
     {
         len = strlen(text);
     }
-    return len*5;
+    return len * 5;
 }
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
 
@@ -43,6 +43,12 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     ctx.text_height = text_height;
     this->renderer = renderer;
     this->textures = textureManager->getGUITextures();
+
+    loadConfiguration();
+}
+
+void GUIManager::loadConfiguration()
+{
 }
 
 bool GUIManager::isMouseOverGUI(int x, int y)
@@ -179,7 +185,7 @@ void GUIManager::render()
             break;
         }
     }
-    //r_present();
+    // r_present();
 }
 
 static SDL_Window *window;

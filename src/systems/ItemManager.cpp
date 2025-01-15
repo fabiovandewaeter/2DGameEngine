@@ -4,13 +4,12 @@
 
 #include "systems/ItemManager.hpp"
 
-#include <rapidjson/document.h>
-#include <rapidjson/filereadstream.h>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 
 #include "items/Item.hpp"
+#include "systems/JSONManager.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
@@ -51,32 +50,9 @@ Item *ItemManager::getItem(std::string name)
     return nullptr;
 }
 
-rapidjson::Document ItemManager::loadItemFile(std::string file_name)
-{
-    FILE *file = fopen(file_name.c_str(), "r");
-    if (!file)
-    {
-        std::cerr << "Failed to open data/resources.json" << std::endl;
-        return nullptr;
-    }
-
-    char buffer[65536];
-    rapidjson::FileReadStream inputStream(file, buffer, sizeof(buffer));
-    rapidjson::Document itemsData;
-
-    if (itemsData.ParseStream(inputStream).HasParseError())
-    {
-        std::cerr << "Error parsing data/resources.json" << std::endl;
-        fclose(file);
-        return nullptr;
-    }
-    fclose(file);
-
-    return itemsData;
-}
 int ItemManager::genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results)
 {
-    rapidjson::Document itemsData = loadItemFile(file_name);
+    rapidjson::Document itemsData = JSONManager::loadFile(file_name);
 
     if (!itemsData.HasMember(type.c_str()) || !itemsData[type.c_str()].IsArray())
     {

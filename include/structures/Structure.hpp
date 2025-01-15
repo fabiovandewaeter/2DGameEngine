@@ -2,6 +2,7 @@
 #define structure_hpp
 
 #include <SDL2/SDL_rect.h>
+#include <iostream>
 #include <string>
 
 class Texture;
@@ -27,6 +28,12 @@ public:
     bool isSolid();
     bool isDestroyed();
     void setHitBox(SDL_Rect hitBox);
+    static std::string getName() { return "Structure"; };
+    static int getTexture()
+    {
+        std::cout << "ERROR: default Structure::getTexture() should not be used" << std::endl;
+        return -1;
+    };
 
 protected:
     SDL_Rect hitBox;

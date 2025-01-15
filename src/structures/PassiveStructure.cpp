@@ -1,4 +1,4 @@
-#include "structures/passiveStructures/PassiveStructure.hpp"
+#include "structures/PassiveStructure.hpp"
 
 #include "map/Map.hpp"
 #include "map/Chunk.hpp"

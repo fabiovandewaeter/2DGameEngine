@@ -63,6 +63,7 @@ private:
     unsigned int fixedUPS;
     Uint64 frameDelay;
     TickManager tickManager;
+    SDL_Event event;
 
     Player *player;
     Texture *backgroundTexture;

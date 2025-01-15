@@ -49,10 +49,13 @@ SANITIZER ?= 0
 
 ifeq ($(SANITIZER),1)
     CXXFLAGS += $(SANITIZE_FLAGS) -DPROFILER
+else ifeq ($(SANITIZER), 2)
+    CXXFLAGS += $(SANITIZE_FLAGS) -fsanitize=thread -DPROFILER
 endif
 
 # Main target
 all: $(TARGET)
+	sh scripts/generateStructuresListJSON.sh
 ifeq ($(OS),Windows_NT)
 	mingw32-make run
 else

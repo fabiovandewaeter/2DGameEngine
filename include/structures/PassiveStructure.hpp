@@ -1,7 +1,7 @@
 #ifndef passive_structure_hpp
 #define passive_structure_hpp
 
-#include "../Structure.hpp"
+#include "Structure.hpp"
 
 class PassiveStructure : public Structure
 {

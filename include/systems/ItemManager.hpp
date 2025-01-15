@@ -27,7 +27,6 @@ public:
 private:
     static std::unordered_map<std::string, Item *> allItems;
 
-    rapidjson::Document loadItemFile(std::string file_name);
     int genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results);
     void loadEquipments(std::string file_name);
     void loadResources(std::string file_name);

@@ -1,4 +1,4 @@
-#include "structures/activeStructures/ActiveStructure.hpp"
+#include "structures/ActiveStructure.hpp"
 
 #include "actions/Action.hpp"
 

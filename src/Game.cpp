@@ -12,7 +12,6 @@
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
-SDL_Event event;
 
 Game::Game()
 {
@@ -96,7 +95,6 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadMedia();
     this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
     this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
-
     this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     this->textManager.init(this->renderer);
     loadEntities();
@@ -123,17 +121,17 @@ void Game::run()
 
 void Game::handleEvents()
 {
-    while (SDL_PollEvent(&event) != 0)
+    while (SDL_PollEvent(&this->event) != 0)
     {
-        if (event.type == SDL_QUIT)
+        if (this->event.type == SDL_QUIT)
         {
             this->running = false;
         }
-        this->camera.handleEvents(&event);
-        this->player->handleEvents(&event);
-        if (!this->guiManager.handleEvents(&event))
+        this->camera.handleEvents(&this->event);
+        this->player->handleEvents(&this->event);
+        if (!this->guiManager.handleEvents(&this->event))
         {
-            this->mouseManager.handleEvents(&event); // doesnt click on the map if click on GUI
+            this->mouseManager.handleEvents(&this->event); // doesnt click on the map if click on GUI
         }
     }
 }

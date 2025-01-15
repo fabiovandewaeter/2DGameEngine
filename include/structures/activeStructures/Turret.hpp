@@ -1,7 +1,7 @@
 #ifndef turret_hpp
 #define turret_hpp
 
-#include "ActiveStructure.hpp"
+#include "../ActiveStructure.hpp"
 
 class Turret : public ActiveStructure
 {

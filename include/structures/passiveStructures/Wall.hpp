@@ -1,7 +1,7 @@
 #ifndef wall_hpp
 #define wall_hpp
 
-#include "PassiveStructure.hpp"
+#include "../PassiveStructure.hpp"
 
 class Wall : public PassiveStructure
 {

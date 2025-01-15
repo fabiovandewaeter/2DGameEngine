@@ -3,7 +3,7 @@
 
 #include <tuple>
 
-#include "ActiveStructure.hpp"
+#include "../ActiveStructure.hpp"
 
 class Faction;
 class Tile;

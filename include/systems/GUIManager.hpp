@@ -13,6 +13,7 @@ extern "C"
 
 class TextureManager;
 class Texture;
+class StructureManager;
 
 class GUIManager
 {
@@ -31,6 +32,8 @@ private:
     mu_Context ctx;
     char button_map[256];
     char key_map[256];
+
+    void loadConfiguration();
 
     void process_frame(mu_Context *ctx);
     void r_init(SDL_Window *window1, SDL_Renderer *renderer1);

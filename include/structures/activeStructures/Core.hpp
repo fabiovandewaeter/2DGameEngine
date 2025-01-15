@@ -1,7 +1,7 @@
 #ifndef core_hpp
 #define core_hpp
 
-#include "ActiveStructure.hpp"
+#include "../ActiveStructure.hpp"
 
 
 class Core : public ActiveStructure
