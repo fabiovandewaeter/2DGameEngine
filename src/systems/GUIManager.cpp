@@ -139,12 +139,11 @@ void GUIManager::test_window(mu_Context *ctx)
         names.push_back("test4");
         names.push_back("test5");
         names.push_back("test6");
-        std::vector<int> iconIds = {1, 2, 3}; // IDs des textures dans TextureManager
+        std::vector<int> iconIds = {1, 2, 3};
 
         if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
         {
-            // Layout : deux colonnes (image + bouton)
-            int row_sizes[] = {30, -1}; // Largeur pour image et bouton
+            int row_sizes[] = {30, -1};
             mu_layout_row(ctx, 2, row_sizes, 25);
 
             for (size_t i = 0; i < names.size(); ++i)
@@ -159,8 +158,10 @@ void GUIManager::test_window(mu_Context *ctx)
                     SDL_RenderCopy(this->renderer, iconTexture, NULL, &dst_rect);
                 }
 
-                // Ajouter le bouton avec le nom
-                if (mu_button(ctx, names[i].c_str()))
+                mu_Rect r = mu_layout_next(ctx);
+                mu_draw_icon(ctx, 0, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
+                //if (mu_button(ctx, names[i].c_str()))
+                if(mu_button_ex(ctx, names[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
                     std::cout << "Nom cliqué : " << names[i] << std::endl;
                 }
@@ -169,7 +170,6 @@ void GUIManager::test_window(mu_Context *ctx)
         mu_end_window(ctx);
     }
 }
-
 
 static int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
 {
@@ -276,24 +276,11 @@ void GUIManager::r_draw_text(const char *text, mu_Vec2 pos, mu_Color color)
 
 void GUIManager::r_draw_icon(int id, mu_Rect rect, mu_Color color)
 {
-    /*mu_Rect src = atlas[id];
-    int x = rect.x + (rect.w - src.w) / 2;
-    int y = rect.y + (rect.h - src.h) / 2;
-    push_quad(mu_rect(x, y, src.w, src.h), src, color);*/
-
-    /*SDL_Texture *iconTexture = (*this->textures)[id]->getTexture();
-    if (!iconTexture)
-    {
-        return;
-    }
-
+    SDL_Texture *iconTexture = (*this->textures)[1]->getTexture();
     SDL_SetTextureColorMod(iconTexture, color.r, color.g, color.b);
     SDL_SetTextureAlphaMod(iconTexture, color.a);
-
-    SDL_Rect src = {0, 0, 0, 0};
     SDL_Rect dst = {rect.x, rect.y, rect.w, rect.h};
-
-    SDL_RenderCopy(renderer, iconTexture, &src, &dst);*/
+    SDL_RenderCopy(renderer, iconTexture, nullptr, &dst);
 }
 
 void GUIManager::r_set_clip_rect(mu_Rect rect)
