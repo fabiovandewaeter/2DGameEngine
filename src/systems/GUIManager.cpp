@@ -43,7 +43,7 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     ctx.text_width = text_width;
     ctx.text_height = text_height;
     this->renderer = renderer;
-    //this->textures = textureManager->getGUITextures();
+    // this->textures = textureManager->getGUITextures();
     this->textures = textureManager->getActiveStructureTextures();
 
     loadConfiguration();
@@ -148,20 +148,9 @@ void GUIManager::test_window(mu_Context *ctx)
 
             for (size_t i = 0; i < names.size(); ++i)
             {
-                // Dessiner l'image
-                mu_Rect img_rect = mu_layout_next(ctx);
-                SDL_Texture *iconTexture = (*this->textures)[iconIds[0]]->getTexture();
-                if (iconTexture)
-                {
-                    //SDL_Rect dst_rect = {img_rect.x, img_rect.y, img_rect.w, img_rect.h};
-                    SDL_Rect dst_rect = {99, 99, 99, 99};
-                    SDL_RenderCopy(this->renderer, iconTexture, NULL, &dst_rect);
-                }
-
                 mu_Rect r = mu_layout_next(ctx);
                 mu_draw_icon(ctx, 0, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
-                //if (mu_button(ctx, names[i].c_str()))
-                if(mu_button_ex(ctx, names[i].c_str(), 0, MU_OPT_ALIGNCENTER))
+                if (mu_button_ex(ctx, names[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
                     std::cout << "Nom cliqué : " << names[i] << std::endl;
                 }
