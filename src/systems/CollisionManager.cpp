@@ -5,7 +5,7 @@
 #include "systems/CollisionManager.hpp"
 
 #include <iostream>
-#include "systems/EntityManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 #include "map/Chunk.hpp"

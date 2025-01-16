@@ -1,4 +1,4 @@
-#include "systems/TickManager.hpp"
+#include "systems/core/TickManager.hpp"
 
 #include "SDL2/SDL_timer.h"
 

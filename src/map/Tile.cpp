@@ -1,7 +1,7 @@
 #include "map/Tile.hpp"
 
-#include "systems/Camera.hpp"
-#include "systems/ItemManager.hpp"
+#include "systems/core/Camera.hpp"
+#include "systems/game_objects/ItemManager.hpp"
 #include "Texture.hpp"
 
 Item* Tile::defaultMineableResource = ItemManager::getItem("Stone");

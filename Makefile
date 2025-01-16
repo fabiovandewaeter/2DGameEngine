@@ -55,10 +55,11 @@ endif
 
 # Main target
 all: $(TARGET)
-	sh scripts/generateStructuresListJSON.sh
 ifeq ($(OS),Windows_NT)
+	scripts\generateStructuresListJSON.bat
 	mingw32-make run
 else
+	sh scripts/generateStructuresListJSON.sh
 	make run
 endif
 

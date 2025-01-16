@@ -7,18 +7,18 @@
 #include <iostream>
 #include <time.h>
 #include "map/Map.hpp"
-#include "systems/Camera.hpp"
-#include "systems/TextManager.hpp"
-#include "systems/TextureManager.hpp"
+#include "systems/core/Camera.hpp"
+#include "systems/core/TextManager.hpp"
+#include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
-#include "systems/IOManager.hpp"
+#include "systems/core/IOManager.hpp"
 #include "systems/PerlinNoise.hpp"
-#include "systems/MouseManager.hpp"
-#include "systems/EntityManager.hpp"
-#include "systems/AudioManager.hpp"
-#include "systems/ItemManager.hpp"
-#include "systems/GUIManager.hpp"
-#include "systems/TickManager.hpp"
+#include "systems/core/MouseManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
+#include "systems/core/AudioManager.hpp"
+#include "systems/game_objects/ItemManager.hpp"
+#include "systems/core/GUIManager.hpp"
+#include "systems/core/TickManager.hpp"
 
 struct TimeData
 {

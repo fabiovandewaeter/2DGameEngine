@@ -1,10 +1,9 @@
 #include "entities/Entity.hpp"
 
-#include "entities/states/RestState.hpp"
 #include "systems/CollisionManager.hpp"
-#include "systems/Camera.hpp"
+#include "systems/core/Camera.hpp"
 #include "Texture.hpp"
-#include "entities/states/DeadState.hpp"
+#include "entities/states/State.hpp"
 
 Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
 {
@@ -13,7 +12,7 @@ Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
     this->HP = HP;
     this->velX = 0;
     this->velY = 0;
-    this->state = new RestState(this);
+    this->state = nullptr;
 }
 Entity::~Entity() {}
 
@@ -61,7 +60,7 @@ void Entity::render(Camera *camera)
 void Entity::kill(){
     
     this->HP = 0;
-    this->state = new DeadState(this);
+    this->state = nullptr;
 }
 void Entity::onCollision(Entity *entity)
 {

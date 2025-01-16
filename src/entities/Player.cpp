@@ -1,7 +1,5 @@
 #include "entities/Player.hpp"
 
-#include "entities/states/RestState.hpp"
-
 // 1 if false and sprintVelocity if true
 int sprint2 = 1;
 int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;

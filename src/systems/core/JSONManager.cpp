@@ -2,7 +2,7 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "systems/JSONManager.hpp"
+#include "systems/core/JSONManager.hpp"
 
 #include <iostream>
 

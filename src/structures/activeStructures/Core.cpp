@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include "systems/CollisionManager.hpp"
-#include "systems/EntityManager.hpp"
-#include "systems/TextureManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
+#include "systems/core/TextureManager.hpp"
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 

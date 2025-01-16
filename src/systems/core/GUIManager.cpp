@@ -1,4 +1,4 @@
-#include "systems/GUIManager.hpp"
+#include "systems/core/GUIManager.hpp"
 
 #define TEXT_HEIGHT 10
 #define CONFIGURATION_FILE "data/configurations/GUIManagerConfiguration.json"
@@ -10,7 +10,7 @@
 #include <string.h>
 
 #include "Texture.hpp"
-#include "systems/TextureManager.hpp"
+#include "systems/core/TextureManager.hpp"
 
 static int text_width(mu_Font font, const char *text, int len)
 {

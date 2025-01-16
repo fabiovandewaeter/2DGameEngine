@@ -1,7 +1,7 @@
 #include "actions/patterns/SquarePattern.hpp"
 
 #include <iostream>
-#include "systems/EntityManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
 
 SquarePattern::SquarePattern(EntityManager *entityManager, int radius) : Pattern(entityManager, radius) {}
 SquarePattern::~SquarePattern() {}

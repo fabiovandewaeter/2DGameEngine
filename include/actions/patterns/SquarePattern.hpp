@@ -4,7 +4,7 @@
 #include "Pattern.hpp"
 
 #include <vector>
-#include "../../systems/EntityManager.hpp"
+#include "../../systems/game_objects/EntityManager.hpp"
 
 class SquarePattern : public Pattern
 {

@@ -1,6 +1,6 @@
-#include "systems/EntityManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
 
-#include "systems/Camera.hpp"
+#include "systems/core/Camera.hpp"
 #include "systems/CollisionManager.hpp"
 #include "Texture.hpp"
 #include "entities/Entity.hpp"

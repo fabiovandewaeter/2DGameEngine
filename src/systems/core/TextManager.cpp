@@ -1,4 +1,4 @@
-#include "systems/TextManager.hpp"
+#include "systems/core/TextManager.hpp"
 
 #include "Texture.hpp"
 

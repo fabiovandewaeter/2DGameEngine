@@ -2,14 +2,14 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "systems/ItemManager.hpp"
+#include "systems/game_objects/ItemManager.hpp"
 
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 
 #include "items/Item.hpp"
-#include "systems/JSONManager.hpp"
+#include "systems/core/JSONManager.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}

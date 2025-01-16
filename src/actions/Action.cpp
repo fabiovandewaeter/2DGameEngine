@@ -2,7 +2,7 @@
 
 #include "actions/patterns/Pattern.hpp"
 #include "actions/effects/Effect.hpp"
-#include "systems/TickManager.hpp"
+#include "systems/core/TickManager.hpp"
 
 Action::Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager)
 {
