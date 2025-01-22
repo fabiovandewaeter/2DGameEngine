@@ -85,7 +85,7 @@ clean:
 ifeq ($(PLATFORM),windows)
 	del /Q $(OBJ_DIR)
 else
-	rm -f $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)
 endif
 
 run:
