@@ -1,0 +1,20 @@
+{
+    "texturesUrls": [
+        {
+            "name": "Wall",
+            "path": "assets/img/structures/passiveStructures/wall_wood.png"
+        },
+        {
+            "name": "Door",
+            "path": "assets/img/structures/passiveStructures/door_wood.png"
+        },
+        {
+            "name": "Core",
+            "path": "assets/img/structures/activeStructures/core.png"
+        },
+        {
+            "name": "Turret",
+            "path": "assets/img/structures/activeStructures/Turret.png"
+        }
+    ]
+}

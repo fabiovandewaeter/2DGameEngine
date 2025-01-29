@@ -2,7 +2,7 @@
 #define texture_manager_hpp
 
 #include <SDL2/SDL.h>
-#include <vector>
+#include <unordered_map>
 
 class Texture;
 
@@ -15,29 +15,16 @@ public:
     void free();
 
     void init(SDL_Renderer *renderer);
+    void loadConfiguration();
     void loadMedia();
+    Texture *getTextures(std::string className);
 
     Texture *getBackgroundTexture();
-    std::vector<Texture *> *getEntityTextures();
-    std::vector<Texture *> *getTileTextures();
-    std::vector<Texture *> *getPassiveStructureTextures();
-    std::vector<Texture *> *getActiveStructureTextures();
-    std::vector<Texture *> *getGUITextures();
 
 private:
     SDL_Renderer *renderer;
     Texture *backgroundTexture;
-    std::vector<Texture *> entityTextures;
-    std::vector<Texture *> tileTextures;
-    std::vector<Texture *> passiveStructureTextures;
-    std::vector<Texture *> activeStructureTextures;
-    std::vector<Texture *> GUITextures;
-
-    void loadEntityTextures();
-    void loadTileTextures();
-    void loadPassiveStructureTextures();
-    void loadActiveStructureTextures();
-    void loadGUITextures();
+    std::unordered_map<std::string, Texture *> textures;
 };
 
 #endif

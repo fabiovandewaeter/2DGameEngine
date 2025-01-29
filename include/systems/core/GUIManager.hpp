@@ -2,6 +2,7 @@
 #define gui_manager_hpp
 
 #include <vector>
+#include <string>
 
 #include "SDL2/SDL_events.h"
 #include "SDL2/SDL_video.h"
@@ -13,7 +14,7 @@ extern "C"
 
 class TextureManager;
 class Texture;
-class StructureManager;
+class StructureFactory;
 
 class GUIManager
 {
@@ -21,7 +22,7 @@ public:
     GUIManager();
     ~GUIManager();
 
-    void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager);
+    void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory);
     bool isMouseOverGUI(int x, int y);
     bool handleEvents(SDL_Event *event);
     void render();
@@ -29,6 +30,8 @@ public:
 private:
     SDL_Renderer *renderer;
     std::vector<Texture *> *textures;
+    StructureFactory *structureFactory;
+    std::vector<std::string> structureNamesList;
     mu_Context ctx;
     char button_map[256];
     char key_map[256];

@@ -11,6 +11,7 @@
 
 #include "Texture.hpp"
 #include "systems/core/TextureManager.hpp"
+#include "systems/game_objects/StructureFactory.hpp"
 
 static int text_width(mu_Font font, const char *text, int len)
 {
@@ -24,7 +25,7 @@ static int text_height(mu_Font font) { return TEXT_HEIGHT; }
 
 GUIManager::GUIManager() {}
 GUIManager::~GUIManager() {}
-void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager)
+void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory)
 {
     this->button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     this->button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -45,6 +46,8 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     this->renderer = renderer;
     // this->textures = textureManager->getGUITextures();
     this->textures = textureManager->getActiveStructureTextures();
+    this->structureFactory = structureFactory;
+    this->structureNamesList = this->structureFactory->getRegistredClasses();
 
     loadConfiguration();
 }
@@ -132,13 +135,6 @@ void GUIManager::test_window(mu_Context *ctx)
         win->rect.w = mu_max(win->rect.w, 240);
         win->rect.h = mu_max(win->rect.h, 300);
 
-        std::vector<std::string> names;
-        names.push_back("test1");
-        names.push_back("test2");
-        names.push_back("test3");
-        names.push_back("test4");
-        names.push_back("test5");
-        names.push_back("test6");
         std::vector<int> iconIds = {1, 2, 3};
 
         if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
@@ -146,13 +142,14 @@ void GUIManager::test_window(mu_Context *ctx)
             int row_sizes[] = {30, -1};
             mu_layout_row(ctx, 2, row_sizes, 25);
 
-            for (size_t i = 0; i < names.size(); ++i)
+            int size = this->structureNamesList.size();
+            for (size_t i = 0; i < size; ++i)
             {
                 mu_Rect r = mu_layout_next(ctx);
                 mu_draw_icon(ctx, 0, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
-                if (mu_button_ex(ctx, names[i].c_str(), 0, MU_OPT_ALIGNCENTER))
+                if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
-                    std::cout << "Nom cliqué : " << names[i] << std::endl;
+                    std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
                 }
             }
         }

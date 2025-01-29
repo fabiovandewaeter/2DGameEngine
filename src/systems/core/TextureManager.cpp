@@ -14,26 +14,19 @@ TextureManager::~TextureManager()
 void TextureManager::free()
 {
     this->backgroundTexture->free();
-    int size = this->entityTextures.size();
+    int size = this->textures.size();
     for (int i = 0; i < size; i++)
     {
-        this->entityTextures[i]->free();
-    }
-    size = this->tileTextures.size();
-    for (int i = 0; i < size; i++)
-    {
-        this->tileTextures[i]->free();
-    }
-    size = this->passiveStructureTextures.size();
-    for (int i = 0; i < size; i++)
-    {
-        this->passiveStructureTextures[i]->free();
+        this->textures[i]->free();
     }
 }
 
 void TextureManager::init(SDL_Renderer *renderer)
 {
     this->renderer = renderer;
+}
+void loadConfiguration(){
+    READ ./data/configurations/TextureManagerConfiguration.json AND FILL this->textures THEN PASS TextureManager TO ALL CLASSES MAIS USE IT TO GET TEXTURE OF STRUCTURES IN GUIManager
 }
 void TextureManager::loadMedia()
 {
