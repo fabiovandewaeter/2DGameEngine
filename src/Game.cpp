@@ -12,7 +12,6 @@
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
-
 Game::Game()
 {
 }
@@ -102,6 +101,14 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     loadItems();
 
     this->guiManager.init(this->window, this->renderer, &this->textureManager);
+
+    this->structureFactory = StructureFactory::getInstance();
+    std::vector<std::string> a = this->structureFactory.getRegistredClasses();
+    int size = a.size();
+    for (int i = 0; i < size; i++)
+    {
+        std::cout << a[i] << std::endl;
+    }
 }
 
 void Game::run()
@@ -212,7 +219,7 @@ void Game::loadMedia()
     // audio
     this->audioManager.init();
     this->audioManager.loadMedia();
-    this->music = this->audioManager.getMusic();
+    this->musics = this->audioManager.getMusic();
 }
 void Game::loadEntities()
 {

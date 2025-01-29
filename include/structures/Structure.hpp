@@ -14,6 +14,7 @@ class Map;
 class Structure
 {
 public:
+    Structure();
     Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);
     ~Structure();
 

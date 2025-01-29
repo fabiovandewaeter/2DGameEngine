@@ -14,11 +14,12 @@
 #include "systems/core/IOManager.hpp"
 #include "systems/PerlinNoise.hpp"
 #include "systems/core/MouseManager.hpp"
-#include "systems/game_objects/EntityManager.hpp"
 #include "systems/core/AudioManager.hpp"
-#include "systems/game_objects/ItemManager.hpp"
 #include "systems/core/GUIManager.hpp"
 #include "systems/core/TickManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
+#include "systems/game_objects/ItemManager.hpp"
+#include "systems/game_objects/StructureFactory.hpp"
 
 struct TimeData
 {
@@ -65,18 +66,20 @@ private:
     TickManager tickManager;
     SDL_Event event;
 
-    Player *player;
+    // textures
     Texture *backgroundTexture;
     std::vector<Texture *> *entityTextures;
     std::vector<Texture *> *tileTextures;
     std::vector<Texture *> *passiveStructureTextures;
     std::vector<Texture *> *activeStructureTextures;
 
-    std::vector<Mix_Music *> *music;
+    // musics
+    std::vector<Mix_Music *> *musics;
 
-    Core *core;
-    Turret *turret;
+    // game objects
+    Player *player;
 
+    // systems
     TextManager textManager;
     TextureManager textureManager;
     CollisionManager collisionManager;
@@ -88,6 +91,7 @@ private:
     AudioManager audioManager;
     ItemManager itemManager;
     GUIManager guiManager;
+    StructureFactory structureFactory;
 
     void loadMedia();
     void loadEntities();

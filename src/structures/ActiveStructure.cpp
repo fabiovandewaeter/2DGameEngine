@@ -2,6 +2,7 @@
 
 #include "actions/Action.hpp"
 
+ActiveStructure::ActiveStructure() {}
 ActiveStructure::ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager) : Structure(texture, hitBox, HP, solid)
 {
     this->collisionManager = collisionManager;

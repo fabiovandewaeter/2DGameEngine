@@ -3,10 +3,10 @@
 
 #include "../ActiveStructure.hpp"
 
-
 class Core : public ActiveStructure
 {
 public:
+    Core();
     Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager);
 
     void update() override;

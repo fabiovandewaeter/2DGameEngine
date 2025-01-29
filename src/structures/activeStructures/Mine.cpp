@@ -1,7 +1,11 @@
 #include "structures/activeStructures/Mine.hpp"
 
 #include "map/Tile.hpp"
+#include "systems/game_objects/StructureFactory.hpp"
 
+REGISTER_CLASS(Mine)
+
+Mine::Mine() {}
 Mine::Mine(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, Tile *minedTile, TickManager*tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager)
 {
     this->minedResource = minedTile->getMineableResource();

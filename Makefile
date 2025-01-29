@@ -83,7 +83,7 @@ $(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
 
 clean:
 ifeq ($(PLATFORM),windows)
-	del /Q $(OBJ_DIR)
+	rmdir /s /q $(OBJ_DIR)
 else
 	rm -rf $(OBJ_DIR)
 endif

@@ -4,9 +4,11 @@
 #include "actions/Action.hpp"
 #include "actions/patterns/SquarePattern.hpp"
 #include "actions/effects/DamageEffect.hpp"
+#include "systems/game_objects/StructureFactory.hpp"
 
-class Effects;
+REGISTER_CLASS(Turret)
 
+Turret::Turret() {}
 Turret::Turret(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager)
 {
     std::vector<Effect *> effects;

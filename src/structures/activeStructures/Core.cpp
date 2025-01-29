@@ -1,12 +1,17 @@
 #include "structures/activeStructures/Core.hpp"
 
 #include <iostream>
+
 #include "systems/CollisionManager.hpp"
 #include "systems/game_objects/EntityManager.hpp"
+#include "systems/game_objects/StructureFactory.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 
+REGISTER_CLASS(Core)
+
+Core::Core() {}
 Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager) {}
 
 void Core::update()

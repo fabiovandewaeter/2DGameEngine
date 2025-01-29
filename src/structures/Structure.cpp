@@ -2,6 +2,7 @@
 #include "systems/core/Camera.hpp"
 #include "Texture.hpp"
 
+Structure::Structure() {}
 Structure::Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid)
 {
     this->texture = texture;
