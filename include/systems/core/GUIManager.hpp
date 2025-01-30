@@ -40,6 +40,7 @@ private:
     char key_map[256];
 
     void loadConfiguration();
+    void loadIcons();
 
     void test_window(mu_Context *ctx);
     int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);
