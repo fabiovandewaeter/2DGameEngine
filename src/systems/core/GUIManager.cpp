@@ -47,6 +47,22 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     this->textureManager = textureManager;
     this->structureFactory = structureFactory;
     this->structureNamesList = this->structureFactory->getRegistredClasses();
+    int size = this->structureNamesList.size();
+
+    // for mu_draw_icon id parameter
+    std::string name;
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_CLOSE
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_CHECK
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_COLLAPSED
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_EXPANDED
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_MAX
+    for (int i = 0; i < size; i++)
+    {
+        int index = i + 5;
+        name = this->structureNamesList[i];
+        this->structureTextureNameToId[name] = index;
+        this->structureTextureIdToTexture.push_back(this->textureManager->getTexture(name));
+    }
 
     loadConfiguration();
 }
@@ -145,7 +161,8 @@ void GUIManager::test_window(mu_Context *ctx)
             for (size_t i = 0; i < size; ++i)
             {
                 mu_Rect r = mu_layout_next(ctx);
-                mu_draw_icon(ctx, 0, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
+                int id = this->structureTextureNameToId[this->structureNamesList[i]];
+                mu_draw_icon(ctx, id, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
                 if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
                     std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
@@ -261,7 +278,7 @@ void GUIManager::r_draw_text(const char *text, mu_Vec2 pos, mu_Color color)
 
 void GUIManager::r_draw_icon(int id, mu_Rect rect, mu_Color color)
 {
-    SDL_Texture *iconTexture = this->textureManager->getTexture("DEFAULT")->getTexture();
+    SDL_Texture *iconTexture = this->structureTextureIdToTexture[id]->getTexture();
     SDL_SetTextureColorMod(iconTexture, color.r, color.g, color.b);
     SDL_SetTextureAlphaMod(iconTexture, color.a);
     SDL_Rect dst = {rect.x, rect.y, rect.w, rect.h};

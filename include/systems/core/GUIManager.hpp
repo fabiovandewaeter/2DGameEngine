@@ -2,6 +2,7 @@
 #define gui_manager_hpp
 
 #include <vector>
+#include <unordered_map>
 #include <string>
 
 #include "SDL2/SDL_events.h"
@@ -14,6 +15,7 @@ extern "C"
 
 class TextureManager;
 class StructureFactory;
+class Texture;
 
 class GUIManager
 {
@@ -31,6 +33,8 @@ private:
     TextureManager *textureManager;
     StructureFactory *structureFactory;
     std::vector<std::string> structureNamesList;
+    std::unordered_map<std::string, int> structureTextureNameToId;
+    std::vector<Texture *> structureTextureIdToTexture;
     mu_Context ctx;
     char button_map[256];
     char key_map[256];
