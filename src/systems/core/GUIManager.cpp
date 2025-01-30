@@ -51,14 +51,15 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
 
     // for mu_draw_icon id parameter
     std::string name;
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // 0
     this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_CLOSE
     this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_CHECK
-    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_COLLAPSED
-    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_EXPANDED
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("ICON_COLLAPSED")); // MU_ICON_COLLAPSED
+    this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("ICON_EXPANDED")); // MU_ICON_EXPANDED
     this->structureTextureIdToTexture.push_back(this->textureManager->getTexture("DEFAULT")); // MU_ICON_MAX
     for (int i = 0; i < size; i++)
     {
-        int index = i + 5;
+        int index = i + 6;
         name = this->structureNamesList[i];
         this->structureTextureNameToId[name] = index;
         this->structureTextureIdToTexture.push_back(this->textureManager->getTexture(name));

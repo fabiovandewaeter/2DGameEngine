@@ -9,6 +9,16 @@
             "path": "assets/img/BACKGROUND.png"
         }
     ],
+    "GUI": [
+        {
+            "name": "ICON_EXPANDED",
+            "path": "assets/img/icon/GUI/ICON_EXPANDED.png"
+        },
+        {
+            "name": "ICON_COLLAPSED",
+            "path": "assets/img/icon/GUI/ICON_COLLAPSED.png"
+        }
+    ],
     "structureTextures": [
         {
             "name": "Wall",

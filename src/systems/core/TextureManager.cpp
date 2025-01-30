@@ -16,7 +16,7 @@ void TextureManager::loadConfiguration()
 {
     rapidjson::Document document = JSONManager::loadFile("data/configurations/TextureManagerConfiguration.json");
 
-    const char *categories[] = {"UTILS", "structureTextures", "tileTextures", "entityTextures"};
+    const char *categories[] = {"UTILS", "GUI", "structureTextures", "tileTextures", "entityTextures"};
     for (const char *category : categories)
     {
         if (document.HasMember(category) && document[category].IsArray())
