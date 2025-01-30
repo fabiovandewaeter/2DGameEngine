@@ -45,12 +45,10 @@ public:
 private:
     Tile *allTiles[SIZE * SIZE];
     TextureManager *textureManager;
-    std::vector<Texture *> *tileTextures;
     int tileSize;
 
     Map *map;
     std::unordered_map<std::string, Structure *> allStructures;
-    std::vector<Texture *> *passiveStructureTextures, *activeStructureTextures;
 
     int positionX, positionY;
     SDL_Rect box;

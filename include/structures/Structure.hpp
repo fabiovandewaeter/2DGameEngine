@@ -36,7 +36,7 @@ public:
         return -1;
     };
 
-protected:
+private:
     SDL_Rect hitBox;
     Texture *texture;
     bool solid;

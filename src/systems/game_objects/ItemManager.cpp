@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "items/Item.hpp"
-#include "systems/core/JSONManager.hpp"
+#include "systems/utils/JSONManager.hpp"
 
 ItemManager::ItemManager() {}
 ItemManager::~ItemManager() {}
@@ -72,7 +72,7 @@ int ItemManager::genericLoader(std::string file_name, std::string type, std::vec
             std::string field = requiredFields[i];
             if (!item.HasMember(field.c_str()))
             {
-                std::cerr << "File : " << file_name << " | Missing " << field << " in a item entry" << std::endl;
+                std::cerr << "File: " << file_name << " | Missing " << field << " in a item entry" << std::endl;
                 break;
             }
             else
@@ -97,7 +97,7 @@ void ItemManager::loadEquipments(std::string file_name)
     {
         Item *newEquipment = new Item(results[i], nullptr, 0, true);
         this->allItems[results[i]] = newEquipment;
-        std::cout << "Equipment loaded : " << results[i] << std::endl;
+        std::cout << "Equipment loaded: " << results[i] << std::endl;
     }
 }
 void ItemManager::loadResources(std::string file_name)
@@ -112,6 +112,6 @@ void ItemManager::loadResources(std::string file_name)
     {
         Item *newResource = new Item(results[i], nullptr, 0, false);
         this->allItems[results[i]] = newResource;
-        std::cout << "Resource loaded : " << results[i] << std::endl;
+        std::cout << "Resource loaded: " << results[i] << std::endl;
     }
 }

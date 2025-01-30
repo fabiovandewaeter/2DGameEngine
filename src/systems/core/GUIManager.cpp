@@ -44,8 +44,7 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     ctx.text_width = text_width;
     ctx.text_height = text_height;
     this->renderer = renderer;
-    // this->textures = textureManager->getGUITextures();
-    this->textures = textureManager->getActiveStructureTextures();
+    this->textureManager = textureManager;
     this->structureFactory = structureFactory;
     this->structureNamesList = this->structureFactory->getRegistredClasses();
 
@@ -137,7 +136,7 @@ void GUIManager::test_window(mu_Context *ctx)
 
         std::vector<int> iconIds = {1, 2, 3};
 
-        if (mu_header_ex(ctx, "Liste des noms", MU_OPT_EXPANDED))
+        if (mu_header_ex(ctx, "Structure names", MU_OPT_EXPANDED))
         {
             int row_sizes[] = {30, -1};
             mu_layout_row(ctx, 2, row_sizes, 25);
@@ -157,7 +156,7 @@ void GUIManager::test_window(mu_Context *ctx)
     }
 }
 
-static int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
+int GUIManager::uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
 {
     static float tmp;
     mu_push_id(ctx, &value, sizeof(value));
@@ -262,7 +261,7 @@ void GUIManager::r_draw_text(const char *text, mu_Vec2 pos, mu_Color color)
 
 void GUIManager::r_draw_icon(int id, mu_Rect rect, mu_Color color)
 {
-    SDL_Texture *iconTexture = (*this->textures)[1]->getTexture();
+    SDL_Texture *iconTexture = this->textureManager->getTexture("DEFAULT")->getTexture();
     SDL_SetTextureColorMod(iconTexture, color.r, color.g, color.b);
     SDL_SetTextureAlphaMod(iconTexture, color.a);
     SDL_Rect dst = {rect.x, rect.y, rect.w, rect.h};

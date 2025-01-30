@@ -2,7 +2,7 @@
 
 int counter = 0;
 Texture::Texture() {}
-Texture::Texture(SDL_Renderer *renderer)
+Texture::Texture(SDL_Renderer *renderer, std::string path)
 {
     // Initialize
     this->texture = NULL;
@@ -10,12 +10,14 @@ Texture::Texture(SDL_Renderer *renderer)
     this->height = 0;
     this->renderer = renderer;
     this->id = counter;
+    loadFromFile(path);
     counter++;
 }
 Texture::~Texture()
 {
     free();
 }
+
 void Texture::free()
 {
     if (texture != NULL)

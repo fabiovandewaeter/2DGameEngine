@@ -92,10 +92,9 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
-    this->entityManager.init(&this->camera, &this->collisionManager, this->entityTextures);
+    this->entityManager.init(&this->camera, &this->collisionManager, &this->textureManager);
     this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
     this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
-    this->textManager.init(this->renderer);
     loadEntities();
     this->itemManager.init();
     loadItems();
@@ -113,7 +112,7 @@ void Game::run()
         handleEvents();
         update();
         render();
-        tickManager.handleTickSpeed(getFrameDelay());
+        tickManager.waitTick(getFrameDelay());
 #ifdef PROFILER
         FrameMark;
 #endif
@@ -167,7 +166,6 @@ void Game::render()
 
 void Game::clean()
 {
-    this->textureManager.free();
     this->map.free();
     this->audioManager.free();
 
@@ -203,12 +201,7 @@ void Game::loadMedia()
 {
     // textures
     this->textureManager.init(this->renderer);
-    this->textureManager.loadMedia();
-    this->backgroundTexture = this->textureManager.getBackgroundTexture();
-    this->entityTextures = this->textureManager.getEntityTextures();
-    this->tileTextures = this->textureManager.getTileTextures();
-    this->passiveStructureTextures = this->textureManager.getPassiveStructureTextures();
-    this->activeStructureTextures = this->textureManager.getActiveStructureTextures();
+    this->backgroundTexture = this->textureManager.getTexture("BACKGROUND");
 
     // audio
     this->audioManager.init();
@@ -218,7 +211,7 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     this->entityManager.loadEntities();
-    this->player = new Player((*this->entityTextures)[0], (SDL_Rect){0, 0, 16, 16}, 100);
+    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100);
     this->entityManager.addEntity(this->player);
 }
 void Game::loadItems()

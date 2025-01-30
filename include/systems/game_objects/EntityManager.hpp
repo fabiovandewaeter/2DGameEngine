@@ -6,6 +6,7 @@
 
 class Camera;
 class CollisionManager;
+class TextureManager;
 class Texture;
 class Entity;
 class Player;
@@ -16,7 +17,7 @@ public:
     EntityManager();
     ~EntityManager();
 
-    void init(Camera *camera, CollisionManager *collisionManager, std::vector<Texture *> *entityTextures);
+    void init(Camera *camera, CollisionManager *collisionManager, TextureManager*textureManager);
     void loadEntities();
     void update();
     void render();

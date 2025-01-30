@@ -1,8 +1,18 @@
 {
-    "texturesUrls": [
+    "UTILS": [
+        {
+            "name": "DEFAULT",
+            "path": "assets/img/DEFAULT.png"
+        },
+        {
+            "name": "BACKGROUND",
+            "path": "assets/img/BACKGROUND.png"
+        }
+    ],
+    "structureTextures": [
         {
             "name": "Wall",
-            "path": "assets/img/structures/passiveStructures/wall_wood.png"
+            "path": "assets/img/structures/passiveStructures/wall_stone.png"
         },
         {
             "name": "Door",
@@ -15,6 +25,30 @@
         {
             "name": "Turret",
             "path": "assets/img/structures/activeStructures/Turret.png"
+        }
+    ],
+    "tileTextures": [
+        {
+            "name": "grass_0",
+            "path": "assets/img/tiles/grass_0.png"
+        },
+        {
+            "name": "grass_1",
+            "path": "assets/img/tiles/grass_1.png"
+        },
+        {
+            "name": "grass_2",
+            "path": "assets/img/tiles/grass_2.png"
+        },
+        {
+            "name": "grass_3",
+            "path": "assets/img/tiles/grass_3.png"
+        }
+    ],
+    "entityTextures": [
+        {
+            "name": "Player",
+            "path": "assets/img/player.png"
         }
     ]
 }

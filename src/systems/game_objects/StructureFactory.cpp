@@ -9,8 +9,11 @@ void StructureFactory::registerClass(const std::string className, std::function<
 }
 Structure *StructureFactory::create(std::string className)
 {
-    if (this->registry.find(className) != this->registry.end())
-        return this->registry[className]();
+    auto it = this->registry.find(className);
+    if (it != this->registry.end())
+    {
+        return it->second();
+    }
     return nullptr;
 }
 std::vector<std::string> StructureFactory::getRegistredClasses()

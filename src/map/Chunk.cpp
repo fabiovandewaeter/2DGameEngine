@@ -15,9 +15,6 @@ Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManage
     this->tileSize = tileSize;
     this->map = map;
     this->textureManager = textureManager;
-    this->tileTextures = textureManager->getTileTextures();
-    this->passiveStructureTextures = textureManager->getPassiveStructureTextures();
-    this->activeStructureTextures = textureManager->getActiveStructureTextures();
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
@@ -46,7 +43,7 @@ void Chunk::loadTilesDefault()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[0], i * this->tileSize + this->box.x, j * this->tileSize + this->box.y);
+            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i * this->tileSize + this->box.x, j * this->tileSize + this->box.y);
         }
     }
 }
@@ -77,7 +74,8 @@ void Chunk::loadTilesWithPerlinNoise()
             {
                 textureIndex = 3;
             }
-            this->allTiles[SIZE * i + j] = new Tile((*this->tileTextures)[textureIndex], x, y);
+            std::string textureName = "grass_" + std::to_string(textureIndex);
+            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
         }
     }
 }
@@ -170,7 +168,7 @@ void Chunk::addStructure(Structure *structure)
 }
 void Chunk::addWall(int x, int y)
 {
-    addStructure(new Wall((*this->passiveStructureTextures)[1], (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100));
+    addStructure(new Wall(this->textureManager->getTexture("Wall"), (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100));
 }
 void Chunk::destroyStructure(int x, int y)
 {

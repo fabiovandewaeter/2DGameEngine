@@ -2,7 +2,7 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "systems/core/JSONManager.hpp"
+#include "systems/utils/JSONManager.hpp"
 
 #include <iostream>
 
@@ -14,22 +14,22 @@ rapidjson::Document JSONManager::loadFile(std::string file_name)
 #ifdef PROFILER
     ZoneScoped;
 #endif
+    rapidjson::Document itemsData;
     FILE *file = fopen(file_name.c_str(), "r");
     if (!file)
     {
         std::cerr << "Failed to open data/resources.json" << std::endl;
-        return nullptr;
+        return itemsData;
     }
 
     char buffer[65536];
     rapidjson::FileReadStream inputStream(file, buffer, sizeof(buffer));
-    rapidjson::Document itemsData;
 
     if (itemsData.ParseStream(inputStream).HasParseError())
     {
-        std::cerr << "Error parsing data/resources.json" << std::endl;
+        std::cerr << "Error parsing file:" << file_name << std::endl;
         fclose(file);
-        return nullptr;
+        return itemsData;
     }
     fclose(file);
 

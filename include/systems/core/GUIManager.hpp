@@ -13,7 +13,6 @@ extern "C"
 }
 
 class TextureManager;
-class Texture;
 class StructureFactory;
 
 class GUIManager
@@ -29,7 +28,7 @@ public:
 
 private:
     SDL_Renderer *renderer;
-    std::vector<Texture *> *textures;
+    TextureManager *textureManager;
     StructureFactory *structureFactory;
     std::vector<std::string> structureNamesList;
     mu_Context ctx;
@@ -39,6 +38,7 @@ private:
     void loadConfiguration();
 
     void test_window(mu_Context *ctx);
+    int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);
     void process_frame(mu_Context *ctx);
     void r_init(SDL_Window *window1, SDL_Renderer *renderer1);
     void r_draw_rect(mu_Rect rect, mu_Color color);

@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include <unordered_map>
+#include <vector>
+#include <string>
 
 class Texture;
 
@@ -12,18 +14,13 @@ public:
     TextureManager();
     TextureManager(SDL_Renderer *renderer);
     ~TextureManager();
-    void free();
 
     void init(SDL_Renderer *renderer);
     void loadConfiguration();
-    void loadMedia();
-    Texture *getTextures(std::string className);
-
-    Texture *getBackgroundTexture();
+    Texture *getTexture(std::string name);
 
 private:
     SDL_Renderer *renderer;
-    Texture *backgroundTexture;
     std::unordered_map<std::string, Texture *> textures;
 };
 

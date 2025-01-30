@@ -8,7 +8,6 @@
 #include <time.h>
 #include "map/Map.hpp"
 #include "systems/core/Camera.hpp"
-#include "systems/core/TextManager.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/core/IOManager.hpp"
@@ -68,10 +67,6 @@ private:
 
     // textures
     Texture *backgroundTexture;
-    std::vector<Texture *> *entityTextures;
-    std::vector<Texture *> *tileTextures;
-    std::vector<Texture *> *passiveStructureTextures;
-    std::vector<Texture *> *activeStructureTextures;
 
     // musics
     std::vector<Mix_Music *> *musics;
@@ -80,7 +75,6 @@ private:
     Player *player;
 
     // systems
-    TextManager textManager;
     TextureManager textureManager;
     CollisionManager collisionManager;
     IOManager ioManager;

@@ -1,6 +1,7 @@
 #include "systems/game_objects/EntityManager.hpp"
 
 #include "systems/core/Camera.hpp"
+#include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
 #include "Texture.hpp"
 #include "entities/Entity.hpp"
@@ -9,7 +10,7 @@
 EntityManager::EntityManager() {}
 EntityManager::~EntityManager() {}
 
-void EntityManager::init(Camera *camera, CollisionManager *collisionManager, std::vector<Texture *> *entityTextures)
+void EntityManager::init(Camera *camera, CollisionManager *collisionManager, TextureManager *textureManager)
 {
     this->collisionManager = collisionManager;
     this->entityTextures = entityTextures;
