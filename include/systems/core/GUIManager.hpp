@@ -41,6 +41,8 @@ private:
 
     void loadConfiguration();
     void loadIcons();
+    
+    void changeMouseManagerClickOnEmptyTileStrategy();
 
     void test_window(mu_Context *ctx);
     int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);

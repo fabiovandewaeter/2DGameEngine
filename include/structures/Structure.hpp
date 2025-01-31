@@ -5,7 +5,12 @@
 #include <iostream>
 #include <string>
 
+#include "systems/core/TextureManager.hpp"
+#include "map/Tile.hpp"
+
+class TextureManager;
 class Texture;
+class Material;
 class Camera;
 class Entity;
 class CollisionManager;
@@ -14,8 +19,9 @@ class Map;
 class Structure
 {
 public:
-    Structure();
-    Structure(Texture *texture, SDL_Rect hitBox, unsigned int HP, bool solid);
+    Structure() : Structure(nullptr, {0, 0, 0, 0}, nullptr, false) {}
+    Structure(Texture *texture, int x, int y, const Material *material, bool solid) : Structure(texture, {x, y, getTileSize(), getTileSize()}, material, solid) {}
+    Structure(Texture *texture, SDL_Rect hitBox, const Material *material, bool solid) : texture(texture), hitBox(hitBox), material(material), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();
@@ -26,6 +32,7 @@ public:
     virtual void onRightClick();
 
     SDL_Rect getHitBox();
+    int getHP();
     bool isSolid();
     bool isDestroyed();
     void setHitBox(SDL_Rect hitBox);
@@ -37,11 +44,14 @@ public:
     };
 
 protected:
-    SDL_Rect hitBox;
     Texture *texture;
+    SDL_Rect hitBox;
+    const Material *material;
     bool solid;
     unsigned int HP;
     bool destroyed;
+
+    int getTileSize();
 };
 
 #endif

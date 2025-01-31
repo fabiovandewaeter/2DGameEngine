@@ -2,11 +2,13 @@
 #define mouse_manager_hpp
 
 #include "SDL2/SDL_events.h"
+#include <functional>
 
 class Camera;
 class Map;
 class EntityManager;
 class CollisionManager;
+class Structure;
 
 class MouseManager
 {
@@ -19,11 +21,14 @@ public:
 	bool handleClickOnEntity(SDL_Event *event, int x, int y);
 	bool handleClickOnMap(SDL_Event *event, int x, int y);
 
+	void setClickOnEmptyTileStrategy(std::function<Structure *()>);
+
 private:
 	Camera *camera;
 	Map *map;
 	EntityManager *entityManager;
 	CollisionManager *collisionManager;
+	std::function<Structure *(int i, int j)> clickOnEmptyTileStrategy;
 };
 
 #endif

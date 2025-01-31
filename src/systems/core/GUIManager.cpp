@@ -74,6 +74,11 @@ void GUIManager::loadIcons()
     }
 }
 
+void GUIManager::changeMouseManagerClickOnEmptyTileStrategy()
+{
+    this->MouseManager->setClickOnEmptyTileStrategy();
+}
+
 bool GUIManager::isMouseOverGUI(int x, int y)
 {
     mu_Container *hoveredContainer = this->ctx.hover_root;

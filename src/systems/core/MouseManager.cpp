@@ -77,7 +77,11 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
 		}
 		else
 		{
-			chunk->addWall(i, j);
+			if (this->clickOnEmptyTileStrategy != nullptr)
+			{
+				Structure * newStructure = this->clickOnEmptyTileStrategy(i, j);
+				chunk->addStructure(newStructure);				
+			}
 		}
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)
@@ -115,3 +119,5 @@ void MouseManager::handleEvents(SDL_Event *event)
 		}
 	}
 }
+
+void MouseManager::setClickOnEmptyTileStrategy(std::function<Structure *()> strategy) { this->clickOnEmptyTileStrategy = strategy; }
