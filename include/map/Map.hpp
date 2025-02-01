@@ -3,12 +3,12 @@
 
 #define CHUNK_SIZE 16
 
+#include "SDL2/SDL_rect.h"
 #include <vector>
 #include <unordered_map>
 #include <cmath>
 #include <string>
 
-class Camera;
 class TextureManager;
 class Texture;
 class PerlinNoise;
@@ -21,17 +21,19 @@ class Entity;
 class Map
 {
 public:
-    Map();
+    Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise);
     ~Map();
 
-    void init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise);
     void loadChunks();
     void generateChunk(int positionX, int positionY);
     void loadSquareMap(int size);
     void render(Player *player);
     void update();
-    void free();
-    SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
+
+    bool checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB);
+    bool isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect);
+    bool isRectangleInCollisionWithSolidStructure(SDL_Rect rect);
+    SDL_Rect handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY);
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
 
@@ -42,7 +44,6 @@ public:
     EntityManager *getEntityManager();
 
 private:
-    Camera *camera;
     int tileSize;
     TextureManager *textureManager;
     PerlinNoise *perlinNoise;

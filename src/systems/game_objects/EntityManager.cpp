@@ -7,48 +7,42 @@
 #include "entities/Entity.hpp"
 #include "entities/Entity.hpp"
 
-EntityManager::EntityManager() {}
-EntityManager::~EntityManager() {}
-
-void EntityManager::init(Camera *camera, CollisionManager *collisionManager, TextureManager *textureManager)
-{
-    this->collisionManager = collisionManager;
-    this->entityTextures = entityTextures;
-    this->camera = camera;
-}
-
 void EntityManager::loadEntities()
 {
-    //this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, 100));
+    // this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, 100));
 }
 
-void EntityManager::update() {
+void EntityManager::update()
+{
     int size = this->entities.size();
     std::vector<int> deadEntities;
 
     // update entities
-    for (int i = 0; i < size; i++) {
-        this->entities[i]->update(this->collisionManager);
-        if (this->entities[i]->getHP() <= 0) {
+    for (int i = 0; i < size; i++)
+    {
+        this->entities[i]->update(this->map);
+        if (this->entities[i]->getHP() <= 0)
+        {
             deadEntities.push_back(i);
         }
     }
 
     // delete dead entities
-    for (int i = deadEntities.size() - 1; i >= 0; i--) {
+    for (int i = deadEntities.size() - 1; i >= 0; i--)
+    {
         int index = deadEntities[i];
-        Entity* tempo = this->entities[index];
+        Entity *tempo = this->entities[index];
         this->entities.erase(this->entities.begin() + index);
         delete tempo;
     }
 }
 
-void EntityManager::render()
+void EntityManager::render(Camera *camera)
 {
     int size = this->entities.size();
     for (int i = 0; i < size; i++)
     {
-        entities[i]->render(this->camera);
+        entities[i]->render(camera);
     }
 }
 
@@ -91,9 +85,5 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
         }
     }
     return res;
-}
-Entity *EntityManager::generateDefaultEntity(SDL_Rect hitBox)
-{
-    return new Entity((*this->entityTextures)[0], hitBox, 100);
 }
 Player *EntityManager::getPlayer() { return this->player; }

@@ -54,7 +54,7 @@ bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_Rect rect)
     return false;
 }
 
-SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
+SDL_Rect CollisionManager::handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY)
 {
 #ifdef PROFILER
     ZoneScoped;

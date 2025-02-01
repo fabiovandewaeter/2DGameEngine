@@ -15,14 +15,12 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP), map(map), camera(camera), guiManager(new GUIManager()), mouseManager(new MouseManager()) {};
+    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP), map(map), camera(camera) {};
     ~Player();
 
     void handleEvents(SDL_Event *event);
     void update();
-    void update(Map *map);
     void render();
-    void render(Camera *camera);
 
     void setPosition(int x, int y);
     Map *getMap();

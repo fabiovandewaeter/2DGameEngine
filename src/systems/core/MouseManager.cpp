@@ -12,31 +12,24 @@
 MouseManager::MouseManager() {}
 MouseManager::~MouseManager() {}
 
-void MouseManager::init(Player *player)
-{
-	this->camera = camera;
-	this->entityManager = entityManager;
-	this->collisionManager = collisionManager;
-}
-
 // source : https://lazyfoo.net/tutorials/SDL/17_mouse_events/index.php
 
 bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, int y)
 {
 	int i = x;
 	int j = y;
-	this->camera->convertCameraToInGameCoordinates(i, j);
+	player->getCamera()->convertCameraToInGameCoordinates(i, j);
 
 	int size = 5;
 	SDL_Rect area = {i - size, i - size, size * 2, size * 2};
-	std::vector<Entity *> potentialEntities = this->entityManager->getEntities();
+	std::vector<Entity *> potentialEntities = player->getMap()->getEntityManager()->getEntities();
 	bool isEntityClicked = false;
 	Entity *clickedEntity = nullptr;
 	size = potentialEntities.size();
 	int k = 0;
 	while (k < size && !isEntityClicked)
 	{
-		if (this->collisionManager->checkCollisionFromCoordinates(i, j, potentialEntities[k]->getHitBox()))
+		if (player->getMap()->isPointInCollisionWithRectangle(i, j, potentialEntities[k]->getHitBox()))
 		{
 			clickedEntity = potentialEntities[k];
 			isEntityClicked = true;
@@ -65,7 +58,7 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 	Chunk *chunk;
 	int i = x;
 	int j = y;
-	this->camera->convertCameraToInGameCoordinates(i, j);
+	player->getCamera()->convertCameraToInGameCoordinates(i, j);
 
 	chunk = player->getMap()->getChunk(i, j);
 	bool isStructureClicked = chunk->isStructure(i, j);

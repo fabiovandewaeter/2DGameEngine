@@ -38,12 +38,12 @@ void Entity::move(Map *map)
     {
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        SDL_Rect tempRect = map->handleCollisionsFor(this, newPosX, this->getPositionY());
+        SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->hitBox.x = tempRect.x;
 
         // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-        tempRect = map->handleCollisionsFor(this, this->getPositionX(), newPosY);
+        tempRect = map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
         this->hitBox.y = tempRect.y;
     }
 }
@@ -57,8 +57,9 @@ void Entity::render(Camera *camera)
         this->texture->render(renderBox);
     }
 }
-void Entity::kill(){
-    
+void Entity::kill()
+{
+
     this->HP = 0;
     this->state = nullptr;
 }

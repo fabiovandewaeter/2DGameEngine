@@ -22,7 +22,7 @@ const int SPAWN_COOLDOWN = 100;
 int spawnCooldownCounter = 0;
 void Core::spawnEntities()
 {
-    if (spawnCooldownCounter >= SPAWN_COOLDOWN)
+    /*if (spawnCooldownCounter >= SPAWN_COOLDOWN)
     {
         std::vector<SDL_Rect> potentialSpawnTiles = this->getPotentialSpawnTiles((SDL_Rect){-1, -1, 16, 16});
         int i = 0;
@@ -42,7 +42,7 @@ void Core::spawnEntities()
     else
     {
         spawnCooldownCounter++;
-    }
+    }*/
 }
 std::vector<SDL_Rect> Core::getPotentialSpawnTiles(SDL_Rect entityHitBox)
 {

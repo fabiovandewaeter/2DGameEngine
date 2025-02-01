@@ -11,6 +11,9 @@
 #include "items/Item.hpp"
 #include "systems/utils/JSONManager.hpp"
 
+ItemFactory::ItemFactory() {}
+ItemFactory::~ItemFactory() {}
+
 void ItemFactory::free()
 {
     for (auto &pair : this->allItems)

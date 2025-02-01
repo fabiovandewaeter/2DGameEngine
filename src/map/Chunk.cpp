@@ -3,7 +3,7 @@
 #include "map/Tile.hpp"
 #include "systems/PerlinNoise.hpp"
 #include "systems/core/Camera.hpp"
-#include "systems/game_objects/ItemManager.hpp"
+#include "systems/game_objects/ItemFactory.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"

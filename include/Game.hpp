@@ -6,15 +6,12 @@
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <time.h>
-#include "map/Map.hpp"
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/core/IOManager.hpp"
 #include "systems/PerlinNoise.hpp"
-#include "systems/core/MouseManager.hpp"
 #include "systems/core/AudioManager.hpp"
-#include "systems/core/GUIManager.hpp"
 #include "systems/core/TickManager.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
 #include "systems/game_objects/StructureFactory.hpp"
@@ -31,6 +28,9 @@ class Texture;
 class Core;
 class Turret;
 class Player;
+class MouseManager;
+class GUIManager;
+class Map;
 
 class Game
 {
@@ -75,11 +75,12 @@ private:
     // systems
     TextureManager textureManager;
     IOManager ioManager;
-    Map map;
+    Map *map;
     PerlinNoise perlinNoise;
     AudioManager audioManager;
     ItemFactory itemFactory;
-    GUIManager guiManager;
+    GUIManager *guiManager;
+    MouseManager *mouseManager;
     StructureFactory structureFactory;
 
     void loadMedia();

@@ -73,11 +73,11 @@ void Player::handleEvents(SDL_Event *event)
 void Player::update()
 {
     this->camera->update();
-    update(this->map);
+    Entity::update(this->map);
 }
 void Player::render()
 {
-    render(this->camera);
+    Entity::render(this->camera);
 }
 
 void Player::setPosition(int x, int y)

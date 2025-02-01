@@ -4,23 +4,20 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
+class Map;
 class Camera;
-class CollisionManager;
-class TextureManager;
-class Texture;
 class Entity;
 class Player;
 
 class EntityManager
 {
 public:
-    EntityManager();
+    EntityManager(Map *map) : map(map) {};
     ~EntityManager();
 
-    void init(Camera *camera, CollisionManager *collisionManager, TextureManager*textureManager);
     void loadEntities();
     void update();
-    void render();
+    void render(Camera *camera);
 
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
@@ -28,15 +25,12 @@ public:
     std::vector<Entity *> getEntities();
     std::vector<Entity *> getPotentialEntities(Entity *entity);
     std::vector<Entity *> getEntitiesInArea(SDL_Rect area);
-    Entity *generateDefaultEntity(SDL_Rect hitBox);
     Player *getPlayer();
 
 private:
     Player *player;
     std::vector<Entity *> entities;
-    CollisionManager *collisionManager;
-    std::vector<Texture *> *entityTextures;
-    Camera *camera;
+    Map *map;
 };
 
 #endif

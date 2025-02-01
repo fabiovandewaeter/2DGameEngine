@@ -1,10 +1,10 @@
 #include "map/Tile.hpp"
 
 #include "systems/core/Camera.hpp"
-#include "systems/game_objects/ItemManager.hpp"
+#include "systems/game_objects/ItemFactory.hpp"
 #include "Texture.hpp"
 
-Item* Tile::defaultMineableResource = ItemManager::getItem("Stone");
+Item* Tile::defaultMineableResource = ItemFactory::getItem("Stone");
 
 Tile::Tile(Texture *texture, int x, int y)
 {

@@ -7,21 +7,23 @@
 #include "systems/game_objects/EntityManager.hpp"
 #include "entities/Player.hpp"
 
-Map::Map() {}
-Map::~Map()
+Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise)
 {
-    free();
-}
-
-void Map::init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise)
-{
-    this->camera = camera;
     this->tileSize = tileSize;
     this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
     this->collisionManager = new CollisionManager(this);
-    this->entityManager = new EntityManager();
+    this->entityManager = new EntityManager(this);
     loadChunks();
+}
+Map::~Map()
+{
+    for (auto &pair : this->allChunks)
+    {
+        delete pair.second;
+    }
+    this->allChunks.clear();
+    this->nearbyChunks.clear();
 }
 
 void Map::loadChunks()
@@ -78,7 +80,7 @@ void Map::render(Player *player)
     {
         this->nearbyChunks[i]->render(player->getCamera());
     }
-    this->entityManager->render();
+    this->entityManager->render(player->getCamera());
 }
 
 void Map::update()
@@ -91,18 +93,12 @@ void Map::update()
     this->entityManager->update();
 }
 
-void Map::free()
+bool Map::checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
+bool Map::isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
+bool Map::isRectangleInCollisionWithSolidStructure(SDL_Rect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
+SDL_Rect Map::handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY)
 {
-    for (auto &pair : this->allChunks)
-    {
-        delete pair.second;
-    }
-    this->allChunks.clear();
-    this->nearbyChunks.clear();
-}
-SDL_Rect Map::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
-{
-    this->collisionManager->handleCollisionsFor(entity, newPosX, newPosY);
+    this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
 }
 void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
 void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }

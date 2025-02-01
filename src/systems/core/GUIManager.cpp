@@ -23,10 +23,7 @@ static int text_width(mu_Font font, const char *text, int len)
     return len * 5;
 }
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
-
-GUIManager::GUIManager() {}
-GUIManager::~GUIManager() {}
-void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager)
+GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager)
 {
     this->button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     this->button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -53,6 +50,7 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     loadIcons();
     loadConfiguration();
 }
+
 
 void GUIManager::loadConfiguration()
 {

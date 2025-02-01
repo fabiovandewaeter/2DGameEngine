@@ -4,6 +4,8 @@
 
 #include "Game.hpp"
 
+#include "systems/core/MouseManager.hpp"
+#include "systems/core/GUIManager.hpp"
 #include "structures/activeStructures/Core.hpp"
 #include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
@@ -87,7 +89,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
     loadMedia();
     std::cout << "================= map.init() =================" << std::endl;
-    this->map.init(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
+    this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
     std::cout << "================= mouseManager.init() =================" << std::endl;
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
@@ -97,7 +99,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     this->structureFactory = StructureFactory::getInstance();
     std::vector<std::string> a = this->structureFactory.getRegistredClasses();
     std::cout << "================= guiManager.init() =================" << std::endl;
-    this->guiManager.init(this->window, this->renderer, &this->textureManager, &this->structureFactory, &this->mouseManager);
+    this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->structureFactory, this->mouseManager);
 }
 
 void Game::run()
@@ -132,7 +134,7 @@ void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
     this->player->update();
-    this->map.update();
+    this->map->update();
 
     countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
@@ -145,8 +147,8 @@ void Game::render()
 
     this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight()));
     this->player->render();
-    this->map.render(this->player);
-    this->guiManager.render(this->player);
+    this->map->render(this->player);
+    this->guiManager->render(this->player);
 
     SDL_RenderPresent(this->renderer);
     countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
@@ -154,7 +156,7 @@ void Game::render()
 
 void Game::clean()
 {
-    this->map.free();
+    delete this->map;
     this->audioManager.free();
 
     SDL_DestroyRenderer(this->renderer);
@@ -202,9 +204,9 @@ void Game::loadEntities()
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
     // CAMERA ZOOM NEED FIX
     std::cout << "camera zoom need fix" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, &this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
+    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
     // CAMERA ZOOM NEED FIX
-    this->map.addEntity(this->player);
+    this->map->addEntity(this->player);
 }
 void Game::loadItems()
 {

@@ -4,6 +4,7 @@
 #include "SDL2/SDL_events.h"
 #include <functional>
 
+class Player;
 class Camera;
 class Map;
 class EntityManager;
@@ -17,13 +18,13 @@ public:
 	~MouseManager();
 
 	void handleEvents(SDL_Event *event, Player *player);
+	void setClickOnEmptyTileStrategy(std::function<Structure *(int, int)>);
 
 private:
 	std::function<Structure *(int, int)> clickOnEmptyTileStrategy;
 
 	bool handleClickOnEntity(SDL_Event *event, Player *player, int x, int y);
 	bool handleClickOnMap(SDL_Event *event, Player *player, int x, int y);
-	void setClickOnEmptyTileStrategy(std::function<Structure *(int, int)>);
 };
 
 #endif
