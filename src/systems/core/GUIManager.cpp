@@ -181,11 +181,13 @@ void GUIManager::test_window(mu_Context *ctx)
             for (size_t i = 0; i < size; ++i)
             {
                 mu_Rect r = mu_layout_next(ctx);
-                int id = this->structureTextureNameToId[this->structureNamesList[i]];
+                std::string structureName = this->structureNamesList[i];
+                int id = this->structureTextureNameToId[structureName];
                 mu_draw_icon(ctx, id, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
                 if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
                     std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
+                    changeMouseManagerClickOnEmptyTileStrategy(structureName);
                 }
             }
         }
