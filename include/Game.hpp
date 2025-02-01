@@ -16,8 +16,7 @@
 #include "systems/core/AudioManager.hpp"
 #include "systems/core/GUIManager.hpp"
 #include "systems/core/TickManager.hpp"
-#include "systems/game_objects/EntityManager.hpp"
-#include "systems/game_objects/ItemManager.hpp"
+#include "systems/game_objects/ItemFactory.hpp"
 #include "systems/game_objects/StructureFactory.hpp"
 
 struct TimeData
@@ -57,7 +56,6 @@ private:
     bool running;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    Camera camera;
     int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
@@ -76,14 +74,11 @@ private:
 
     // systems
     TextureManager textureManager;
-    CollisionManager collisionManager;
     IOManager ioManager;
     Map map;
     PerlinNoise perlinNoise;
-    MouseManager mouseManager;
-    EntityManager entityManager;
     AudioManager audioManager;
-    ItemManager itemManager;
+    ItemFactory itemFactory;
     GUIManager guiManager;
     StructureFactory structureFactory;
 

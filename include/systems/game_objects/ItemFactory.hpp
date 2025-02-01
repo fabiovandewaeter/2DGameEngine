@@ -12,11 +12,11 @@ class Equipment;
 class Resource;
 
 // Manages the loading and management of items and resources defined in JSON files
-class ItemManager
+class ItemFactory
 {
 public:
-    ItemManager();
-    ~ItemManager();
+    ItemFactory();
+    ~ItemFactory();
     void free();
 
     void init();

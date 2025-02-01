@@ -17,6 +17,7 @@ class TextureManager;
 class StructureFactory;
 class Texture;
 class MouseManager;
+class Player;
 
 class GUIManager
 {
@@ -27,7 +28,7 @@ public:
     void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager);
     bool isMouseOverGUI(int x, int y);
     bool handleEvents(SDL_Event *event);
-    void render();
+    void render(Player *player);
 
 private:
     SDL_Renderer *renderer;
@@ -46,9 +47,9 @@ private:
 
     void changeMouseManagerClickOnEmptyTileStrategy(std::string structureName);
 
-    void test_window(mu_Context *ctx);
-    int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);
-    void process_frame(mu_Context *ctx);
+    void test_window(mu_Context *ctx, Player *player);
+    void process_frame(mu_Context *ctx, Player *player);
+
     void r_init(SDL_Window *window1, SDL_Renderer *renderer1);
     void r_draw_rect(mu_Rect rect, mu_Color color);
     void r_init_font(const char *font_path, int font_size);
@@ -57,6 +58,7 @@ private:
     void r_set_clip_rect(mu_Rect rect);
     void r_clear(mu_Color color);
     void r_present(void);
+    int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);
 };
 
 #endif

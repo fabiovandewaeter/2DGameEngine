@@ -4,6 +4,7 @@
 #include "systems/core/Camera.hpp"
 #include "Texture.hpp"
 #include "entities/states/State.hpp"
+#include "map/Map.hpp"
 
 Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
 {
@@ -16,9 +17,9 @@ Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
 }
 Entity::~Entity() {}
 
-void Entity::update(CollisionManager *collisionManager)
+void Entity::update(Map *map)
 {
-    move(collisionManager);
+    move(map);
 }
 
 bool Entity::canMove()
@@ -31,22 +32,21 @@ bool Entity::isMoving()
     return this->velX != 0 || this->velY != 0;
 }
 
-void Entity::move(CollisionManager *collisionManager)
+void Entity::move(Map *map)
 {
     if (canMove() && isMoving())
     {
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        SDL_Rect tempRect = collisionManager->handleCollisionsFor(this, newPosX, this->getPositionY());
+        SDL_Rect tempRect = map->handleCollisionsFor(this, newPosX, this->getPositionY());
         this->hitBox.x = tempRect.x;
 
         // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-        tempRect = collisionManager->handleCollisionsFor(this, this->getPositionX(), newPosY);
+        tempRect = map->handleCollisionsFor(this, this->getPositionX(), newPosY);
         this->hitBox.y = tempRect.y;
     }
 }
-
 
 void Entity::render(Camera *camera)
 {

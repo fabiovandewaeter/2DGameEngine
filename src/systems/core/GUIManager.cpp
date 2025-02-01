@@ -76,6 +76,39 @@ void GUIManager::loadIcons()
     }
 }
 
+void GUIManager::test_window(mu_Context *ctx, Player *player)
+{
+    if (mu_begin_window(ctx, "Structures", mu_rect(40, 40, 300, 450)))
+    {
+        mu_Container *win = mu_get_current_container(ctx);
+        win->rect.w = mu_max(win->rect.w, 240);
+        win->rect.h = mu_max(win->rect.h, 300);
+
+        std::vector<int> iconIds = {1, 2, 3};
+
+        if (mu_header_ex(ctx, "Structure names", MU_OPT_EXPANDED))
+        {
+            int row_sizes[] = {30, -1};
+            mu_layout_row(ctx, 2, row_sizes, 25);
+
+            int size = this->structureNamesList.size();
+            for (size_t i = 0; i < size; ++i)
+            {
+                mu_Rect r = mu_layout_next(ctx);
+                std::string structureName = this->structureNamesList[i];
+                int id = this->structureTextureNameToId[structureName];
+                mu_draw_icon(ctx, id, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
+                if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
+                {
+                    std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
+                    changeMouseManagerClickOnEmptyTileStrategy(structureName);
+                }
+            }
+        }
+        mu_end_window(ctx);
+    }
+}
+
 void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structureName)
 {
     std::function<Structure *()> constructor = this->structureFactory->getConstructor(structureName);
@@ -162,60 +195,16 @@ bool GUIManager::handleEvents(SDL_Event *event)
     return eventConsumed;
 }
 
-void GUIManager::test_window(mu_Context *ctx)
-{
-    if (mu_begin_window(ctx, "Structures", mu_rect(40, 40, 300, 450)))
-    {
-        mu_Container *win = mu_get_current_container(ctx);
-        win->rect.w = mu_max(win->rect.w, 240);
-        win->rect.h = mu_max(win->rect.h, 300);
-
-        std::vector<int> iconIds = {1, 2, 3};
-
-        if (mu_header_ex(ctx, "Structure names", MU_OPT_EXPANDED))
-        {
-            int row_sizes[] = {30, -1};
-            mu_layout_row(ctx, 2, row_sizes, 25);
-
-            int size = this->structureNamesList.size();
-            for (size_t i = 0; i < size; ++i)
-            {
-                mu_Rect r = mu_layout_next(ctx);
-                std::string structureName = this->structureNamesList[i];
-                int id = this->structureTextureNameToId[structureName];
-                mu_draw_icon(ctx, id, mu_rect(r.x, r.y, r.h, r.h), ctx->style->colors[MU_COLOR_TEXT]);
-                if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
-                {
-                    std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
-                    changeMouseManagerClickOnEmptyTileStrategy(structureName);
-                }
-            }
-        }
-        mu_end_window(ctx);
-    }
-}
-
-int GUIManager::uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
-{
-    static float tmp;
-    mu_push_id(ctx, &value, sizeof(value));
-    tmp = *value;
-    int res = mu_slider_ex(ctx, &tmp, low, high, 0, "%.0f", MU_OPT_ALIGNCENTER);
-    *value = tmp;
-    mu_pop_id(ctx);
-    return res;
-}
-
-void GUIManager::process_frame(mu_Context *ctx)
+void GUIManager::process_frame(mu_Context *ctx, Player *player)
 {
     mu_begin(ctx);
-    test_window(ctx);
+    test_window(ctx, player);
     mu_end(ctx);
 }
 
-void GUIManager::render()
+void GUIManager::render(Player *player)
 {
-    process_frame(&this->ctx);
+    process_frame(&this->ctx, player);
     mu_Command *cmd = NULL;
     while (mu_next_command(&this->ctx, &cmd))
     {
@@ -322,4 +311,15 @@ void GUIManager::r_clear(mu_Color clr)
 void GUIManager::r_present(void)
 {
     SDL_RenderPresent(renderer);
+}
+
+int GUIManager::uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high)
+{
+    static float tmp;
+    mu_push_id(ctx, &value, sizeof(value));
+    tmp = *value;
+    int res = mu_slider_ex(ctx, &tmp, low, high, 0, "%.0f", MU_OPT_ALIGNCENTER);
+    *value = tmp;
+    mu_pop_id(ctx);
+    return res;
 }

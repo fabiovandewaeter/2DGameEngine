@@ -11,14 +11,13 @@ class Entity;
 class CollisionManager
 {
 public:
-    CollisionManager();
+    CollisionManager(Map *map) : map(map), entityManager(map->getEntityManager()) {};
     ~CollisionManager();
 
-    void init(Map *map, EntityManager *entityManager);
     // returns true if there is a collision
-    bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
-    bool checkCollisionFromCoordinates(int x, int y, SDL_Rect rect);
-    bool checkCollisionWithSolidStructure(SDL_Rect rect);
+    bool checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB);
+    bool isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect);
+    bool isRectangleInCollisionWithSolidStructure(SDL_Rect rect);
     SDL_Rect handleCollisionsFor(Entity *entity, int newPosX, int newPosY);
 
 private:

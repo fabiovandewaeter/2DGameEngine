@@ -7,9 +7,9 @@
 
 class Texture;
 class State;
-class CollisionManager;
 class Camera;
 class Faction;
+class Map;
 
 class Entity
 {
@@ -17,10 +17,10 @@ public:
     Entity(Texture *texture, SDL_Rect hitBox, int HP);
     ~Entity();
 
-    void update(CollisionManager *collisionManager);
+    void update(Map *map);
     bool canMove();
     bool isMoving();
-    void move(CollisionManager *collisionManager);
+    void move(Map *map);
     void render(Camera *camera);
     void kill();
     void onCollision(Entity *);

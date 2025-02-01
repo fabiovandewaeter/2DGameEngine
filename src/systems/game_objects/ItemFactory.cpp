@@ -2,7 +2,7 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "systems/game_objects/ItemManager.hpp"
+#include "systems/game_objects/ItemFactory.hpp"
 
 #include <cstdio>
 #include <fstream>
@@ -11,10 +11,7 @@
 #include "items/Item.hpp"
 #include "systems/utils/JSONManager.hpp"
 
-ItemManager::ItemManager() {}
-ItemManager::~ItemManager() {}
-
-void ItemManager::free()
+void ItemFactory::free()
 {
     for (auto &pair : this->allItems)
     {
@@ -23,8 +20,8 @@ void ItemManager::free()
     this->allItems.clear();
 }
 
-void ItemManager::init() {}
-void ItemManager::load()
+void ItemFactory::init() {}
+void ItemFactory::load()
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -33,8 +30,8 @@ void ItemManager::load()
     loadResources("data/resources.json");
 }
 
-std::unordered_map<std::string, Item *> ItemManager::allItems;
-Item *ItemManager::getItem(std::string name)
+std::unordered_map<std::string, Item *> ItemFactory::allItems;
+Item *ItemFactory::getItem(std::string name)
 {
     if (allItems.empty())
     {
@@ -50,7 +47,7 @@ Item *ItemManager::getItem(std::string name)
     return nullptr;
 }
 
-int ItemManager::genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results)
+int ItemFactory::genericLoader(std::string file_name, std::string type, std::vector<std::string> &requiredFields, std::vector<std::string> &results)
 {
     rapidjson::Document itemsData = JSONManager::loadFile(file_name);
 
@@ -85,7 +82,7 @@ int ItemManager::genericLoader(std::string file_name, std::string type, std::vec
     return quantityFound;
 }
 
-void ItemManager::loadEquipments(std::string file_name)
+void ItemFactory::loadEquipments(std::string file_name)
 {
     std::vector<std::string> requiredFields;
     requiredFields.push_back("name");
@@ -100,7 +97,7 @@ void ItemManager::loadEquipments(std::string file_name)
         std::cout << "Equipment loaded: " << results[i] << std::endl;
     }
 }
-void ItemManager::loadResources(std::string file_name)
+void ItemFactory::loadResources(std::string file_name)
 {
     std::vector<std::string> requiredFields;
     requiredFields.push_back("name");

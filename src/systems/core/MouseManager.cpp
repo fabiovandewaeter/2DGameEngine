@@ -7,21 +7,21 @@
 #include "systems/CollisionManager.hpp"
 #include "structures/Structure.hpp"
 #include "entities/Entity.hpp"
+#include "entities/Player.hpp"
 
 MouseManager::MouseManager() {}
 MouseManager::~MouseManager() {}
 
-void MouseManager::init(Camera *camera, Map *map, EntityManager *entityManager, CollisionManager *collisionManager)
+void MouseManager::init(Player *player)
 {
 	this->camera = camera;
-	this->map = map;
 	this->entityManager = entityManager;
 	this->collisionManager = collisionManager;
 }
 
 // source : https://lazyfoo.net/tutorials/SDL/17_mouse_events/index.php
 
-bool MouseManager::handleClickOnEntity(SDL_Event *event, int x, int y)
+bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, int y)
 {
 	int i = x;
 	int j = y;
@@ -60,14 +60,14 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, int x, int y)
 	return isEntityClicked;
 }
 
-bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
+bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int y)
 {
 	Chunk *chunk;
 	int i = x;
 	int j = y;
 	this->camera->convertCameraToInGameCoordinates(i, j);
 
-	chunk = this->map->getChunk(i, j);
+	chunk = player->getMap()->getChunk(i, j);
 	bool isStructureClicked = chunk->isStructure(i, j);
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
@@ -94,7 +94,7 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
 	return isStructureClicked;
 }
 
-void MouseManager::handleEvents(SDL_Event *event)
+void MouseManager::handleEvents(SDL_Event *event, Player *player)
 {
 	if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
 	{
@@ -107,11 +107,11 @@ void MouseManager::handleEvents(SDL_Event *event)
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			if (handleClickOnEntity(event, x, y))
+			if (handleClickOnEntity(event, player, x, y))
 			{ // skip handleClickOnMap() if the click is on an Entity
 				break;
 			}
-			handleClickOnMap(event, x, y);
+			handleClickOnMap(event, player, x, y);
 			break;
 
 		case SDL_MOUSEBUTTONUP:

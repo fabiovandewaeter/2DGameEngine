@@ -10,16 +10,15 @@
 class Camera
 {
 public:
-    Camera();
+    Camera(int width, int height, double minScale, double maxScale, int positionX, int positionY) : width(width), height(height), minScale(minScale), maxScale(maxScale), positionX(positionX), positionY(positionY) {};
     ~Camera();
 
-    void init(int width, int height, double minScale, double maxScale, int positionX, int positionY);
     void handleEvents(SDL_Event *event);
     void update();
     void move();
 
     void convertInGameToCameraCoordinates(SDL_Rect &rect);
-    void convertCameraToInGameCoordinates(int &x, int& y);
+    void convertCameraToInGameCoordinates(int &x, int &y);
     bool isVisible(SDL_Rect rect);
 
     void setPosition(int x, int y);

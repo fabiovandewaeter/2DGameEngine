@@ -11,16 +11,7 @@
 #include "map/Chunk.hpp"
 #include "structures/Structure.hpp"
 
-CollisionManager::CollisionManager() {}
-CollisionManager::~CollisionManager() {}
-
-void CollisionManager::init(Map *map, EntityManager *entityManager)
-{
-    this->map = map;
-    this->entityManager = entityManager;
-}
-
-bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
+bool CollisionManager::checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -30,7 +21,8 @@ bool CollisionManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
              rectA.y + rectA.h <= rectB.y ||
              rectA.y >= rectB.y + rectB.h);
 }
-bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect)
+
+bool CollisionManager::isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -40,7 +32,8 @@ bool CollisionManager::checkCollisionFromCoordinates(int x, int y, SDL_Rect rect
              y <= rect.y ||
              y >= rect.y + rect.h);
 }
-bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
+
+bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_Rect rect)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -52,7 +45,7 @@ bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
         if (chunk->isStructure(rect.x, rect.y))
         {
             Structure *structure = chunk->getStructure(rect.x, rect.y);
-            if (checkCollision(rect, structure->getHitBox()))
+            if (checkRectanglesCollision(rect, structure->getHitBox()))
             {
                 return structure->isSolid() ? true : false;
             }
@@ -60,6 +53,7 @@ bool CollisionManager::checkCollisionWithSolidStructure(SDL_Rect rect)
     }
     return false;
 }
+
 SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
 {
 #ifdef PROFILER
@@ -70,7 +64,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
     int size = entities.size();
     for (int i = 0; i < size; i++)
     {
-        if ((entity != entities[i]) && (checkCollision(entity->getHitBox(), entities[i]->getHitBox())))
+        if ((entity != entities[i]) && (checkRectanglesCollision(entity->getHitBox(), entities[i]->getHitBox())))
         {
             entities[i]->onCollision(entity);
         }
@@ -93,7 +87,7 @@ SDL_Rect CollisionManager::handleCollisionsFor(Entity *entity, int newPosX, int 
                 if (chunk->isStructure(newX, newY))
                 {
                     Structure *structure = chunk->getStructure(newX, newY);
-                    if (checkCollision(newHitBox, structure->getHitBox()))
+                    if (checkRectanglesCollision(newHitBox, structure->getHitBox()))
                     {
                         structure->onCollision(entity);
                         return structure->isSolid() ? hitBox : newHitBox;

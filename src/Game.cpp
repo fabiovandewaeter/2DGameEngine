@@ -85,22 +85,13 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
-    // NEED FIX
-    std::cout << "camera zoom need fix" << std::endl;
-    this->camera.init(width, height, 10, 200000000, 0, 0);
-    // NEED FIX
-
-    this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
-    std::cout << "================= entityManager.init() =================" << std::endl;
-    this->entityManager.init(&this->camera, &this->collisionManager, &this->textureManager);
     std::cout << "================= map.init() =================" << std::endl;
-    this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
+    this->map.init(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
     std::cout << "================= mouseManager.init() =================" << std::endl;
-    this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     loadEntities();
-    std::cout << "================= itemManager.init() =================" << std::endl;
-    this->itemManager.init();
+    std::cout << "================= itemFactory.init() =================" << std::endl;
+    this->itemFactory.init();
     loadItems();
 
     this->structureFactory = StructureFactory::getInstance();
@@ -132,12 +123,7 @@ void Game::handleEvents()
         {
             this->running = false;
         }
-        this->camera.handleEvents(&this->event);
         this->player->handleEvents(&this->event);
-        if (!this->guiManager.handleEvents(&this->event))
-        {
-            this->mouseManager.handleEvents(&this->event); // doesnt click on the map if click on GUI
-        }
     }
 }
 
@@ -145,9 +131,7 @@ TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    this->player->update(&this->collisionManager);
-    this->camera.update();
-    this->entityManager.update();
+    this->player->update();
     this->map.update();
 
     countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
@@ -159,11 +143,10 @@ void Game::render()
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
     SDL_RenderClear(this->renderer);
 
-    double scale = this->camera.getScale();
-    this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX() * scale)), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY() * scale)), (int)(this->backgroundTexture->getWidth() * scale), (int)(this->backgroundTexture->getHeight() * scale));
-    this->map.render();
-    this->entityManager.render();
-    this->guiManager.render();
+    this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight()));
+    this->player->render();
+    this->map.render(this->player);
+    this->guiManager.render(this->player);
 
     SDL_RenderPresent(this->renderer);
     countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
@@ -217,12 +200,14 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->entityManager.loadEntities();
-    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100);
-    this->entityManager.addEntity(this->player);
+    // CAMERA ZOOM NEED FIX
+    std::cout << "camera zoom need fix" << std::endl;
+    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, &this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
+    // CAMERA ZOOM NEED FIX
+    this->map.addEntity(this->player);
 }
 void Game::loadItems()
 {
     std::cout << "================= Game::LoadItems() =================" << std::endl;
-    this->itemManager.load();
+    this->itemFactory.load();
 }

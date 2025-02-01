@@ -3,19 +3,24 @@
 #include <iostream>
 #include "map/Chunk.hpp"
 
+#include "systems/CollisionManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
+#include "entities/Player.hpp"
+
 Map::Map() {}
 Map::~Map()
 {
     free();
 }
 
-void Map::init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+void Map::init(Camera *camera, int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise)
 {
     this->camera = camera;
     this->tileSize = tileSize;
     this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
-    this->collisionManager = collisionManager;
+    this->collisionManager = new CollisionManager(this);
+    this->entityManager = new EntityManager();
     loadChunks();
 }
 
@@ -26,24 +31,32 @@ void Map::loadChunks()
 void Map::loadSquareMap(int size)
 {
     int step = CHUNK_SIZE * this->tileSize;
-    for (int i = 0; i < size; i++){
-        for (int j = 0; j < size; j++){
-            generateChunk(i*step, j*step);
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            generateChunk(i * step, j * step);
         }
     }
-    for (int i = 0; i < size; i++){
-        for (int j = 0; j < size; j++){
-            generateChunk(-i*step-step, j*step);
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            generateChunk(-i * step - step, j * step);
         }
     }
-    for (int i = 0; i < size; i++){
-        for (int j = 0; j < size; j++){
-            generateChunk(i*step, -j*step-step);
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            generateChunk(i * step, -j * step - step);
         }
     }
-    for (int i = 0; i < size; i++){
-        for (int j = 0; j < size; j++){
-            generateChunk(-i*step-step, -j*step-step);
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            generateChunk(-i * step - step, -j * step - step);
         }
     }
 }
@@ -58,14 +71,16 @@ void Map::generateChunk(int positionX, int positionY)
     this->allChunks[coordinates] = newChunk;
 }
 
-void Map::render()
+void Map::render(Player *player)
 {
     int size = this->nearbyChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->nearbyChunks[i]->render(this->camera);
+        this->nearbyChunks[i]->render(player->getCamera());
     }
+    this->entityManager->render();
 }
+
 void Map::update()
 {
     int size = this->nearbyChunks.size();
@@ -73,7 +88,9 @@ void Map::update()
     {
         this->nearbyChunks[i]->update();
     }
+    this->entityManager->update();
 }
+
 void Map::free()
 {
     for (auto &pair : this->allChunks)
@@ -83,6 +100,12 @@ void Map::free()
     this->allChunks.clear();
     this->nearbyChunks.clear();
 }
+SDL_Rect Map::handleCollisionsFor(Entity *entity, int newPosX, int newPosY)
+{
+    this->collisionManager->handleCollisionsFor(entity, newPosX, newPosY);
+}
+void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
+void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
@@ -127,3 +150,4 @@ int Map::getChunkSize()
 {
     return CHUNK_SIZE;
 }
+EntityManager *Map::getEntityManager() { return this->entityManager; }

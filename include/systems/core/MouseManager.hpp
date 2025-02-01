@@ -16,19 +16,14 @@ public:
 	MouseManager();
 	~MouseManager();
 
-	void init(Camera *camera, Map *map, EntityManager *entityManager, CollisionManager *collisionManager);
-	void handleEvents(SDL_Event *event);
-	bool handleClickOnEntity(SDL_Event *event, int x, int y);
-	bool handleClickOnMap(SDL_Event *event, int x, int y);
-
-	void setClickOnEmptyTileStrategy(std::function<Structure *(int, int)>);
+	void handleEvents(SDL_Event *event, Player *player);
 
 private:
-	Camera *camera;
-	Map *map;
-	EntityManager *entityManager;
-	CollisionManager *collisionManager;
 	std::function<Structure *(int, int)> clickOnEmptyTileStrategy;
+
+	bool handleClickOnEntity(SDL_Event *event, Player *player, int x, int y);
+	bool handleClickOnMap(SDL_Event *event, Player *player, int x, int y);
+	void setClickOnEmptyTileStrategy(std::function<Structure *(int, int)>);
 };
 
 #endif

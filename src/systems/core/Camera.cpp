@@ -5,23 +5,6 @@ const double BASE_SCALE = 1.0;
 int sprint = 1;
 int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 
-Camera::Camera() {}
-Camera::~Camera() {}
-
-void Camera::init(int width, int height, double minScale, double maxScale, int positionX, int positionY)
-{
-    this->width = width;
-    this->height = height;
-    this->scale = 1.0;
-    this->minScale = minScale;
-    this->maxScale = 1 / maxScale;
-    this->scaleSpeed = 1.0;
-    this->positionX = positionX;
-    this->positionY = positionY;
-    this->velocity = 1;
-    this->sprintVelocity = 50;
-}
-
 void Camera::handleEvents(SDL_Event *event)
 {
     // If a key was pressed
