@@ -18,9 +18,8 @@ class Map;
 class Structure
 {
 public:
-    Structure() : Structure(nullptr, {0, 0, 0, 0}, 0, false) {}
-    Structure(Texture *texture, int x, int y, int HP, bool solid) : Structure(texture, {x, y, getTileSize(), getTileSize()}, HP, solid) {}
-    Structure(Texture *texture, SDL_Rect hitBox, int HP, bool solid) : texture(texture), hitBox(hitBox), HP(HP), solid(solid), destroyed(false) {}
+    Structure() : Structure(nullptr, -1, -1, 0, false) {}
+    Structure(Texture *texture, int x, int y, int HP, bool solid) : texture(texture), hitBox({x, y, getTileSize(), getTileSize()}), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();

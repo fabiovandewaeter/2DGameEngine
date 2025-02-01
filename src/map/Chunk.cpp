@@ -109,19 +109,33 @@ void Chunk::render(Camera *camera)
 
 void Chunk::update()
 {
-    std::vector<std::string> toRemove;
+    std::vector<std::string> updatableStructuresToRemove;
+    std::vector<std::string> otherStructuresToRemove;
     for (auto &[coords, structure] : this->updatableStructures)
     {
         structure->update();
         if (structure->isDestroyed())
         {
-            toRemove.push_back(coords);
+            updatableStructuresToRemove.push_back(coords);
         }
     }
-    for (const auto &coords : toRemove)
+    // NEED CHANGE TO NOT CHECK EVERY TICK IF ALL WALLS ARE DESTROYED
+    for (auto &[coords, structure] : this->otherStructures)
+    {
+        if (structure->isDestroyed())
+        {
+            otherStructuresToRemove.push_back(coords);
+        }
+    }
+    for (const auto &coords : updatableStructuresToRemove)
     {
         delete this->updatableStructures[coords];
         this->updatableStructures.erase(coords);
+    }
+    for (const auto &coords : otherStructuresToRemove)
+    {
+        delete this->otherStructures[coords];
+        this->otherStructures.erase(coords);
     }
 }
 

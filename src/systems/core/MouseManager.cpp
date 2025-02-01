@@ -77,7 +77,6 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, int x, int y)
 		}
 		else
 		{
-			std::cout << "test1" << std::endl;
 			if (this->clickOnEmptyTileStrategy != nullptr)
 			{
 				Structure *newStructure = this->clickOnEmptyTileStrategy(i, j);

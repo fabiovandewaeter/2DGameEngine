@@ -3,3 +3,5 @@
 #include "systems/game_objects/StructureFactory.hpp"
 
 REGISTER_CLASS(Wall)
+
+void Wall::onRightClick() { this->destroyed = true; }
