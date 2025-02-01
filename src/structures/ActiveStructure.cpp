@@ -2,15 +2,6 @@
 
 #include "actions/Action.hpp"
 
-ActiveStructure::ActiveStructure() {}
-ActiveStructure::ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager) : Structure(texture, hitBox, HP, solid)
-{
-    this->collisionManager = collisionManager;
-    this->entityManager = entityManager;
-    this->active = true;
-    this->faction = faction;
-    this->tickManager = tickManager;
-}
 ActiveStructure::~ActiveStructure()
 {
     int size = this->actions.size();

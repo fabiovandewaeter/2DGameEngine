@@ -16,6 +16,15 @@ Structure *StructureFactory::create(std::string className)
     }
     return nullptr;
 }
+std::function<Structure *()> StructureFactory::getConstructor(std::string className)
+{
+    auto it = this->registry.find(className);
+    if (it != this->registry.end())
+    {
+        return it->second;
+    }
+    return nullptr;
+}
 std::vector<std::string> StructureFactory::getRegistredClasses()
 {
     std::vector<std::string> keys;

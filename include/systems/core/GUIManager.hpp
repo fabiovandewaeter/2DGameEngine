@@ -16,6 +16,7 @@ extern "C"
 class TextureManager;
 class StructureFactory;
 class Texture;
+class MouseManager;
 
 class GUIManager
 {
@@ -23,7 +24,7 @@ public:
     GUIManager();
     ~GUIManager();
 
-    void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory);
+    void init(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager);
     bool isMouseOverGUI(int x, int y);
     bool handleEvents(SDL_Event *event);
     void render();
@@ -35,14 +36,15 @@ private:
     std::vector<std::string> structureNamesList;
     std::unordered_map<std::string, int> structureTextureNameToId;
     std::vector<Texture *> structureTextureIdToTexture;
+    MouseManager *mouseManager;
     mu_Context ctx;
     char button_map[256];
     char key_map[256];
 
     void loadConfiguration();
     void loadIcons();
-    
-    void changeMouseManagerClickOnEmptyTileStrategy();
+
+    void changeMouseManagerClickOnEmptyTileStrategy(std::string structureName);
 
     void test_window(mu_Context *ctx);
     int uint8_slider(mu_Context *ctx, unsigned char *value, int low, int high);

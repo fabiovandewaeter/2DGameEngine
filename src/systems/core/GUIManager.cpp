@@ -11,6 +11,7 @@
 
 #include "Texture.hpp"
 #include "systems/core/TextureManager.hpp"
+#include "systems/core/MouseManager.hpp"
 #include "systems/game_objects/StructureFactory.hpp"
 
 static int text_width(mu_Font font, const char *text, int len)
@@ -25,7 +26,7 @@ static int text_height(mu_Font font) { return TEXT_HEIGHT; }
 
 GUIManager::GUIManager() {}
 GUIManager::~GUIManager() {}
-void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory)
+void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager)
 {
     this->button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     this->button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -47,6 +48,7 @@ void GUIManager::init(SDL_Window *window, SDL_Renderer *renderer, TextureManager
     this->textureManager = textureManager;
     this->structureFactory = structureFactory;
     this->structureNamesList = this->structureFactory->getRegistredClasses();
+    this->mouseManager = mouseManager;
 
     loadIcons();
     loadConfiguration();
@@ -74,9 +76,19 @@ void GUIManager::loadIcons()
     }
 }
 
-void GUIManager::changeMouseManagerClickOnEmptyTileStrategy()
+void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structureName)
 {
-    this->MouseManager->setClickOnEmptyTileStrategy();
+    std::function<Structure *()> constructor = this->structureFactory->getConstructor(structureName);
+    Texture *texture = this->textureManager->getTexture(structureName);
+    std::function<Structure *(int, int)> newFunction = [constructor, texture](int i, int j) -> Structure *
+    {
+        Structure *structure = constructor();
+        structure->setTexture(texture);
+        structure->setX(i);
+        structure->setY(j);
+        return structure;
+    };
+    this->mouseManager->setClickOnEmptyTileStrategy(newFunction);
 }
 
 bool GUIManager::isMouseOverGUI(int x, int y)

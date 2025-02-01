@@ -21,14 +21,14 @@ public:
 	bool handleClickOnEntity(SDL_Event *event, int x, int y);
 	bool handleClickOnMap(SDL_Event *event, int x, int y);
 
-	void setClickOnEmptyTileStrategy(std::function<Structure *()>);
+	void setClickOnEmptyTileStrategy(std::function<Structure *(int, int)>);
 
 private:
 	Camera *camera;
 	Map *map;
 	EntityManager *entityManager;
 	CollisionManager *collisionManager;
-	std::function<Structure *(int i, int j)> clickOnEmptyTileStrategy;
+	std::function<Structure *(int, int)> clickOnEmptyTileStrategy;
 };
 
 #endif

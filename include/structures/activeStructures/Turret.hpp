@@ -6,8 +6,8 @@
 class Turret : public ActiveStructure
 {
 public:
-    Turret();
-    Turret(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager);
+    Turret() : ActiveStructure(nullptr, nullptr, nullptr, -1, -1, 100, true, nullptr, nullptr) {}
+    Turret(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, int x, int y, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, x, y, HP, true, faction, tickManager) {};
 
     void update() override;
 };

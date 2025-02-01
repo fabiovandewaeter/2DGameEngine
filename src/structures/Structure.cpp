@@ -2,7 +2,6 @@
 
 #include "systems/core/Camera.hpp"
 #include "Texture.hpp"
-#include "structures/materials/Material.hpp"
 
 Structure::~Structure() {}
 
@@ -23,8 +22,11 @@ void Structure::onLeftClick() { std::cout << "fait rien LEFT" << std::endl; }
 void Structure::onRightClick() { std::cout << "fait rien RIGHT" << std::endl; }
 
 SDL_Rect Structure::getHitBox() { return this->hitBox; }
-int Structure::getHP() { return this->material->getHP(); }
+int Structure::getHP() { return this->HP; }
 bool Structure::isSolid() { return this->solid; }
 bool Structure::isDestroyed() { return this->destroyed; }
+void Structure::setX(int x) { this->hitBox.x = x; }
+void Structure::setY(int y) { this->hitBox.y = y; }
 void Structure::setHitBox(SDL_Rect hitBox) { this->hitBox = hitBox; }
+void Structure::setTexture(Texture *texture) { this->texture = texture; }
 int Structure::getTileSize() { return Tile::getTileSize(); }

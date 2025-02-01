@@ -16,6 +16,7 @@ public:
     ~StructureFactory();
 
     void registerClass(const std::string className, std::function<Structure *()> constructor);
+    std::function<Structure *()> getConstructor(std::string className);
     Structure *create(std::string className);
     std::vector<std::string> getRegistredClasses();
 

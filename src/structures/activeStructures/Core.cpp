@@ -11,9 +11,6 @@
 
 REGISTER_CLASS(Core)
 
-Core::Core() {}
-Core::Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, hitBox, HP, true, faction, tickManager) {}
-
 void Core::update()
 {
     if (this->active)

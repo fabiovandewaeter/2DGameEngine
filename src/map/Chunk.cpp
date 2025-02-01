@@ -6,8 +6,8 @@
 #include "systems/game_objects/ItemManager.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
+#include "structures/IUpdatable.hpp"
 
-//Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
@@ -27,7 +27,11 @@ Chunk::~Chunk()
     {
         delete this->allTiles[i];
     }
-    for (auto &pair : this->allStructures)
+    for (auto &pair : this->updatableStructures)
+    {
+        delete pair.second;
+    }
+    for (auto &pair : this->otherStructures)
     {
         delete pair.second;
     }
@@ -93,7 +97,11 @@ void Chunk::render(Camera *camera)
             this->allTiles[i]->render(camera);
         }
     }
-    for (auto &pair : this->allStructures)
+    for (auto &pair : this->updatableStructures)
+    {
+        pair.second->render(camera);
+    }
+    for (auto &pair : this->otherStructures)
     {
         pair.second->render(camera);
     }
@@ -102,7 +110,7 @@ void Chunk::render(Camera *camera)
 void Chunk::update()
 {
     std::vector<std::string> toRemove;
-    for (auto &[coords, structure] : allStructures)
+    for (auto &[coords, structure] : this->updatableStructures)
     {
         structure->update();
         if (structure->isDestroyed())
@@ -112,8 +120,8 @@ void Chunk::update()
     }
     for (const auto &coords : toRemove)
     {
-        delete this->allStructures[coords];
-        this->allStructures.erase(coords);
+        delete this->updatableStructures[coords];
+        this->updatableStructures.erase(coords);
     }
 }
 
@@ -140,18 +148,46 @@ Structure *Chunk::getStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
     std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    return this->allStructures[coordinates];
+
+    auto it = this->updatableStructures.find(coordinates);
+    if (it != this->updatableStructures.end())
+    {
+        return it->second;
+    }
+    else
+    {
+
+        it = this->otherStructures.find(coordinates);
+        if (it != this->otherStructures.end())
+        {
+            return it->second;
+        }
+    }
+    return nullptr;
 }
+
 bool Chunk::isStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
     std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    if (this->allStructures.find(coordinates) == this->allStructures.end())
+
+    auto it = this->updatableStructures.find(coordinates);
+    if (it != this->updatableStructures.end())
     {
-        return false;
+        return true;
     }
-    return true;
+    else
+    {
+
+        it = this->otherStructures.find(coordinates);
+        if (it != this->otherStructures.end())
+        {
+            return true;
+        }
+    }
+    return false;
 }
+
 void Chunk::addStructure(Structure *structure)
 {
     SDL_Rect hitBox = structure->getHitBox();
@@ -163,12 +199,19 @@ void Chunk::addStructure(Structure *structure)
         SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allStructures[coordinates] = structure;
+        if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
+        {
+            this->updatableStructures[coordinates] = structure;
+        }
+        else
+        {
+            this->otherStructures[coordinates] = structure;
+        }
     }
 }
 void Chunk::addWall(int x, int y)
 {
-    addStructure(new Wall(this->textureManager->getTexture("Wall"), (SDL_Rect){x, y, this->tileSize, this->tileSize}, 100));
+    addStructure(new Wall(this->textureManager->getTexture("Wall"), x, y));
 }
 void Chunk::destroyStructure(int x, int y)
 {
@@ -176,8 +219,16 @@ void Chunk::destroyStructure(int x, int y)
     {
         convertToTileCoordinates(x, y);
         std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-        this->allStructures[coordinates]->destroy();
-        this->allStructures.erase(coordinates);
+        Structure *structure = getStructure(x, y);
+        if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
+        {
+            this->updatableStructures.erase(coordinates);
+        }
+        else
+        {
+            this->otherStructures.erase(coordinates);
+        }
+        structure->destroy();
     }
 }
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }

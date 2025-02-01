@@ -1,12 +1,12 @@
 #ifndef passive_structure_hpp
 #define passive_structure_hpp
 
-#include "Structure.hpp"
+#include "structures/Structure.hpp"
 
 class PassiveStructure : public Structure
 {
 public:
-    PassiveStructure(Texture *texture, int x, int y, const Material *material, bool solid) : Structure(texture, x, y, material, solid) {}
+    PassiveStructure(Texture *texture, int x, int y, int HP, bool solid) : Structure(texture, x, y, HP, solid) {}
 
     void onRightClick() override;
 

@@ -92,16 +92,21 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
     this->collisionManager.init(&this->map, &this->entityManager);
     loadMedia();
+    std::cout << "================= entityManager.init() =================" << std::endl;
     this->entityManager.init(&this->camera, &this->collisionManager, &this->textureManager);
+    std::cout << "================= map.init() =================" << std::endl;
     this->map.init(&this->camera, Tile::getTileSize(), &this->textureManager, &this->perlinNoise, &this->collisionManager);
+    std::cout << "================= mouseManager.init() =================" << std::endl;
     this->mouseManager.init(&this->camera, &this->map, &this->entityManager, &this->collisionManager);
     loadEntities();
+    std::cout << "================= itemManager.init() =================" << std::endl;
     this->itemManager.init();
     loadItems();
 
     this->structureFactory = StructureFactory::getInstance();
     std::vector<std::string> a = this->structureFactory.getRegistredClasses();
-    this->guiManager.init(this->window, this->renderer, &this->textureManager, &this->structureFactory);
+    std::cout << "================= guiManager.init() =================" << std::endl;
+    this->guiManager.init(this->window, this->renderer, &this->textureManager, &this->structureFactory, &this->mouseManager);
 }
 
 void Game::run()
@@ -199,6 +204,7 @@ void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uin
 }
 void Game::loadMedia()
 {
+    std::cout << "================= Game::LoadMedia() =================" << std::endl;
     // textures
     this->textureManager.init(this->renderer);
     this->backgroundTexture = this->textureManager.getTexture("BACKGROUND");
@@ -210,11 +216,13 @@ void Game::loadMedia()
 }
 void Game::loadEntities()
 {
+    std::cout << "================= Game::LoadEntities() =================" << std::endl;
     this->entityManager.loadEntities();
     this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100);
     this->entityManager.addEntity(this->player);
 }
 void Game::loadItems()
 {
+    std::cout << "================= Game::LoadItems() =================" << std::endl;
     this->itemManager.load();
 }

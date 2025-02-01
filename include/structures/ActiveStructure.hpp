@@ -1,7 +1,8 @@
 #ifndef active_structure_hpp
 #define active_structure_hpp
 
-#include "Structure.hpp"
+#include "structures/Structure.hpp"
+#include "structures/IUpdatable.hpp"
 #include <vector>
 
 class EntityManager;
@@ -11,14 +12,13 @@ class Action;
 class Faction;
 class TickManager;
 
-class ActiveStructure : public Structure
+class ActiveStructure : public Structure, public IUpdatable
 {
 public:
     ActiveStructure();
-    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, SDL_Rect hitBox, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager);
+    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, int x, int y, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, collisionManager(collisionManager), entityManager(entityManager), faction(faction), tickManager(tickManager) {};
     ~ActiveStructure();
 
-    virtual void update() = 0;
     void onLeftClick() override;
 
 protected:

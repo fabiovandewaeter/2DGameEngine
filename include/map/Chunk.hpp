@@ -22,7 +22,6 @@ class Faction;
 class Chunk
 {
 public:
-    //Chunk(int positionX, int positionY, int tileSize, Map *map, std::vector<Texture *> *tileTextures, std::vector<Texture *> *passiveStructureTextures, std::vector<Texture *> *activeStructureTextures, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
@@ -48,7 +47,8 @@ private:
     int tileSize;
 
     Map *map;
-    std::unordered_map<std::string, Structure *> allStructures;
+    std::unordered_map<std::string, Structure *> updatableStructures;
+    std::unordered_map<std::string, Structure *> otherStructures;
 
     int positionX, positionY;
     SDL_Rect box;
