@@ -17,9 +17,9 @@ void Structure::render(Camera *camera)
 
 void Structure::update() {}
 void Structure::destroy() { delete this; }
-void Structure::onCollision(Entity *entity) { std::cout << "Structure#onCollision()" << std::endl; }
-void Structure::onLeftClick() { std::cout << "fait rien LEFT" << std::endl; }
-void Structure::onRightClick() { std::cout << "fait rien RIGHT" << std::endl; }
+void Structure::onCollision(Entity *entity) { std::cout << "Structure#onCollision() does nothing" << std::endl; }
+void Structure::onLeftClick() { std::cout << "Structure::onLeftClick() does nothing" << std::endl; }
+void Structure::onRightClick() { std::cout << "Structure::onRightClick() does nothing" << std::endl; }
 
 SDL_Rect Structure::getHitBox() { return this->hitBox; }
 int Structure::getHP() { return this->HP; }

@@ -38,6 +38,7 @@ void Entity::move(Map *map)
     {
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->hitBox.x = tempRect.x;
 
@@ -65,13 +66,13 @@ void Entity::kill()
 }
 void Entity::onCollision(Entity *entity)
 {
-    std::cout << "Entity#onCollision()" << std::endl;
+    std::cout << "Entity#onCollision() does nothing" << std::endl;
 }
 void Entity::hit(int damage)
 {
     this->HP -= damage;
 }
-void Entity::onLeftClick() { std::cout << "fait rien RIGHT" << std::endl; }
+void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
 
 void Entity::setVelocity(int velocityX, int velocityY)

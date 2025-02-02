@@ -7,15 +7,7 @@
 #include "systems/game_objects/EntityManager.hpp"
 #include "entities/Player.hpp"
 
-Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise)
-{
-    this->tileSize = tileSize;
-    this->textureManager = textureManager;
-    this->perlinNoise = perlinNoise;
-    this->collisionManager = new CollisionManager(this);
-    this->entityManager = new EntityManager(this);
-    loadChunks();
-}
+Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise) : tileSize(tileSize), textureManager(textureManager), perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)) { loadChunks(); }
 Map::~Map()
 {
     for (auto &pair : this->allChunks)
@@ -98,7 +90,7 @@ bool Map::isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect) { return 
 bool Map::isRectangleInCollisionWithSolidStructure(SDL_Rect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
 SDL_Rect Map::handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY)
 {
-    this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
+    return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
 }
 void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
 void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }

@@ -28,9 +28,9 @@ public:
     Player *getPlayer();
 
 private:
-    Player *player;
-    std::vector<Entity *> entities;
     Map *map;
+    std::vector<Entity *> entities;
+    Player *player;
 };
 
 #endif

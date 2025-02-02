@@ -60,7 +60,7 @@ SDL_Rect CollisionManager::handleCollisionsForEntity(Entity *entity, int newPosX
     ZoneScoped;
 #endif
     // entities
-    std::vector<Entity *> entities = this->entityManager->getPotentialEntities(entity);
+    std::vector<Entity *> entities = this->map->getEntityManager()->getPotentialEntities(entity);
     int size = entities.size();
     for (int i = 0; i < size; i++)
     {

@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <iostream>
 
 #include "map/Map.hpp"
 
@@ -12,7 +13,7 @@ class Entity;
 class CollisionManager
 {
 public:
-    CollisionManager(Map *map) : map(map), entityManager(map->getEntityManager()) {};
+    CollisionManager(Map *map) : map(map) {};
     ~CollisionManager();
 
     // returns true if there is a collision
@@ -24,7 +25,6 @@ public:
 
 private:
     Map *map;
-    EntityManager *entityManager;
 };
 
 #endif
