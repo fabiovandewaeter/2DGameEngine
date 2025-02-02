@@ -14,14 +14,7 @@
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
-Game::Game()
-{
-}
-Game::~Game()
-{
-}
-
-void Game::init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync)
+Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync)
 {
     this->fixedFPS = 60;
     this->fixedUPS = 60;
@@ -97,8 +90,13 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
     this->structureFactory = StructureFactory::getInstance();
     std::vector<std::string> a = this->structureFactory.getRegistredClasses();
+    std::cout << "================= new MouseManager() =================" << std::endl;
+    this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
     this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->structureFactory, this->mouseManager);
+}
+Game::~Game()
+{
 }
 
 void Game::run()
@@ -146,7 +144,6 @@ void Game::render()
 
     this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight()));
     this->player->render();
-    this->map->render(this->player);
     this->guiManager->render(this->player);
 
     SDL_RenderPresent(this->renderer);

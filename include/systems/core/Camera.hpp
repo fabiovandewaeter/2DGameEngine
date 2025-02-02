@@ -10,7 +10,7 @@
 class Camera
 {
 public:
-    Camera(int width, int height, double minScale, double maxScale, int positionX, int positionY) : width(width), height(height), minScale(minScale), maxScale(maxScale), positionX(positionX), positionY(positionY) {};
+    Camera(int width, int height, double minScale, double maxScale, int positionX, int positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocity(1), sprintVelocity(50) {};
     ~Camera();
 
     void handleEvents(SDL_Event *event);

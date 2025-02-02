@@ -1,7 +1,5 @@
 #include "Game.hpp"
 
-Game game;
-
 int main(int argc, char *argv[])
 {
     unsigned int width = 800;
@@ -30,12 +28,9 @@ int main(int argc, char *argv[])
     std::cout << "UPS: " << UPS << std::endl;
     std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
 
-    game.init("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false, vsync);
-    game.setUPS(UPS);
-
-    // Game loop
-    game.run();
-
-    game.clean();
+    Game *game = new Game("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false, vsync);
+    game->setUPS(UPS);
+    game->run(); // Game loop
+    game->clean();
     return 0;
 }

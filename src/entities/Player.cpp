@@ -1,6 +1,7 @@
 #include "entities/Player.hpp"
 
 #include "systems/core/Camera.hpp"
+#include "map/Map.hpp"
 
 // 1 if false and sprintVelocity if true
 int sprint2 = 1;
@@ -77,6 +78,7 @@ void Player::update()
 }
 void Player::render()
 {
+    this->map->render(this);
     Entity::render(this->camera);
 }
 

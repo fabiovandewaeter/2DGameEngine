@@ -25,8 +25,6 @@ public:
     ~Map();
 
     void loadChunks();
-    void generateChunk(int positionX, int positionY);
-    void loadSquareMap(int size);
     void render(Player *player);
     void update();
 
@@ -53,6 +51,8 @@ private:
     EntityManager *entityManager;
 
     void convertToChunkCoordinates(int &x, int &y);
+    void generateChunk(int positionX, int positionY);
+    void loadSquareMap(int size);
 };
 
 #endif

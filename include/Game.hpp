@@ -35,10 +35,9 @@ class Map;
 class Game
 {
 public:
-    Game();
+    Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
     ~Game();
 
-    void init(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
     void run();
     void handleEvents();
     void update();

@@ -20,6 +20,7 @@ public:
 
     void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
     void update();
+    // render the map and the player
     void render();
 
     void setPosition(int x, int y);
