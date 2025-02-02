@@ -120,7 +120,7 @@ void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structur
     };
     this->mouseManager->setClickOnEmptyTileStrategy(newFunction);
 }
-
+FAIRE QUE LES ATTRIBUTS SOIENT DECIDES A LA POSE EN PASSANT LE PLAYER EN PARAMETRE ET C'EST LA STRUCTURE QUI RECUPERE CE DONT ELLE A BESOIN ?
 bool GUIManager::isMouseOverGUI(int x, int y)
 {
     mu_Container *hoveredContainer = this->ctx.hover_root;
