@@ -88,9 +88,8 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
     SDL_FreeSurface(iconSurface);
 
     loadMedia();
-    std::cout << "================= map.init() =================" << std::endl;
+    std::cout << "================= new Map() =================" << std::endl;
     this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
-    std::cout << "================= mouseManager.init() =================" << std::endl;
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
     this->itemFactory.init();
@@ -98,7 +97,7 @@ void Game::init(std::string title, int xpos, int ypos, int width, int height, bo
 
     this->structureFactory = StructureFactory::getInstance();
     std::vector<std::string> a = this->structureFactory.getRegistredClasses();
-    std::cout << "================= guiManager.init() =================" << std::endl;
+    std::cout << "================= new GUIManager() =================" << std::endl;
     this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->structureFactory, this->mouseManager);
 }
 
@@ -125,7 +124,7 @@ void Game::handleEvents()
         {
             this->running = false;
         }
-        this->player->handleEvents(&this->event);
+        this->player->handleEvents(&this->event, this->guiManager, this->mouseManager);
     }
 }
 
@@ -165,6 +164,7 @@ void Game::clean()
     IMG_Quit();
     SDL_Quit();
 }
+
 bool Game::isRunning() { return this->running; }
 void Game::setFPS(unsigned int fps) { this->fixedFPS = fps; }
 void Game::setUPS(unsigned int ups)

@@ -6,7 +6,7 @@
 int sprint2 = 1;
 int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
-void Player::handleEvents(SDL_Event *event)
+void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager)
 {
     this->camera->handleEvents(event);
     // If a key was pressed
@@ -65,9 +65,9 @@ void Player::handleEvents(SDL_Event *event)
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
         this->velY = sprint2 * (downVelY2 - upVelY2);
     }
-    if (!this->guiManager->handleEvents(event))
+    if (!guiManager->handleEvents(event))
     {
-        this->mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
+        mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
 void Player::update()

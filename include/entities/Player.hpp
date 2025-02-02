@@ -18,7 +18,7 @@ public:
     Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP), map(map), camera(camera) {};
     ~Player();
 
-    void handleEvents(SDL_Event *event);
+    void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
     void update();
     void render();
 
@@ -29,8 +29,6 @@ public:
 private:
     Map *map;
     Camera *camera;
-    GUIManager *guiManager;
-    MouseManager *mouseManager;
 };
 
 #endif

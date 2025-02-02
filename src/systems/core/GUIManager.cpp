@@ -39,8 +39,8 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
 
     r_init(window, renderer);
     mu_init(&this->ctx);
-    ctx.text_width = text_width;
-    ctx.text_height = text_height;
+    this->ctx.text_width = text_width;
+    this->ctx.text_height = text_height;
     this->renderer = renderer;
     this->textureManager = textureManager;
     this->structureFactory = structureFactory;
@@ -50,7 +50,6 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
     loadIcons();
     loadConfiguration();
 }
-
 
 void GUIManager::loadConfiguration()
 {
