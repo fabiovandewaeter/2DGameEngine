@@ -2,12 +2,15 @@
 #define active_structure_hpp
 
 #include "structures/Structure.hpp"
-#include "structures/IUpdatable.hpp"
+
 #include <vector>
+
+#include "structures/IUpdatable.hpp"
+#include "entities/Player.hpp"
+#include "map/Map.hpp"
 
 class EntityManager;
 class TextureManager;
-class Map;
 class Action;
 class Faction;
 class TickManager;
@@ -16,13 +19,14 @@ class ActiveStructure : public Structure, public IUpdatable
 {
 public:
     ActiveStructure();
-    ActiveStructure(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, int x, int y, unsigned int HP, bool solid, Faction *faction, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, collisionManager(collisionManager), entityManager(entityManager), faction(faction), tickManager(tickManager) {};
+    // player is the Player that place the ActiveStructure
+    ActiveStructure(Texture *texture, int x, int y, unsigned int HP, bool solid, Player *player, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, entityManager(player->getMap()->getEntityManager()), faction(faction), tickManager(tickManager) {};
+    //ActiveStructure(Texture *texture, int x, int y, unsigned int HP, bool solid, EntityManager *entityManager, Faction *faction, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, entityManager(entityManager), faction(faction), tickManager(tickManager) {};
     ~ActiveStructure();
 
     void onLeftClick() override;
 
 protected:
-    CollisionManager *collisionManager;
     EntityManager *entityManager;
     bool active;
     std::vector<Action *> actions;
