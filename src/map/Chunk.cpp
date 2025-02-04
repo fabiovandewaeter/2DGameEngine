@@ -223,10 +223,7 @@ void Chunk::addStructure(Structure *structure)
         }
     }
 }
-void Chunk::addWall(int x, int y)
-{
-    addStructure(new Wall(this->textureManager->getTexture("Wall"), x, y));
-}
+
 void Chunk::destroyStructure(int x, int y)
 {
     if (isStructure(x, y))

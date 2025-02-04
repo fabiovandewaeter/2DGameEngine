@@ -6,8 +6,8 @@
 class Core : public ActiveStructure
 {
 public:
-    Core() : ActiveStructure(nullptr, nullptr, nullptr, -1, -1, 100, true, nullptr, nullptr) {}
-    Core(Texture *texture, CollisionManager *collisionManager, EntityManager *entityManager, int x, int y, unsigned int HP, Faction *faction, TickManager *tickManager) : ActiveStructure(texture, collisionManager, entityManager, x, y, HP, true, faction, tickManager) {};
+    Core() : ActiveStructure(nullptr, -1, -1, 100, true, nullptr, nullptr) {}
+    Core(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
 
     void update() override;
 

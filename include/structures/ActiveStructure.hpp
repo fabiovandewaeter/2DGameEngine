@@ -20,8 +20,7 @@ class ActiveStructure : public Structure, public IUpdatable
 public:
     ActiveStructure();
     // player is the Player that place the ActiveStructure
-    ActiveStructure(Texture *texture, int x, int y, unsigned int HP, bool solid, Player *player, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, entityManager(player->getMap()->getEntityManager()), faction(faction), tickManager(tickManager) {};
-    //ActiveStructure(Texture *texture, int x, int y, unsigned int HP, bool solid, EntityManager *entityManager, Faction *faction, TickManager *tickManager) : Structure{texture, x, y, HP, solid}, entityManager(entityManager), faction(faction), tickManager(tickManager) {};
+    ActiveStructure(Texture *texture, int x, int y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : Structure{texture, x, y, HP, solid, placedBy}, entityManager(placedBy->getMap()->getEntityManager()), faction(faction), tickManager(tickManager) {};
     ~ActiveStructure();
 
     void onLeftClick() override;

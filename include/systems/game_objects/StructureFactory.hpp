@@ -9,15 +9,16 @@
 
 #include "structures/Structure.hpp"
 
+class TickManager;
+
 class StructureFactory
 {
 public:
     StructureFactory();
     ~StructureFactory();
 
-    void registerClass(const std::string className, std::function<Structure *()> constructor);
-    std::function<Structure *()> getConstructor(std::string className);
-    Structure *create(std::string className);
+    void registerClass(const std::string className, std::function<Structure *(Texture *, int, int, Player *, TickManager *)> constructor);
+    std::function<Structure *(Texture *, int, int, Player *, TickManager *)> getConstructor(std::string className);
     std::vector<std::string> getRegistredClasses();
 
     static StructureFactory &getInstance()
@@ -27,18 +28,18 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, std::function<Structure *()>> registry;
+    std::unordered_map<std::string, std::function<Structure *(Texture *, int, int, Player *, TickManager *)>> registry;
 };
 
 // to add at the end of every Structure subclasses .cpp files
-#define REGISTER_CLASS(classname)                              \
-    static struct classname##Registrar                         \
-    {                                                          \
-        classname##Registrar()                                 \
-        {                                                      \
-            StructureFactory::getInstance().registerClass(     \
-                #classname, []() { return new classname(); }); \
-        }                                                      \
+#define REGISTER_CLASS(classname)                                                                                                                                             \
+    static struct classname##Registrar                                                                                                                                        \
+    {                                                                                                                                                                         \
+        classname##Registrar()                                                                                                                                                \
+        {                                                                                                                                                                     \
+            StructureFactory::getInstance().registerClass(                                                                                                                    \
+                #classname, [](Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) { return new classname(texture, x, y, placedBy, tickManager); }); \
+        }                                                                                                                                                                     \
     } global_##classname##_registrar;
 
 #endif

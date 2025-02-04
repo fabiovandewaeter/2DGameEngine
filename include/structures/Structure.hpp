@@ -14,12 +14,15 @@ class Camera;
 class Entity;
 class CollisionManager;
 class Map;
+class Player;
+class TickManager;
 
 class Structure
 {
 public:
-    Structure() : Structure(nullptr, -1, -1, 0, false) {}
-    Structure(Texture *texture, int x, int y, int HP, bool solid) : texture(texture), hitBox({x, y, getTileSize(), getTileSize()}), HP(HP), solid(solid), destroyed(false) {}
+    Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
+    Structure(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : Structure(texture, x, y, 0, true, placedBy, tickManager) {}
+    Structure(Texture *texture, int x, int y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), hitBox({x, y, getTileSize(), getTileSize()}), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();

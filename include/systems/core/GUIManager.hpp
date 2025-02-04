@@ -14,6 +14,7 @@ extern "C"
 }
 
 class TextureManager;
+class TickManager;
 class StructureFactory;
 class Texture;
 class MouseManager;
@@ -22,7 +23,7 @@ class Player;
 class GUIManager
 {
 public:
-    GUIManager(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager);
+    GUIManager(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager);
     ~GUIManager();
 
     bool isMouseOverGUI(int x, int y);
@@ -32,6 +33,7 @@ public:
 private:
     SDL_Renderer *renderer;
     TextureManager *textureManager;
+    TickManager *tickManager;
     StructureFactory *structureFactory;
     std::vector<std::string> structureNamesList;
     std::unordered_map<std::string, int> structureTextureNameToId;
@@ -44,7 +46,7 @@ private:
     void loadConfiguration();
     void loadIcons();
 
-    void changeMouseManagerClickOnEmptyTileStrategy(std::string structureName);
+    void changeMouseManagerClickOnEmptyTileStrategy(std::string structureName, Player *placedBy);
 
     void test_window(mu_Context *ctx, Player *player);
     void process_frame(mu_Context *ctx, Player *player);

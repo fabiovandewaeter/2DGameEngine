@@ -93,7 +93,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     std::cout << "================= new MouseManager() =================" << std::endl;
     this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
-    this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->structureFactory, this->mouseManager);
+    this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
 }
 Game::~Game()
 {

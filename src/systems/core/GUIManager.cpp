@@ -23,7 +23,7 @@ static int text_width(mu_Font font, const char *text, int len)
     return len * 5;
 }
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
-GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, StructureFactory *structureFactory, MouseManager *mouseManager)
+GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager)
 {
     this->button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     this->button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -43,6 +43,7 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
     this->ctx.text_height = text_height;
     this->renderer = renderer;
     this->textureManager = textureManager;
+    this->tickManager = tickManager;
     this->structureFactory = structureFactory;
     this->structureNamesList = this->structureFactory->getRegistredClasses();
     this->mouseManager = mouseManager;
@@ -98,7 +99,7 @@ void GUIManager::test_window(mu_Context *ctx, Player *player)
                 if (mu_button_ex(ctx, this->structureNamesList[i].c_str(), 0, MU_OPT_ALIGNCENTER))
                 {
                     std::cout << "Button pressed : " << this->structureNamesList[i] << std::endl;
-                    changeMouseManagerClickOnEmptyTileStrategy(structureName);
+                    changeMouseManagerClickOnEmptyTileStrategy(structureName, player);
                 }
             }
         }
@@ -106,13 +107,14 @@ void GUIManager::test_window(mu_Context *ctx, Player *player)
     }
 }
 
-void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structureName)
+void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structureName, Player *placedBy)
 {
-    std::function<Structure *()> constructor = this->structureFactory->getConstructor(structureName);
+    std::function<Structure *(Texture *, int, int, Player *, TickManager *)> constructor = this->structureFactory->getConstructor(structureName);
     Texture *texture = this->textureManager->getTexture(structureName);
-    std::function<Structure *(int, int)> newFunction = [constructor, texture](int i, int j) -> Structure *
+    TickManager *tempoTickManager= this->tickManager;
+    std::function<Structure *(int, int)> newFunction = [constructor, texture, placedBy, tempoTickManager](int i, int j) -> Structure *
     {
-        Structure *structure = constructor();
+        Structure *structure = constructor(texture, i, j, placedBy, tempoTickManager);
         structure->setTexture(texture);
         structure->setX(i);
         structure->setY(j);
@@ -120,7 +122,7 @@ void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structur
     };
     this->mouseManager->setClickOnEmptyTileStrategy(newFunction);
 }
-FAIRE QUE LES ATTRIBUTS SOIENT DECIDES A LA POSE EN PASSANT LE PLAYER EN PARAMETRE ET C'EST LA STRUCTURE QUI RECUPERE CE DONT ELLE A BESOIN ?
+
 bool GUIManager::isMouseOverGUI(int x, int y)
 {
     mu_Container *hoveredContainer = this->ctx.hover_root;

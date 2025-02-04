@@ -37,7 +37,6 @@ public:
     Structure *getStructure(int x, int y);
     bool isStructure(int x, int y);
     void addStructure(Structure *structure);
-    void addWall(int x, int y);
     void destroyStructure(int x, int y);
     void setFaction(Faction *faction);
 
