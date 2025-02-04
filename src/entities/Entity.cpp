@@ -1,44 +1,27 @@
 #include "entities/Entity.hpp"
 
-#include "systems/CollisionManager.hpp"
 #include "systems/core/Camera.hpp"
 #include "Texture.hpp"
 #include "entities/states/State.hpp"
 #include "map/Map.hpp"
 
-Entity::Entity(Texture *texture, SDL_Rect hitBox, int HP)
-{
-    this->texture = texture;
-    this->hitBox = hitBox;
-    this->HP = HP;
-    this->velX = 0;
-    this->velY = 0;
-    this->state = nullptr;
-}
-Entity::~Entity() {}
+#include "entities/behaviors/WarriorBehavior.hpp"
 
 void Entity::update(Map *map)
 {
+    Behavior *behavior = new WarriorBehavior();
+    behavior->execute();
     move(map);
-}
-
-bool Entity::canMove()
-{
-    // EXAMPLE: check if it is stunned ...
-    return true;
-}
-bool Entity::isMoving()
-{
-    return this->velX != 0 || this->velY != 0;
 }
 
 void Entity::move(Map *map)
 {
     if (canMove() && isMoving())
     {
+        std::cout << "Entity::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->hitBox.x = tempRect.x;
 
@@ -74,7 +57,17 @@ void Entity::hit(int damage)
 }
 void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
+bool Entity::canMove()
+{
+    // EXAMPLE: check if it is stunned ...
+    return true;
+}
+bool Entity::isMoving()
+{
+    return this->velX != 0 || this->velY != 0;
+}
 
+// setter
 void Entity::setVelocity(int velocityX, int velocityY)
 {
     this->velX = velocityX;
@@ -84,6 +77,7 @@ void Entity::setVelocityX(int velocityX) { this->velX = velocityX; }
 void Entity::setVelocityY(int velocityY) { this->velY = velocityY; }
 void Entity::setFaction(Faction *faction) { this->faction = faction; }
 
+// getter
 int Entity::getPositionX() { return this->hitBox.x; }
 int Entity::getPositionY() { return this->hitBox.y; }
 int Entity::getCenterX() { return this->hitBox.w / 2; }

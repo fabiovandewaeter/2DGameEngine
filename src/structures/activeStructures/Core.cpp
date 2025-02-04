@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "systems/CollisionManager.hpp"
 #include "systems/game_objects/EntityManager.hpp"
 #include "systems/game_objects/StructureFactory.hpp"
 #include "systems/core/TextureManager.hpp"
@@ -30,7 +29,7 @@ void Core::spawnEntities()
         bool finished = false;
         while (i < size && !finished)
         {
-            if (!this->collisionManager->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
+            if (!this->map->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
             {
                 this->entityManager->addEntity(this->entityManager->generateDefaultEntity(potentialSpawnTiles[i]));
                 finished = true;

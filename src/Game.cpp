@@ -199,11 +199,11 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    // CAMERA ZOOM NEED FIX
-    std::cout << "camera zoom need fix" << std::endl;
     this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
-    // CAMERA ZOOM NEED FIX
     this->map->addEntity(this->player);
+
+    // test
+    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100));
 }
 void Game::loadItems()
 {

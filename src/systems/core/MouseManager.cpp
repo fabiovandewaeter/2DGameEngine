@@ -4,7 +4,6 @@
 #include "map/Chunk.hpp"
 #include "systems/core/Camera.hpp"
 #include "systems/game_objects/EntityManager.hpp"
-#include "systems/CollisionManager.hpp"
 #include "structures/Structure.hpp"
 #include "entities/Entity.hpp"
 #include "entities/Player.hpp"

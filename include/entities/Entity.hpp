@@ -14,19 +14,19 @@ class Map;
 class Entity
 {
 public:
-    Entity(Texture *texture, SDL_Rect hitBox, int HP);
-    ~Entity();
+    Entity(Texture *texture, SDL_Rect hitBox, int HP) : texture(texture), hitBox(hitBox), HP(HP), velX(0), velY(0), state(nullptr) {};
+    ~Entity() = default;
 
     void update(Map *map);
-    bool canMove();
-    bool isMoving();
     void move(Map *map);
     void render(Camera *camera);
     void kill();
     void onCollision(Entity *);
     void hit(int damage);
-    virtual void onLeftClick();
-    virtual void onRightClick();
+    void onLeftClick();
+    void onRightClick();
+    bool canMove();
+    bool isMoving();
 
     void setVelocity(int velX, int velY);
     void setVelocityX(int velocityX);

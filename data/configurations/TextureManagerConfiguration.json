@@ -58,7 +58,11 @@
     "entityTextures": [
         {
             "name": "Player",
-            "path": "assets/img/Player.png"
+            "path": "assets/img/entities/Player.png"
+        },
+        {
+            "name": "Warrior",
+            "path": "assets/img/entities/Warrior.png"
         }
     ]
 }
