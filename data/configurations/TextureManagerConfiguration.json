@@ -30,7 +30,7 @@
         },
         {
             "name": "Core",
-            "path": "assets/img/structures/activeStructures/core.png"
+            "path": "assets/img/structures/activeStructures/Core.png"
         },
         {
             "name": "Turret",
@@ -58,7 +58,7 @@
     "entityTextures": [
         {
             "name": "Player",
-            "path": "assets/img/player.png"
+            "path": "assets/img/Player.png"
         }
     ]
 }
