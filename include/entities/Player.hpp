@@ -28,6 +28,7 @@ public:
     Camera *getCamera();
 
 private:
+    // the map the Player is currently on
     Map *map;
     Camera *camera;
 };
