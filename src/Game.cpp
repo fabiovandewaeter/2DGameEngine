@@ -196,6 +196,8 @@ void Game::loadMedia()
     this->audioManager.loadMedia();
     this->musics = this->audioManager.getMusic();
 }
+#include "entities/behaviors/WarriorBehavior.hpp"
+#include "entities/behaviors/ExplorerBehavior.hpp"
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
@@ -203,7 +205,8 @@ void Game::loadEntities()
     this->map->addEntity(this->player);
 
     // test
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100));
+    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, new WarriorBehavior()));
+    this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

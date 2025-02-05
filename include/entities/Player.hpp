@@ -15,7 +15,7 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP), map(map), camera(camera) {};
+    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP, nullptr), map(map), camera(camera) {};
     ~Player();
 
     void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);

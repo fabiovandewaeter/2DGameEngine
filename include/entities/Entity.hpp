@@ -10,11 +10,12 @@ class State;
 class Camera;
 class Faction;
 class Map;
+class Behavior;
 
 class Entity
 {
 public:
-    Entity(Texture *texture, SDL_Rect hitBox, int HP) : texture(texture), hitBox(hitBox), HP(HP), velX(0), velY(0), state(nullptr) {};
+    Entity(Texture *texture, SDL_Rect hitBox, int HP, Behavior *behavior) : texture(texture), hitBox(hitBox), HP(HP), velX(0), velY(0), state(nullptr), behavior(behavior) {};
     ~Entity() = default;
 
     void update(Map *map);
@@ -47,6 +48,7 @@ protected:
     State *state;
     int HP;
     Faction *faction;
+    Behavior *behavior;
 };
 
 #endif

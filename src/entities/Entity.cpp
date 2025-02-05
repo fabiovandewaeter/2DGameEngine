@@ -9,8 +9,10 @@
 
 void Entity::update(Map *map)
 {
-    Behavior *behavior = new WarriorBehavior();
-    behavior->execute();
+    if (this->behavior != nullptr)
+    {
+        this->behavior->execute();
+    }
     move(map);
 }
 
@@ -43,7 +45,6 @@ void Entity::render(Camera *camera)
 }
 void Entity::kill()
 {
-
     this->HP = 0;
     this->state = nullptr;
 }
