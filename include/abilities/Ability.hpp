@@ -9,11 +9,11 @@ class Pattern;
 class Effect;
 class TickManager;
 
-class Action
+class Ability
 {
 public:
-    Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager);
-    ~Action();
+    Ability(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager);
+    ~Ability();
 
     void apply(int x, int y);
 
