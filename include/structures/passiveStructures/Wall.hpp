@@ -10,6 +10,7 @@ public:
     Wall(Texture *texture, int x, int y, Player *player, TickManager *tickManager) : Structure(texture, x, y, 100, true, player, tickManager) {}
 
     void onRightClick() override;
+    std::string getClassName() override { return "Wall"; }
 
 private:
 };

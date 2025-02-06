@@ -46,6 +46,7 @@ public:
         std::cout << "ERROR: default Structure::getTexture() should not be used" << std::endl;
         return -1;
     };
+    virtual std::string getClassName() = 0;
 
 protected:
     Texture *texture;

@@ -1,4 +1,4 @@
-#include "actions/effects/DamageEffect.hpp"
+#include "abilities/effects/DamageEffect.hpp"
 
 #include "iostream"
 #include "entities/Entity.hpp"

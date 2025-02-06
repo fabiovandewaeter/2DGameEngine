@@ -54,10 +54,8 @@ endif
 # Main target
 all: $(TARGET)
 ifeq ($(OS),Windows_NT)
-	scripts\generateStructuresListJSON.bat
 	mingw32-make run
 else
-	sh scripts/generateStructuresListJSON.sh
 	make run
 endif
 
@@ -70,7 +68,7 @@ else
 endif
 	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp include/%.hpp
 ifeq ($(PLATFORM),windows)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else

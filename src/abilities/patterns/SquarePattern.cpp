@@ -1,4 +1,4 @@
-#include "actions/patterns/SquarePattern.hpp"
+#include "abilities/patterns/SquarePattern.hpp"
 
 #include <iostream>
 #include "systems/game_objects/EntityManager.hpp"

@@ -11,7 +11,7 @@
 
 class EntityManager;
 class TextureManager;
-class Action;
+class Ability;
 class Faction;
 class TickManager;
 
@@ -29,7 +29,7 @@ protected:
     Map *map;
     EntityManager *entityManager;
     bool active;
-    std::vector<Action *> actions;
+    std::vector<Ability *> abilities;
     Faction *faction;
     TickManager *tickManager;
 };

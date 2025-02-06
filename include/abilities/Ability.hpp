@@ -1,5 +1,5 @@
-#ifndef action_hpp
-#define action_hpp
+#ifndef ability_hpp
+#define ability_hpp
 
 #include <vector>
 #include <SDL2/SDL_stdinc.h>

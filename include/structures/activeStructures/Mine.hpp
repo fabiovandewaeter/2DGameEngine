@@ -18,6 +18,7 @@ public:
 
     void update();
     std::tuple<Item *, int> getInventory();
+    std::string getClassName() override { return "Mine"; }
 
 private:
     Item *minedResource;

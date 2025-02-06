@@ -8,12 +8,11 @@ class Entity;
 class Effect
 {
 public:
-    Effect();
-    virtual ~Effect();
+    ~Effect() = default;
 
     virtual void applyEffect(Entity *entity) = 0;
 
-protected:
+private:
 };
 
 #endif

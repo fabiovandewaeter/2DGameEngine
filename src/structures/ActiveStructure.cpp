@@ -1,13 +1,13 @@
 #include "structures/ActiveStructure.hpp"
 
-#include "actions/Action.hpp"
+#include "abilities/Ability.hpp"
 
 ActiveStructure::~ActiveStructure()
 {
-    int size = this->actions.size();
+    int size = this->abilities.size();
     for (int i = 0; i < size; i++)
     {
-        delete this->actions[i];
+        delete this->abilities[i];
     }
 }
 
