@@ -158,7 +158,7 @@ void Chunk::convertToTileCoordinates(int &x, int &y)
 // returns the tile that contains the coordinates
 Tile *Chunk::getTile(int x, int y)
 {
-    convertToTileCoordinates(x, y);
+    //convertToTileCoordinates(x, y);
     return this->allTiles[SIZE * x + y];
 }
 Structure *Chunk::getStructure(int x, int y)
@@ -189,8 +189,7 @@ Structure *Chunk::getStructure(int x, int y)
 
 bool Chunk::isStructure(int x, int y)
 {
-    convertToTileCoordinates(x, y);
-    //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    //convertToTileCoordinates(x, y);
     std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
@@ -217,10 +216,9 @@ void Chunk::addStructure(Structure *structure)
     int y = hitBox.y;
     if (!isStructure(x, y))
     {
-        convertToTileCoordinates(x, y);
+        //convertToTileCoordinates(x, y);
         SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
-        //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
         std::pair<int, int> coordinates = {x, y};
 
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
@@ -238,8 +236,7 @@ void Chunk::destroyStructure(int x, int y)
 {
     if (isStructure(x, y))
     {
-        convertToTileCoordinates(x, y);
-        //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        //convertToTileCoordinates(x, y);
         std::pair<int, int> coordinates = {x, y};
 
         Structure *structure = getStructure(x, y);

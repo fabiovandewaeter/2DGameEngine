@@ -71,6 +71,7 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 		{
 			if (this->clickOnEmptyTileStrategy != nullptr)
 			{
+    			convertToTileCoordinates(x, y); VOIR CAR J'AI SUPPRIME DE L'AUTRE COTE
 				Structure *newStructure = this->clickOnEmptyTileStrategy(i, j);
 				chunk->addStructure(newStructure);
 			}
