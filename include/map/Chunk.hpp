@@ -9,6 +9,17 @@
 #include <unordered_map>
 #include <cmath>
 
+#include <functional> // for std::hash
+
+struct hash_pair
+{
+    template <typename T1, typename T2>
+    std::size_t operator()(const std::pair<T1, T2> &p) const
+    {
+        return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
+    }
+};
+
 class Map;
 class TextureManager;
 class Texture;
@@ -46,8 +57,8 @@ private:
     int tileSize;
 
     Map *map;
-    std::unordered_map<std::string, Structure *> updatableStructures;
-    std::unordered_map<std::string, Structure *> otherStructures;
+    std::unordered_map<std::pair<int, int>, Structure *, hash_pair> updatableStructures;
+    std::unordered_map<std::pair<int, int>, Structure *, hash_pair> otherStructures;
 
     int positionX, positionY;
     SDL_Rect box;

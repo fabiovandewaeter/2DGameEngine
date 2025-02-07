@@ -8,6 +8,9 @@
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"
 
+#ifdef PROFILER
+#include "tracy_profiler/tracy/Tracy.hpp"
+#endif
 Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
@@ -109,8 +112,8 @@ void Chunk::render(Camera *camera)
 
 void Chunk::update()
 {
-    std::vector<std::string> updatableStructuresToRemove;
-    std::vector<std::string> otherStructuresToRemove;
+    std::vector<std::pair<int, int>> updatableStructuresToRemove;
+    std::vector<std::pair<int, int>> otherStructuresToRemove;
     for (auto &[coords, structure] : this->updatableStructures)
     {
         structure->update();
@@ -160,8 +163,12 @@ Tile *Chunk::getTile(int x, int y)
 }
 Structure *Chunk::getStructure(int x, int y)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
     if (it != this->updatableStructures.end())
@@ -183,7 +190,8 @@ Structure *Chunk::getStructure(int x, int y)
 bool Chunk::isStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
     if (it != this->updatableStructures.end())
@@ -212,7 +220,9 @@ void Chunk::addStructure(Structure *structure)
         convertToTileCoordinates(x, y);
         SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        std::pair<int, int> coordinates = {x, y};
+
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
             this->updatableStructures[coordinates] = structure;
@@ -229,7 +239,9 @@ void Chunk::destroyStructure(int x, int y)
     if (isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        std::pair<int, int> coordinates = {x, y};
+
         Structure *structure = getStructure(x, y);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {

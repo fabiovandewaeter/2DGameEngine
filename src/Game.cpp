@@ -205,8 +205,8 @@ void Game::loadEntities()
     this->map->addEntity(this->player);
 
     // test
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, new WarriorBehavior()));
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, new ExplorerBehavior()));
+    //this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, new WarriorBehavior()));
+    //this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

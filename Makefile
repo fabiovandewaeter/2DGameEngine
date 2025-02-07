@@ -76,6 +76,14 @@ else
 endif
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
 $(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
 	gcc -c $< -o $@ -I include
 
