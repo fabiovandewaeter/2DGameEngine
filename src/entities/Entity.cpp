@@ -4,8 +4,8 @@
 #include "Texture.hpp"
 #include "entities/states/State.hpp"
 #include "map/Map.hpp"
-
-#include "entities/behaviors/WarriorBehavior.hpp"
+#include "entities/behaviors/Behavior.hpp"
+#include "systems/algorithms/AstarPathFinding.hpp"
 
 void Entity::update(Map *map)
 {

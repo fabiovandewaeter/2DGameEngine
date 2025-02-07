@@ -126,12 +126,24 @@ void Game::handleEvents()
     }
 }
 
+#include "systems/algorithms/AstarPathFinding.hpp"
+
 TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
     this->player->update();
     this->map->update();
+
+    AstarPathFinding *astarPathFinding = new AstarPathFinding();
+    std::vector<SDL_Point> liste;
+    astarPathFinding->findPath(this->map, 0, 0, 1000, 2000, &liste);
+    //liste = astarPathFinding->findPath(this->map, 0, 0, 1000, 2000);
+    int size = liste.size();
+    /*for (int i = 0; i < size; i++)
+    {
+        std::cout << "x: " << liste[i].x << " y: " << liste[i].y << std::endl;
+    }*/
 
     countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
@@ -205,8 +217,8 @@ void Game::loadEntities()
     this->map->addEntity(this->player);
 
     // test
-    //this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, new WarriorBehavior()));
-    //this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, new ExplorerBehavior()));
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, new WarriorBehavior()));
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {
