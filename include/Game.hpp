@@ -10,7 +10,7 @@
 #include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/core/IOManager.hpp"
-#include "systems/PerlinNoise.hpp"
+#include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/AudioManager.hpp"
 #include "systems/core/TickManager.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
@@ -25,8 +25,6 @@ struct TimeData
     Uint64 counterLimiter;
 };
 class Texture;
-class Core;
-class Turret;
 class Player;
 class MouseManager;
 class GUIManager;
