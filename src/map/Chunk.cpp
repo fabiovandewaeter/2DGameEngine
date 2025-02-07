@@ -1,7 +1,7 @@
 #include "map/Chunk.hpp"
 
 #include "map/Tile.hpp"
-#include "systems/PerlinNoise.hpp"
+#include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/Camera.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
 #include "systems/core/TextureManager.hpp"
@@ -158,7 +158,7 @@ void Chunk::convertToTileCoordinates(int &x, int &y)
 // returns the tile that contains the coordinates
 Tile *Chunk::getTile(int x, int y)
 {
-    //convertToTileCoordinates(x, y);
+    convertToTileCoordinates(x, y);
     return this->allTiles[SIZE * x + y];
 }
 Structure *Chunk::getStructure(int x, int y)
@@ -189,7 +189,7 @@ Structure *Chunk::getStructure(int x, int y)
 
 bool Chunk::isStructure(int x, int y)
 {
-    //convertToTileCoordinates(x, y);
+    convertToTileCoordinates(x, y);
     std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
@@ -216,7 +216,7 @@ void Chunk::addStructure(Structure *structure)
     int y = hitBox.y;
     if (!isStructure(x, y))
     {
-        //convertToTileCoordinates(x, y);
+        convertToTileCoordinates(x, y);
         SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
         std::pair<int, int> coordinates = {x, y};
@@ -236,7 +236,7 @@ void Chunk::destroyStructure(int x, int y)
 {
     if (isStructure(x, y))
     {
-        //convertToTileCoordinates(x, y);
+        convertToTileCoordinates(x, y);
         std::pair<int, int> coordinates = {x, y};
 
         Structure *structure = getStructure(x, y);
