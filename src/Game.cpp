@@ -14,12 +14,18 @@
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
-Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync)
+Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
 {
+    std::cout << "\n======================================================" << std::endl;
     this->fixedFPS = 60;
     this->fixedUPS = 60;
     this->screenWidth = width;
     this->screenHeight = height;
+    setUPS(UPS);
+    std::cout << "Window width: " << width << std::endl;
+    std::cout << "Window height: " << height << std::endl;
+    std::cout << "UPS: " << UPS << std::endl;
+    std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
     // initialize window
     int flags = 0;
     if (fullscreen)
@@ -94,6 +100,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
     this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
+    std::cout << "====================================================" << std::endl;
 }
 Game::~Game()
 {
