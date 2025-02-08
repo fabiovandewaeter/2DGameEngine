@@ -35,7 +35,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 
 `./bin/main.exe`
 
-### MacOs
+### macOS
 
 #### Install SDL libraries files
 
@@ -105,6 +105,11 @@ make install
 `./a.out`
 
 ##### Tracy profiler
+###### Windows
+
+`https://github.com/wolfpld/tracy/releases`
+
+###### Linux
 
 https://github.com/wolfpld/tracy
 
@@ -119,6 +124,11 @@ https://github.com/wolfpld/tracy
 `cd profiler/build`
 
 `./tracy-profiler`
+
+###### macOS
+
+`brew install tracy`
+
 
 ## How to add things
 

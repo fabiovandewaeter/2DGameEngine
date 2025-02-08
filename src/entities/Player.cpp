@@ -87,5 +87,4 @@ void Player::setPosition(int x, int y)
     this->hitBox.x = x;
     this->hitBox.y = y;
 }
-Map *Player::getMap() { return this->map; }
 Camera *Player::getCamera() { return this->camera; }

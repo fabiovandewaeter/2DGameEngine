@@ -15,7 +15,7 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP, nullptr), map(map), camera(camera) {};
+    Player(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Camera *camera) : Entity(texture, hitBox, HP, map, nullptr), camera(camera) {};
     ~Player();
 
     void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
@@ -24,12 +24,10 @@ public:
     void render();
 
     void setPosition(int x, int y);
-    Map *getMap();
     Camera *getCamera();
 
 private:
     // the map the Player is currently on
-    Map *map;
     Camera *camera;
 };
 

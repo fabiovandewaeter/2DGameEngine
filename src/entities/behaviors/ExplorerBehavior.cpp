@@ -1,8 +1,5 @@
 #include "entities/behaviors/ExplorerBehavior.hpp"
 
-#include <iostream>
-
-void ExplorerBehavior::execute()
+void ExplorerBehavior::execute(Entity *entity)
 {
-    std::cout << "I am Explorer" << std::endl;
 }

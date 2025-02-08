@@ -1,8 +1,9 @@
 #include "entities/behaviors/WarriorBehavior.hpp"
 
-#include <iostream>
+#include "entities/actions/GetResourceAction.hpp"
 
-void WarriorBehavior::execute()
+void WarriorBehavior::execute(Entity *entity)
 {
-    std::cout << "I am Warrior" << std::endl;
+    GetResourceAction *getResourceAction = new GetResourceAction("Wood");
+    getResourceAction->execute(entity);
 }

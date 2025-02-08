@@ -6,17 +6,24 @@
 #include "map/Map.hpp"
 #include "entities/behaviors/Behavior.hpp"
 #include "systems/algorithms/AstarPathFinding.hpp"
+#include "entities/actions/Action.hpp"
 
 void Entity::update(Map *map)
 {
-    if (this->behavior != nullptr)
+    if (this->actionStack.empty())
     {
-        this->behavior->execute();
+        this->behavior->execute(this);
     }
-    move(map);
+    Action *currentAction = actionStack.top();
+    currentAction->execute(this);
+    if (currentAction->isCompleted())
+    {
+        delete currentAction;
+        actionStack.pop();
+    }
 }
 
-void Entity::move(Map *map)
+/*void Entity::move()
 {
     if (canMove() && isMoving())
     {
@@ -24,11 +31,28 @@ void Entity::move(Map *map)
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
         map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        SDL_Rect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->hitBox.x = tempRect.x;
 
         // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
+        tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
+        this->hitBox.y = tempRect.y;
+    }
+}*/
+void Entity::moveBy(float dx, float dy)
+{
+    if (canMove() && isMoving())
+    {
+        std::cout << "Entity::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
+        // check for X axis
+        int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * dx);
+        map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        this->hitBox.x = tempRect.x;
+
+        // check for Y axis
+        int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * dy);
         tempRect = map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
         this->hitBox.y = tempRect.y;
     }
@@ -69,6 +93,11 @@ bool Entity::isMoving()
 }
 
 // setter
+void Entity::setPosition(int x, int y)
+{
+    this->hitBox.x = x;
+    this->hitBox.y = y;
+}
 void Entity::setVelocity(int velocityX, int velocityY)
 {
     this->velX = velocityX;
@@ -85,3 +114,5 @@ int Entity::getCenterX() { return this->hitBox.w / 2; }
 int Entity::getCenterY() { return this->hitBox.h / 2; }
 SDL_Rect Entity::getHitBox() { return this->hitBox; }
 int Entity::getHP() { return this->HP; }
+Map *Entity::getMap() { return this->map; }
+int Entity::getSpeed() { return this->speed; }
