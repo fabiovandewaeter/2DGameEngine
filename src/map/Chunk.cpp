@@ -21,8 +21,8 @@ Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManage
     this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
-    loadPassiveStructures();
-    loadActiveStructures();
+    loadUpdatableStructures();
+    loadOtherStructures();
 }
 Chunk::~Chunk()
 {
@@ -86,8 +86,8 @@ void Chunk::loadTilesWithPerlinNoise()
         }
     }
 }
-void Chunk::loadPassiveStructures() {}
-void Chunk::loadActiveStructures() {}
+void Chunk::loadUpdatableStructures() {}
+void Chunk::loadOtherStructures() {}
 
 void Chunk::render(Camera *camera)
 {
@@ -167,7 +167,7 @@ Structure *Chunk::getStructure(int x, int y)
     ZoneScoped;
 #endif
     convertToTileCoordinates(x, y);
-    //std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    // std::string coordinates = std::to_string(x) + "," + std::to_string(y);
     std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);

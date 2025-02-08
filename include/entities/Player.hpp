@@ -19,9 +19,9 @@ public:
     ~Player();
 
     void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
-    void update();
-    // render the map and the player
+    void update() override;
     void render();
+    void move();
 
     void setPosition(int x, int y);
     Camera *getCamera();

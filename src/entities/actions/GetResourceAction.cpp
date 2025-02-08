@@ -8,7 +8,7 @@ void GetResourceAction::execute(Entity *entity)
 {
     AstarPathFinding *astarPathFinding = new AstarPathFinding();
     std::vector<SDL_Point> liste;
-    astarPathFinding->findPath(entity->getMap(), 0, 0, 1000, 2000, &liste);
+    astarPathFinding->findPath(entity->getMap(), 0, 0, 100, 200, &liste);
     // liste = astarPathFinding->findPath(this->map, 0, 0, 1000, 2000);
     int size = liste.size();
     for (int i = 0; i < size; i++)

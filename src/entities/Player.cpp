@@ -73,13 +73,31 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
 }
 void Player::update()
 {
+    std::cout << "test0" << std::endl;
+    std::cout << "Entity: " << this->HP - 100 << std::endl;
     this->camera->update();
-    Entity::update(this->map);
+    move();
 }
 void Player::render()
 {
-    this->map->render(this);
     Entity::render(this->camera);
+}
+void Player::move()
+{
+    if (canMove() && isMoving())
+    {
+        std::cout << "Player::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
+        // check for X axis
+        int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+        map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        SDL_Rect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        this->hitBox.x = tempRect.x;
+
+        // check for Y axis
+        int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
+        tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
+        this->hitBox.y = tempRect.y;
+    }
 }
 
 void Player::setPosition(int x, int y)

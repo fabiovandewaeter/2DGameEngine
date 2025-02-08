@@ -19,7 +19,7 @@ void EntityManager::update()
     // update entities
     for (int i = 0; i < size; i++)
     {
-        this->entities[i]->update(this->map);
+        this->entities[i]->update();
         if (this->entities[i]->getHP() <= 0)
         {
             deadEntities.push_back(i);

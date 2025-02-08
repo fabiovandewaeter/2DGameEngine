@@ -139,7 +139,7 @@ TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    this->player->update();
+    //this->player->update();
     this->map->update();
 
     countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
@@ -152,6 +152,7 @@ void Game::render()
     SDL_RenderClear(this->renderer);
 
     this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight()));
+    this->map->render(this->player);
     this->player->render();
     this->guiManager->render(this->player);
 
@@ -210,12 +211,12 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
-    this->map->addEntity(this->player);
+    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 103, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
+    this->map->addPlayer(this->player);
 
     // test
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new WarriorBehavior()));
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new ExplorerBehavior()));
+    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 101, this->map, new WarriorBehavior()));
+    this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 102, this->map, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

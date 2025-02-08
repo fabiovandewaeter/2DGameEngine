@@ -8,18 +8,25 @@
 #include "systems/algorithms/AstarPathFinding.hpp"
 #include "entities/actions/Action.hpp"
 
-void Entity::update(Map *map)
+void Entity::update()
 {
+    std::cout << "test1" << std::endl;
+    std::cout << "Entity: " << this->HP - 100 << std::endl;
     if (this->actionStack.empty())
     {
         this->behavior->execute(this);
     }
-    Action *currentAction = actionStack.top();
-    currentAction->execute(this);
-    if (currentAction->isCompleted())
+    if (!this->actionStack.empty())
     {
-        delete currentAction;
-        actionStack.pop();
+        Action *currentAction = actionStack.top();
+        std::cout << "test2" << std::endl;
+        currentAction->execute(this);
+        std::cout << "test3" << std::endl;
+        if (currentAction->isCompleted())
+        {
+            delete currentAction;
+            actionStack.pop();
+        }
     }
 }
 
@@ -40,6 +47,26 @@ void Entity::update(Map *map)
         this->hitBox.y = tempRect.y;
     }
 }*/
+
+void Entity::render(Camera *camera)
+{
+    SDL_Rect renderBox = this->hitBox;
+    camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisible(renderBox))
+    {
+        this->texture->render(renderBox);
+    }
+}
+void Entity::onCollision(Entity *entity)
+{
+    std::cout << "Entity#onCollision() does nothing" << std::endl;
+}
+void Entity::hit(int damage)
+{
+    this->HP -= damage;
+}
+void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
+void Entity::onRightClick() { kill(); }
 void Entity::moveBy(float dx, float dy)
 {
     if (canMove() && isMoving())
@@ -57,31 +84,8 @@ void Entity::moveBy(float dx, float dy)
         this->hitBox.y = tempRect.y;
     }
 }
+void Entity::kill() { this->HP = 0; }
 
-void Entity::render(Camera *camera)
-{
-    SDL_Rect renderBox = this->hitBox;
-    camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
-    {
-        this->texture->render(renderBox);
-    }
-}
-void Entity::kill()
-{
-    this->HP = 0;
-    this->state = nullptr;
-}
-void Entity::onCollision(Entity *entity)
-{
-    std::cout << "Entity#onCollision() does nothing" << std::endl;
-}
-void Entity::hit(int damage)
-{
-    this->HP -= damage;
-}
-void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
-void Entity::onRightClick() { kill(); }
 bool Entity::canMove()
 {
     // EXAMPLE: check if it is stunned ...

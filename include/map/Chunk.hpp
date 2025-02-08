@@ -39,8 +39,8 @@ public:
     void loadTiles();
     void loadTilesDefault();
     void loadTilesWithPerlinNoise();
-    void loadPassiveStructures();
-    void loadActiveStructures();
+    void loadUpdatableStructures();
+    void loadOtherStructures();
     void render(Camera *camera);
     void update();
 
