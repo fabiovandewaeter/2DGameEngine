@@ -1,25 +1,29 @@
 #ifndef camera_hpp
 #define camera_hpp
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_rect.h>
 #include <iostream>
+
+class Entity;
 
 // source : https://lazyfoo.net/tutorials/SDL/30_scrolling/index.php
 // Texture wrapper class
 class Camera
 {
 public:
-    Camera(int width, int height, double minScale, double maxScale, int positionX, int positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocity(1), sprintVelocity(50) { std::cout << "camera zoom need fix" << std::endl; };
+    Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocity(1), sprintVelocity(50) { std::cout << "camera zoom need fix" << std::endl; };
     ~Camera();
 
     void handleEvents(SDL_Event *event);
     void update();
     void move();
+    void render(Entity *entity);
 
-    void convertInGameToCameraCoordinates(SDL_Rect &rect);
+    void convertInGameToCameraCoordinates(SDL_FRect &rect);
     void convertCameraToInGameCoordinates(int &x, int &y);
-    bool isVisible(SDL_Rect rect);
+    bool isVisible(SDL_FRect rect);
 
     void setPosition(int x, int y);
     int getPositionX();
@@ -27,17 +31,20 @@ public:
     int getWidth();
     int getHeight();
     double getScale();
+    SDL_Renderer *getRenderer();
 
 private:
     // Image dimensions
     int width, height;
-    int velX, velY;
+    float velX, velY;
     double scale, scaleSpeed, minScale, maxScale;
 
     // in-game coordinates
     int positionX, positionY;
     int velocity;
     int sprintVelocity;
+
+    SDL_Renderer *renderer;
 };
 
 #endif

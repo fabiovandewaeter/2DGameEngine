@@ -61,7 +61,7 @@ private:
     std::unordered_map<std::pair<int, int>, Structure *, hash_pair> otherStructures;
 
     int positionX, positionY;
-    SDL_Rect box;
+    SDL_FRect box;
     PerlinNoise *perlinNoise;
 
     Faction *faction;

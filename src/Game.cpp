@@ -211,12 +211,12 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 103, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
+    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_FRect){0, 0, 16, 16}, 103, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
     this->map->addPlayer(this->player);
 
     // test
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_Rect){0, 0, 16, 16}, 101, this->map, new WarriorBehavior()));
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_Rect){0, 0, 16, 16}, 102, this->map, new ExplorerBehavior()));
+    //this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_FRect){0, 0, 16, 16}, 101, this->map, new WarriorBehavior()));
+    //this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_FRect){0, 0, 16, 16}, 102, this->map, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

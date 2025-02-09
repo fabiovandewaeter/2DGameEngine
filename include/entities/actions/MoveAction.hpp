@@ -9,12 +9,12 @@
 class MoveAction : public Action
 {
 public:
-    MoveAction(std::vector<SDL_Point> *path) : path(path), currentIndex(0) {};
+    MoveAction(std::vector<SDL_Point> path) : path(path), currentIndex(0) {};
     void execute(Entity *entity) override;
     bool isCompleted() override;
 
 private:
-    std::vector<SDL_Point> *path;
+    std::vector<SDL_Point> path;
     int currentIndex;
 };
 

@@ -18,7 +18,7 @@ Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManage
     this->tileSize = tileSize;
     this->map = map;
     this->textureManager = textureManager;
-    this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
+    this->box = (SDL_FRect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
@@ -91,7 +91,7 @@ void Chunk::loadOtherStructures() {}
 
 void Chunk::render(Camera *camera)
 {
-    SDL_Rect renderBox = this->box;
+    SDL_FRect renderBox = this->box;
     camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
@@ -211,13 +211,13 @@ bool Chunk::isStructure(int x, int y)
 
 void Chunk::addStructure(Structure *structure)
 {
-    SDL_Rect hitBox = structure->getHitBox();
+    SDL_FRect hitBox = structure->getHitBox();
     int x = hitBox.x;
     int y = hitBox.y;
     if (!isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
-        SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+        SDL_FRect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
         structure->setHitBox(box);
         std::pair<int, int> coordinates = {x, y};
 

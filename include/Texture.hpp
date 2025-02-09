@@ -8,20 +8,18 @@
 #include <iostream>
 #include <string>
 
+class Camera;
+
 // source : https://lazyfoo.net/tutorials/SDL/10_color_keying/index.php
 // Texture wrapper class
 class Texture
 {
 public:
     Texture();
-    Texture(SDL_Renderer *renderer, std::string path);
+    // Texture are liked to one SDL_Renderer
+    Texture(Camera *camera, std::string path);
     ~Texture();
-
     void free();
-    void render(int x, int y);
-    void render(int x, int y, int w, int h);
-    void render(SDL_Rect renderBox);
-    void render(SDL_Rect srcBox, SDL_Rect dstBox);
 
     SDL_Texture *getTexture();
     int getWidth();

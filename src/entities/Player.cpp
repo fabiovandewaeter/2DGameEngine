@@ -33,8 +33,8 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
             sprint2 = SPRINT_MULTIPLIER;
             break;
         case SDLK_DELETE:
-            this->hitBox.x = 0;
-            this->hitBox.y = 0;
+            this->x = 0;
+            this->y = 0;
             break;
         }
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
@@ -73,9 +73,8 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
 }
 void Player::update()
 {
-    std::cout << "test0" << std::endl;
-    std::cout << "Entity: " << this->HP - 100 << std::endl;
     this->camera->update();
+    std::cout << getPositionX() << " " << getPositionY() << std::endl;
     move();
 }
 void Player::render()
@@ -90,19 +89,14 @@ void Player::move()
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
         map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        SDL_Rect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        this->hitBox.x = tempRect.x;
+        SDL_FRect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        this->x = tempRect.x;
 
         // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
         tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
-        this->hitBox.y = tempRect.y;
+        this->y = tempRect.y;
     }
 }
 
-void Player::setPosition(int x, int y)
-{
-    this->hitBox.x = x;
-    this->hitBox.y = y;
-}
 Camera *Player::getCamera() { return this->camera; }

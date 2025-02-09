@@ -3,7 +3,7 @@
 
 #include <string>
 
-class Entity;
+#include "entities/Entity.hpp"
 
 class Action
 {

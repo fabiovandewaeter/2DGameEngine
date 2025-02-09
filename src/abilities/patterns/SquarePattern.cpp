@@ -8,5 +8,5 @@ SquarePattern::~SquarePattern() {}
 
 std::vector<Entity *> SquarePattern::getAffectedEntities(int x, int y)
 {
-    return this->entityManager->getEntitiesInArea((SDL_Rect){x - (this->radius / 2), y - (this->radius / 2), this->radius, this->radius});
+    return this->entityManager->getEntitiesInArea((SDL_FRect){x - (this->radius / 2), y - (this->radius / 2), this->radius, this->radius});
 }

@@ -17,7 +17,7 @@ class Action;
 class Entity
 {
 public:
-    Entity(Texture *texture, SDL_Rect hitBox, int HP, Map *map, Behavior *behavior) : texture(texture), hitBox(hitBox), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(behavior), faction(nullptr) {};
+    Entity(Texture *texture, float x, float y, int width, int height, int HP, Map *map, Behavior *behavior) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(behavior), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -32,26 +32,26 @@ public:
     void moveBy(float dx, float dy);
     void kill();
 
-    void setPosition(int x, int y);
-    void setVelocity(int velX, int velY);
-    void setVelocityX(int velocityX);
-    void setVelocityY(int velocityY);
+    void setPosition(float x, float y);
+    void setVelocity(float velocityX, float velocityY);
+    void setVelocityX(float velocityX);
+    void setVelocityY(float velocityY);
     void setFaction(Faction *faction);
+    void pushAction(Action *action);
 
-    int getPositionX();
-    int getPositionY();
+    float getPositionX();
+    float getPositionY();
     int getSpeed();
-    int getCenterX();
-    int getCenterY();
-    SDL_Rect getHitBox();
+    SDL_FRect getHitBox();
     int getHP();
     Map *getMap();
 
 protected:
     Texture *texture;
-    int velX, velY;
+    float x, y;
+    int width, height;
+    float velX, velY;
     int speed;
-    SDL_Rect hitBox;
     int HP;
     Map *map;
     Faction *faction;

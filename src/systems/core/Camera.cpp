@@ -1,5 +1,7 @@
 #include "systems/core/Camera.hpp"
 
+#include "entities/Entity.hpp"
+
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
 int sprint = 1;
@@ -107,8 +109,20 @@ void Camera::move()
     this->positionY += this->velocity * velY;
 }
 
-void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)
+void Camera::render(Entity *entity)
 {
+    std::cout << "HERE" << std::endl;
+    SDL_FRect renderBox = entity->getHitBox();
+    convertInGameToCameraCoordinates(renderBox);
+    if (isVisible(renderBox))
+    {
+        this->texture->render(renderBox);
+    }
+}
+
+void Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
+{
+    std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
     int cameraPositionX = this->positionX;
     int cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
@@ -124,6 +138,7 @@ void Camera::convertInGameToCameraCoordinates(SDL_Rect &rect)
 }
 void Camera::convertCameraToInGameCoordinates(int &x, int &y)
 {
+    std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
     int cameraPositionX = this->positionX;
     int cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
@@ -133,7 +148,7 @@ void Camera::convertCameraToInGameCoordinates(int &x, int &y)
     y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
 }
 
-bool Camera::isVisible(SDL_Rect rect)
+bool Camera::isVisible(SDL_FRect rect)
 {
     int viewBottomRightPositionX = rect.x + rect.w;
     int viewBottomRightPositionY = rect.y + rect.h;
@@ -149,23 +164,9 @@ void Camera::setPosition(int x, int y)
     this->positionX = x;
     this->positionY = y;
 }
-int Camera::getPositionX()
-{
-    return this->positionX;
-}
-int Camera::getPositionY()
-{
-    return this->positionY;
-}
-int Camera::getWidth()
-{
-    return this->width;
-}
-int Camera::getHeight()
-{
-    return this->height;
-}
-double Camera::getScale()
-{
-    return this->scale;
-}
+int Camera::getPositionX() { return this->positionX; }
+int Camera::getPositionY() { return this->positionY; }
+int Camera::getWidth() { return this->width; }
+int Camera::getHeight() { return this->height; }
+double Camera::getScale() { return this->scale; }
+SDL_Renderer *Camera::getRenderer() { return this->renderer; }

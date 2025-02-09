@@ -10,7 +10,6 @@
 
 void Entity::update()
 {
-    std::cout << "Entity: " << this->HP - 100 << std::endl;
     if (this->actionStack.empty())
     {
         this->behavior->execute(this);
@@ -27,32 +26,15 @@ void Entity::update()
     }
 }
 
-/*void Entity::move()
-{
-    if (canMove() && isMoving())
-    {
-        std::cout << "Entity::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
-        // check for X axis
-        int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        SDL_Rect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        this->hitBox.x = tempRect.x;
-
-        // check for Y axis
-        int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-        tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
-        this->hitBox.y = tempRect.y;
-    }
-}*/
-
 void Entity::render(Camera *camera)
 {
-    SDL_Rect renderBox = this->hitBox;
-    camera->convertInGameToCameraCoordinates(renderBox);
+    camera->render(this);
+    /*SDL_FRect renderBox = getHitBox();
+    ICI !!!! camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
         this->texture->render(renderBox);
-    }
+    }*/
 }
 void Entity::onCollision(Entity *entity)
 {
@@ -72,17 +54,16 @@ void Entity::moveBy(float dx, float dy)
         // check for X axis
         int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * dx);
         map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        SDL_Rect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        this->hitBox.x = tempRect.x;
+        SDL_FRect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        this->x = tempRect.x;
 
         // check for Y axis
         int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * dy);
         tempRect = map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
-        this->hitBox.y = tempRect.y;
+        this->y = tempRect.y;
     }
 }
 void Entity::kill() { this->HP = 0; }
-
 bool Entity::canMove()
 {
     // EXAMPLE: check if it is stunned ...
@@ -94,26 +75,27 @@ bool Entity::isMoving()
 }
 
 // setter
-void Entity::setPosition(int x, int y)
+void Entity::setPosition(float x, float y)
 {
-    this->hitBox.x = x;
-    this->hitBox.y = y;
+    this->x = x;
+    this->y = y;
 }
-void Entity::setVelocity(int velocityX, int velocityY)
+void Entity::setVelocity(float velocityX, float velocityY)
 {
     this->velX = velocityX;
     this->velY = velocityY;
 }
-void Entity::setVelocityX(int velocityX) { this->velX = velocityX; }
-void Entity::setVelocityY(int velocityY) { this->velY = velocityY; }
+void Entity::setVelocityX(float velocityX) { this->velX = velocityX; }
+void Entity::setVelocityY(float velocityY) { this->velY = velocityY; }
 void Entity::setFaction(Faction *faction) { this->faction = faction; }
+void Entity::pushAction(Action *action) { this->actionStack.push(action); }
 
 // getter
-int Entity::getPositionX() { return this->hitBox.x; }
-int Entity::getPositionY() { return this->hitBox.y; }
-int Entity::getCenterX() { return this->hitBox.w / 2; }
-int Entity::getCenterY() { return this->hitBox.h / 2; }
-SDL_Rect Entity::getHitBox() { return this->hitBox; }
+float Entity::getPositionX() { return this->x; }
+float Entity::getPositionY() { return this->y; }
+//int Entity::getCenterX() { return this->hitBox.w / 2; }
+//int Entity::getCenterY() { return this->hitBox.h / 2; }
+SDL_FRect Entity::getHitBox() { return {this->x, this->y, this->width, this->height}; }
 int Entity::getHP() { return this->HP; }
 Map *Entity::getMap() { return this->map; }
 int Entity::getSpeed() { return this->speed; }

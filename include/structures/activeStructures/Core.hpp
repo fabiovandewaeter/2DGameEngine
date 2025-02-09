@@ -14,7 +14,7 @@ public:
 
 private:
     void spawnEntities();
-    std::vector<SDL_Rect> getPotentialSpawnTiles(SDL_Rect entityHitBox);
+    std::vector<SDL_FRect> getPotentialSpawnTiles(SDL_FRect entityHitBox);
 };
 
 #endif

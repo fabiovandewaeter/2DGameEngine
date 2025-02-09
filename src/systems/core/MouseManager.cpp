@@ -20,7 +20,7 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, 
 	player->getCamera()->convertCameraToInGameCoordinates(i, j);
 
 	int size = 5;
-	SDL_Rect area = {i - size, i - size, size * 2, size * 2};
+	SDL_FRect area = {i - size, i - size, size * 2, size * 2};
 	std::vector<Entity *> potentialEntities = player->getMap()->getEntityManager()->getEntities();
 	bool isEntityClicked = false;
 	Entity *clickedEntity = nullptr;
