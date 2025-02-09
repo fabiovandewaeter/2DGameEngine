@@ -10,7 +10,6 @@
 
 void Entity::update()
 {
-    std::cout << "test1" << std::endl;
     std::cout << "Entity: " << this->HP - 100 << std::endl;
     if (this->actionStack.empty())
     {
@@ -19,9 +18,7 @@ void Entity::update()
     if (!this->actionStack.empty())
     {
         Action *currentAction = actionStack.top();
-        std::cout << "test2" << std::endl;
         currentAction->execute(this);
-        std::cout << "test3" << std::endl;
         if (currentAction->isCompleted())
         {
             delete currentAction;
