@@ -1,10 +1,10 @@
 #ifndef tile_hpp
 #define tile_hpp
 
-#define TILE_SIZE 16
-
 #include <SDL2/SDL_rect.h>
 #include <vector>
+
+#include "systems/utils/Constants.hpp"
 
 class Texture;
 class Camera;

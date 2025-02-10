@@ -1,3 +1,7 @@
+#ifdef PROFILER
+#include "tracy_profiler/tracy/Tracy.hpp"
+#endif
+
 #include "map/Chunk.hpp"
 
 #include "map/Tile.hpp"
@@ -8,17 +12,13 @@
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"
 
-#ifdef PROFILER
-#include "tracy_profiler/tracy/Tracy.hpp"
-#endif
-Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
-    this->tileSize = tileSize;
     this->map = map;
     this->textureManager = textureManager;
-    this->box = (SDL_FRect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
+    this->box = (SDL_FRect){positionX, positionY, TILE_SIZE * CHUNK_SIZE, TILE_SIZE * CHUNK_SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
@@ -26,7 +26,7 @@ Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManage
 }
 Chunk::~Chunk()
 {
-    for (int i = 0; i < SIZE * SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
     {
         delete this->allTiles[i];
     }
@@ -46,22 +46,22 @@ void Chunk::loadTiles()
 }
 void Chunk::loadTilesDefault()
 {
-    for (int i = 0; i < SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i * this->tileSize + this->box.x, j * this->tileSize + this->box.y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i * TILE_SIZE + this->box.x, j * TILE_SIZE + this->box.y);
         }
     }
 }
 void Chunk::loadTilesWithPerlinNoise()
 {
-    for (int i = 0; i < SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            int x = i * this->tileSize + this->box.x;
-            int y = j * this->tileSize + this->box.y;
+            int x = i * TILE_SIZE + this->box.x;
+            int y = j * TILE_SIZE + this->box.y;
             double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
@@ -82,7 +82,7 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
         }
     }
 }
@@ -95,7 +95,7 @@ void Chunk::render(Camera *camera)
     camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisible(renderBox))
     {
-        for (int i = 0; i < SIZE * SIZE; i++)
+        for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
         {
             this->allTiles[i]->render(camera);
         }
@@ -144,8 +144,8 @@ void Chunk::update()
 
 void Chunk::convertToTileCoordinates(int &x, int &y)
 {
-    x = static_cast<int>(std::floor(static_cast<float>(x) / this->tileSize)) % SIZE;
-    y = static_cast<int>(std::floor(static_cast<float>(y) / this->tileSize)) % SIZE;
+    x = static_cast<int>(std::floor(static_cast<float>(x) / TILE_SIZE)) % SIZE;
+    y = static_cast<int>(std::floor(static_cast<float>(y) / TILE_SIZE)) % SIZE;
     if (x < 0)
     {
         x = SIZE + x;
@@ -217,7 +217,7 @@ void Chunk::addStructure(Structure *structure)
     if (!isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
-        SDL_FRect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+        SDL_FRect box = {x * TILE_SIZE + this->box.x, y * TILE_SIZE + this->box.y, TILE_SIZE, TILE_SIZE};
         structure->setHitBox(box);
         std::pair<int, int> coordinates = {x, y};
 

@@ -93,8 +93,9 @@ void Entity::pushAction(Action *action) { this->actionStack.push(action); }
 // getter
 float Entity::getPositionX() { return this->x; }
 float Entity::getPositionY() { return this->y; }
-//int Entity::getCenterX() { return this->hitBox.w / 2; }
-//int Entity::getCenterY() { return this->hitBox.h / 2; }
+// int Entity::getCenterX() { return this->hitBox.w / 2; }
+// int Entity::getCenterY() { return this->hitBox.h / 2; }
+Texture *Entity::getTexture() { return this->texture; }
 SDL_FRect Entity::getHitBox() { return {this->x, this->y, this->width, this->height}; }
 int Entity::getHP() { return this->HP; }
 Map *Entity::getMap() { return this->map; }

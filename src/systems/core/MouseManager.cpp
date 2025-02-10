@@ -15,9 +15,11 @@ MouseManager::~MouseManager() {}
 
 bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, int y)
 {
-	int i = x;
-	int j = y;
-	player->getCamera()->convertCameraToInGameCoordinates(i, j);
+	float i = x;
+	float j = y;
+	std::pair<float, float> convertedCoordinates = player->getCamera()->convertCameraToInGameCoordinates(i, j);
+	i = convertedCoordinates.first;
+	j = convertedCoordinates.second;
 
 	int size = 5;
 	SDL_FRect area = {i - size, i - size, size * 2, size * 2};

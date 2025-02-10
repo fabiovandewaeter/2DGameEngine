@@ -1,6 +1,7 @@
 #include "systems/core/Camera.hpp"
 
 #include "entities/Entity.hpp"
+#include "Texture.hpp"
 
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
@@ -113,14 +114,23 @@ void Camera::render(Entity *entity)
 {
     std::cout << "HERE" << std::endl;
     SDL_FRect renderBox = entity->getHitBox();
-    convertInGameToCameraCoordinates(renderBox);
-    if (isVisible(renderBox))
+    SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
+    if (isVisibleOnScreen(newRenderBox))
     {
-        this->texture->render(renderBox);
+        std::cout << renderBox.x << " " << renderBox.y << " " << newRenderBox.x << " " << newRenderBox.y << std::endl;
+        render(newRenderBox, entity->getTexture());
     }
 }
+void Camera::render(SDL_Rect renderBox, Texture *texture)
+{
+    SDL_RenderCopy(this->renderer, texture->getTexture(), NULL, &renderBox);
+}
+void Camera::render(SDL_Rect srcBox, SDL_Rect dstBox, Texture *texture)
+{
+    SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
+}
 
-void Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
+SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
 {
     std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
     int cameraPositionX = this->positionX;
@@ -136,11 +146,11 @@ void Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
     rect.w *= scale;
     rect.h *= scale;
 }
-void Camera::convertCameraToInGameCoordinates(int &x, int &y)
+std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 {
     std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
-    int cameraPositionX = this->positionX;
-    int cameraPositionY = this->positionY;
+    float cameraPositionX = this->positionX;
+    float cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
     int viewCenterY = this->height / 2;
 
@@ -148,7 +158,7 @@ void Camera::convertCameraToInGameCoordinates(int &x, int &y)
     y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
 }
 
-bool Camera::isVisible(SDL_FRect rect)
+bool Camera::isVisibleOnScreen(SDL_Rect rect)
 {
     int viewBottomRightPositionX = rect.x + rect.w;
     int viewBottomRightPositionY = rect.y + rect.h;
@@ -164,8 +174,8 @@ void Camera::setPosition(int x, int y)
     this->positionX = x;
     this->positionY = y;
 }
-int Camera::getPositionX() { return this->positionX; }
-int Camera::getPositionY() { return this->positionY; }
+float Camera::getPositionX() { return this->positionX; }
+float Camera::getPositionY() { return this->positionY; }
 int Camera::getWidth() { return this->width; }
 int Camera::getHeight() { return this->height; }
 double Camera::getScale() { return this->scale; }

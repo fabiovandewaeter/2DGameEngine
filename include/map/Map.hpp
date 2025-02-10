@@ -1,13 +1,13 @@
 #ifndef map_hpp
 #define map_hpp
 
-#define CHUNK_SIZE 16
-
 #include "SDL2/SDL_rect.h"
 #include <vector>
 #include <unordered_map>
 #include <cmath>
 #include <string>
+
+#include "systems/utils/Constants.hpp"
 
 class TextureManager;
 class Texture;
@@ -42,7 +42,6 @@ public:
     EntityManager *getEntityManager();
 
 private:
-    int tileSize;
     TextureManager *textureManager;
     PerlinNoise *perlinNoise;
     CollisionManager *collisionManager;

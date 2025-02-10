@@ -94,16 +94,6 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
-void Texture::render(int x, int y) { render({x, y, this->width, this->height}); }
-void Texture::render(int x, int y, int w, int h) { render({x, y, w, h}); }
-void Texture::render(SDL_Rect renderBox)
-{
-    SDL_RenderCopy(this->renderer, this->texture, NULL, &renderBox);
-}
-void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)
-{
-    SDL_RenderCopy(this->renderer, this->texture, &newSrcBox, &newDstBox);
-}
 
 SDL_Rect Texture::convertInGameToPixelCoordinates(SDL_FRect rect)
 {

@@ -41,6 +41,7 @@ public:
 
     float getPositionX();
     float getPositionY();
+    Texture *getTexture();
     int getSpeed();
     SDL_FRect getHitBox();
     int getHP();

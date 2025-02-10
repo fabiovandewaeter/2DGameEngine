@@ -20,14 +20,17 @@ public:
     void update();
     void move();
     void render(Entity *entity);
+    void render(SDL_Rect renderBox, Texture *texture);
+    void render(SDL_Rect srcBox, SDL_Rect dstBox, Texture *texture);
 
-    void convertInGameToCameraCoordinates(SDL_FRect &rect);
-    void convertCameraToInGameCoordinates(int &x, int &y);
-    bool isVisible(SDL_FRect rect);
+    SDL_Rect convertInGameToCameraCoordinates(SDL_FRect &rect);
+    std::pair<float, float> convertCameraToInGameCoordinates(int x, int y);
+    // return true if rect coordinates are contained in the screen
+    bool isVisibleOnScreen(SDL_Rect rect);
 
     void setPosition(int x, int y);
-    int getPositionX();
-    int getPositionY();
+    float getPositionX();
+    float getPositionY();
     int getWidth();
     int getHeight();
     double getScale();
@@ -40,7 +43,7 @@ private:
     double scale, scaleSpeed, minScale, maxScale;
 
     // in-game coordinates
-    int positionX, positionY;
+    float positionX, positionY;
     int velocity;
     int sprintVelocity;
 
