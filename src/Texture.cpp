@@ -94,24 +94,6 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
-
-SDL_Rect Texture::convertInGameToPixelCoordinates(SDL_FRect rect)
-{
-    std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
-    int cameraPositionX = this->camera->;
-    int cameraPositionY = this->positionY;
-    int viewCenterX = this->width / 2;
-    int viewCenterY = this->height / 2;
-
-    SDL_Rect newRect;
-    newRect.x = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
-    newRect.y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
-    newRect.w = rect.w;
-    newRect.h = rect.h;
-
-    return newRect;
-}
-
 SDL_Texture *Texture::getTexture() { return this->texture; }
 int Texture::getWidth() { return this->width; }
 int Texture::getHeight() { return this->height; }

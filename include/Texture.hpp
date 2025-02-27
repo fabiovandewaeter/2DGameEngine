@@ -1,12 +1,12 @@
 #ifndef texture_hpp
 #define texture_hpp
 
-#define TEXTURE_DEFAULT_SIZE 32
-
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
+
+#include "systems/utils/Constants.hpp"
 
 class Camera;
 
@@ -32,6 +32,7 @@ public:
 
 private:
     SDL_Texture *texture;
+    Camera *camera;
     SDL_Renderer *renderer;
     int width, height;
     int id;

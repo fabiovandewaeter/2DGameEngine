@@ -25,7 +25,7 @@ Tile::~Tile() {}
 void Tile::render(Camera *camera)
 {
     SDL_Rect renderBox = {this->x, this->y, TILE_SIZE, TILE_SIZE};
-    camera->render(renderBox, this->texture);
+    camera->render(this->texture, renderBox);
 }
 
 int Tile::getCenterX() { return TILE_SIZE / 2; }

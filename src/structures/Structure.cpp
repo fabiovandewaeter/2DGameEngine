@@ -8,10 +8,10 @@ Structure::~Structure() {}
 void Structure::render(Camera *camera)
 {
     SDL_FRect renderBox = this->hitBox;
-    camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
+    SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisibleOnScreen(newRenderBox))
     {
-        this->texture->render(renderBox);
+        camera->render(this->texture, newRenderBox);
     }
 }
 

@@ -7,6 +7,7 @@
 #include <iostream>
 
 class Entity;
+class Texture;
 
 // source : https://lazyfoo.net/tutorials/SDL/30_scrolling/index.php
 // Texture wrapper class
@@ -20,8 +21,8 @@ public:
     void update();
     void move();
     void render(Entity *entity);
-    void render(SDL_Rect renderBox, Texture *texture);
-    void render(SDL_Rect srcBox, SDL_Rect dstBox, Texture *texture);
+    void render(Texture *texture, SDL_Rect renderBox);
+    void render(Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox);
 
     SDL_Rect convertInGameToCameraCoordinates(SDL_FRect &rect);
     std::pair<float, float> convertCameraToInGameCoordinates(int x, int y);

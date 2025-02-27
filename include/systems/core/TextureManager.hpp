@@ -7,20 +7,21 @@
 #include <string>
 
 class Texture;
+class Camera;
 
 class TextureManager
 {
 public:
     TextureManager();
-    TextureManager(SDL_Renderer *renderer);
+    TextureManager(Camera *camera);
     ~TextureManager();
 
-    void init(SDL_Renderer *renderer);
+    void init(Camera *camera);
     void loadConfiguration();
     Texture *getTexture(std::string name);
 
 private:
-    SDL_Renderer *renderer;
+    Camera *camera;
     std::unordered_map<std::string, Texture *> textures;
 };
 

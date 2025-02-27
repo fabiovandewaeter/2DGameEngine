@@ -53,6 +53,7 @@ private:
     bool running;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    Camera *camera;
     int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;

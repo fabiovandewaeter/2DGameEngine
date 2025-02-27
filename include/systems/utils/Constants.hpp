@@ -4,4 +4,6 @@
 #define TILE_SIZE 16
 #define CHUNK_SIZE 16
 
+#define TEXTURE_DEFAULT_SIZE 32
+
 #endif

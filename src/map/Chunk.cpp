@@ -11,6 +11,7 @@
 #include "systems/core/TextureManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"
+#include "systems/utils/Constants.hpp"
 
 Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
@@ -92,8 +93,8 @@ void Chunk::loadOtherStructures() {}
 void Chunk::render(Camera *camera)
 {
     SDL_FRect renderBox = this->box;
-    camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
+    SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisibleOnScreen(newRenderBox))
     {
         for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
         {
@@ -144,22 +145,22 @@ void Chunk::update()
 
 void Chunk::convertToTileCoordinates(int &x, int &y)
 {
-    x = static_cast<int>(std::floor(static_cast<float>(x) / TILE_SIZE)) % SIZE;
-    y = static_cast<int>(std::floor(static_cast<float>(y) / TILE_SIZE)) % SIZE;
+    x = static_cast<int>(std::floor(static_cast<float>(x) / TILE_SIZE)) % CHUNK_SIZE;
+    y = static_cast<int>(std::floor(static_cast<float>(y) / TILE_SIZE)) % CHUNK_SIZE;
     if (x < 0)
     {
-        x = SIZE + x;
+        x = CHUNK_SIZE + x;
     }
     if (y < 0)
     {
-        y = SIZE + y;
+        y = CHUNK_SIZE + y;
     }
 }
 // returns the tile that contains the coordinates
 Tile *Chunk::getTile(int x, int y)
 {
     convertToTileCoordinates(x, y);
-    return this->allTiles[SIZE * x + y];
+    return this->allTiles[CHUNK_SIZE * x + y];
 }
 Structure *Chunk::getStructure(int x, int y)
 {

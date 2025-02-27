@@ -12,9 +12,11 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 - SDL_image
 - SDL_ttf
 - SDL_mixer
+
 ##### others
 - [microui](https://github.com/rxi/microui)
 - [tracy](https://github.com/wolfpld/tracy)
+- [ut](https://github.com/boost-ext/ut)
 
 ## Commands
 
@@ -133,9 +135,8 @@ https://github.com/wolfpld/tracy
 
 `brew install tracy`
 
-
 ## How to add things
 
 ### images
 
-add 1 px of padding to iamges
+add 1 px of padding to images

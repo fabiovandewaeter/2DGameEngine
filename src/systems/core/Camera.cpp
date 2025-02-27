@@ -118,14 +118,14 @@ void Camera::render(Entity *entity)
     if (isVisibleOnScreen(newRenderBox))
     {
         std::cout << renderBox.x << " " << renderBox.y << " " << newRenderBox.x << " " << newRenderBox.y << std::endl;
-        render(newRenderBox, entity->getTexture());
+        render(entity->getTexture(), newRenderBox);
     }
 }
-void Camera::render(SDL_Rect renderBox, Texture *texture)
+void Camera::render(Texture *texture, SDL_Rect renderBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), NULL, &renderBox);
 }
-void Camera::render(SDL_Rect srcBox, SDL_Rect dstBox, Texture *texture)
+void Camera::render(Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
 }

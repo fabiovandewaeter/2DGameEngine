@@ -18,10 +18,10 @@ public:
 
     // returns true if there is a collision
     bool checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB);
-    bool isPointInCollisionWithRectangle(int x, int y, SDL_FRect rect);
+    bool isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect);
     bool isRectangleInCollisionWithSolidStructure(SDL_FRect rect);
     // returns a SDL_Rect with valid position for the Entity
-    SDL_FRect handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY);
+    SDL_FRect handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY);
 
 private:
     Map *map;
