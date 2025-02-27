@@ -59,21 +59,21 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 	Chunk *chunk;
 	int i = x;
 	int j = y;
-	player->getCamera()->convertCameraToInGameCoordinates(i, j);
+	std::pair<float, float> newCoordinates = player->getCamera()->convertCameraToInGameCoordinates(i, j);
 
-	chunk = player->getMap()->getChunk(i, j);
-	bool isStructureClicked = chunk->isStructure(i, j);
+	chunk = player->getMap()->getChunk(newCoordinates.first, newCoordinates.second);
+	bool isStructureClicked = chunk->isStructure(newCoordinates.first, newCoordinates.second);
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
 		if (isStructureClicked)
 		{
-			chunk->getStructure(i, j)->onLeftClick();
+			chunk->getStructure(newCoordinates.first, newCoordinates.second)->onLeftClick();
 		}
 		else
 		{
 			if (this->clickOnEmptyTileStrategy != nullptr)
 			{
-				Structure *newStructure = this->clickOnEmptyTileStrategy(i, j);
+				Structure *newStructure = this->clickOnEmptyTileStrategy(newCoordinates.first, newCoordinates.second);
 				chunk->addStructure(newStructure);
 			}
 		}
@@ -82,7 +82,7 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 	{
 		if (isStructureClicked)
 		{
-			chunk->getStructure(i, j)->onRightClick();
+			chunk->getStructure(newCoordinates.first, newCoordinates.second)->onRightClick();
 		}
 	}
 	return isStructureClicked;

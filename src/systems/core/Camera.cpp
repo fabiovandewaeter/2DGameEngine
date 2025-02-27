@@ -116,7 +116,6 @@ void Camera::render(const Entity *entity)
     SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
     if (isVisibleOnScreen(newRenderBox))
     {
-        std::cout << renderBox.x << " " << renderBox.y << " " << newRenderBox.x << " " << newRenderBox.y << std::endl;
         render(entity->getTexture(), newRenderBox);
     }
 }

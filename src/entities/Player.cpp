@@ -74,7 +74,6 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
 void Player::update()
 {
     this->camera->update();
-    std::cout << getPositionX() << " " << getPositionY() << std::endl;
     move();
 }
 void Player::render()
