@@ -1,10 +1,10 @@
-#include "actions/Action.hpp"
+#include "abilities/Ability.hpp"
 
-#include "actions/patterns/Pattern.hpp"
-#include "actions/effects/Effect.hpp"
+#include "abilities/patterns/Pattern.hpp"
+#include "abilities/effects/Effect.hpp"
 #include "systems/core/TickManager.hpp"
 
-Action::Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager)
+Ability::Ability(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager)
 {
     this->pattern = pattern;
     this->effects = effects;
@@ -12,7 +12,7 @@ Action::Action(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown,
     this->cooldownStartTick = 0;
     this->tickManager = tickManager;
 }
-Action::~Action()
+Ability::~Ability()
 {
     delete pattern;
     int size = this->effects.size();
@@ -22,7 +22,7 @@ Action::~Action()
     }
 }
 
-void Action::apply(int x, int y)
+void Ability::apply(int x, int y)
 {
     if ((this->tickManager->getTicks() - this->cooldownStartTick) > this->cooldown)
     {

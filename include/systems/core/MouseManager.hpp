@@ -23,6 +23,7 @@ public:
 private:
 	std::function<Structure *(int, int)> clickOnEmptyTileStrategy;
 
+	// check and handle the click on an Entity
 	bool handleClickOnEntity(SDL_Event *event, Player *player, int x, int y);
 	bool handleClickOnMap(SDL_Event *event, Player *player, int x, int y);
 };

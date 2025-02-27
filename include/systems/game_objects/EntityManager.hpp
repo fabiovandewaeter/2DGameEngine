@@ -21,10 +21,10 @@ public:
 
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
-    bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
+    bool checkCollision(SDL_FRect rectA, SDL_FRect rectB);
     std::vector<Entity *> getEntities();
     std::vector<Entity *> getPotentialEntities(Entity *entity);
-    std::vector<Entity *> getEntitiesInArea(SDL_Rect area);
+    std::vector<Entity *> getEntitiesInArea(SDL_FRect area);
     Player *getPlayer();
 
 private:

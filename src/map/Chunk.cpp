@@ -1,29 +1,33 @@
+#ifdef PROFILER
+#include "tracy_profiler/tracy/Tracy.hpp"
+#endif
+
 #include "map/Chunk.hpp"
 
 #include "map/Tile.hpp"
-#include "systems/PerlinNoise.hpp"
+#include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/Camera.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"
+#include "systems/utils/Constants.hpp"
 
-Chunk::Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
-    this->tileSize = tileSize;
     this->map = map;
     this->textureManager = textureManager;
-    this->box = (SDL_Rect){positionX, positionY, tileSize * SIZE, tileSize * SIZE};
+    this->box = (SDL_FRect){positionX, positionY, TILE_SIZE * CHUNK_SIZE, TILE_SIZE * CHUNK_SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
-    loadPassiveStructures();
-    loadActiveStructures();
+    loadUpdatableStructures();
+    loadOtherStructures();
 }
 Chunk::~Chunk()
 {
-    for (int i = 0; i < SIZE * SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
     {
         delete this->allTiles[i];
     }
@@ -43,22 +47,22 @@ void Chunk::loadTiles()
 }
 void Chunk::loadTilesDefault()
 {
-    for (int i = 0; i < SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i * this->tileSize + this->box.x, j * this->tileSize + this->box.y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->box.x, j + this->box.y);
         }
     }
 }
 void Chunk::loadTilesWithPerlinNoise()
 {
-    for (int i = 0; i < SIZE; i++)
+    for (int i = 0; i < CHUNK_SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            int x = i * this->tileSize + this->box.x;
-            int y = j * this->tileSize + this->box.y;
+            float x = i + this->box.x;
+            float y = j + this->box.y;
             double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
@@ -79,20 +83,20 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
         }
     }
 }
-void Chunk::loadPassiveStructures() {}
-void Chunk::loadActiveStructures() {}
+void Chunk::loadUpdatableStructures() {}
+void Chunk::loadOtherStructures() {}
 
 void Chunk::render(Camera *camera)
 {
-    SDL_Rect renderBox = this->box;
-    camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisible(renderBox))
+    SDL_FRect renderBox = this->box;
+    SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
+    if (camera->isVisibleOnScreen(newRenderBox))
     {
-        for (int i = 0; i < SIZE * SIZE; i++)
+        for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
         {
             this->allTiles[i]->render(camera);
         }
@@ -109,8 +113,8 @@ void Chunk::render(Camera *camera)
 
 void Chunk::update()
 {
-    std::vector<std::string> updatableStructuresToRemove;
-    std::vector<std::string> otherStructuresToRemove;
+    std::vector<std::pair<int, int>> updatableStructuresToRemove;
+    std::vector<std::pair<int, int>> otherStructuresToRemove;
     for (auto &[coords, structure] : this->updatableStructures)
     {
         structure->update();
@@ -141,27 +145,31 @@ void Chunk::update()
 
 void Chunk::convertToTileCoordinates(int &x, int &y)
 {
-    x = static_cast<int>(std::floor(static_cast<float>(x) / this->tileSize)) % SIZE;
-    y = static_cast<int>(std::floor(static_cast<float>(y) / this->tileSize)) % SIZE;
+    x = static_cast<int>(std::floor(static_cast<float>(x) / TILE_SIZE)) % CHUNK_SIZE;
+    y = static_cast<int>(std::floor(static_cast<float>(y) / TILE_SIZE)) % CHUNK_SIZE;
     if (x < 0)
     {
-        x = SIZE + x;
+        x = CHUNK_SIZE + x;
     }
     if (y < 0)
     {
-        y = SIZE + y;
+        y = CHUNK_SIZE + y;
     }
 }
 // returns the tile that contains the coordinates
 Tile *Chunk::getTile(int x, int y)
 {
     convertToTileCoordinates(x, y);
-    return this->allTiles[SIZE * x + y];
+    return this->allTiles[CHUNK_SIZE * x + y];
 }
 Structure *Chunk::getStructure(int x, int y)
 {
+#ifdef PROFILER
+    ZoneScoped;
+#endif
     convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    // std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
     if (it != this->updatableStructures.end())
@@ -183,7 +191,7 @@ Structure *Chunk::getStructure(int x, int y)
 bool Chunk::isStructure(int x, int y)
 {
     convertToTileCoordinates(x, y);
-    std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+    std::pair<int, int> coordinates = {x, y};
 
     auto it = this->updatableStructures.find(coordinates);
     if (it != this->updatableStructures.end())
@@ -204,15 +212,16 @@ bool Chunk::isStructure(int x, int y)
 
 void Chunk::addStructure(Structure *structure)
 {
-    SDL_Rect hitBox = structure->getHitBox();
+    SDL_FRect hitBox = structure->getHitBox();
     int x = hitBox.x;
     int y = hitBox.y;
     if (!isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
-        SDL_Rect box = {x * this->tileSize + this->box.x, y * this->tileSize + this->box.y, this->tileSize, this->tileSize};
+        SDL_FRect box = {x * TILE_SIZE + this->box.x, y * TILE_SIZE + this->box.y, TILE_SIZE, TILE_SIZE};
         structure->setHitBox(box);
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        std::pair<int, int> coordinates = {x, y};
+
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
             this->updatableStructures[coordinates] = structure;
@@ -229,7 +238,8 @@ void Chunk::destroyStructure(int x, int y)
     if (isStructure(x, y))
     {
         convertToTileCoordinates(x, y);
-        std::string coordinates = std::to_string(x) + "," + std::to_string(y);
+        std::pair<int, int> coordinates = {x, y};
+
         Structure *structure = getStructure(x, y);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {

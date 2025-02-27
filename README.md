@@ -12,9 +12,11 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 - SDL_image
 - SDL_ttf
 - SDL_mixer
+
 ##### others
 - [microui](https://github.com/rxi/microui)
 - [tracy](https://github.com/wolfpld/tracy)
+- [ut](https://github.com/boost-ext/ut)
 
 ## Commands
 
@@ -35,7 +37,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 
 `./bin/main.exe`
 
-### MacOs
+### macOS
 
 #### Install SDL libraries files
 
@@ -61,6 +63,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 * SDL2
 ```bash
 git clone https://github.com/libsdl-org/SDL.git -b SDL2
+cd SDL2
 ./autogen.sh
 ./configure --prefix=$HOME/libs/SDL2
 make
@@ -71,6 +74,7 @@ export LD_LIBRARY_PATH=$HOME/libs/SDL2/lib:$LD_LIBRARY_PATH
 ```bash
 wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
 tar -xzf SDL2_image-2.0.5.tar.gz
+cd SDL2_image-2.0.5/
 ./configure --prefix=$HOME/libs/SDL2
 make
 make install
@@ -79,6 +83,7 @@ make install
 ```bash
 wget https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.22.0.tar.gz
 tar -xzf SDL2_ttf-2.22.0.tar.gz
+cd SDL2_ttf-2.22.0/
 ./configure --prefix=$HOME/libs/SDL2
 make
 make install
@@ -87,6 +92,7 @@ make install
 ```bash
 wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.8.0.tar.gz
 tar -xzf SDL2_mixer-2.8.0.tar.gz
+cd SDL2_mixer-2.8.0/
 ./configure --prefix=$HOME/libs/SDL2
 make
 make install
@@ -105,6 +111,11 @@ make install
 `./a.out`
 
 ##### Tracy profiler
+###### Windows
+
+`https://github.com/wolfpld/tracy/releases`
+
+###### Linux
 
 https://github.com/wolfpld/tracy
 
@@ -120,8 +131,12 @@ https://github.com/wolfpld/tracy
 
 `./tracy-profiler`
 
+###### macOS
+
+`brew install tracy`
+
 ## How to add things
 
 ### images
 
-add 1 px of padding to iamges
+add 1 px of padding to images

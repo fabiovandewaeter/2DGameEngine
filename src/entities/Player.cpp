@@ -4,8 +4,8 @@
 #include "map/Map.hpp"
 
 // 1 if false and sprintVelocity if true
-int sprint2 = 1;
-int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
+float sprint2 = 1;
+float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
 void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager)
 {
@@ -33,8 +33,8 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
             sprint2 = SPRINT_MULTIPLIER;
             break;
         case SDLK_DELETE:
-            this->hitBox.x = 0;
-            this->hitBox.y = 0;
+            this->x = 0;
+            this->y = 0;
             break;
         }
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
@@ -71,21 +71,39 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
         mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
+int counter22 = 0;
 void Player::update()
 {
     this->camera->update();
-    Entity::update(this->map);
+    if (counter22 > 50)
+    {
+        std::cout << "Player: " << getPositionX() << " " << getPositionY() << std::endl;
+        std::cout << "Camera: " << this->camera->getPositionX() << " " << this->camera->getPositionY() << std::endl;
+        counter22 = 0;
+    }
+    counter22++;
+    move();
 }
 void Player::render()
 {
-    this->map->render(this);
     Entity::render(this->camera);
 }
-
-void Player::setPosition(int x, int y)
+void Player::move()
 {
-    this->hitBox.x = x;
-    this->hitBox.y = y;
+    if (canMove() && isMoving())
+    {
+        std::cout << "Player::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
+        // check for X axis
+        float newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+        // map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        SDL_FRect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        this->x = tempRect.x;
+
+        // check for Y axis
+        float newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
+        tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
+        this->y = tempRect.y;
+    }
 }
-Map *Player::getMap() { return this->map; }
+
 Camera *Player::getCamera() { return this->camera; }

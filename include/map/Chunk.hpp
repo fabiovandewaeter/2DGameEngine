@@ -1,13 +1,23 @@
 #ifndef chunk_hpp
 #define chunk_hpp
 
-#define SIZE 16
-
 #include <SDL2/SDL_rect.h>
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <cmath>
+#include <functional> // for std::hash
+
+#include "systems/utils/Constants.hpp"
+
+struct hash_pair
+{
+    template <typename T1, typename T2>
+    std::size_t operator()(const std::pair<T1, T2> &p) const
+    {
+        return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
+    }
+};
 
 class Map;
 class TextureManager;
@@ -22,14 +32,14 @@ class Faction;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, int tileSize, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
     void loadTiles();
     void loadTilesDefault();
     void loadTilesWithPerlinNoise();
-    void loadPassiveStructures();
-    void loadActiveStructures();
+    void loadUpdatableStructures();
+    void loadOtherStructures();
     void render(Camera *camera);
     void update();
 
@@ -41,16 +51,15 @@ public:
     void setFaction(Faction *faction);
 
 private:
-    Tile *allTiles[SIZE * SIZE];
+    Tile *allTiles[CHUNK_SIZE * CHUNK_SIZE];
     TextureManager *textureManager;
-    int tileSize;
 
     Map *map;
-    std::unordered_map<std::string, Structure *> updatableStructures;
-    std::unordered_map<std::string, Structure *> otherStructures;
+    std::unordered_map<std::pair<int, int>, Structure *, hash_pair> updatableStructures;
+    std::unordered_map<std::pair<int, int>, Structure *, hash_pair> otherStructures;
 
     int positionX, positionY;
-    SDL_Rect box;
+    SDL_FRect box;
     PerlinNoise *perlinNoise;
 
     Faction *faction;

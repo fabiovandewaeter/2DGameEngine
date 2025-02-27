@@ -11,7 +11,7 @@
 #include "map/Chunk.hpp"
 #include "structures/Structure.hpp"
 
-bool CollisionManager::checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB)
+bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -22,7 +22,7 @@ bool CollisionManager::checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB)
              rectA.y >= rectB.y + rectB.h);
 }
 
-bool CollisionManager::isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect)
+bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -33,7 +33,7 @@ bool CollisionManager::isPointInCollisionWithRectangle(int x, int y, SDL_Rect re
              y >= rect.y + rect.h);
 }
 
-bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_Rect rect)
+bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -54,7 +54,7 @@ bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_Rect rect)
     return false;
 }
 
-SDL_Rect CollisionManager::handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY)
+SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
 {
 #ifdef PROFILER
     ZoneScoped;
@@ -69,13 +69,13 @@ SDL_Rect CollisionManager::handleCollisionsForEntity(Entity *entity, int newPosX
             entities[i]->onCollision(entity);
         }
     }
-    SDL_Rect hitBox = entity->getHitBox();
-    SDL_Rect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
+    SDL_FRect hitBox = entity->getHitBox();
+    SDL_FRect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     // structures
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
         // check destination for all 4 corners of the entity
-        int newX, newY;
+        float newX, newY;
         Chunk *chunk;
         for (int i = 0; i < 2; i++)
         {

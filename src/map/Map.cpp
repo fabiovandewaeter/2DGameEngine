@@ -7,7 +7,7 @@
 #include "systems/game_objects/EntityManager.hpp"
 #include "entities/Player.hpp"
 
-Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise) : tileSize(tileSize), textureManager(textureManager), perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)) { loadChunks(); }
+Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise) : textureManager(textureManager), perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)) { loadChunks(); }
 Map::~Map()
 {
     for (auto &pair : this->allChunks)
@@ -24,7 +24,7 @@ void Map::loadChunks()
 }
 void Map::loadSquareMap(int size)
 {
-    int step = CHUNK_SIZE * this->tileSize;
+    int step = CHUNK_SIZE;
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -57,7 +57,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(int positionX, int positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, this->tileSize, this, this->textureManager, this->perlinNoise, this->collisionManager);
+    Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     int i = positionX, j = positionY;
     convertToChunkCoordinates(i, j);
@@ -85,10 +85,10 @@ void Map::update()
     this->entityManager->update();
 }
 
-bool Map::checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
-bool Map::isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
-bool Map::isRectangleInCollisionWithSolidStructure(SDL_Rect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
-SDL_Rect Map::handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY)
+bool Map::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
+bool Map::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
+bool Map::isRectangleInCollisionWithSolidStructure(SDL_FRect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
+SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
 {
     return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
 }
@@ -97,8 +97,8 @@ void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE * this->tileSize));
-    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * this->tileSize));
+    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE));
+    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE));
 }
 
 // returns true if the chunk exist
@@ -125,14 +125,14 @@ Chunk *Map::getChunk(int x, int y)
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
-        generateChunk(i * this->tileSize * CHUNK_SIZE, j * this->tileSize * CHUNK_SIZE);
+        generateChunk(i * CHUNK_SIZE, j * CHUNK_SIZE);
         std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
     }
     return this->allChunks[coordinates];
 }
 int Map::getTileSize()
 {
-    return this->tileSize;
+    return TILE_SIZE;
 }
 int Map::getChunkSize()
 {

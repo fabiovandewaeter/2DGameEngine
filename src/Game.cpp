@@ -14,12 +14,18 @@
 #include "entities/Player.hpp"
 #include "Texture.hpp"
 
-Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync)
+Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
 {
+    std::cout << "\n======================================================" << std::endl;
     this->fixedFPS = 60;
     this->fixedUPS = 60;
     this->screenWidth = width;
     this->screenHeight = height;
+    setUPS(UPS);
+    std::cout << "Window width: " << width << std::endl;
+    std::cout << "Window height: " << height << std::endl;
+    std::cout << "UPS: " << UPS << std::endl;
+    std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
     // initialize window
     int flags = 0;
     if (fullscreen)
@@ -72,7 +78,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
         }
     }
     // window icon
-    SDL_Surface *iconSurface = SDL_LoadBMP("assets/icon/window_icon.bmp");
+    SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
     if (!iconSurface)
     {
         std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
@@ -80,6 +86,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
+    this->camera = new Camera(this->renderer, this->screenWidth, this->screenHeight, 10, 20000, 0, 0);
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
     this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
@@ -94,6 +101,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
     this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
+    std::cout << "====================================================" << std::endl;
 }
 Game::~Game()
 {
@@ -126,11 +134,13 @@ void Game::handleEvents()
     }
 }
 
+#include "systems/algorithms/AstarPathFinding.hpp"
+
 TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    this->player->update();
+    // this->player->update();
     this->map->update();
 
     countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
@@ -142,7 +152,10 @@ void Game::render()
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
     SDL_RenderClear(this->renderer);
 
-    this->backgroundTexture->render((int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight()));
+    SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
+    this->player->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
+
+    this->map->render(this->player);
     this->player->render();
     this->guiManager->render(this->player);
 
@@ -188,7 +201,7 @@ void Game::loadMedia()
 {
     std::cout << "================= Game::LoadMedia() =================" << std::endl;
     // textures
-    this->textureManager.init(this->renderer);
+    this->textureManager.init(this->camera);
     this->backgroundTexture = this->textureManager.getTexture("BACKGROUND");
 
     // audio
@@ -196,14 +209,17 @@ void Game::loadMedia()
     this->audioManager.loadMedia();
     this->musics = this->audioManager.getMusic();
 }
+#include "entities/behaviors/WarriorBehavior.hpp"
+#include "entities/behaviors/ExplorerBehavior.hpp"
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    // CAMERA ZOOM NEED FIX
-    std::cout << "camera zoom need fix" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), (SDL_Rect){0, 0, 16, 16}, 100, this->map, new Camera(this->screenWidth, this->screenHeight, 10, 20000, 0, 0));
-    // CAMERA ZOOM NEED FIX
-    this->map->addEntity(this->player);
+    this->player = new Player(this->textureManager.getTexture("Player"), 0, 0, 16, 16, 103, this->map, this->camera);
+    this->map->addPlayer(this->player);
+
+    // test
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_FRect){0, 0, 16, 16}, 101, this->map, new WarriorBehavior()));
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_FRect){0, 0, 16, 16}, 102, this->map, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

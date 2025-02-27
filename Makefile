@@ -24,7 +24,7 @@ HEADER_FILES := $(call rwildcard,include,*.hpp)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 # Base flags for compilation
-CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic -std=c++11 -DTRACY_ENABLE
+CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic -std=c++11
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 SANITIZE_FLAGS = 
 ifneq ($(PLATFORM),windows)
@@ -51,13 +51,17 @@ else ifeq ($(SANITIZER), 2)
     CXXFLAGS += $(SANITIZE_FLAGS) -fsanitize=thread -DPROFILER
 endif
 
+TRACY?= 0
+
+ifeq ($(TRACY),1)
+    CXXFLAGS += $(SANITIZE_FLAGS) -DTRACY_ENABLE
+endif
+
 # Main target
 all: $(TARGET)
 ifeq ($(OS),Windows_NT)
-	scripts\generateStructuresListJSON.bat
 	mingw32-make run
 else
-	sh scripts/generateStructuresListJSON.sh
 	make run
 endif
 
@@ -69,6 +73,14 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp include/%.hpp
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)

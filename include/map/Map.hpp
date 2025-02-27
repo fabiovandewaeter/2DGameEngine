@@ -1,13 +1,13 @@
 #ifndef map_hpp
 #define map_hpp
 
-#define CHUNK_SIZE 16
-
 #include "SDL2/SDL_rect.h"
 #include <vector>
 #include <unordered_map>
 #include <cmath>
 #include <string>
+
+#include "systems/utils/Constants.hpp"
 
 class TextureManager;
 class Texture;
@@ -28,10 +28,10 @@ public:
     void render(Player *player);
     void update();
 
-    bool checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB);
-    bool isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect);
-    bool isRectangleInCollisionWithSolidStructure(SDL_Rect rect);
-    SDL_Rect handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY);
+    bool checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB);
+    bool isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect);
+    bool isRectangleInCollisionWithSolidStructure(SDL_FRect rect);
+    SDL_FRect handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY);
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
 
@@ -42,7 +42,6 @@ public:
     EntityManager *getEntityManager();
 
 private:
-    int tileSize;
     TextureManager *textureManager;
     PerlinNoise *perlinNoise;
     CollisionManager *collisionManager;

@@ -2,7 +2,7 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
-#include "systems/PerlinNoise.hpp"
+#include "systems/algorithms/PerlinNoise.hpp"
 
 PerlinNoise::PerlinNoise(){}
 PerlinNoise::~PerlinNoise(){}

@@ -17,11 +17,11 @@ public:
     ~CollisionManager();
 
     // returns true if there is a collision
-    bool checkRectanglesCollision(SDL_Rect rectA, SDL_Rect rectB);
-    bool isPointInCollisionWithRectangle(int x, int y, SDL_Rect rect);
-    bool isRectangleInCollisionWithSolidStructure(SDL_Rect rect);
+    bool checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB);
+    bool isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect);
+    bool isRectangleInCollisionWithSolidStructure(SDL_FRect rect);
     // returns a SDL_Rect with valid position for the Entity
-    SDL_Rect handleCollisionsForEntity(Entity *entity, int newPosX, int newPosY);
+    SDL_FRect handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY);
 
 private:
     Map *map;

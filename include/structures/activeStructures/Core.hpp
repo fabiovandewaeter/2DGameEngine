@@ -10,10 +10,11 @@ public:
     Core(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
 
     void update() override;
+    std::string getClassName() override { return "Core"; }
 
 private:
     void spawnEntities();
-    std::vector<SDL_Rect> getPotentialSpawnTiles(SDL_Rect entityHitBox);
+    std::vector<SDL_FRect> getPotentialSpawnTiles(SDL_FRect entityHitBox);
 };
 
 #endif

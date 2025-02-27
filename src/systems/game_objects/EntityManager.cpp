@@ -2,14 +2,13 @@
 
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
-#include "systems/CollisionManager.hpp"
 #include "Texture.hpp"
 #include "entities/Entity.hpp"
 #include "entities/Entity.hpp"
 
 void EntityManager::loadEntities()
 {
-    // this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_Rect){50, 50, 16, 16}, 100));
+    // this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_FRect){50, 50, 16, 16}, 100));
 }
 
 void EntityManager::update()
@@ -20,7 +19,7 @@ void EntityManager::update()
     // update entities
     for (int i = 0; i < size; i++)
     {
-        this->entities[i]->update(this->map);
+        this->entities[i]->update();
         if (this->entities[i]->getHP() <= 0)
         {
             deadEntities.push_back(i);
@@ -56,7 +55,7 @@ void EntityManager::addEntity(Entity *entity)
     this->entities.push_back(entity);
     std::cout << this->entities.size() << std::endl;
 }
-bool EntityManager::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
+bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
     return !(rectA.x + rectA.w <= rectB.x ||
              rectA.x >= rectB.x + rectB.w ||
@@ -70,10 +69,10 @@ std::vector<Entity *> EntityManager::getEntities()
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     // NEED CHANGE
-    std::cout << "NEED CHANGE IN EntityManager::getPotentialEntities()" << std::endl;
+    std::cout << "NEED CHANGE IN EntityManager::getPotentialEntities() TO ONLY RETURN THE POTENTIAL ENTITIES AND NOT ALL ENTITIES" << std::endl;
     return this->entities;
 }
-std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_Rect area)
+std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
 {
     std::vector<Entity *> res;
     int size = this->entities.size();

@@ -11,9 +11,9 @@
 
 // Define TRACY_ENABLE to enable profiler.
 
+#ifdef TRACY_ENABLE
 #include "tracy_profiler/common/TracySystem.cpp"
 
-#ifdef TRACY_ENABLE
 
 #ifdef _MSC_VER
 #  pragma warning(push, 0)

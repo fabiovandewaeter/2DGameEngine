@@ -4,12 +4,12 @@
 #include "systems/utils/JSONManager.hpp"
 
 TextureManager::TextureManager() {}
-TextureManager::TextureManager(SDL_Renderer *renderer) { init(renderer); }
+TextureManager::TextureManager(Camera *camera) { init(camera); }
 TextureManager::~TextureManager() {}
 
-void TextureManager::init(SDL_Renderer *renderer)
+void TextureManager::init(Camera *camera)
 {
-    this->renderer = renderer;
+    this->camera = camera;
     loadConfiguration();
 }
 void TextureManager::loadConfiguration()
@@ -27,7 +27,7 @@ void TextureManager::loadConfiguration()
                 {
                     std::string texturePath = textureData["path"].GetString();
                     std::cout << "Load texture: " << texturePath << std::endl;
-                    this->textures[textureData["name"].GetString()] = new Texture(this->renderer, texturePath);
+                    this->textures[textureData["name"].GetString()] = new Texture(this->camera, texturePath);
                 }
             }
         }

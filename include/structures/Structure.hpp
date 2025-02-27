@@ -32,13 +32,13 @@ public:
     virtual void onLeftClick();
     virtual void onRightClick();
 
-    SDL_Rect getHitBox();
+    SDL_FRect getHitBox();
     int getHP();
     bool isSolid();
     bool isDestroyed();
     void setX(int x);
     void setY(int y);
-    void setHitBox(SDL_Rect hitBox);
+    void setHitBox(SDL_FRect hitBox);
     void setTexture(Texture *texture);
     static std::string getName() { return "Structure"; };
     static int getTexture()
@@ -46,10 +46,11 @@ public:
         std::cout << "ERROR: default Structure::getTexture() should not be used" << std::endl;
         return -1;
     };
+    virtual std::string getClassName() = 0;
 
 protected:
     Texture *texture;
-    SDL_Rect hitBox;
+    SDL_FRect hitBox;
     bool solid;
     unsigned int HP;
     bool destroyed;

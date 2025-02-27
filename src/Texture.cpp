@@ -1,14 +1,17 @@
 #include "Texture.hpp"
 
+#include "systems/core/Camera.hpp"
+
 int counter = 0;
 Texture::Texture() {}
-Texture::Texture(SDL_Renderer *renderer, std::string path)
+Texture::Texture(Camera *camera, std::string path)
 {
     // Initialize
     this->texture = NULL;
+    this->camera = camera;
+    this->renderer = this->camera->getRenderer();
     this->width = 0;
     this->height = 0;
-    this->renderer = renderer;
     this->id = counter;
     loadFromFile(path);
     counter++;
@@ -91,35 +94,7 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
-void Texture::render(int x, int y)
-{
-    SDL_Rect renderBox = {x, y, this->width, this->height};
-    render(renderBox);
-}
-void Texture::render(int x, int y, int w, int h)
-{
-    SDL_Rect renderBox = {x, y, w, h};
-    render(renderBox);
-}
-void Texture::render(SDL_Rect renderBox)
-{
-    // 1px padding
-    /*renderBox.x -= 1;
-    renderBox.y -= 1;
-    renderBox.w += 2;
-    renderBox.h += 2;
-
-    SDL_Rect srcRect = {renderBox.x, renderBox.y, renderBox.w, renderBox.h};*/
-
-    SDL_RenderCopy(this->renderer, this->texture, NULL, &renderBox);
-    // SDL_RenderCopy(this->renderer, texture, &srcRect, &renderBox);
-}
-void Texture::render(SDL_Rect srcBox, SDL_Rect dstBox)
-{
-    SDL_RenderCopy(this->renderer, this->texture, &srcBox, &dstBox);
-}
-
-SDL_Texture *Texture::getTexture() { return this->texture; }
+SDL_Texture *Texture::getTexture() const { return this->texture; }
 int Texture::getWidth() { return this->width; }
 int Texture::getHeight() { return this->height; }
 void Texture::setSize(int width, int height)

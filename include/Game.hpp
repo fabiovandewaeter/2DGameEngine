@@ -10,7 +10,7 @@
 #include "systems/core/TextureManager.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/core/IOManager.hpp"
-#include "systems/PerlinNoise.hpp"
+#include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/AudioManager.hpp"
 #include "systems/core/TickManager.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
@@ -25,8 +25,6 @@ struct TimeData
     Uint64 counterLimiter;
 };
 class Texture;
-class Core;
-class Turret;
 class Player;
 class MouseManager;
 class GUIManager;
@@ -35,7 +33,7 @@ class Map;
 class Game
 {
 public:
-    Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync);
+    Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS);
     ~Game();
 
     void run();
@@ -55,6 +53,7 @@ private:
     bool running;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    Camera *camera;
     int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
