@@ -131,7 +131,6 @@ void Camera::render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rec
 
 SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
 {
-    std::cout << "Camera::convertInGameToCameraCoordinates()" << std::endl;
     int cameraPositionX = this->positionX;
     int cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
@@ -140,23 +139,16 @@ SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
     int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * scale);
     int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * scale);
 
-    /*rect.x = viewPositionX;
-    rect.y = viewPositionY;
-    rect.w *= scale;
-    rect.h *= scale;*/
     SDL_Rect res = {viewPositionX, viewPositionY, rect.w * scale, rect.h * scale};
     return res;
 }
 std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 {
-    std::cout << "Camera::convertCameraToInGameCoordinates()" << std::endl;
     float cameraPositionX = this->positionX;
     float cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
     int viewCenterY = this->height / 2;
 
-    /*x = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
-    y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;*/
     std::pair<float, float> res = {(-viewCenterX + cameraPositionX * scale + x) / this->scale, (-viewCenterY + cameraPositionY * scale + y) / this->scale};
     return res;
 }
