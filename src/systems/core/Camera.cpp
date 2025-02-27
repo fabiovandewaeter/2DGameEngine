@@ -110,9 +110,8 @@ void Camera::move()
     this->positionY += this->velocity * velY;
 }
 
-void Camera::render(Entity *entity)
+void Camera::render(const Entity *entity)
 {
-    std::cout << "HERE" << std::endl;
     SDL_FRect renderBox = entity->getHitBox();
     SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
     if (isVisibleOnScreen(newRenderBox))
@@ -121,18 +120,18 @@ void Camera::render(Entity *entity)
         render(entity->getTexture(), newRenderBox);
     }
 }
-void Camera::render(Texture *texture, SDL_Rect renderBox)
+void Camera::render(const Texture *texture, const SDL_Rect renderBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), NULL, &renderBox);
 }
-void Camera::render(Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
+void Camera::render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
 }
 
-SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
+SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
 {
-    std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
+    std::cout << "Camera::convertInGameToCameraCoordinates()" << std::endl;
     int cameraPositionX = this->positionX;
     int cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
@@ -141,21 +140,25 @@ SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect &rect)
     int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * scale);
     int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * scale);
 
-    rect.x = viewPositionX;
+    /*rect.x = viewPositionX;
     rect.y = viewPositionY;
     rect.w *= scale;
-    rect.h *= scale;
+    rect.h *= scale;*/
+    SDL_Rect res = {viewPositionX, viewPositionY, rect.w * scale, rect.h * scale};
+    return res;
 }
 std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 {
-    std::cout << "VOIR S'IL FAUT CHANGER LA CONVERSION DES COORDONNEES" << std::endl;
+    std::cout << "Camera::convertCameraToInGameCoordinates()" << std::endl;
     float cameraPositionX = this->positionX;
     float cameraPositionY = this->positionY;
     int viewCenterX = this->width / 2;
     int viewCenterY = this->height / 2;
 
-    x = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
-    y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
+    /*x = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
+    y = (-viewCenterY + cameraPositionY * scale + y) / this->scale;*/
+    std::pair<float, float> res = {(-viewCenterX + cameraPositionX * scale + x) / this->scale, (-viewCenterY + cameraPositionY * scale + y) / this->scale};
+    return res;
 }
 
 bool Camera::isVisibleOnScreen(SDL_Rect rect)

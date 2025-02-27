@@ -20,11 +20,11 @@ public:
     void handleEvents(SDL_Event *event);
     void update();
     void move();
-    void render(Entity *entity);
-    void render(Texture *texture, SDL_Rect renderBox);
-    void render(Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox);
+    void render(const Entity *entity);
+    void render(const Texture *texture, const SDL_Rect renderBox);
+    void render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rect dstBox);
 
-    SDL_Rect convertInGameToCameraCoordinates(SDL_FRect &rect);
+    SDL_Rect convertInGameToCameraCoordinates(const SDL_FRect rect);
     std::pair<float, float> convertCameraToInGameCoordinates(int x, int y);
     // return true if rect coordinates are contained in the screen
     bool isVisibleOnScreen(SDL_Rect rect);

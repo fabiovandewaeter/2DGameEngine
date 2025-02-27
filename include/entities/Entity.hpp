@@ -41,11 +41,11 @@ public:
 
     float getPositionX();
     float getPositionY();
-    Texture *getTexture();
+    Texture *getTexture() const;
     int getSpeed();
-    SDL_FRect getHitBox();
+    SDL_FRect getHitBox() const;
     int getHP();
-    Map *getMap();
+    Map *getMap() const;
 
 protected:
     Texture *texture;

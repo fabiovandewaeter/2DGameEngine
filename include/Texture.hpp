@@ -21,7 +21,7 @@ public:
     ~Texture();
     void free();
 
-    SDL_Texture *getTexture();
+    SDL_Texture *getTexture() const;
     int getWidth();
     int getHeight();
     void setSize(int width, int height);

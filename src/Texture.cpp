@@ -94,7 +94,7 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
-SDL_Texture *Texture::getTexture() { return this->texture; }
+SDL_Texture *Texture::getTexture() const { return this->texture; }
 int Texture::getWidth() { return this->width; }
 int Texture::getHeight() { return this->height; }
 void Texture::setSize(int width, int height)

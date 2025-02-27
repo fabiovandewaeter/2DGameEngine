@@ -86,7 +86,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);
 
-    new Camera(this->renderer, this->screenWidth, this->screenHeight, 10, 20000, 0, 0);
+    this->camera = new Camera(this->renderer, this->screenWidth, this->screenHeight, 10, 20000, 0, 0);
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
     this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
