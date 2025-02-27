@@ -14,7 +14,7 @@ class Texture;
 class Camera
 {
 public:
-    Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocity(1), sprintVelocity(50) { std::cout << "camera zoom need fix" << std::endl; };
+    Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0/16), sprintVelocity(50) { std::cout << "camera zoom need fix" << std::endl; };
     ~Camera();
 
     void handleEvents(SDL_Event *event);
@@ -45,8 +45,8 @@ private:
 
     // in-game coordinates
     float positionX, positionY;
-    int velocity;
-    int sprintVelocity;
+    float velocityMultiplier;
+    float sprintVelocity;
 
     SDL_Renderer *renderer;
 };

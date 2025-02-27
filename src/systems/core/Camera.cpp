@@ -1,12 +1,15 @@
 #include "systems/core/Camera.hpp"
 
+#include <iostream>
+
 #include "entities/Entity.hpp"
 #include "Texture.hpp"
+#include "systems/utils/Constants.hpp"
 
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
-int sprint = 1;
-int leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
+float sprint = 1;
+float leftVelX = 0, rightVelX = 0, upVelY = 0, downVelY = 0;
 
 void Camera::handleEvents(SDL_Event *event)
 {
@@ -18,19 +21,19 @@ void Camera::handleEvents(SDL_Event *event)
         {
         case SDLK_UP:
         case SDLK_z:
-            upVelY = this->velocity;
+            upVelY = this->velocityMultiplier;
             break;
         case SDLK_DOWN:
         case SDLK_s:
-            downVelY = this->velocity;
+            downVelY = this->velocityMultiplier;
             break;
         case SDLK_LEFT:
         case SDLK_q:
-            leftVelX = this->velocity;
+            leftVelX = this->velocityMultiplier;
             break;
         case SDLK_RIGHT:
         case SDLK_d:
-            rightVelX = this->velocity;
+            rightVelX = this->velocityMultiplier;
             break;
         case SDLK_LSHIFT:
         case SDLK_RSHIFT:
@@ -44,6 +47,7 @@ void Camera::handleEvents(SDL_Event *event)
             this->positionY = 0;
             break;
         }
+        std::cout << rightVelX << " " << leftVelX << " " << this->velocityMultiplier << std::endl;
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
     }
@@ -106,8 +110,8 @@ void Camera::update()
 
 void Camera::move()
 {
-    this->positionX += this->velocity * velX;
-    this->positionY += this->velocity * velY;
+    this->positionX += this->velocityMultiplier * velX;
+    this->positionY += this->velocityMultiplier * velY;
 }
 
 void Camera::render(const Entity *entity)
@@ -130,25 +134,27 @@ void Camera::render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rec
 
 SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
 {
-    int cameraPositionX = this->positionX;
-    int cameraPositionY = this->positionY;
-    int viewCenterX = this->width / 2;
-    int viewCenterY = this->height / 2;
+    float cameraPositionX = this->positionX * TILE_SIZE;
+    float cameraPositionY = this->positionY * TILE_SIZE;
+    float viewCenterX = this->width / 2;
+    float viewCenterY = this->height / 2;
 
-    int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * scale);
-    int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * scale);
+    int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * TILE_SIZE * scale);
+    int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * TILE_SIZE * scale);
 
     SDL_Rect res = {viewPositionX, viewPositionY, rect.w * scale, rect.h * scale};
     return res;
 }
 std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 {
-    float cameraPositionX = this->positionX;
-    float cameraPositionY = this->positionY;
-    int viewCenterX = this->width / 2;
-    int viewCenterY = this->height / 2;
+    float cameraPositionX = this->positionX / TILE_SIZE;
+    float cameraPositionY = this->positionY / TILE_SIZE;
+    float viewCenterX = this->width / 2;
+    float viewCenterY = this->height / 2;
 
-    std::pair<float, float> res = {(-viewCenterX + cameraPositionX * scale + x) / this->scale, (-viewCenterY + cameraPositionY * scale + y) / this->scale};
+    float newX = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
+    float newY = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
+    std::pair<float, float> res = {newX, newY};
     return res;
 }
 

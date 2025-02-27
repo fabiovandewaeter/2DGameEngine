@@ -24,7 +24,7 @@ void Map::loadChunks()
 }
 void Map::loadSquareMap(int size)
 {
-    int step = CHUNK_SIZE * TILE_SIZE;
+    int step = CHUNK_SIZE;
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -97,8 +97,8 @@ void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
 void Map::convertToChunkCoordinates(int &x, int &y)
 {
-    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE * TILE_SIZE));
-    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE * TILE_SIZE));
+    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE));
+    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE));
 }
 
 // returns true if the chunk exist
@@ -125,7 +125,7 @@ Chunk *Map::getChunk(int x, int y)
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())
     {
-        generateChunk(i * TILE_SIZE * CHUNK_SIZE, j * TILE_SIZE * CHUNK_SIZE);
+        generateChunk(i * CHUNK_SIZE, j * CHUNK_SIZE);
         std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
     }
     return this->allChunks[coordinates];

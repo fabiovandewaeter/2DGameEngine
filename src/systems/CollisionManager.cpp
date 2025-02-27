@@ -75,7 +75,7 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
     if (this->map->isChunkGenerated(newPosX, newPosY))
     {
         // check destination for all 4 corners of the entity
-        int newX, newY;
+        float newX, newY;
         Chunk *chunk;
         for (int i = 0; i < 2; i++)
         {

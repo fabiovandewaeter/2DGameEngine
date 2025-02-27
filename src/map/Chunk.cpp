@@ -51,7 +51,7 @@ void Chunk::loadTilesDefault()
     {
         for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i * TILE_SIZE + this->box.x, j * TILE_SIZE + this->box.y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->box.x, j + this->box.y);
         }
     }
 }
@@ -61,8 +61,8 @@ void Chunk::loadTilesWithPerlinNoise()
     {
         for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            int x = i * TILE_SIZE + this->box.x;
-            int y = j * TILE_SIZE + this->box.y;
+            float x = i + this->box.x;
+            float y = j + this->box.y;
             double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;

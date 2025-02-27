@@ -1,7 +1,7 @@
 #ifndef entity_hpp
 #define entity_hpp
 
-#define VELOCITY_MULTIPLIER 1
+#define VELOCITY_MULTIPLIER (4.0/16)
 
 #include <SDL2/SDL_render.h>
 #include <stack>

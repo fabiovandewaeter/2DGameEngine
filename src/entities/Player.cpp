@@ -4,8 +4,8 @@
 #include "map/Map.hpp"
 
 // 1 if false and sprintVelocity if true
-int sprint2 = 1;
-int leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
+float sprint2 = 1;
+float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
 void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager)
 {
@@ -71,9 +71,17 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
         mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
+int counter22 = 0;
 void Player::update()
 {
     this->camera->update();
+    if (counter22 > 50)
+    {
+        std::cout << "Player: " << getPositionX() << " " << getPositionY() << std::endl;
+        std::cout << "Camera: " << this->camera->getPositionX() << " " << this->camera->getPositionY() << std::endl;
+        counter22 = 0;
+    }
+    counter22++;
     move();
 }
 void Player::render()
@@ -86,13 +94,13 @@ void Player::move()
     {
         std::cout << "Player::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
         // check for X axis
-        int newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
+        float newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
+        // map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         SDL_FRect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->x = tempRect.x;
 
         // check for Y axis
-        int newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
+        float newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
         tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
         this->y = tempRect.y;
     }
