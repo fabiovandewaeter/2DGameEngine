@@ -111,3 +111,45 @@ ifeq ($(PLATFORM),windows)
 else
 	./$(TARGET) 60
 endif
+
+
+# ================ TESTS ================
+
+TEST_FILES := $(call rwildcard,tests,*.cpp)
+TEST_TARGET = $(BIN_DIR)/tests
+TEST_OBJ_DIR = $(OBJ_DIR)/tests
+TEST_OBJ_FILES = $(patsubst tests/%.cpp, $(TEST_OBJ_DIR)/%.o, $(TEST_FILES))
+TEST_CXXFLAGS = -I include -std=c++20 -O2
+
+ifeq ($(PLATFORM),windows)
+    TEST_CXXFLAGS += -L Windows_lib
+    SDL_LIBS := -lmingw32 -lSDL2main -lws2_32 -ldbghelp $(SDL_LIBS)
+else ifeq ($(PLATFORM),macos)
+    TEST_CXXFLAGS += -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/
+    SDL_LIBS += -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib
+else ifeq ($(PLATFORM),linux)
+    TEST_CXXFLAGS += -I$(HOME)/libs/SDL2/include -L$(HOME)/libs/SDL2/lib
+endif
+
+$(TEST_TARGET): $(TEST_OBJ_FILES)
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
+	$(CXX) $(TEST_OBJ_FILES) -o $(TEST_TARGET) $(TEST_CXXFLAGS) $(SDL_LIBS)
+
+$(TEST_OBJ_DIR)/%.o: tests/%.cpp
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
+	$(CXX) -c $< -o $@ $(TEST_CXXFLAGS)
+
+test: $(TEST_TARGET)
+ifeq ($(PLATFORM),windows)
+	.\$(TEST_TARGET)
+else
+	./$(TEST_TARGET)
+endif
