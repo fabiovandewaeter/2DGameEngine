@@ -29,8 +29,6 @@ bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRe
 
 bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 {
-    if (this->map->isChunkGenerated(rect.x, rect.y))
-    {
         Chunk *chunk = this->map->getChunk(rect.x, rect.y);
         // structures
         if (chunk->isStructure(rect.x, rect.y))
@@ -41,7 +39,6 @@ bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
                 return structure->isSolid() ? true : false;
             }
         }
-    }
     return false;
 }
 
@@ -60,8 +57,6 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
     SDL_FRect hitBox = entity->getHitBox();
     SDL_FRect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     // structures
-    if (this->map->isChunkGenerated(newPosX, newPosY))
-    {
         // check destination for all 4 corners of the entity
         float newX, newY;
         Chunk *chunk;
@@ -83,6 +78,5 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
                 }
             }
         }
-    }
     return newHitBox;
 }
