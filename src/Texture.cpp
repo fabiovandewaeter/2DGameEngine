@@ -65,6 +65,7 @@ Texture *Texture::loadFromFile(std::string path)
     this->texture = newTexture;
     return this;
 }
+
 Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor)
 {
     free();

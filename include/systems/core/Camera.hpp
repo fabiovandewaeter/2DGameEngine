@@ -29,7 +29,7 @@ public:
     // return true if rect coordinates are contained in the screen
     bool isVisibleOnScreen(SDL_Rect rect);
 
-    void setPosition(int x, int y);
+    void setPosition(float x, float y);
     float getPositionX();
     float getPositionY();
     int getWidth();

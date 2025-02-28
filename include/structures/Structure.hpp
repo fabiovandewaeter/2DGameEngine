@@ -21,8 +21,8 @@ class Structure
 {
 public:
     Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
-    Structure(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : Structure(texture, x, y, 0, true, placedBy, tickManager) {}
-    Structure(Texture *texture, int x, int y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), hitBox({x, y, getTileSize(), getTileSize()}), HP(HP), solid(solid), destroyed(false) {}
+    Structure(Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) : Structure(texture, x, y, 0, true, placedBy, tickManager) {}
+    Structure(Texture *texture, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), hitBox({x, y, 1, 1}), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();

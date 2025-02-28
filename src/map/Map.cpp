@@ -88,10 +88,7 @@ void Map::update()
 bool Map::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
 bool Map::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
 bool Map::isRectangleInCollisionWithSolidStructure(SDL_FRect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
-SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
-{
-    return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
-}
+SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY) { return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY); }
 void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
 void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 

@@ -17,9 +17,10 @@ Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureMana
 {
     this->positionX = positionX;
     this->positionY = positionY;
+    this->width = TILE_SIZE * CHUNK_SIZE;
+    this->height = TILE_SIZE * CHUNK_SIZE;
     this->map = map;
     this->textureManager = textureManager;
-    this->box = (SDL_FRect){positionX, positionY, TILE_SIZE * CHUNK_SIZE, TILE_SIZE * CHUNK_SIZE};
     this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
@@ -51,7 +52,7 @@ void Chunk::loadTilesDefault()
     {
         for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->box.x, j + this->box.y);
+            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->positionX, j + this->positionY);
         }
     }
 }
@@ -61,8 +62,8 @@ void Chunk::loadTilesWithPerlinNoise()
     {
         for (int j = 0; j < CHUNK_SIZE; j++)
         {
-            float x = i + this->box.x;
-            float y = j + this->box.y;
+            float x = i + this->positionX;
+            float y = j + this->positionY;
             double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
@@ -92,7 +93,7 @@ void Chunk::loadOtherStructures() {}
 
 void Chunk::render(Camera *camera)
 {
-    SDL_FRect renderBox = this->box;
+    SDL_FRect renderBox = {this->positionX, this->positionY, this->width, this->height};
     SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisibleOnScreen(newRenderBox))
     {
@@ -143,10 +144,10 @@ void Chunk::update()
     }
 }
 
-void Chunk::convertToTileCoordinates(int &x, int &y)
+std::pair<int, int> Chunk::convertToLocalTileCoordinates(float x, float y)
 {
-    x = static_cast<int>(std::floor(static_cast<float>(x) / TILE_SIZE)) % CHUNK_SIZE;
-    y = static_cast<int>(std::floor(static_cast<float>(y) / TILE_SIZE)) % CHUNK_SIZE;
+    x = static_cast<int>(std::floor(x)) % CHUNK_SIZE;
+    y = static_cast<int>(std::floor(y)) % CHUNK_SIZE;
     if (x < 0)
     {
         x = CHUNK_SIZE + x;
@@ -155,31 +156,27 @@ void Chunk::convertToTileCoordinates(int &x, int &y)
     {
         y = CHUNK_SIZE + y;
     }
+    std::pair<int, int> res = {x, y};
+    return res;
 }
-// returns the tile that contains the coordinates
-Tile *Chunk::getTile(int x, int y)
-{
-    convertToTileCoordinates(x, y);
-    return this->allTiles[CHUNK_SIZE * x + y];
-}
-Structure *Chunk::getStructure(int x, int y)
-{
-#ifdef PROFILER
-    ZoneScoped;
-#endif
-    convertToTileCoordinates(x, y);
-    // std::string coordinates = std::to_string(x) + "," + std::to_string(y);
-    std::pair<int, int> coordinates = {x, y};
 
-    auto it = this->updatableStructures.find(coordinates);
+// returns the tile that contains the coordinates
+Tile *Chunk::getTile(float x, float y)
+{
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+    return this->allTiles[CHUNK_SIZE * newCoordinates.first + newCoordinates.second];
+}
+Structure *Chunk::getStructure(float x, float y)
+{
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+    auto it = this->updatableStructures.find(newCoordinates);
     if (it != this->updatableStructures.end())
     {
         return it->second;
     }
     else
     {
-
-        it = this->otherStructures.find(coordinates);
+        it = this->otherStructures.find(newCoordinates);
         if (it != this->otherStructures.end())
         {
             return it->second;
@@ -188,20 +185,18 @@ Structure *Chunk::getStructure(int x, int y)
     return nullptr;
 }
 
-bool Chunk::isStructure(int x, int y)
+bool Chunk::isStructure(float x, float y)
 {
-    convertToTileCoordinates(x, y);
-    std::pair<int, int> coordinates = {x, y};
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
 
-    auto it = this->updatableStructures.find(coordinates);
+    auto it = this->updatableStructures.find(newCoordinates);
     if (it != this->updatableStructures.end())
     {
         return true;
     }
     else
     {
-
-        it = this->otherStructures.find(coordinates);
+        it = this->otherStructures.find(newCoordinates);
         if (it != this->otherStructures.end())
         {
             return true;
@@ -213,41 +208,39 @@ bool Chunk::isStructure(int x, int y)
 void Chunk::addStructure(Structure *structure)
 {
     SDL_FRect hitBox = structure->getHitBox();
-    int x = hitBox.x;
-    int y = hitBox.y;
+    float x = hitBox.x;
+    float y = hitBox.y;
     if (!isStructure(x, y))
     {
-        convertToTileCoordinates(x, y);
-        SDL_FRect box = {x * TILE_SIZE + this->box.x, y * TILE_SIZE + this->box.y, TILE_SIZE, TILE_SIZE};
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+        SDL_FRect box = {newCoordinates.first + this->positionX, newCoordinates.second + this->positionY, 1, 1};
         structure->setHitBox(box);
-        std::pair<int, int> coordinates = {x, y};
 
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
-            this->updatableStructures[coordinates] = structure;
+            this->updatableStructures[newCoordinates] = structure;
         }
         else
         {
-            this->otherStructures[coordinates] = structure;
+            this->otherStructures[newCoordinates] = structure;
         }
     }
 }
 
-void Chunk::destroyStructure(int x, int y)
+void Chunk::destroyStructure(float x, float y)
 {
     if (isStructure(x, y))
     {
-        convertToTileCoordinates(x, y);
-        std::pair<int, int> coordinates = {x, y};
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
 
-        Structure *structure = getStructure(x, y);
+        Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
-            this->updatableStructures.erase(coordinates);
+            this->updatableStructures.erase(newCoordinates);
         }
         else
         {
-            this->otherStructures.erase(coordinates);
+            this->otherStructures.erase(newCoordinates);
         }
         structure->destroy();
     }

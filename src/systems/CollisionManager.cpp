@@ -13,9 +13,6 @@
 
 bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     return !(rectA.x + rectA.w <= rectB.x ||
              rectA.x >= rectB.x + rectB.w ||
              rectA.y + rectA.h <= rectB.y ||
@@ -24,9 +21,6 @@ bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB
 
 bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     return !(x <= rect.x ||
              x >= rect.x + rect.w ||
              y <= rect.y ||
@@ -35,9 +29,6 @@ bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRe
 
 bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     if (this->map->isChunkGenerated(rect.x, rect.y))
     {
         Chunk *chunk = this->map->getChunk(rect.x, rect.y);
@@ -56,9 +47,6 @@ bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 
 SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     // entities
     std::vector<Entity *> entities = this->map->getEntityManager()->getPotentialEntities(entity);
     int size = entities.size();

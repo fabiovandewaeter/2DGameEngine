@@ -24,7 +24,7 @@ Tile::~Tile() {}
 
 void Tile::render(Camera *camera)
 {
-    SDL_FRect renderBox = {this->x, this->y, TILE_SIZE, TILE_SIZE};
+    SDL_FRect renderBox = {this->x, this->y, 1, 1};
     SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
     camera->render(this->texture, newRenderBox);
 }
