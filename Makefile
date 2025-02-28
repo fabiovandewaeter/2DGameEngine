@@ -66,13 +66,13 @@ else
 endif
 
 # Compilation
-$(TARGET): $(OBJ_FILES) obj/microui.o $(HEADER_FILES)
+$(TARGET): $(OBJ_FILES) obj/microui/microui.o $(HEADER_FILES)
 ifeq ($(PLATFORM),windows)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else
 	@mkdir -p $(dir $@)
 endif
-	$(CXX) $(OBJ_FILES) obj/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
+	$(CXX) $(OBJ_FILES) obj/microui/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp include/%.hpp
 ifeq ($(PLATFORM),windows)
@@ -90,7 +90,12 @@ else
 endif
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-$(OBJ_DIR)/microui.o: $(SRC_DIR)/microui.c
+$(OBJ_DIR)/microui/microui.o: $(SRC_DIR)/microui/microui.c
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
 	gcc -c $< -o $@ -I include
 
 clean:

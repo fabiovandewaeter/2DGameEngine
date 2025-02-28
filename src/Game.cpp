@@ -143,7 +143,7 @@ void Game::update()
     // this->player->update();
     this->map->update();
 
-    countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
+    //countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
 
 TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
@@ -160,7 +160,7 @@ void Game::render()
     this->guiManager->render(this->player);
 
     SDL_RenderPresent(this->renderer);
-    countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
+    //countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 
 void Game::clean()
@@ -214,12 +214,12 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), 0, 0, 16, 16, 103, this->map, this->camera);
+    this->player = new Player(this->textureManager.getTexture("Player"), 0, 0, 1, 1, 103, this->map, this->camera);
     this->map->addPlayer(this->player);
 
     // test
-    // this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_FRect){0, 0, 16, 16}, 101, this->map, new WarriorBehavior()));
-    // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_FRect){0, 0, 16, 16}, 102, this->map, new ExplorerBehavior()));
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), (SDL_FRect){0, 0, 1, 1}, 101, this->map, new WarriorBehavior()));
+    // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), (SDL_FRect){0, 0, 1, 1}, 102, this->map, new ExplorerBehavior()));
 }
 void Game::loadItems()
 {

@@ -10,7 +10,7 @@
 #include "SDL2/SDL_render.h"
 extern "C"
 {
-#include "microui.h"
+#include "microui/microui.h"
 }
 
 class TextureManager;

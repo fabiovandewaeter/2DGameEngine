@@ -47,7 +47,6 @@ void Camera::handleEvents(SDL_Event *event)
             this->positionY = 0;
             break;
         }
-        std::cout << rightVelX << " " << leftVelX << " " << this->velocityMultiplier << std::endl;
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
     }
@@ -134,32 +133,37 @@ void Camera::render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rec
 
 SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
 {
-    float cameraPositionX = this->positionX * TILE_SIZE;
-    float cameraPositionY = this->positionY * TILE_SIZE;
+    float cameraPositionX = this->positionX * TILE_PIXELS_SIZE;
+    float cameraPositionY = this->positionY * TILE_PIXELS_SIZE;
     float viewCenterX = this->width / 2;
     float viewCenterY = this->height / 2;
 
-    int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * TILE_SIZE * scale);
-    int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * TILE_SIZE * scale);
+    int viewPositionX = (viewCenterX - cameraPositionX * scale) + (rect.x * TILE_PIXELS_SIZE * scale);
+    int viewPositionY = (viewCenterY - cameraPositionY * scale) + (rect.y * TILE_PIXELS_SIZE * scale);
 
-    SDL_Rect res = {viewPositionX, viewPositionY, rect.w * scale, rect.h * scale};
+    SDL_Rect res = {viewPositionX, viewPositionY, rect.w * TILE_PIXELS_SIZE * scale, rect.h * TILE_PIXELS_SIZE * scale};
     return res;
 }
+
 std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 {
-    float cameraPositionX = this->positionX / TILE_SIZE;
-    float cameraPositionY = this->positionY / TILE_SIZE;
+    float cameraPositionX = this->positionX * TILE_PIXELS_SIZE;
+    float cameraPositionY = this->positionY * TILE_PIXELS_SIZE;
     float viewCenterX = this->width / 2;
     float viewCenterY = this->height / 2;
 
     float newX = (-viewCenterX + cameraPositionX * scale + x) / this->scale;
     float newY = (-viewCenterY + cameraPositionY * scale + y) / this->scale;
+    newX = newX / TILE_PIXELS_SIZE;
+    newY = newY / TILE_PIXELS_SIZE;
     std::pair<float, float> res = {newX, newY};
+    std::cout << newX << " " << newY << std::endl;
     return res;
 }
 
 bool Camera::isVisibleOnScreen(SDL_Rect rect)
 {
+    // ICI
     int viewBottomRightPositionX = rect.x + rect.w;
     int viewBottomRightPositionY = rect.y + rect.h;
     if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || rect.x > this->width || rect.y > this->height)
@@ -169,7 +173,7 @@ bool Camera::isVisibleOnScreen(SDL_Rect rect)
     return true;
 }
 
-void Camera::setPosition(int x, int y)
+void Camera::setPosition(float x, float y)
 {
     this->positionX = x;
     this->positionY = y;

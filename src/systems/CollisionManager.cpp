@@ -13,9 +13,6 @@
 
 bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     return !(rectA.x + rectA.w <= rectB.x ||
              rectA.x >= rectB.x + rectB.w ||
              rectA.y + rectA.h <= rectB.y ||
@@ -24,9 +21,6 @@ bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB
 
 bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     return !(x <= rect.x ||
              x >= rect.x + rect.w ||
              y <= rect.y ||
@@ -35,11 +29,6 @@ bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRe
 
 bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
-    if (this->map->isChunkGenerated(rect.x, rect.y))
-    {
         Chunk *chunk = this->map->getChunk(rect.x, rect.y);
         // structures
         if (chunk->isStructure(rect.x, rect.y))
@@ -50,15 +39,11 @@ bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
                 return structure->isSolid() ? true : false;
             }
         }
-    }
     return false;
 }
 
 SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     // entities
     std::vector<Entity *> entities = this->map->getEntityManager()->getPotentialEntities(entity);
     int size = entities.size();
@@ -72,8 +57,6 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
     SDL_FRect hitBox = entity->getHitBox();
     SDL_FRect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     // structures
-    if (this->map->isChunkGenerated(newPosX, newPosY))
-    {
         // check destination for all 4 corners of the entity
         float newX, newY;
         Chunk *chunk;
@@ -95,6 +78,5 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
                 }
             }
         }
-    }
     return newHitBox;
 }

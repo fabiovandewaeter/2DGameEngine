@@ -71,23 +71,18 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
         mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
-int counter22 = 0;
+
 void Player::update()
 {
     this->camera->update();
-    if (counter22 > 50)
-    {
-        std::cout << "Player: " << getPositionX() << " " << getPositionY() << std::endl;
-        std::cout << "Camera: " << this->camera->getPositionX() << " " << this->camera->getPositionY() << std::endl;
-        counter22 = 0;
-    }
-    counter22++;
     move();
 }
+
 void Player::render()
 {
     Entity::render(this->camera);
 }
+
 void Player::move()
 {
     if (canMove() && isMoving())

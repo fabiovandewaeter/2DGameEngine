@@ -22,9 +22,10 @@ void Map::loadChunks()
 {
     loadSquareMap(2);
 }
+
 void Map::loadSquareMap(int size)
 {
-    int step = CHUNK_SIZE;
+    int step = CHUNK_TILE_SIZE;
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -55,14 +56,12 @@ void Map::loadSquareMap(int size)
     }
 }
 
-void Map::generateChunk(int positionX, int positionY)
+void Map::generateChunk(float positionX, float positionY)
 {
     Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
-    int i = positionX, j = positionY;
-    convertToChunkCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allChunks[coordinates] = newChunk;
+    std::pair<int, int> newCoordinates = {positionX, positionY};
+    this->allChunks[newCoordinates] = newChunk;
 }
 
 void Map::render(Player *player)
@@ -88,28 +87,22 @@ void Map::update()
 bool Map::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
 bool Map::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
 bool Map::isRectangleInCollisionWithSolidStructure(SDL_FRect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
-SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY)
-{
-    return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY);
-}
+SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY) { return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY); }
 void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
 void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
-void Map::convertToChunkCoordinates(int &x, int &y)
+std::pair<int, int> Map::convertToChunkCoordinates(float x, float y)
 {
-    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE));
-    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE));
+    int chunkX = static_cast<int>(std::floor(x / CHUNK_TILE_SIZE));
+    int chunkY = static_cast<int>(std::floor(y / CHUNK_TILE_SIZE));
+    return {chunkX * CHUNK_TILE_SIZE, chunkY * CHUNK_TILE_SIZE};
 }
 
 // returns true if the chunk exist
-bool Map::isChunkGenerated(int x, int y)
+bool Map::isChunkGenerated(float x, float y)
 {
-    return true;
-    int i = x, j = y;
-    convertToChunkCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-
-    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
+    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
     {
         return false;
     }
@@ -117,25 +110,18 @@ bool Map::isChunkGenerated(int x, int y)
 }
 
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done
-Chunk *Map::getChunk(int x, int y)
+Chunk *Map::getChunk(float x, float y)
 {
-    int i = x, j = y;
-    convertToChunkCoordinates(i, j);
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
+    // std::pair<int, int> newCoordinates = {x, y};
 
-    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
     {
-        generateChunk(i * CHUNK_SIZE, j * CHUNK_SIZE);
-        std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
+        generateChunk(newCoordinates.first, newCoordinates.second);
+        std::cout << "Chunk generated at (" << newCoordinates.first << "," << newCoordinates.second << ") | Total: " << this->allChunks.size() << std::endl;
     }
-    return this->allChunks[coordinates];
+    return this->allChunks[newCoordinates];
 }
-int Map::getTileSize()
-{
-    return TILE_SIZE;
-}
-int Map::getChunkSize()
-{
-    return CHUNK_SIZE;
-}
+
+int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }

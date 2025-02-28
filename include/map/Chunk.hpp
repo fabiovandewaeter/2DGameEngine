@@ -10,15 +10,6 @@
 
 #include "systems/utils/Constants.hpp"
 
-struct hash_pair
-{
-    template <typename T1, typename T2>
-    std::size_t operator()(const std::pair<T1, T2> &p) const
-    {
-        return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
-    }
-};
-
 class Map;
 class TextureManager;
 class Texture;
@@ -43,28 +34,29 @@ public:
     void render(Camera *camera);
     void update();
 
-    Tile *getTile(int x, int y);
-    Structure *getStructure(int x, int y);
-    bool isStructure(int x, int y);
-    void addStructure(Structure *structure);
-    void destroyStructure(int x, int y);
+    Tile *getTile(float x, float y);
+    Structure *getStructure(float x, float y);
+    bool isStructure(float x, float y);
+    void addStructure(Structure *structure, float x, float y);
+    void destroyStructure(float x, float y);
     void setFaction(Faction *faction);
 
 private:
-    Tile *allTiles[CHUNK_SIZE * CHUNK_SIZE];
+    Tile *allTiles[CHUNK_TILE_SIZE * CHUNK_TILE_SIZE];
     TextureManager *textureManager;
 
     Map *map;
     std::unordered_map<std::pair<int, int>, Structure *, hash_pair> updatableStructures;
     std::unordered_map<std::pair<int, int>, Structure *, hash_pair> otherStructures;
 
-    int positionX, positionY;
-    SDL_FRect box;
+    float positionX, positionY;
+    int width, height;
     PerlinNoise *perlinNoise;
 
     Faction *faction;
 
-    void convertToTileCoordinates(int &x, int &y);
+    // convert global in game coordinates to coordinates of the Tile in the Chunk
+    std::pair<int, int> convertToLocalTileCoordinates(float x, float y);
 };
 
 #endif

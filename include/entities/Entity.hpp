@@ -17,7 +17,7 @@ class Action;
 class Entity
 {
 public:
-    Entity(Texture *texture, float x, float y, int width, int height, int HP, Map *map, Behavior *behavior) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(behavior), faction(nullptr) {};
+    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map, Behavior *behavior) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(behavior), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -50,9 +50,9 @@ public:
 protected:
     Texture *texture;
     float x, y;
-    int width, height;
+    float width, height;
     float velX, velY;
-    int speed;
+    float speed;
     int HP;
     Map *map;
     Faction *faction;

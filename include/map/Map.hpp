@@ -35,8 +35,8 @@ public:
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
 
-    bool isChunkGenerated(int x, int y);
-    Chunk *getChunk(int x, int y);
+    bool isChunkGenerated(float x, float y);
+    Chunk *getChunk(float x, float y);
     int getTileSize();
     int getChunkSize();
     EntityManager *getEntityManager();
@@ -45,12 +45,13 @@ private:
     TextureManager *textureManager;
     PerlinNoise *perlinNoise;
     CollisionManager *collisionManager;
-    std::unordered_map<std::string, Chunk *> allChunks;
+    std::unordered_map<std::pair<int, int>, Chunk *, hash_pair> allChunks;
     std::vector<Chunk *> nearbyChunks;
     EntityManager *entityManager;
 
-    void convertToChunkCoordinates(int &x, int &y);
-    void generateChunk(int positionX, int positionY);
+    // return the coordinates of the Chunk that contains the coordiantes (x, y)
+    std::pair<int, int> convertToChunkCoordinates(float x, float y);
+    void generateChunk(float positionX, float positionY);
     void loadSquareMap(int size);
 };
 

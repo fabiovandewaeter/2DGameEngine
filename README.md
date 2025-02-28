@@ -16,6 +16,7 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 ##### others
 - [microui](https://github.com/rxi/microui)
 - [tracy](https://github.com/wolfpld/tracy)
+- [rapidjson](https://github.com/Tencent/rapidjson)
 - [ut](https://github.com/boost-ext/ut)
 
 ## Commands

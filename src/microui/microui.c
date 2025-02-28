@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "microui.h"
+#include "microui/microui.h"
 
 #define unused(x) ((void)(x))
 

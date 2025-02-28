@@ -38,7 +38,7 @@ private:
         classname##Registrar()                                                                                                                                                \
         {                                                                                                                                                                     \
             StructureFactory::getInstance().registerClass(                                                                                                                    \
-                #classname, [](Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) { return new classname(texture, x, y, placedBy, tickManager); }); \
+                #classname, [](Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) { return new classname(texture, x, y, placedBy, tickManager); }); \
         }                                                                                                                                                                     \
     } global_##classname##_registrar;
 
