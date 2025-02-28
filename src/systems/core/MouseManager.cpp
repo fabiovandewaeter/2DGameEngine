@@ -29,7 +29,6 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, 
 		if (player->getMap()->isPointInCollisionWithRectangle(convertedCoordinates.first, convertedCoordinates.second, potentialEntities[k]->getHitBox()))
 		{
 			clickedEntity = potentialEntities[k];
-	std::cout << "test" << std::endl;
 			isEntityClicked = true;
 		}
 		k++;
@@ -53,10 +52,8 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, 
 
 bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int y)
 {
-	Chunk *chunk;
 	std::pair<float, float> newCoordinates = player->getCamera()->convertCameraToInGameCoordinates(x, y);
-
-	chunk = player->getMap()->getChunk(newCoordinates.first, newCoordinates.second);
+	Chunk *chunk = player->getMap()->getChunk(newCoordinates.first, newCoordinates.second);
 	bool isStructureClicked = chunk->isStructure(newCoordinates.first, newCoordinates.second);
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{

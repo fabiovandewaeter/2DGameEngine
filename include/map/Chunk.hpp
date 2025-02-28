@@ -10,15 +10,6 @@
 
 #include "systems/utils/Constants.hpp"
 
-struct hash_pair
-{
-    template <typename T1, typename T2>
-    std::size_t operator()(const std::pair<T1, T2> &p) const
-    {
-        return std::hash<T1>{}(p.first) ^ (std::hash<T2>{}(p.second) << 1);
-    }
-};
-
 class Map;
 class TextureManager;
 class Texture;
@@ -51,7 +42,7 @@ public:
     void setFaction(Faction *faction);
 
 private:
-    Tile *allTiles[CHUNK_SIZE * CHUNK_SIZE];
+    Tile *allTiles[CHUNK_TILE_SIZE * CHUNK_TILE_SIZE];
     TextureManager *textureManager;
 
     Map *map;

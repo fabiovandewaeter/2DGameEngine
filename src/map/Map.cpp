@@ -22,9 +22,10 @@ void Map::loadChunks()
 {
     loadSquareMap(0);
 }
+
 void Map::loadSquareMap(int size)
 {
-    int step = CHUNK_SIZE;
+    int step = CHUNK_TILE_SIZE;
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -59,10 +60,8 @@ void Map::generateChunk(float positionX, float positionY)
 {
     Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
-    std::pair<int, int> newCoordinates = convertToChunkCoordinates(positionX, positionY);
-    int i = newCoordinates.first, j = newCoordinates.second;
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-    this->allChunks[coordinates] = newChunk;
+    std::pair<int, int> newCoordinates = {positionX, positionY};
+    this->allChunks[newCoordinates] = newChunk;
 }
 
 void Map::render(Player *player)
@@ -94,26 +93,16 @@ void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
 std::pair<int, int> Map::convertToChunkCoordinates(float x, float y)
 {
-    int newX = std::floor(x / (CHUNK_SIZE));
-    int newY = std::floor(y / (CHUNK_SIZE));
-    if (x < 0){
-        newX = newX - 1;
-    }
-    if (y < 0){
-        newY = newY - 1;
-    }
-    std::pair<int, int> res = {newX, newY};
-    return res;
+    int chunkX = static_cast<int>(std::floor(x / CHUNK_TILE_SIZE));
+    int chunkY = static_cast<int>(std::floor(y / CHUNK_TILE_SIZE));
+    return {chunkX * CHUNK_TILE_SIZE, chunkY * CHUNK_TILE_SIZE};
 }
 
 // returns true if the chunk exist
 bool Map::isChunkGenerated(float x, float y)
 {
     std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
-    int i = newCoordinates.first, j = newCoordinates.second;
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
-
-    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
     {
         return false;
     }
@@ -124,22 +113,15 @@ bool Map::isChunkGenerated(float x, float y)
 Chunk *Map::getChunk(float x, float y)
 {
     std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
-    int i = newCoordinates.first, j = newCoordinates.second;
-    std::string coordinates = std::to_string(i) + "," + std::to_string(j);
+    // std::pair<int, int> newCoordinates = {x, y};
 
-    if (this->allChunks.find(coordinates) == this->allChunks.end())
+    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
     {
-        generateChunk(i * CHUNK_SIZE, j * CHUNK_SIZE);
-        std::cout << "Chunk generated at (" << coordinates << ") | Total: " << this->allChunks.size() << std::endl;
+        generateChunk(newCoordinates.first, newCoordinates.second);
+        std::cout << "Chunk generated at (" << newCoordinates.first << "," << newCoordinates.second << ") | Total: " << this->allChunks.size() << std::endl;
     }
-    return this->allChunks[coordinates];
+    return this->allChunks[newCoordinates];
 }
-int Map::getTileSize()
-{
-    return TILE_SIZE;
-}
-int Map::getChunkSize()
-{
-    return CHUNK_SIZE;
-}
+
+int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }

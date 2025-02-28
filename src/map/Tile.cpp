@@ -29,8 +29,8 @@ void Tile::render(Camera *camera)
     camera->render(this->texture, newRenderBox);
 }
 
-float Tile::getCenterX() { return TILE_SIZE / 2; }
-float Tile::getCenterY() { return TILE_SIZE / 2; }
+float Tile::getCenterX() { return TILE_PIXELS_SIZE / 2; }
+float Tile::getCenterY() { return TILE_PIXELS_SIZE / 2; }
 int Tile::getTextureId() { return this->texture->getId(); }
-int Tile::getTileSize() { return TILE_SIZE; }
+int Tile::getTileSize() { return TILE_PIXELS_SIZE; }
 Item *Tile::getMineableResource() { return this->mineableResource; }

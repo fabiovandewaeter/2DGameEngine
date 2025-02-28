@@ -17,8 +17,8 @@ Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureMana
 {
     this->positionX = positionX;
     this->positionY = positionY;
-    this->width = CHUNK_SIZE;
-    this->height = CHUNK_SIZE;
+    this->width = CHUNK_TILE_SIZE;
+    this->height = CHUNK_TILE_SIZE;
     this->map = map;
     this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
@@ -28,7 +28,7 @@ Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureMana
 }
 Chunk::~Chunk()
 {
-    for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
+    for (int i = 0; i < CHUNK_TILE_SIZE * CHUNK_TILE_SIZE; i++)
     {
         delete this->allTiles[i];
     }
@@ -48,19 +48,19 @@ void Chunk::loadTiles()
 }
 void Chunk::loadTilesDefault()
 {
-    for (int i = 0; i < CHUNK_SIZE; i++)
+    for (int i = 0; i < CHUNK_TILE_SIZE; i++)
     {
-        for (int j = 0; j < CHUNK_SIZE; j++)
+        for (int j = 0; j < CHUNK_TILE_SIZE; j++)
         {
-            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->positionX, j + this->positionY);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->positionX, j + this->positionY);
         }
     }
 }
 void Chunk::loadTilesWithPerlinNoise()
 {
-    for (int i = 0; i < CHUNK_SIZE; i++)
+    for (int i = 0; i < CHUNK_TILE_SIZE; i++)
     {
-        for (int j = 0; j < CHUNK_SIZE; j++)
+        for (int j = 0; j < CHUNK_TILE_SIZE; j++)
         {
             float x = i + this->positionX;
             float y = j + this->positionY;
@@ -84,7 +84,7 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[CHUNK_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
         }
     }
 }
@@ -97,7 +97,7 @@ void Chunk::render(Camera *camera)
     SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisibleOnScreen(newRenderBox))
     {
-        for (int i = 0; i < CHUNK_SIZE * CHUNK_SIZE; i++)
+        for (int i = 0; i < CHUNK_TILE_SIZE * CHUNK_TILE_SIZE; i++)
         {
             this->allTiles[i]->render(camera);
         }
@@ -146,19 +146,17 @@ void Chunk::update()
 
 std::pair<int, int> Chunk::convertToLocalTileCoordinates(float x, float y)
 {
-    int newX = static_cast<int>(std::floor(x)) % CHUNK_SIZE;
-    int newY = static_cast<int>(std::floor(y)) % CHUNK_SIZE;
+    int newX = static_cast<int>(std::floor(x)) % CHUNK_TILE_SIZE;
+    int newY = static_cast<int>(std::floor(y)) % CHUNK_TILE_SIZE;
     if (x < 0)
     {
-        newX = CHUNK_SIZE + newX;
+        newX = CHUNK_TILE_SIZE + newX;
     }
     if (y < 0)
     {
-        newY = CHUNK_SIZE + newY;
+        newY = CHUNK_TILE_SIZE + newY;
     }
-    // std::pair<int, int> res = {newX, newY};
     std::pair<int, int> res = {newX, newY};
-    std::cout << "new: " << newX << " " << newY << std::endl;
     return res;
 }
 
@@ -166,7 +164,7 @@ std::pair<int, int> Chunk::convertToLocalTileCoordinates(float x, float y)
 Tile *Chunk::getTile(float x, float y)
 {
     std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-    return this->allTiles[CHUNK_SIZE * newCoordinates.first + newCoordinates.second];
+    return this->allTiles[CHUNK_TILE_SIZE * newCoordinates.first + newCoordinates.second];
 }
 
 Structure *Chunk::getStructure(float x, float y)
@@ -190,9 +188,7 @@ Structure *Chunk::getStructure(float x, float y)
 
 bool Chunk::isStructure(float x, float y)
 {
-    std::cout << "Chunk::isStructure()" << std::endl;
     std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-
     auto it = this->updatableStructures.find(newCoordinates);
     if (it != this->updatableStructures.end())
     {
@@ -211,16 +207,11 @@ bool Chunk::isStructure(float x, float y)
 
 void Chunk::addStructure(Structure *structure, float x, float y)
 {
-    std::cout << "Chunk::addStructure()" << std::endl;
     if (!isStructure(x, y))
     {
         std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-        //SDL_FRect box = {newCoordinates.first + this->positionX, newCoordinates.second + this->positionY, 1, 1};
-        //SDL_FRect box = {x, y, 1, 1};
-        SDL_FRect box = {newCoordinates.first + this->positionX, newCoordinates.second + this->positionY, 1, 1};
-        std::cout << "ICI" << box.x << " " << box.y << " " << this->positionX << " " << this->positionY << std::endl;
+        SDL_FRect box = {std::floor(x), std::floor(y), 1, 1}; // floor to make sure the coordinates are based on the grid
         structure->setHitBox(box);
-
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
             this->updatableStructures[newCoordinates] = structure;
