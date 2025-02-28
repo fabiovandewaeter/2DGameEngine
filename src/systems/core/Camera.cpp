@@ -47,7 +47,6 @@ void Camera::handleEvents(SDL_Event *event)
             this->positionY = 0;
             break;
         }
-        std::cout << rightVelX << " " << leftVelX << " " << this->velocityMultiplier << std::endl;
         this->velX = sprint * (rightVelX - leftVelX);
         this->velY = sprint * (downVelY - upVelY);
     }

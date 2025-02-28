@@ -20,7 +20,7 @@ Map::~Map()
 
 void Map::loadChunks()
 {
-    loadSquareMap(2);
+    loadSquareMap(0);
 }
 void Map::loadSquareMap(int size)
 {
@@ -55,12 +55,12 @@ void Map::loadSquareMap(int size)
     }
 }
 
-void Map::generateChunk(int positionX, int positionY)
+void Map::generateChunk(float positionX, float positionY)
 {
     Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
-    int i = positionX, j = positionY;
-    convertToChunkCoordinates(i, j);
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(positionX, positionY);
+    int i = newCoordinates.first, j = newCoordinates.second;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
     this->allChunks[coordinates] = newChunk;
 }
@@ -92,18 +92,25 @@ SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float ne
 void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
 void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
 
-void Map::convertToChunkCoordinates(int &x, int &y)
+std::pair<int, int> Map::convertToChunkCoordinates(float x, float y)
 {
-    x = std::floor(static_cast<float>(x) / (CHUNK_SIZE));
-    y = std::floor(static_cast<float>(y) / (CHUNK_SIZE));
+    int newX = std::floor(x / (CHUNK_SIZE));
+    int newY = std::floor(y / (CHUNK_SIZE));
+    if (x < 0){
+        newX = newX - 1;
+    }
+    if (y < 0){
+        newY = newY - 1;
+    }
+    std::pair<int, int> res = {newX, newY};
+    return res;
 }
 
 // returns true if the chunk exist
-bool Map::isChunkGenerated(int x, int y)
+bool Map::isChunkGenerated(float x, float y)
 {
-    return true;
-    int i = x, j = y;
-    convertToChunkCoordinates(i, j);
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
+    int i = newCoordinates.first, j = newCoordinates.second;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())
@@ -114,10 +121,10 @@ bool Map::isChunkGenerated(int x, int y)
 }
 
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done
-Chunk *Map::getChunk(int x, int y)
+Chunk *Map::getChunk(float x, float y)
 {
-    int i = x, j = y;
-    convertToChunkCoordinates(i, j);
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
+    int i = newCoordinates.first, j = newCoordinates.second;
     std::string coordinates = std::to_string(i) + "," + std::to_string(j);
 
     if (this->allChunks.find(coordinates) == this->allChunks.end())

@@ -46,7 +46,7 @@ public:
     Tile *getTile(float x, float y);
     Structure *getStructure(float x, float y);
     bool isStructure(float x, float y);
-    void addStructure(Structure *structure);
+    void addStructure(Structure *structure, float x, float y);
     void destroyStructure(float x, float y);
     void setFaction(Faction *faction);
 

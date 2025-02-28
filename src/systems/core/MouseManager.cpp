@@ -69,7 +69,7 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 			if (this->clickOnEmptyTileStrategy != nullptr)
 			{
 				Structure *newStructure = this->clickOnEmptyTileStrategy(newCoordinates.first, newCoordinates.second);
-				chunk->addStructure(newStructure);
+				chunk->addStructure(newStructure, newCoordinates.first, newCoordinates.second);
 			}
 		}
 	}
