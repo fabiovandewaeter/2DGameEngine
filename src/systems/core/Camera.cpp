@@ -122,10 +122,12 @@ void Camera::render(const Entity *entity)
         render(entity->getTexture(), newRenderBox);
     }
 }
+
 void Camera::render(const Texture *texture, SDL_Rect renderBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), NULL, &renderBox);
 }
+
 void Camera::render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
@@ -177,6 +179,7 @@ void Camera::setPosition(float x, float y)
     this->positionX = x;
     this->positionY = y;
 }
+
 float Camera::getPositionX() { return this->positionX; }
 float Camera::getPositionY() { return this->positionY; }
 int Camera::getWidth() { return this->width; }
