@@ -6,14 +6,17 @@
 #include <vector>
 #include "SDL2/SDL_rect.h"
 
+#include "systems/algorithms/AstarPathFinding.hpp"
+
 class MoveAction : public Action
 {
 public:
-    MoveAction(std::vector<SDL_Point> path) : path(path), currentIndex(0) {};
-    void execute(Entity *entity) override;
+    MoveAction(float x, float y, Entity *entity) : Action(entity), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), x, y)), currentIndex(0) {};
+    void execute() override;
     bool isCompleted() override;
 
 private:
+    float x, y;
     std::vector<SDL_Point> path;
     int currentIndex;
 };

@@ -4,11 +4,9 @@
 #include "map/Map.hpp"
 #include "entities/actions/MoveAction.hpp"
 
-void GetResourceAction::execute(Entity *entity)
+void GetResourceAction::execute()
 {
-    std::vector<SDL_Point> path;
-    this->astarPathFinding->findPath(entity->getMap(), 0, 0, 10, 10, &path);
-    entity->pushAction(new MoveAction(path));
+    entity->pushAction(new MoveAction(20, -10, this->entity));
 }
 
 bool GetResourceAction::isCompleted() { return false; }

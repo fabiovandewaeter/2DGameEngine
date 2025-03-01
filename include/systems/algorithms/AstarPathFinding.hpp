@@ -44,7 +44,7 @@ struct CompareNode
 class AstarPathFinding
 {
 public:
-    static void findPath(Map *map, int startX, int startY, int goalX, int goalY, std::vector<SDL_Point> *result);
+    static std::vector<SDL_Point> findPath(Map *map, int startX, int startY, int goalX, int goalY);
 
 private:
     static float heuristic(int x1, int y1, int x2, int y2);

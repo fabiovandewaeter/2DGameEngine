@@ -3,13 +3,17 @@
 
 #include "entities/Entity.hpp"
 
+class Entity;
+
 class Behavior
 {
 public:
+    Behavior(Entity *entity) : entity(entity) {}
     virtual ~Behavior() = default;
-    virtual void execute(Entity *entity) = 0;
+    virtual void execute() = 0;
 
-private:
+protected:
+    Entity *entity;
 };
 
 #endif

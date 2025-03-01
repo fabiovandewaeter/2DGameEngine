@@ -17,7 +17,7 @@ class Action;
 class Entity
 {
 public:
-    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map, Behavior *behavior) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(behavior), faction(nullptr) {};
+    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -37,6 +37,7 @@ public:
     void setVelocityX(float velocityX);
     void setVelocityY(float velocityY);
     void setFaction(Faction *faction);
+    void setBehavior(Behavior *behavior);
     void pushAction(Action *action);
 
     float getPositionX();

@@ -1,9 +1,10 @@
 #include "entities/behaviors/WarriorBehavior.hpp"
 
+#include <iostream>
+
 #include "entities/actions/GetResourceAction.hpp"
 
-#include <iostream>
-void WarriorBehavior::execute(Entity *entity)
+void WarriorBehavior::execute()
 {
-    this->getResourceAction->execute(entity);
+    this->getResourceAction->execute();
 }

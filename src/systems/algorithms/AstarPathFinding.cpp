@@ -26,8 +26,9 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *resul
     std::reverse(result->begin(), result->end());
 }
 
-void AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int goalY, std::vector<SDL_Point> *result)
+std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int goalY)
 {
+    std::vector<SDL_Point> res;
     // Conversion des positions pixels -> indices de cases
     int tileStartX = startX / TILE_PIXELS_SIZE;
     int tileStartY = startY / TILE_PIXELS_SIZE;
@@ -63,11 +64,11 @@ void AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int
         // Si on a atteint la destination
         if (current->x == tileGoalX && current->y == tileGoalY)
         {
-            reconstructPath(current, result);
+            reconstructPath(current, &res);
             // Libération de la mémoire des nœuds
             for (auto &pair : allNodes)
                 delete pair.second;
-            return;
+            return res;
         }
 
         // Pour chaque voisin (8 directions)
@@ -131,5 +132,5 @@ void AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int
     // Aucun chemin trouvé : on libère la mémoire et on renvoie un chemin vide.
     for (auto &pair : allNodes)
         delete pair.second;
-    return;
+    return res;
 }
