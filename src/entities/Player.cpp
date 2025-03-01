@@ -78,22 +78,17 @@ void Player::update()
     move();
 }
 
-void Player::render()
-{
-    Entity::render(this->camera);
-}
+void Player::render() { Entity::render(this->camera); }
 
 void Player::move()
 {
+    // TODO: Player::move() need change to not call map->handleCollisionsForEntity() 2 times
     if (canMove() && isMoving())
     {
-        std::cout << "Player::move() need change to not call map->handleCollisionsForEntity() 2 times" << std::endl;
         // check for X axis
         float newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        // map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         SDL_FRect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
         this->x = tempRect.x;
-
         // check for Y axis
         float newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
         tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);

@@ -29,16 +29,16 @@ bool CollisionManager::isPointInCollisionWithRectangle(float x, float y, SDL_FRe
 
 bool CollisionManager::isRectangleInCollisionWithSolidStructure(SDL_FRect rect)
 {
-        Chunk *chunk = this->map->getChunk(rect.x, rect.y);
-        // structures
-        if (chunk->isStructure(rect.x, rect.y))
+    Chunk *chunk = this->map->getChunk(rect.x, rect.y);
+    // structures
+    if (chunk->isStructure(rect.x, rect.y))
+    {
+        Structure *structure = chunk->getStructure(rect.x, rect.y);
+        if (checkRectanglesCollision(rect, structure->getHitBox()))
         {
-            Structure *structure = chunk->getStructure(rect.x, rect.y);
-            if (checkRectanglesCollision(rect, structure->getHitBox()))
-            {
-                return structure->isSolid() ? true : false;
-            }
+            return structure->isSolid() ? true : false;
         }
+    }
     return false;
 }
 
@@ -57,26 +57,26 @@ SDL_FRect CollisionManager::handleCollisionsForEntity(Entity *entity, float newP
     SDL_FRect hitBox = entity->getHitBox();
     SDL_FRect newHitBox = {newPosX, newPosY, hitBox.w, hitBox.h};
     // structures
-        // check destination for all 4 corners of the entity
-        float newX, newY;
-        Chunk *chunk;
-        for (int i = 0; i < 2; i++)
+    // check destination for all 4 corners of the entity
+    float newX, newY;
+    Chunk *chunk;
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
         {
-            for (int j = 0; j < 2; j++)
+            newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
+            chunk = this->map->getChunk(newX, newY);
+            // structures
+            if (chunk->isStructure(newX, newY))
             {
-                newX = newPosX + i * hitBox.w, newY = newPosY + j * hitBox.h;
-                chunk = this->map->getChunk(newX, newY);
-                // structures
-                if (chunk->isStructure(newX, newY))
+                Structure *structure = chunk->getStructure(newX, newY);
+                if (checkRectanglesCollision(newHitBox, structure->getHitBox()))
                 {
-                    Structure *structure = chunk->getStructure(newX, newY);
-                    if (checkRectanglesCollision(newHitBox, structure->getHitBox()))
-                    {
-                        structure->onCollision(entity);
-                        return structure->isSolid() ? hitBox : newHitBox;
-                    }
+                    structure->onCollision(entity);
+                    return structure->isSolid() ? hitBox : newHitBox;
                 }
             }
         }
+    }
     return newHitBox;
 }

@@ -1,7 +1,7 @@
 #ifndef entity_hpp
 #define entity_hpp
 
-#define VELOCITY_MULTIPLIER (4.0/16)
+#define VELOCITY_MULTIPLIER (4.0 / 16)
 
 #include <SDL2/SDL_render.h>
 #include <stack>
@@ -42,10 +42,10 @@ public:
     float getPositionX();
     float getPositionY();
     Texture *getTexture() const;
-    int getSpeed();
     SDL_FRect getHitBox() const;
     int getHP();
     Map *getMap() const;
+    float getSpeed();
 
 protected:
     Texture *texture;

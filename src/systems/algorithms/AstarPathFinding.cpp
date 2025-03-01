@@ -3,25 +3,22 @@
 #include "map/Chunk.hpp"
 
 // Heuristique : ici, on utilise la distance octile adaptée aux déplacements en diagonale
-float AstarPathFinding::heuristic(int x1, int y1, int x2, int y2) {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
+float AstarPathFinding::heuristic(int x1, int y1, int x2, int y2)
+{
     int dx = std::abs(x1 - x2);
     int dy = std::abs(y1 - y2);
-    float D  = 1.0f;
+    float D = 1.0f;
     float D2 = 1.414f; // approximatif de sqrt(2)
     return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
 }
 
-void AstarPathFinding::reconstructPath(Node* node, std::vector<SDL_Point> *result) {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
-    while (node != nullptr) {
+void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *result)
+{
+    while (node != nullptr)
+    {
         SDL_Point p;
-        p.x = node->x * TILE_SIZE + TILE_SIZE / 2;
-        p.y = node->y * TILE_SIZE + TILE_SIZE / 2;
+        p.x = node->x * TILE_PIXELS_SIZE + TILE_PIXELS_SIZE / 2;
+        p.y = node->y * TILE_PIXELS_SIZE + TILE_PIXELS_SIZE / 2;
         result->push_back(p);
         node = node->parent;
     }
@@ -31,19 +28,16 @@ void AstarPathFinding::reconstructPath(Node* node, std::vector<SDL_Point> *resul
 
 void AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int goalY, std::vector<SDL_Point> *result)
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     // Conversion des positions pixels -> indices de cases
-    int tileStartX = startX / TILE_SIZE;
-    int tileStartY = startY / TILE_SIZE;
-    int tileGoalX = goalX / TILE_SIZE;
-    int tileGoalY = goalY / TILE_SIZE;
+    int tileStartX = startX / TILE_PIXELS_SIZE;
+    int tileStartY = startY / TILE_PIXELS_SIZE;
+    int tileGoalX = goalX / TILE_PIXELS_SIZE;
+    int tileGoalY = goalY / TILE_PIXELS_SIZE;
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
     // Un unordered_map pour retrouver rapidement un nœud par ses coordonnées (en grille)
-    std::unordered_map<std::pair<int, int>, Node *, pair_hash> allNodes;
+    std::unordered_map<std::pair<int, int>, Node *, hash_pair> allNodes;
 
     // Création du nœud de départ
     Node *startNode = new Node;

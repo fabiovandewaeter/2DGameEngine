@@ -5,6 +5,5 @@
 #include <iostream>
 void WarriorBehavior::execute(Entity *entity)
 {
-    GetResourceAction *getResourceAction = new GetResourceAction("Wood");
-    getResourceAction->execute(entity);
+    this->getResourceAction->execute(entity);
 }

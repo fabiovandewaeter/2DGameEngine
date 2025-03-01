@@ -5,8 +5,6 @@
 #ifndef astar_path_finding_hpp
 #define astar_path_finding_hpp
 
-#define TILE_SIZE 16
-
 #include <vector>
 #include <queue>
 #include <unordered_map>
@@ -15,16 +13,7 @@
 #include <algorithm>
 #include <iostream>
 
-// Pour utiliser std::pair<int,int> dans un unordered_map
-struct pair_hash
-{
-    template <class T1, class T2>
-    std::size_t operator()(const std::pair<T1, T2> &p) const
-    {
-        // Mélange simple des deux hash
-        return std::hash<T1>()(p.first) ^ (std::hash<T2>()(p.second) << 1);
-    }
-};
+#include "systems/utils/Constants.hpp"
 
 // Déclaration anticipée des classes Map et Chunk
 class Map;
