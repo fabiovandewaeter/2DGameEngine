@@ -1,5 +1,5 @@
-#ifndef player_hpp
-#define player_hpp
+#ifndef bot_hpp
+#define bot_hpp
 
 #define SPRINT_MULTIPLIER 5
 
@@ -12,11 +12,11 @@
 class Map;
 class Camera;
 
-class Player : public Entity
+class ControllableEntity : public Entity
 {
 public:
-    Player(Texture *texture, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(texture, x, y, width, height, HP, map, nullptr), camera(camera) {};
-    ~Player();
+    ControllableEntity(Texture *texture, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(texture, x, y, width, height, HP, map, nullptr), camera(camera) {};
+    ~ControllableEntity();
 
     void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
     void update() override;
@@ -26,7 +26,6 @@ public:
     Camera *getCamera();
 
 private:
-    Camera *camera;
 };
 
 #endif

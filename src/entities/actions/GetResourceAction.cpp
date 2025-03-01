@@ -6,13 +6,9 @@
 
 void GetResourceAction::execute(Entity *entity)
 {
-    AstarPathFinding *astarPathFinding = new AstarPathFinding();
     std::vector<SDL_Point> path;
-    astarPathFinding->findPath(entity->getMap(), 0, 0, 100, 200, &path);
+    this->astarPathFinding->findPath(entity->getMap(), 0, 0, 10, 10, &path);
     entity->pushAction(new MoveAction(path));
 }
 
-bool GetResourceAction::isCompleted()
-{
-    return false;
-}
+bool GetResourceAction::isCompleted() { return false; }

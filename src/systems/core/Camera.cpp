@@ -122,16 +122,18 @@ void Camera::render(const Entity *entity)
         render(entity->getTexture(), newRenderBox);
     }
 }
-void Camera::render(const Texture *texture, const SDL_Rect renderBox)
+
+void Camera::render(const Texture *texture, SDL_Rect renderBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), NULL, &renderBox);
 }
-void Camera::render(const Texture *texture, const SDL_Rect srcBox, const SDL_Rect dstBox)
+
+void Camera::render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
 }
 
-SDL_Rect Camera::convertInGameToCameraCoordinates(const SDL_FRect rect)
+SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect rect)
 {
     float cameraPositionX = this->positionX * TILE_PIXELS_SIZE;
     float cameraPositionY = this->positionY * TILE_PIXELS_SIZE;
@@ -163,7 +165,6 @@ std::pair<float, float> Camera::convertCameraToInGameCoordinates(int x, int y)
 
 bool Camera::isVisibleOnScreen(SDL_Rect rect)
 {
-    // ICI
     int viewBottomRightPositionX = rect.x + rect.w;
     int viewBottomRightPositionY = rect.y + rect.h;
     if (viewBottomRightPositionX < 0 || viewBottomRightPositionY < 0 || rect.x > this->width || rect.y > this->height)
@@ -178,6 +179,7 @@ void Camera::setPosition(float x, float y)
     this->positionX = x;
     this->positionY = y;
 }
+
 float Camera::getPositionX() { return this->positionX; }
 float Camera::getPositionY() { return this->positionY; }
 int Camera::getWidth() { return this->width; }

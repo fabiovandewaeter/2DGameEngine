@@ -68,8 +68,7 @@ std::vector<Entity *> EntityManager::getEntities()
 }
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
-    // NEED CHANGE
-    std::cout << "NEED CHANGE IN EntityManager::getPotentialEntities() TO ONLY RETURN THE POTENTIAL ENTITIES AND NOT ALL ENTITIES" << std::endl;
+    // TODO: NEED CHANGE IN EntityManager::getPotentialEntities() TO ONLY RETURN THE POTENTIAL ENTITIES AND NOT ALL ENTITIES
     return this->entities;
 }
 std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
