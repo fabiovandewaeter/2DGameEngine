@@ -8,7 +8,7 @@ float AstarPathFinding::heuristic(float x1, float y1, float x2, float y2)
     float dx = std::fabs(x1 - x2);
     float dy = std::fabs(y1 - y2);
     float D = 1.0f;
-    float D2 = 1.414f; // approximatif de sqrt(2)
+    float D2 = 1.414f; // sqrt(2)
     return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
 }
 
@@ -16,13 +16,12 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_FPoint> *resu
 {
     while (node != nullptr)
     {
-        SDL_FPoint p{node->x, node->y};
-        // p.x = node->x + 1 / 2;
-        // p.y = node->y + 1 / 2;
+        SDL_FPoint p;
+        p.x = node->x;
+        p.y = node->y;
         result->push_back(p);
         node = node->parent;
     }
-    // On inverse le chemin (du départ à l'arrivée)
     std::reverse(result->begin(), result->end());
 }
 
@@ -56,15 +55,15 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
     const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 
+    int count = 1000;
     while (!openSet.empty())
     {
         Node *current = openSet.top();
         openSet.pop();
 
-        if (current->x < -100 || current->x > 100)
-        {
-            std::cout << startX << " " << startY << " " << goalX << " " << goalY << std::endl;
-            exit(1);
+        if (count <= 0){
+            std::cout << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
+            return res;
         }
         // Si on a atteint la destination
         if (current->x == tileGoalX && current->y == tileGoalY)
@@ -89,10 +88,10 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
                 continue; // Hors limites de la carte
             }
 
-            // Vérifier si le voisin est un obstacle, sauf si c'est la destination
+            // if is a Structe AND is not the Structe we want to reach
             if (chunk->isStructure(nx, ny) && !(nx == tileGoalX && ny == tileGoalY))
             {
-                continue; // Obstacle présent (mais pas la destination)
+                continue;
             }
 
             // Pour un déplacement diagonal, éviter de "couper un coin"
@@ -128,10 +127,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             else
             {
                 neighbor = allNodes[neighborKey];
-                std::cout << tentative_g << " " << neighbor->g << std::endl;
                 if (tentative_g < neighbor->g)
                 {
-                    std::cout << "oui" << std::endl;
                     neighbor->g = tentative_g;
                     neighbor->f = neighbor->g + neighbor->h;
                     neighbor->parent = current;
