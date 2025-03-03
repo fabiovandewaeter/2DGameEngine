@@ -47,7 +47,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     
     if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
     {
-        float epsilon = 0.6f;
+        epsilon = 0.6f;
         // TODO: fix that because it's ugly
         if (startX < goalX)
         {
@@ -70,22 +70,22 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         if (startX < goalX)
         {
             //tileGoalX += 0.5f;
-            tileGoalX += 1.0f;
+            tileGoalX += 2.0f;
         }
         else if (startX > goalX)
         {
             //tileGoalX -= 0.5f;
-            tileGoalX -= 1.0f;
+            tileGoalX -= 2.0f;
         }
         if (startY < goalY)
         {
             //tileGoalY += 0.5f;
-            tileGoalY += 1.0f;
+            tileGoalY += 2.0f;
         }
         else if (startY > goalY)
         {
             //tileGoalY -= 0.5f;
-            tileGoalY -= 1.0f;
+            tileGoalY -= 2.0f;
         }
     }
 
