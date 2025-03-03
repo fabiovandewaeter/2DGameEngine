@@ -3,10 +3,10 @@
 #include "map/Chunk.hpp"
 
 // Heuristique : ici, on utilise la distance octile adaptée aux déplacements en diagonale
-float AstarPathFinding::heuristic(int x1, int y1, int x2, int y2)
+float AstarPathFinding::heuristic(float x1, float y1, float x2, float y2)
 {
-    int dx = std::abs(x1 - x2);
-    int dy = std::abs(y1 - y2);
+    float dx = std::fabs(x1 - x2);
+    float dy = std::fabs(y1 - y2);
     float D = 1.0f;
     float D2 = 1.414f; // approximatif de sqrt(2)
     return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
@@ -17,8 +17,8 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *resul
     while (node != nullptr)
     {
         SDL_Point p;
-        p.x = node->x * TILE_PIXELS_SIZE + TILE_PIXELS_SIZE / 2;
-        p.y = node->y * TILE_PIXELS_SIZE + TILE_PIXELS_SIZE / 2;
+        p.x = node->x + 1/ 2;
+        p.y = node->y + 1/ 2;
         result->push_back(p);
         node = node->parent;
     }
@@ -26,19 +26,19 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *resul
     std::reverse(result->begin(), result->end());
 }
 
-std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, int startX, int startY, int goalX, int goalY)
+std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, float startX, float startY, float goalX, float goalY)
 {
     std::vector<SDL_Point> res;
     // Conversion des positions pixels -> indices de cases
-    int tileStartX = startX / TILE_PIXELS_SIZE;
-    int tileStartY = startY / TILE_PIXELS_SIZE;
-    int tileGoalX = goalX / TILE_PIXELS_SIZE;
-    int tileGoalY = goalY / TILE_PIXELS_SIZE;
+    float tileStartX = startX ;
+    float tileStartY = startY ;
+    float tileGoalX = goalX ;
+    float tileGoalY = goalY ;
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
     // Un unordered_map pour retrouver rapidement un nœud par ses coordonnées (en grille)
-    std::unordered_map<std::pair<int, int>, Node *, hash_pair> allNodes;
+    std::unordered_map<std::pair<float, float>, Node *, hash_pair> allNodes;
 
     // Création du nœud de départ
     Node *startNode = new Node;
@@ -53,8 +53,8 @@ std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, int startX, int star
     allNodes[{tileStartX, tileStartY}] = startNode;
 
     // Définition des 8 directions possibles (4 cardinales et 4 diagonales)
-    const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
-    const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+    const float dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+    const float dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 
     while (!openSet.empty())
     {
@@ -74,8 +74,8 @@ std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, int startX, int star
         // Pour chaque voisin (8 directions)
         for (int i = 0; i < 8; i++)
         {
-            int nx = current->x + dx[i];
-            int ny = current->y + dy[i];
+            float nx = current->x + dx[i];
+            float ny = current->y + dy[i];
 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);
@@ -99,7 +99,7 @@ std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, int startX, int star
             // Coût du déplacement : 1 pour cardinal, 1.414 pour diagonal
             float tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
 
-            std::pair<int, int> neighborKey = {nx, ny};
+            std::pair<float, float> neighborKey = {nx, ny};
             Node *neighbor = nullptr;
             if (allNodes.find(neighborKey) == allNodes.end())
             {

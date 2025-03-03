@@ -6,7 +6,7 @@
 
 void GetResourceAction::execute()
 {
-    entity->pushAction(new MoveAction(20, -10, this->entity));
+    entity->pushAction(new MoveAction(-10, 1, this->entity));
 }
 
 bool GetResourceAction::isCompleted() { return false; }
