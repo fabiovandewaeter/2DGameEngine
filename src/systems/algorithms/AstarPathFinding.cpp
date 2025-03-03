@@ -16,11 +16,9 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_FPoint> *resu
 {
     while (node != nullptr)
     {
-        SDL_FPoint p;
-        //p.x = node->x + 1 / 2;
-        //p.y = node->y + 1 / 2;
-        p.x = node->x;
-        p.y = node->y;
+        SDL_FPoint p{node->x, node->y};
+        // p.x = node->x + 1 / 2;
+        // p.y = node->y + 1 / 2;
         result->push_back(p);
         node = node->parent;
     }
@@ -90,9 +88,11 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             {
                 continue; // Hors limites de la carte
             }
-            if (chunk->isStructure(nx, ny))
+
+            // Vérifier si le voisin est un obstacle, sauf si c'est la destination
+            if (chunk->isStructure(nx, ny) && !(nx == tileGoalX && ny == tileGoalY))
             {
-                continue; // Obstacle présent
+                continue; // Obstacle présent (mais pas la destination)
             }
 
             // Pour un déplacement diagonal, éviter de "couper un coin"
@@ -110,7 +110,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             // Coût du déplacement : 1 pour cardinal, 1.414 pour diagonal
             float tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
 
-            std::pair<float, float> neighborKey = {nx, ny};
+            std::pair<int, int> neighborKey = {nx, ny};
             Node *neighbor = nullptr;
             if (allNodes.find(neighborKey) == allNodes.end())
             {
@@ -128,8 +128,10 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             else
             {
                 neighbor = allNodes[neighborKey];
+                std::cout << tentative_g << " " << neighbor->g << std::endl;
                 if (tentative_g < neighbor->g)
                 {
+                    std::cout << "oui" << std::endl;
                     neighbor->g = tentative_g;
                     neighbor->f = neighbor->g + neighbor->h;
                     neighbor->parent = current;

@@ -12,7 +12,8 @@ void GetResourceAction::execute()
     {
         std::cout << destination->first << " " << destination->second << std::endl;
         this->entity->pushAction(new MoveAction(destination->first, destination->second, this->entity));
-        //this->entity->pushAction(new MoveAction(7, 6, this->entity));
+        /*int x = 50, y = 5;
+        this->entity->pushAction(new MoveAction(x, y, this->entity));*/
     }
     else
     {
