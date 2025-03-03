@@ -3,12 +3,12 @@
 StructureFactory::StructureFactory() {}
 StructureFactory::~StructureFactory() {}
 
-void StructureFactory::registerClass(const std::string className, std::function<Structure *(Texture *, int, int, Player *, TickManager *)> constructor)
+void StructureFactory::registerClass(const std::string className, std::function<Structure *(Texture *, float, float, Player *, TickManager *)> constructor)
 {
     this->registry[className] = constructor;
 }
 
-std::function<Structure *(Texture *, int, int, Player *, TickManager *)> StructureFactory::getConstructor(std::string className)
+std::function<Structure *(Texture *, float, float, Player *, TickManager *)> StructureFactory::getConstructor(std::string className)
 {
     auto it = this->registry.find(className);
     if (it != this->registry.end())

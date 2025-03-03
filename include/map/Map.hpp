@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <cmath>
 #include <string>
+#include <memory>
 
 #include "systems/utils/Constants.hpp"
 
@@ -40,6 +41,7 @@ public:
     int getTileSize();
     int getChunkSize();
     EntityManager *getEntityManager();
+    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName);
 
 private:
     TextureManager *textureManager;

@@ -7,7 +7,7 @@ Structure::~Structure() {}
 
 void Structure::render(Camera *camera)
 {
-    SDL_FRect renderBox = this->hitBox;
+    SDL_FRect renderBox = {this->x, this->y, this->width, this->height};
     SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisibleOnScreen(newRenderBox))
     {
@@ -21,12 +21,28 @@ void Structure::onCollision(Entity *entity) { std::cout << "Structure#onCollisio
 void Structure::onLeftClick() { std::cout << "Structure::onLeftClick() does nothing" << std::endl; }
 void Structure::onRightClick() { std::cout << "Structure::onRightClick() does nothing" << std::endl; }
 
-SDL_FRect Structure::getHitBox() { return this->hitBox; }
+SDL_FRect Structure::getHitBox() { return {this->x, this->y, this->width, this->height}; }
 int Structure::getHP() { return this->HP; }
 bool Structure::isSolid() { return this->solid; }
 bool Structure::isDestroyed() { return this->destroyed; }
-void Structure::setX(int x) { this->hitBox.x = x; }
-void Structure::setY(int y) { this->hitBox.y = y; }
-void Structure::setHitBox(SDL_FRect hitBox) { this->hitBox = hitBox; }
+void Structure::setHitBox(SDL_FRect hitBox)
+{
+    this->x = hitBox.x;
+    this->y = hitBox.y;
+    this->width = hitBox.w;
+    this->height = hitBox.h;
+}
+void Structure::setX(float x) { this->x = x; }
+void Structure::setY(float y) { this->y = y; }
 void Structure::setTexture(Texture *texture) { this->texture = texture; }
 int Structure::getTileSize() { return Tile::getTileSize(); }
+float Structure::getPositionX()
+{
+    return this->x;
+}
+float Structure::getPositionY()
+{
+    std::cout << "ICI" << std::endl;
+    this->y = 4.9999990000;
+    return this->y;
+}

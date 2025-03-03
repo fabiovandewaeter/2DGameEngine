@@ -12,6 +12,7 @@ void TextureManager::init(Camera *camera)
     this->camera = camera;
     loadConfiguration();
 }
+
 void TextureManager::loadConfiguration()
 {
     rapidjson::Document document = JSONManager::loadFile("data/configurations/TextureManagerConfiguration.json");
@@ -33,6 +34,7 @@ void TextureManager::loadConfiguration()
         }
     }
 }
+
 Texture *TextureManager::getTexture(std::string name)
 {
     auto it = this->textures.find(name);

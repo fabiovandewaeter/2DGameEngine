@@ -22,7 +22,7 @@ class Chunk;
 // Structure représentant un nœud dans l'algorithme A*
 struct Node
 {
-    float x, y;   // Coordonnées de la case (en indice de grille)
+    int x, y;   // Coordonnées de la case (en indice de grille)
     float g;      // Coût parcouru depuis le départ
     float h;      // Heuristique (coût estimé jusqu'à l'arrivée)
     float f;      // f = g + h (coût total estimé)

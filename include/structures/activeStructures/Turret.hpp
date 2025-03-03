@@ -7,7 +7,7 @@ class Turret : public ActiveStructure
 {
 public:
     Turret() : ActiveStructure(nullptr, -1, -1, 100, true, nullptr, nullptr) {}
-    Turret(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
+    Turret(Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
 
     void update() override;
     std::string getClassName() override { return "Turret"; }

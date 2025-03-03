@@ -11,12 +11,12 @@
 class MoveAction : public Action
 {
 public:
-    MoveAction(float x, float y, Entity *entity) : Action(entity), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), x, y)), currentIndex(0) {};
+    MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY)), currentIndex(0) {};
     void execute() override;
     bool isCompleted() override;
 
 private:
-    float x, y;
+    float goalX, goalY;
     std::vector<SDL_FPoint> path;
     int currentIndex;
 };

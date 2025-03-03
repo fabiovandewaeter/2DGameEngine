@@ -21,8 +21,7 @@ class Structure
 {
 public:
     Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
-    Structure(Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) : Structure(texture, x, y, 0, true, placedBy, tickManager) {}
-    Structure(Texture *texture, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), hitBox({x, y, 1, 1}), HP(HP), solid(solid), destroyed(false) {}
+    Structure(Texture *texture, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), x(x), y(y), width(1), height(1), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();
@@ -36,8 +35,8 @@ public:
     int getHP();
     bool isSolid();
     bool isDestroyed();
-    void setX(int x);
-    void setY(int y);
+    void setX(float x);
+    void setY(float y);
     void setHitBox(SDL_FRect hitBox);
     void setTexture(Texture *texture);
     static std::string getName() { return "Structure"; };
@@ -47,10 +46,13 @@ public:
         return -1;
     };
     virtual std::string getClassName() = 0;
+    float getPositionX();
+    float getPositionY();
 
 protected:
     Texture *texture;
-    SDL_FRect hitBox;
+    float x, y;
+    float width, height;
     bool solid;
     unsigned int HP;
     bool destroyed;

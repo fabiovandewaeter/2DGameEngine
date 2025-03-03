@@ -177,14 +177,17 @@ void Game::clean()
 
 bool Game::isRunning() { return this->running; }
 void Game::setFPS(unsigned int fps) { this->fixedFPS = fps; }
+
 void Game::setUPS(unsigned int ups)
 {
     this->fixedUPS = ups;
     this->frameDelay = 10000000 / this->fixedUPS;
 }
+
 Uint64 Game::getFrameDelay() { return this->frameDelay; }
 SDL_Window *Game::getWindow() { return this->window; }
 SDL_Renderer *Game::getRenderer() { return this->renderer; }
+
 void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {
     counter++;
@@ -197,6 +200,7 @@ void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uin
         counter = 0;
     }
 }
+
 void Game::loadMedia()
 {
     std::cout << "================= Game::LoadMedia() =================" << std::endl;
@@ -209,6 +213,7 @@ void Game::loadMedia()
     this->audioManager.loadMedia();
     this->musics = this->audioManager.getMusic();
 }
+
 #include "entities/behaviors/WarriorBehavior.hpp"
 #include "entities/behaviors/ExplorerBehavior.hpp"
 void Game::loadEntities()
@@ -223,6 +228,7 @@ void Game::loadEntities()
     this->map->addEntity(warrior);
     // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));
 }
+
 void Game::loadItems()
 {
     std::cout << "================= Game::LoadItems() =================" << std::endl;

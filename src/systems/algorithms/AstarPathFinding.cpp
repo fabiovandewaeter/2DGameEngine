@@ -55,14 +55,19 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     allNodes[{tileStartX, tileStartY}] = startNode;
 
     // Définition des 8 directions possibles (4 cardinales et 4 diagonales)
-    const float dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
-    const float dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+    const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+    const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 
     while (!openSet.empty())
     {
         Node *current = openSet.top();
         openSet.pop();
 
+        if (current->x < -100 || current->x > 100)
+        {
+            std::cout << startX << " " << startY << " " << goalX << " " << goalY << std::endl;
+            exit(1);
+        }
         // Si on a atteint la destination
         if (current->x == tileGoalX && current->y == tileGoalY)
         {
@@ -76,8 +81,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         // Pour chaque voisin (8 directions)
         for (int i = 0; i < 8; i++)
         {
-            float nx = current->x + dx[i];
-            float ny = current->y + dy[i];
+            int nx = current->x + dx[i];
+            int ny = current->y + dy[i];
 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);
@@ -103,7 +108,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             }
 
             // Coût du déplacement : 1 pour cardinal, 1.414 pour diagonal
-            float tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
+            int tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
 
             std::pair<float, float> neighborKey = {nx, ny};
             Node *neighbor = nullptr;

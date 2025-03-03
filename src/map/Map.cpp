@@ -1,8 +1,8 @@
 #include "map/Map.hpp"
 
 #include <iostream>
-#include "map/Chunk.hpp"
 
+#include "map/Chunk.hpp"
 #include "systems/CollisionManager.hpp"
 #include "systems/game_objects/EntityManager.hpp"
 #include "entities/Player.hpp"
@@ -60,7 +60,7 @@ void Map::generateChunk(float positionX, float positionY)
 {
     Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
-    std::pair<int, int> newCoordinates = {positionX, positionY};
+    std::pair<float, float> newCoordinates = {positionX, positionY};
     this->allChunks[newCoordinates] = newChunk;
 }
 
@@ -125,3 +125,18 @@ Chunk *Map::getChunk(float x, float y)
 
 int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }
+
+std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string structureClassName)
+{
+    std::unique_ptr<std::pair<float, float>> res;
+    for (auto &chunkPair : allChunks)
+    {
+        Chunk *chunk = chunkPair.second;
+        res = chunk->findStructure(structureClassName);
+        if (res != nullptr)
+        {
+            return res;
+        }
+    }
+    return nullptr;
+}

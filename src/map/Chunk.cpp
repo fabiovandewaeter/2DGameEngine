@@ -13,6 +13,8 @@
 #include "structures/IUpdatable.hpp"
 #include "systems/utils/Constants.hpp"
 
+#include "structures/passiveStructures/Tree.hpp"
+#include "structures/passiveStructures/Wall.hpp"
 Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
@@ -25,7 +27,15 @@ Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureMana
     loadTiles();
     loadUpdatableStructures();
     loadOtherStructures();
+    if (positionX == 0 && positionY == 0)
+    {
+        float x = 5.0, y = 5.0;
+        std::pair<float, float> t = {x, y};
+        this->otherStructures[t] = new Tree(textureManager->getTexture("Tree"), x, y, nullptr, nullptr);
+        // this->otherStructures[t] = new Wall(textureManager->getTexture("Wall"), x, y, nullptr, nullptr);
+    }
 }
+
 Chunk::~Chunk()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE * CHUNK_TILE_SIZE; i++)
@@ -243,3 +253,39 @@ void Chunk::destroyStructure(float x, float y)
 }
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
+
+std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName)
+{
+
+    for (auto &entry : this->updatableStructures)
+    {
+        Structure *structure = entry.second;
+        if (structure && structure->getClassName() == structureClassName)
+        {
+            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+        }
+    }
+
+    for (auto &entry : this->otherStructures)
+    {
+        Structure *structure = entry.second;
+        if (structure && structure->getClassName() == structureClassName)
+        {
+            std::cout << "A " << structure->getPositionX() << " " << structure->getPositionY() << std::endl;
+            //SDL_FRect rect = {3, 4, 1, 1};
+            SDL_FRect rect = {structure->getPositionX(), structure->getPositionY(), 1, 1};
+            structure->setHitBox(rect);
+            std::cout << "B " << structure->getPositionX() << " " << structure->getPositionY() << std::endl;
+            float a = structure->getPositionX();
+            float b = structure->getPositionY();
+            // float a = 3.0;
+            // float b = 4.0;
+            // float a = rect.x;
+            // float b = rect.y;
+            return std::make_unique<std::pair<float, float>>(a, b);
+            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+        }
+    }
+
+    return nullptr;
+}

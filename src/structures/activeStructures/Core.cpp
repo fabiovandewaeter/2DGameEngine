@@ -46,13 +46,13 @@ void Core::spawnEntities()
 std::vector<SDL_FRect> Core::getPotentialSpawnTiles(SDL_FRect entityHitBox)
 {
     std::vector<SDL_FRect> potentialSpawnTiles;
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x - entityHitBox.w, this->hitBox.y - entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x, this->hitBox.y - entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x + entityHitBox.w, this->hitBox.y - entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x + entityHitBox.w, this->hitBox.y, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x + entityHitBox.w, this->hitBox.y + entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x, this->hitBox.y + entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x - entityHitBox.w, this->hitBox.y + entityHitBox.h, this->hitBox.w, this->hitBox.h});
-    potentialSpawnTiles.push_back((SDL_FRect){this->hitBox.x - entityHitBox.w, this->hitBox.y, this->hitBox.w, this->hitBox.h});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y - entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x, this->y - entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y - entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y + entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x, this->y + entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y + entityHitBox.h, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y, this->width, this->height});
     return potentialSpawnTiles;
 }
