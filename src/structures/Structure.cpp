@@ -42,7 +42,5 @@ float Structure::getPositionX()
 }
 float Structure::getPositionY()
 {
-    std::cout << "ICI" << std::endl;
-    this->y = 4.9999990000;
     return this->y;
 }

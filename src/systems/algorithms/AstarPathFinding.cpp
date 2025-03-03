@@ -108,7 +108,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             }
 
             // Coût du déplacement : 1 pour cardinal, 1.414 pour diagonal
-            int tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
+            float tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
 
             std::pair<float, float> neighborKey = {nx, ny};
             Node *neighbor = nullptr;
