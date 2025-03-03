@@ -25,6 +25,10 @@
             "path": "assets/img/structures/passiveStructures/wall_stone.png"
         },
         {
+            "name": "Tree",
+            "path": "assets/img/structures/passiveStructures/tree.png"
+        },
+        {
             "name": "Door",
             "path": "assets/img/structures/passiveStructures/door_wood.png"
         },
