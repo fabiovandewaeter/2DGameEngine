@@ -5,16 +5,16 @@
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 
-void MoveAction::execute(Entity *entity)
+void MoveAction::execute()
 {
     if (currentIndex >= this->path.size())
     {
         return;
     }
-    SDL_Point target = this->path[currentIndex];
+    SDL_FPoint target = this->path[currentIndex];
 
-    float dx = target.x - entity->getPositionX();
-    float dy = target.y - entity->getPositionY();
+    float dx = target.x - this->entity->getPositionX();
+    float dy = target.y - this->entity->getPositionY();
     float distance = std::sqrt(dx * dx + dy * dy);
 
     const float threshold = 2.0f;
@@ -26,7 +26,7 @@ void MoveAction::execute(Entity *entity)
     {
         float dirX = dx / distance;
         float dirY = dy / distance;
-        entity->moveBy(dirX * entity->getSpeed(), dirY * entity->getSpeed());
+        this->entity->moveBy(dirX * this->entity->getSpeed(), dirY * this->entity->getSpeed());
     }
 }
 

@@ -12,12 +12,12 @@ void Entity::update()
 {
     if (this->actionStack.empty())
     {
-        this->behavior->execute(this);
+        this->behavior->execute();
     }
     if (!this->actionStack.empty())
     {
         Action *currentAction = actionStack.top();
-        currentAction->execute(this);
+        currentAction->execute();
         if (currentAction->isCompleted())
         {
             delete currentAction;
@@ -74,6 +74,7 @@ void Entity::setVelocity(float velocityX, float velocityY)
 void Entity::setVelocityX(float velocityX) { this->velX = velocityX; }
 void Entity::setVelocityY(float velocityY) { this->velY = velocityY; }
 void Entity::setFaction(Faction *faction) { this->faction = faction; }
+void Entity::setBehavior(Behavior *behavior) { this->behavior = behavior; }
 void Entity::pushAction(Action *action) { this->actionStack.push(action); }
 
 // getter

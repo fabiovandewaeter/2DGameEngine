@@ -5,13 +5,17 @@
 
 #include "entities/Entity.hpp"
 
+class Entity;
+
 class Action
 {
 public:
-    virtual void execute(Entity *entity) = 0;
+    Action(Entity *entity) : entity(entity) {}
+    virtual void execute() = 0;
     virtual bool isCompleted() = 0;
 
-private:
+protected:
+    Entity *entity;
 };
 
 #endif

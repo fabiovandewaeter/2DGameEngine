@@ -143,7 +143,7 @@ void Game::update()
     // this->player->update();
     this->map->update();
 
-    //countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
+    // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
 
 TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
@@ -160,7 +160,7 @@ void Game::render()
     this->guiManager->render(this->player);
 
     SDL_RenderPresent(this->renderer);
-    //countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
+    // countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 
 void Game::clean()
@@ -218,7 +218,9 @@ void Game::loadEntities()
     this->map->addPlayer(this->player);
 
     // test
-    this->map->addEntity(new Entity(this->textureManager.getTexture("Warrior"), 0, 0, 1, 1, 101, this->map, new WarriorBehavior()));
+    Entity *warrior = new Entity(this->textureManager.getTexture("Warrior"), 0, 0, 1, 1, 101, this->map);
+    warrior->setBehavior(new WarriorBehavior(warrior));
+    this->map->addEntity(warrior);
     // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));
 }
 void Game::loadItems()

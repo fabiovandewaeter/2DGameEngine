@@ -7,8 +7,8 @@
 class WarriorBehavior : public Behavior
 {
 public:
-    WarriorBehavior() : Behavior(), getResourceAction(new GetResourceAction("Wood")) {}
-    void execute(Entity *entity) override;
+    WarriorBehavior(Entity *entity) : Behavior(entity), getResourceAction(new GetResourceAction("Wood", entity)) {}
+    void execute() override;
 
 private:
     GetResourceAction *getResourceAction;
