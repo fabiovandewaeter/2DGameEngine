@@ -29,48 +29,63 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    int tileStartX = static_cast<int>(std::floor(startX));
+    /*int tileStartX = static_cast<int>(std::floor(startX));
     int tileStartY = static_cast<int>(std::floor(startY));
     int tileGoalX = static_cast<int>(std::floor(goalX));
-    int tileGoalY = static_cast<int>(std::floor(goalY));
+    int tileGoalY = static_cast<int>(std::floor(goalY));*/
+
+    /*float tileStartX = std::floor(startX);
+    float tileStartY = std::floor(startY);
+    float tileGoalX = std::floor(goalX);
+    float tileGoalY = std::floor(goalY);*/
+
+    float tileStartX = startX;
+    float tileStartY = startY;
+    float tileGoalX = goalX;
+    float tileGoalY = goalY;
+    float epsilon = 0.0001f;   // default
+    
     if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
     {
-        /*const int nb_dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-        const int nb_dy[8] = {0, -1, -1, -1, 0, 1, 1, 1};
-        for (int i = 0; i < 8; i++)
-        {
-            int nx = goalX + nb_dx[i];
-            int ny = goalY + nb_dy[i];
-            Chunk *neighborChunk = map->getChunk(nx, ny);
-            if (!neighborChunk)
-                continue;
-            if (neighborChunk->isStructure(nx, ny))
-                continue;
-            // La distance entre le centre du tile d'origine (bloqué) et le voisin
-            float distance = std::sqrt(static_cast<float>((nx - goalX) * (nx - goalX) + (ny - goalY) * (ny - goalY)));
-            if (distance < bestDistance)
-            {
-                bestDistance = distance;
-                bestNeighborX = nx;
-                bestNeighborY = ny;
-                foundAccessible = true;
-            }
-        }*/
+        float epsilon = 0.6f;
+        // TODO: fix that because it's ugly
         if (startX < goalX)
         {
-            tileGoalX = goalX + 0.7f;
+            tileGoalX += 0.5f;
         }
         else if (startX > goalX)
         {
-            tileGoalX = goalX - 0.7f;
+            tileGoalX -= 0.5f;
         }
         if (startY < goalY)
         {
-            tileGoalY = goalY + 0.7f;
+            tileGoalY += 0.5f;
         }
         else if (startY > goalY)
         {
-            tileGoalY = goalY - 0.7f;
+            tileGoalY -= 0.5f;
+        }
+    }
+    else{
+        if (startX < goalX)
+        {
+            //tileGoalX += 0.5f;
+            tileGoalX += 1.0f;
+        }
+        else if (startX > goalX)
+        {
+            //tileGoalX -= 0.5f;
+            tileGoalX -= 1.0f;
+        }
+        if (startY < goalY)
+        {
+            //tileGoalY += 0.5f;
+            tileGoalY += 1.0f;
+        }
+        else if (startY > goalY)
+        {
+            //tileGoalY -= 0.5f;
+            tileGoalY -= 1.0f;
         }
     }
 
@@ -106,8 +121,9 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             std::cout << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
             return res;
         }
+        count--;
         // Si on a atteint la destination
-        if (current->x == tileGoalX && current->y == tileGoalY)
+        if (std::fabs(current->x - tileGoalX) < epsilon && std::fabs(current->y - tileGoalY) < epsilon)
         {
             reconstructPath(current, &res);
             // Libération de la mémoire des nœuds
@@ -130,7 +146,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             }
 
             // if is a Structe AND is not the Structe we want to reach
-            if (chunk->isStructure(nx, ny) && !(nx == tileGoalX && ny == tileGoalY))
+            if (chunk->isStructure(nx, ny) && !(std::fabs(nx - tileGoalX) < epsilon && std::fabs(ny - tileGoalY)) < epsilon)
             {
                 continue;
             }
