@@ -22,7 +22,7 @@ class Chunk;
 // Structure représentant un nœud dans l'algorithme A*
 struct Node
 {
-    float x, y;     // Coordonnées de la case (en indice de grille)
+    float x, y;   // Coordonnées de la case (en indice de grille)
     float g;      // Coût parcouru depuis le départ
     float h;      // Heuristique (coût estimé jusqu'à l'arrivée)
     float f;      // f = g + h (coût total estimé)
@@ -44,11 +44,11 @@ struct CompareNode
 class AstarPathFinding
 {
 public:
-    static std::vector<SDL_Point> findPath(Map *map, float startX, float startY, float goalX, float goalY);
+    static std::vector<SDL_FPoint> findPath(Map *map, float startX, float startY, float goalX, float goalY);
 
 private:
     static float heuristic(float x1, float y1, float x2, float y2);
-    static void reconstructPath(Node *node, std::vector<SDL_Point> *result);
+    static void reconstructPath(Node *node, std::vector<SDL_FPoint> *result);
 };
 
 #endif

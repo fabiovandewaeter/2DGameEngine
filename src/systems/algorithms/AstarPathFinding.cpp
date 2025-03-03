@@ -12,13 +12,15 @@ float AstarPathFinding::heuristic(float x1, float y1, float x2, float y2)
     return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
 }
 
-void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *result)
+void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_FPoint> *result)
 {
     while (node != nullptr)
     {
-        SDL_Point p;
-        p.x = node->x + 1/ 2;
-        p.y = node->y + 1/ 2;
+        SDL_FPoint p;
+        //p.x = node->x + 1 / 2;
+        //p.y = node->y + 1 / 2;
+        p.x = node->x;
+        p.y = node->y;
         result->push_back(p);
         node = node->parent;
     }
@@ -26,14 +28,14 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_Point> *resul
     std::reverse(result->begin(), result->end());
 }
 
-std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, float startX, float startY, float goalX, float goalY)
+std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float startY, float goalX, float goalY)
 {
-    std::vector<SDL_Point> res;
+    std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    float tileStartX = startX ;
-    float tileStartY = startY ;
-    float tileGoalX = goalX ;
-    float tileGoalY = goalY ;
+    int tileStartX = static_cast<int>(std::floor(startX));
+    int tileStartY = static_cast<int>(std::floor(startY));
+    int tileGoalX = static_cast<int>(std::floor(goalX));
+    int tileGoalY = static_cast<int>(std::floor(goalY));
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
@@ -80,9 +82,13 @@ std::vector<SDL_Point> AstarPathFinding::findPath(Map *map, float startX, float 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);
             if (!chunk)
+            {
                 continue; // Hors limites de la carte
+            }
             if (chunk->isStructure(nx, ny))
+            {
                 continue; // Obstacle présent
+            }
 
             // Pour un déplacement diagonal, éviter de "couper un coin"
             if (dx[i] != 0 && dy[i] != 0)

@@ -17,7 +17,7 @@ public:
 
 private:
     float x, y;
-    std::vector<SDL_Point> path;
+    std::vector<SDL_FPoint> path;
     int currentIndex;
 };
 
