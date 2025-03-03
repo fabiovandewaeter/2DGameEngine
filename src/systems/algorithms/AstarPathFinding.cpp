@@ -33,6 +33,46 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     int tileStartY = static_cast<int>(std::floor(startY));
     int tileGoalX = static_cast<int>(std::floor(goalX));
     int tileGoalY = static_cast<int>(std::floor(goalY));
+    if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
+    {
+        /*const int nb_dx[8] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+        const int nb_dy[8] = {0, -1, -1, -1, 0, 1, 1, 1};
+        for (int i = 0; i < 8; i++)
+        {
+            int nx = goalX + nb_dx[i];
+            int ny = goalY + nb_dy[i];
+            Chunk *neighborChunk = map->getChunk(nx, ny);
+            if (!neighborChunk)
+                continue;
+            if (neighborChunk->isStructure(nx, ny))
+                continue;
+            // La distance entre le centre du tile d'origine (bloqué) et le voisin
+            float distance = std::sqrt(static_cast<float>((nx - goalX) * (nx - goalX) + (ny - goalY) * (ny - goalY)));
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                bestNeighborX = nx;
+                bestNeighborY = ny;
+                foundAccessible = true;
+            }
+        }*/
+        if (startX < goalX)
+        {
+            tileGoalX = goalX + 0.7f;
+        }
+        else if (startX > goalX)
+        {
+            tileGoalX = goalX - 0.7f;
+        }
+        if (startY < goalY)
+        {
+            tileGoalY = goalY + 0.7f;
+        }
+        else if (startY > goalY)
+        {
+            tileGoalY = goalY - 0.7f;
+        }
+    }
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
@@ -61,7 +101,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         Node *current = openSet.top();
         openSet.pop();
 
-        if (count <= 0){
+        if (count <= 0)
+        {
             std::cout << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
             return res;
         }
