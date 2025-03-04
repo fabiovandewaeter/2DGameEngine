@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <cmath>
 #include <functional> // for std::hash
+#include <memory>
 
 #include "systems/utils/Constants.hpp"
 
@@ -38,8 +39,12 @@ public:
     Structure *getStructure(float x, float y);
     bool isStructure(float x, float y);
     void addStructure(Structure *structure, float x, float y);
+    // destroy the Structure and remove it from the Game
     void destroyStructure(float x, float y);
+    // break the Structure and returns it
+    Structure *breakStructure(float x, float y);
     void setFaction(Faction *faction);
+    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName);
 
 private:
     Tile *allTiles[CHUNK_TILE_SIZE * CHUNK_TILE_SIZE];

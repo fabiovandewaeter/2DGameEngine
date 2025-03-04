@@ -13,6 +13,8 @@
 #include "structures/IUpdatable.hpp"
 #include "systems/utils/Constants.hpp"
 
+#include "structures/passiveStructures/Tree.hpp"
+#include "structures/passiveStructures/Wall.hpp"
 Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
@@ -25,7 +27,15 @@ Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureMana
     loadTiles();
     loadUpdatableStructures();
     loadOtherStructures();
+    if (positionX == 0 && positionY == 0)
+    {
+        float x = 5.0, y = 5.0;
+        std::pair<float, float> t = {x, y};
+        this->otherStructures[t] = new Tree(textureManager->getTexture("Tree"), x, y, nullptr, nullptr);
+        // this->otherStructures[t] = new Wall(textureManager->getTexture("Wall"), x, y, nullptr, nullptr);
+    }
 }
+
 Chunk::~Chunk()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE * CHUNK_TILE_SIZE; i++)
@@ -46,6 +56,7 @@ void Chunk::loadTiles()
 {
     loadTilesWithPerlinNoise();
 }
+
 void Chunk::loadTilesDefault()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE; i++)
@@ -56,6 +67,7 @@ void Chunk::loadTilesDefault()
         }
     }
 }
+
 void Chunk::loadTilesWithPerlinNoise()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE; i++)
@@ -88,6 +100,7 @@ void Chunk::loadTilesWithPerlinNoise()
         }
     }
 }
+
 void Chunk::loadUpdatableStructures() {}
 void Chunk::loadOtherStructures() {}
 
@@ -238,8 +251,51 @@ void Chunk::destroyStructure(float x, float y)
         {
             this->otherStructures.erase(newCoordinates);
         }
+        std::cout << "Chunk::destroyStructure() : structure destroyed at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
         structure->destroy();
     }
 }
 
+Structure *Chunk::breakStructure(float x, float y)
+{
+    if (isStructure(x, y))
+    {
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+
+        Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
+        if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
+        {
+            this->updatableStructures.erase(newCoordinates);
+        }
+        else
+        {
+            this->otherStructures.erase(newCoordinates);
+        }
+        std::cout << "Chunk::breakStructure() : structure broken at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
+        return structure;
+    }
+    return nullptr;
+}
+
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
+
+std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName)
+{
+    for (auto &entry : this->updatableStructures)
+    {
+        Structure *structure = entry.second;
+        if (structure && structure->getClassName() == structureClassName)
+        {
+            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+        }
+    }
+    for (auto &entry : this->otherStructures)
+    {
+        Structure *structure = entry.second;
+        if (structure && structure->getClassName() == structureClassName)
+        {
+            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+        }
+    }
+    return nullptr;
+}

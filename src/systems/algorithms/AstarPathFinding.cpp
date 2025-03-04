@@ -8,7 +8,7 @@ float AstarPathFinding::heuristic(float x1, float y1, float x2, float y2)
     float dx = std::fabs(x1 - x2);
     float dy = std::fabs(y1 - y2);
     float D = 1.0f;
-    float D2 = 1.414f; // approximatif de sqrt(2)
+    float D2 = 1.414f; // sqrt(2)
     return D * (dx + dy) + (D2 - 2 * D) * std::min(dx, dy);
 }
 
@@ -17,14 +17,11 @@ void AstarPathFinding::reconstructPath(Node *node, std::vector<SDL_FPoint> *resu
     while (node != nullptr)
     {
         SDL_FPoint p;
-        //p.x = node->x + 1 / 2;
-        //p.y = node->y + 1 / 2;
         p.x = node->x;
         p.y = node->y;
         result->push_back(p);
         node = node->parent;
     }
-    // On inverse le chemin (du départ à l'arrivée)
     std::reverse(result->begin(), result->end());
 }
 
@@ -32,10 +29,65 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    int tileStartX = static_cast<int>(std::floor(startX));
+    /*int tileStartX = static_cast<int>(std::floor(startX));
     int tileStartY = static_cast<int>(std::floor(startY));
     int tileGoalX = static_cast<int>(std::floor(goalX));
-    int tileGoalY = static_cast<int>(std::floor(goalY));
+    int tileGoalY = static_cast<int>(std::floor(goalY));*/
+
+    /*float tileStartX = std::floor(startX);
+    float tileStartY = std::floor(startY);
+    float tileGoalX = std::floor(goalX);
+    float tileGoalY = std::floor(goalY);*/
+
+    float tileStartX = startX;
+    float tileStartY = startY;
+    float tileGoalX = goalX;
+    float tileGoalY = goalY;
+    float epsilon = 0.0001f;   // default
+    
+    if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
+    {
+        epsilon = 0.6f;
+        // TODO: fix that because it's ugly
+        if (startX < goalX)
+        {
+            tileGoalX += 0.5f;
+        }
+        else if (startX > goalX)
+        {
+            tileGoalX -= 0.5f;
+        }
+        if (startY < goalY)
+        {
+            tileGoalY += 0.5f;
+        }
+        else if (startY > goalY)
+        {
+            tileGoalY -= 0.5f;
+        }
+    }
+    else{
+        if (startX < goalX)
+        {
+            //tileGoalX += 0.5f;
+            tileGoalX += 2.0f;
+        }
+        else if (startX > goalX)
+        {
+            //tileGoalX -= 0.5f;
+            tileGoalX -= 2.0f;
+        }
+        if (startY < goalY)
+        {
+            //tileGoalY += 0.5f;
+            tileGoalY += 2.0f;
+        }
+        else if (startY > goalY)
+        {
+            //tileGoalY -= 0.5f;
+            tileGoalY -= 2.0f;
+        }
+    }
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
@@ -55,16 +107,23 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     allNodes[{tileStartX, tileStartY}] = startNode;
 
     // Définition des 8 directions possibles (4 cardinales et 4 diagonales)
-    const float dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
-    const float dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+    const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+    const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 
+    int count = 1000;
     while (!openSet.empty())
     {
         Node *current = openSet.top();
         openSet.pop();
 
+        if (count <= 0)
+        {
+            std::cout << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
+            return res;
+        }
+        count--;
         // Si on a atteint la destination
-        if (current->x == tileGoalX && current->y == tileGoalY)
+        if (std::fabs(current->x - tileGoalX) < epsilon && std::fabs(current->y - tileGoalY) < epsilon)
         {
             reconstructPath(current, &res);
             // Libération de la mémoire des nœuds
@@ -76,8 +135,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         // Pour chaque voisin (8 directions)
         for (int i = 0; i < 8; i++)
         {
-            float nx = current->x + dx[i];
-            float ny = current->y + dy[i];
+            int nx = current->x + dx[i];
+            int ny = current->y + dy[i];
 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);
@@ -85,9 +144,11 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             {
                 continue; // Hors limites de la carte
             }
-            if (chunk->isStructure(nx, ny))
+
+            // if is a Structe AND is not the Structe we want to reach
+            if (chunk->isStructure(nx, ny) && !(std::fabs(nx - tileGoalX) < epsilon && std::fabs(ny - tileGoalY)) < epsilon)
             {
-                continue; // Obstacle présent
+                continue;
             }
 
             // Pour un déplacement diagonal, éviter de "couper un coin"
@@ -105,7 +166,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             // Coût du déplacement : 1 pour cardinal, 1.414 pour diagonal
             float tentative_g = current->g + ((dx[i] == 0 || dy[i] == 0) ? 1.0f : 1.414f);
 
-            std::pair<float, float> neighborKey = {nx, ny};
+            std::pair<int, int> neighborKey = {nx, ny};
             Node *neighbor = nullptr;
             if (allNodes.find(neighborKey) == allNodes.end())
             {

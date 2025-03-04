@@ -1,4 +1,5 @@
 CXX = g++
+CXXVERSION = -std=c++14
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
@@ -24,7 +25,7 @@ HEADER_FILES := $(call rwildcard,include,*.hpp)
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 # Base flags for compilation
-CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic -std=c++11
+CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic $(CXXVERSION)
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 SANITIZE_FLAGS = 
 ifneq ($(PLATFORM),windows)
@@ -119,7 +120,8 @@ TEST_FILES := $(call rwildcard,tests,*.cpp)
 TEST_TARGET = $(BIN_DIR)/tests
 TEST_OBJ_DIR = $(OBJ_DIR)/tests
 TEST_OBJ_FILES = $(patsubst tests/%.cpp, $(TEST_OBJ_DIR)/%.o, $(TEST_FILES))
-TEST_CXXFLAGS = -I include -std=c++20 -O2
+TEST_CXXVERSION = -std=c++20
+TEST_CXXFLAGS = -I include -O2 $(TEST_CXXVERSION)
 
 ifeq ($(PLATFORM),windows)
     TEST_CXXFLAGS += -L Windows_lib

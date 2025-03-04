@@ -106,4 +106,4 @@ void MouseManager::handleEvents(SDL_Event *event, Player *player)
 	}
 }
 
-void MouseManager::setClickOnEmptyTileStrategy(std::function<Structure *(int, int)> strategy) { this->clickOnEmptyTileStrategy = strategy; }
+void MouseManager::setClickOnEmptyTileStrategy(std::function<Structure *(float, float)> strategy) { this->clickOnEmptyTileStrategy = strategy; }

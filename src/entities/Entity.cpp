@@ -58,6 +58,15 @@ bool Entity::canMove()
 
 bool Entity::isMoving() { return this->velX != 0 || this->velY != 0; }
 
+// getter
+float Entity::getPositionX() { return this->x; }
+float Entity::getPositionY() { return this->y; }
+Texture *Entity::getTexture() const { return this->texture; }
+SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
+int Entity::getHP() { return this->HP; }
+Map *Entity::getMap() const { return this->map; }
+float Entity::getSpeed() { return this->speed; }
+
 // setter
 void Entity::setPosition(float x, float y)
 {
@@ -77,13 +86,12 @@ void Entity::setFaction(Faction *faction) { this->faction = faction; }
 void Entity::setBehavior(Behavior *behavior) { this->behavior = behavior; }
 void Entity::pushAction(Action *action) { this->actionStack.push(action); }
 
-// getter
-float Entity::getPositionX() { return this->x; }
-float Entity::getPositionY() { return this->y; }
-// int Entity::getCenterX() { return this->hitBox.w / 2; }
-// int Entity::getCenterY() { return this->hitBox.h / 2; }
-Texture *Entity::getTexture() const { return this->texture; }
-SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
-int Entity::getHP() { return this->HP; }
-Map *Entity::getMap() const { return this->map; }
-float Entity::getSpeed() { return this->speed; }
+void Entity::giveStructure(Structure *structure)
+{
+    addToInventory(structure);
+}
+
+void Entity::addToInventory(Structure *structure)
+{
+    this->inventory.push_back(structure);
+}

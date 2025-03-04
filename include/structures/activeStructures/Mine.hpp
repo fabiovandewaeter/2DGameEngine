@@ -13,7 +13,7 @@ class Mine : public ActiveStructure
 {
 public:
     Mine() : ActiveStructure(nullptr, -1, -1, 100, true, nullptr, nullptr) {}
-    Mine(Texture *texture, int x, int y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
+    Mine(Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) : ActiveStructure{texture, x, y, 100, true, placedBy, tickManager} {};
     ~Mine();
 
     void update();
