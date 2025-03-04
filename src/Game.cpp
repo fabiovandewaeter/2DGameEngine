@@ -4,6 +4,7 @@
 
 #include "Game.hpp"
 
+#include "systems/game_objects/EntityManager.hpp"
 #include "systems/core/MouseManager.hpp"
 #include "systems/core/GUIManager.hpp"
 #include "structures/activeStructures/Core.hpp"
