@@ -2,6 +2,7 @@
 
 #include "systems/core/Camera.hpp"
 #include "map/Map.hpp"
+#include "systems/core/TextureManager.hpp"
 
 // 1 if false and sprintVelocity if true
 float sprint2 = 1;
@@ -78,7 +79,12 @@ void Player::update()
     move();
 }
 
-void Player::render() { Entity::render(this->camera); }
+void Player::render()
+{
+    this->camera->renderBackground();
+    this->map->render(this);
+    this->guiManager->render(this);
+}
 
 void Player::move()
 {

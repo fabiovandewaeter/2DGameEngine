@@ -103,6 +103,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
     std::cout << "====================================================" << std::endl;
 }
+
 Game::~Game()
 {
 }
@@ -152,18 +153,26 @@ void Game::render()
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
     SDL_RenderClear(this->renderer);
 
-    SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
+    std::vector<Player *> *players = this->entityManager.getPlayers();
+    int size = players->size();
+    for (int i = 0; i < size; i++)
+    {
+        (*players)[i]->render();
+    }
+
+    /*SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
     std::vector<Player *> *players = this->entityManager.getPlayers();
     int size = players->size();
     for (int i = 0; i < size; i++){
         (*players)[i]->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
+        (*players)[i]->render();
     }
 
     for (int i = 0; i < size; i++){
         this->map->render(this->player);
         (*players)[i]->render();
     }
-    this->guiManager->render(this->player);
+    this->guiManager->render(this->player);*/
 
     SDL_RenderPresent(this->renderer);
     // countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
@@ -225,8 +234,9 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), 0, 0, 1, 1, 103, this->map, this->camera);
-    this->map->addPlayer(this->player);
+    Player *player = new Player(this->textureManager.getTexture("Player"), 0, 0, 1, 1, 103, this->map, new Camera());
+    this->entityManager.addPlayer(player);
+    this->map->addPlayer(player);
 
     // test
     Entity *warrior = new Entity(this->textureManager.getTexture("Warrior"), 0, 0, 1, 1, 101, this->map);

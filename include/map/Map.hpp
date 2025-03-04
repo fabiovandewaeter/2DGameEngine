@@ -26,6 +26,7 @@ public:
     ~Map();
 
     void loadChunks();
+    // render Chunk and Entities
     void render(Player *player);
     void update();
 

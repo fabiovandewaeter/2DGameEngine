@@ -133,6 +133,8 @@ void Camera::render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
 }
 
+void Camera::renderBackground() { render(this->backgroundTexture, backgroundRenderRect); }
+
 SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect rect)
 {
     float cameraPositionX = this->positionX * TILE_PIXELS_SIZE;
@@ -186,3 +188,4 @@ int Camera::getWidth() { return this->width; }
 int Camera::getHeight() { return this->height; }
 double Camera::getScale() { return this->scale; }
 SDL_Renderer *Camera::getRenderer() { return this->renderer; }
+TextureManager *Camera::getTextureManager() { return this->textureManager; }
