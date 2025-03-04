@@ -126,13 +126,13 @@ Chunk *Map::getChunk(float x, float y)
 int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }
 
-std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string structureClassName)
+std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string structureClassName, const Entity *entity)
 {
     std::unique_ptr<std::pair<float, float>> res;
     for (auto &chunkPair : allChunks)
     {
         Chunk *chunk = chunkPair.second;
-        res = chunk->findStructure(structureClassName);
+        res = chunk->findStructure(structureClassName, entity);
         if (res != nullptr)
         {
             return res;

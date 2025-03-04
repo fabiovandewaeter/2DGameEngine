@@ -41,7 +41,7 @@ public:
     int getTileSize();
     int getChunkSize();
     EntityManager *getEntityManager();
-    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName);
+    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName, const Entity *entity);
 
 private:
     TextureManager *textureManager;

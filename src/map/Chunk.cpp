@@ -2,6 +2,9 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
+#include <limits>
+#include <cmath>
+
 #include "map/Chunk.hpp"
 
 #include "map/Tile.hpp"
@@ -12,9 +15,10 @@
 #include "structures/passiveStructures/Wall.hpp"
 #include "structures/IUpdatable.hpp"
 #include "systems/utils/Constants.hpp"
+#include "entities/Entity.hpp"
 
 #include "structures/passiveStructures/Tree.hpp"
-#include "structures/passiveStructures/Wall.hpp"
+
 Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
@@ -279,23 +283,48 @@ Structure *Chunk::breakStructure(float x, float y)
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
 
-std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName)
+
+std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName, const Entity *entity)
 {
+    float minDistance = std::numeric_limits<float>::max();
+    std::unique_ptr<std::pair<float, float>> closestCoords = nullptr;
+    
+    float entityX = entity->getPositionX();
+    float entityY = entity->getPositionY();
+    
+    // Parcourt les structures "updatable"
     for (auto &entry : this->updatableStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)
         {
-            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+            float dx = structure->getPositionX() - entityX;
+            float dy = structure->getPositionY() - entityY;
+            float distance = std::sqrt(dx * dx + dy * dy);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestCoords = std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+            }
         }
     }
+    
+    // Parcourt les autres structures
     for (auto &entry : this->otherStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)
         {
-            return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+            float dx = structure->getPositionX() - entityX;
+            float dy = structure->getPositionY() - entityY;
+            float distance = std::sqrt(dx * dx + dy * dy);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestCoords = std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+            }
         }
     }
-    return nullptr;
+    
+    return closestCoords;
 }

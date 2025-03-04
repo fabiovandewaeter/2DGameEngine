@@ -19,7 +19,7 @@ class Structure;
 class Entity
 {
 public:
-    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
+    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -30,18 +30,22 @@ public:
     virtual void onLeftClick();
     virtual void onRightClick();
     virtual bool canMove();
-    virtual bool isMoving();
+    bool isMoving();
     void moveBy(float dx, float dy);
     void kill();
+    void teleportToHome();
 
-    float getPositionX();
-    float getPositionY();
+    // getter
+    float getPositionX() const;
+    float getPositionY() const;
     Texture *getTexture() const;
     SDL_FRect getHitBox() const;
+    float getSpeed();
+    float getRange();
     int getHP();
     Map *getMap() const;
-    float getSpeed();
 
+    // setter
     void setPosition(float x, float y);
     void setVelocity(float velocityX, float velocityY);
     void setVelocityX(float velocityX);
@@ -59,13 +63,15 @@ protected:
     float velX, velY;
     float speed;
     int HP;
+    // range to break Structure
+    float range;
     Map *map;
     Faction *faction;
     Behavior *behavior;
     std::stack<Action *> actionStack;
     std::vector<Structure *> inventory;
 
-    void addToInventory(Structure* structure);
+    void addToInventory(Structure *structure);
 };
 
 #endif
