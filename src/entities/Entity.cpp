@@ -63,9 +63,10 @@ float Entity::getPositionX() { return this->x; }
 float Entity::getPositionY() { return this->y; }
 Texture *Entity::getTexture() const { return this->texture; }
 SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
-int Entity::getHP() { return this->HP; }
-Map *Entity::getMap() const { return this->map; }
 float Entity::getSpeed() { return this->speed; }
+int Entity::getHP() { return this->HP; }
+float Entity::getRange() { return this->range; }
+Map *Entity::getMap() const { return this->map; }
 
 // setter
 void Entity::setPosition(float x, float y)

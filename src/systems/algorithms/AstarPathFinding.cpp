@@ -29,15 +29,6 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    /*int tileStartX = static_cast<int>(std::floor(startX));
-    int tileStartY = static_cast<int>(std::floor(startY));
-    int tileGoalX = static_cast<int>(std::floor(goalX));
-    int tileGoalY = static_cast<int>(std::floor(goalY));*/
-
-    /*float tileStartX = std::floor(startX);
-    float tileStartY = std::floor(startY);
-    float tileGoalX = std::floor(goalX);
-    float tileGoalY = std::floor(goalY);*/
 
     float tileStartX = startX;
     float tileStartY = startY;
@@ -47,46 +38,46 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     
     if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
     {
-        epsilon = 0.6f;
+        /*epsilon = 0.6f;
         // TODO: fix that because it's ugly
         if (startX < goalX)
         {
-            tileGoalX += 0.5f;
-        }
-        else if (startX > goalX)
-        {
-            tileGoalX -= 0.5f;
-        }
-        if (startY < goalY)
-        {
-            tileGoalY += 0.5f;
-        }
-        else if (startY > goalY)
-        {
-            tileGoalY -= 0.5f;
-        }
-    }
-    else{
-        if (startX < goalX)
-        {
             //tileGoalX += 0.5f;
-            tileGoalX += 2.0f;
+            tileGoalX -= 0.5f;
         }
         else if (startX > goalX)
         {
             //tileGoalX -= 0.5f;
-            tileGoalX -= 2.0f;
+            tileGoalX += 0.5f;
         }
         if (startY < goalY)
         {
             //tileGoalY += 0.5f;
-            tileGoalY += 2.0f;
+            tileGoalY -= 0.5f;
         }
         else if (startY > goalY)
         {
             //tileGoalY -= 0.5f;
-            tileGoalY -= 2.0f;
+            tileGoalY += 0.5f;
+        }*/
+    }
+    else{
+        /*if (startX < goalX)
+        {
+            tileGoalX += 2.0f;
         }
+        else if (startX > goalX)
+        {
+            tileGoalX -= 2.0f;
+        }
+        if (startY < goalY)
+        {
+            tileGoalY += 2.0f;
+        }
+        else if (startY > goalY)
+        {
+            tileGoalY -= 2.0f;
+        }*/
     }
 
     // File de priorité (open set) pour les nœuds
