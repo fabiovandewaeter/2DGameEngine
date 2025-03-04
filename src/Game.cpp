@@ -132,8 +132,6 @@ void Game::handleEvents()
     }
 }
 
-#include "systems/algorithms/AstarPathFinding.hpp"
-
 TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
@@ -148,7 +146,7 @@ TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
-    SDL_RenderClear(this->renderer);
+    //SDL_RenderClear(this->renderer);
 
     std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
     int size = players->size();
@@ -157,7 +155,7 @@ void Game::render()
         (*players)[i]->render();
     }
 
-    SDL_RenderPresent(this->renderer);
+    //SDL_RenderPresent(this->renderer);
     // countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 
@@ -166,8 +164,6 @@ void Game::clean()
     delete this->map;
     this->audioManager.free();
 
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -183,8 +179,6 @@ void Game::setUPS(unsigned int ups)
 }
 
 Uint64 Game::getFrameDelay() { return this->frameDelay; }
-SDL_Window *Game::getWindow() { return this->window; }
-SDL_Renderer *Game::getRenderer() { return this->renderer; }
 
 void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {

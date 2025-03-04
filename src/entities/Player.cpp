@@ -4,6 +4,8 @@
 float sprint2 = 1;
 float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
+Player::~Player() { delete this->camera; }
+
 void Player::handleEvents(SDL_Event *event, MouseManager *mouseManager)
 {
     this->camera->handleEvents(event);
@@ -77,9 +79,11 @@ void Player::update()
 
 void Player::render()
 {
+    SDL_RenderClear(this->camera->getRenderer());
     this->camera->renderBackground();
     this->map->render(this);
     this->guiManager->render(this);
+    SDL_RenderPresent(this->camera->getRenderer());
 }
 
 void Player::move()

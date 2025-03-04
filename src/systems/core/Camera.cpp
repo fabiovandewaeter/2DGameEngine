@@ -7,6 +7,12 @@
 #include "systems/utils/Constants.hpp"
 #include "map/Tile.hpp"
 
+Camera::~Camera()
+{
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
+}
+
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
 float sprint = 1;

@@ -47,13 +47,9 @@ public:
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
     Uint64 getFrameDelay();
-    SDL_Window *getWindow();
-    SDL_Renderer *getRenderer();
 
 private:
     bool running;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
     int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
