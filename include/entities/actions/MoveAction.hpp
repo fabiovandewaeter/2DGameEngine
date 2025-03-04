@@ -11,7 +11,7 @@
 class MoveAction : public Action
 {
 public:
-    MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY)), currentIndex(0) {};
+    MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY)), currentIndex(0) {}
     void execute() override;
     bool isCompleted() override;
 

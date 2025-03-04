@@ -25,6 +25,7 @@ SDL_FRect Structure::getHitBox() { return {this->x, this->y, this->width, this->
 int Structure::getHP() { return this->HP; }
 bool Structure::isSolid() { return this->solid; }
 bool Structure::isDestroyed() { return this->destroyed; }
+
 void Structure::setHitBox(SDL_FRect hitBox)
 {
     this->x = hitBox.x;
@@ -32,10 +33,12 @@ void Structure::setHitBox(SDL_FRect hitBox)
     this->width = hitBox.w;
     this->height = hitBox.h;
 }
+
 void Structure::setX(float x) { this->x = x; }
 void Structure::setY(float y) { this->y = y; }
 void Structure::setTexture(Texture *texture) { this->texture = texture; }
 int Structure::getTileSize() { return Tile::getTileSize(); }
+
 float Structure::getPositionX()
 {
     return this->x;

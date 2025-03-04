@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL_render.h>
 #include <stack>
+#include <vector>
 
 class Texture;
 class State;
@@ -13,6 +14,7 @@ class Faction;
 class Map;
 class Behavior;
 class Action;
+class Structure;
 
 class Entity
 {
@@ -32,14 +34,6 @@ public:
     void moveBy(float dx, float dy);
     void kill();
 
-    void setPosition(float x, float y);
-    void setVelocity(float velocityX, float velocityY);
-    void setVelocityX(float velocityX);
-    void setVelocityY(float velocityY);
-    void setFaction(Faction *faction);
-    void setBehavior(Behavior *behavior);
-    void pushAction(Action *action);
-
     float getPositionX();
     float getPositionY();
     Texture *getTexture() const;
@@ -47,6 +41,16 @@ public:
     int getHP();
     Map *getMap() const;
     float getSpeed();
+
+    void setPosition(float x, float y);
+    void setVelocity(float velocityX, float velocityY);
+    void setVelocityX(float velocityX);
+    void setVelocityY(float velocityY);
+    void setFaction(Faction *faction);
+    void setBehavior(Behavior *behavior);
+    void pushAction(Action *action);
+    // add the structure to the inventory
+    void giveStructure(Structure *structure);
 
 protected:
     Texture *texture;
@@ -59,6 +63,9 @@ protected:
     Faction *faction;
     Behavior *behavior;
     std::stack<Action *> actionStack;
+    std::vector<Structure *> inventory;
+
+    void addToInventory(Structure* structure);
 };
 
 #endif

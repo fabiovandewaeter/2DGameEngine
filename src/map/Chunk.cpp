@@ -56,6 +56,7 @@ void Chunk::loadTiles()
 {
     loadTilesWithPerlinNoise();
 }
+
 void Chunk::loadTilesDefault()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE; i++)
@@ -66,6 +67,7 @@ void Chunk::loadTilesDefault()
         }
     }
 }
+
 void Chunk::loadTilesWithPerlinNoise()
 {
     for (int i = 0; i < CHUNK_TILE_SIZE; i++)
@@ -98,6 +100,7 @@ void Chunk::loadTilesWithPerlinNoise()
         }
     }
 }
+
 void Chunk::loadUpdatableStructures() {}
 void Chunk::loadOtherStructures() {}
 
@@ -248,8 +251,30 @@ void Chunk::destroyStructure(float x, float y)
         {
             this->otherStructures.erase(newCoordinates);
         }
+        std::cout << "Chunk::destroyStructure() : structure destroyed at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
         structure->destroy();
     }
+}
+
+Structure *Chunk::breakStructure(float x, float y)
+{
+    if (isStructure(x, y))
+    {
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+
+        Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
+        if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
+        {
+            this->updatableStructures.erase(newCoordinates);
+        }
+        else
+        {
+            this->otherStructures.erase(newCoordinates);
+        }
+        std::cout << "Chunk::breakStructure() : structure broken at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
+        return structure;
+    }
+    return nullptr;
 }
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
@@ -264,7 +289,6 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
         }
     }
-
     for (auto &entry : this->otherStructures)
     {
         Structure *structure = entry.second;
@@ -273,6 +297,5 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             return std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
         }
     }
-
     return nullptr;
 }
