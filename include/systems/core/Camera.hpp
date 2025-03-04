@@ -2,23 +2,25 @@
 #define camera_hpp
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_rect.h>
 #include <iostream>
 
+#include "systems/core/TextureManager.hpp"
+
 class Entity;
 class Texture;
-class TextureManager;
 
 // source : https://lazyfoo.net/tutorials/SDL/30_scrolling/index.php
 // Texture wrapper class
 class Camera
 {
 public:
-    //Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY, TextureManager *textureManager) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())}) { std::cout << "camera zoom need fix" << std::endl; };
-    Camera(int width, int height, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY, TextureManager *textureManager) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())})
+    // Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY, TextureManager *textureManager) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())}) { std::cout << "camera zoom need fix" << std::endl; };
+    Camera(int width, int height, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())})
     {
         std::cout << "camera zoom need fix" << std::endl;
         if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -28,6 +30,7 @@ public:
             if (!(this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags)))
             {
                 std::cout << "FAIL : Window NOT created" << std::endl;
+                delete this;
             }
             // Create renderer
             if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
@@ -38,28 +41,35 @@ public:
             else
             {
                 std::cout << "FAIL : Renderer NOT created" << std::endl;
+                delete this;
             }
             // Initialize PNG loading
             int imgFlags = IMG_INIT_PNG;
             if (!(IMG_Init(imgFlags) & imgFlags))
             {
                 std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
+                delete this;
             }
             // Initialize SDL_ttf
-            if (TTF_Init() == -1)
+            /*if (TTF_Init() == -1)
             {
                 printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-            }
+                delete this;
+            }*/
+            this->textureManager = new TextureManager();
+        }
+
+        // window icon
+        SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
+        if (!iconSurface)
+        {
+            std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
+            delete this;
+        }
+        SDL_SetWindowIcon(this->window, iconSurface);
+        SDL_FreeSurface(iconSurface);
     }
 
-    // window icon
-    SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
-    if (!iconSurface)
-    {
-        std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
-    }
-
-    };
     ~Camera();
 
     void handleEvents(SDL_Event *event);

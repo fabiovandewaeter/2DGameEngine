@@ -60,9 +60,8 @@ private:
     Uint64 frameDelay;
     TickManager tickManager;
     SDL_Event event;
-
-    // textures
-    Texture *backgroundTexture;
+    std::string title;
+    int flags;
 
     // musics
     std::vector<Mix_Music *> *musics;
@@ -71,13 +70,11 @@ private:
     EntityManager *entityManager;
 
     // systems
-    TextureManager textureManager;
     IOManager ioManager;
     Map *map;
     PerlinNoise perlinNoise;
     AudioManager audioManager;
     ItemFactory itemFactory;
-    GUIManager *guiManager;
     MouseManager *mouseManager;
     StructureFactory structureFactory;
 

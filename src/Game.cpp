@@ -17,6 +17,7 @@
 
 Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
 {
+    this->title = title;
     std::cout << "\n======================================================" << std::endl;
     this->fixedFPS = 60;
     this->fixedUPS = 60;
@@ -28,7 +29,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     std::cout << "UPS: " << UPS << std::endl;
     std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
     // initialize window
-    int flags = 0;
+    this->flags = 0;
     if (fullscreen)
     {
         flags = flags | SDL_WINDOW_FULLSCREEN;
@@ -40,7 +41,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->running = true;
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
-        std::cout << "Subsystems Initialised" << std::endl;
+        /*std::cout << "Subsystems Initialised" << std::endl;
         // Create window
         if (!(this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags)))
         {
@@ -76,21 +77,20 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
         {
             printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
             running = false;
-        }
+        }*/
     }
     // window icon
-    SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
+    /*SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
     if (!iconSurface)
     {
         std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
     }
     SDL_SetWindowIcon(this->window, iconSurface);
-    SDL_FreeSurface(iconSurface);
+    SDL_FreeSurface(iconSurface);*/
 
-    this->camera = new Camera(this->renderer, this->screenWidth, this->screenHeight, 10, 20000, 0, 0);
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
-    this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
+    this->map = new Map(Tile::getTileSize(), &this->perlinNoise);
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
     this->itemFactory.init();
@@ -101,7 +101,6 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     std::cout << "================= new MouseManager() =================" << std::endl;
     this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
-    this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
     std::cout << "====================================================" << std::endl;
 }
 
@@ -132,7 +131,12 @@ void Game::handleEvents()
         {
             this->running = false;
         }
-        this->player->handleEvents(&this->event, this->guiManager, this->mouseManager);
+        std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
+        int size = players->size();
+        for (int i = 0; i < size; i++)
+        {
+            (*players)[i]->handleEvents(&this->event, this->mouseManager);
+        }
     }
 }
 
@@ -154,26 +158,12 @@ void Game::render()
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
     SDL_RenderClear(this->renderer);
 
-    std::vector<Player *> *players = this->entityManager.getPlayers();
+    std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
     int size = players->size();
     for (int i = 0; i < size; i++)
     {
         (*players)[i]->render();
     }
-
-    /*SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
-    std::vector<Player *> *players = this->entityManager.getPlayers();
-    int size = players->size();
-    for (int i = 0; i < size; i++){
-        (*players)[i]->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
-        (*players)[i]->render();
-    }
-
-    for (int i = 0; i < size; i++){
-        this->map->render(this->player);
-        (*players)[i]->render();
-    }
-    this->guiManager->render(this->player);*/
 
     SDL_RenderPresent(this->renderer);
     // countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
@@ -221,8 +211,6 @@ void Game::loadMedia()
 {
     std::cout << "================= Game::LoadMedia() =================" << std::endl;
     // textures
-    this->textureManager.init(this->camera);
-    this->backgroundTexture = this->textureManager.getTexture("BACKGROUND");
 
     // audio
     this->audioManager.init();
@@ -235,12 +223,12 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    Player *player = new Player(this->textureManager.getTexture("Player"), 0, 0, 1, 1, 103, this->map, new Camera());
-    this->entityManager.addPlayer(player);
+    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Player *player = new Player("Player", 0, 0, 1, 1, 103, this->map, camera);
     this->map->addPlayer(player);
 
     // test
-    Entity *warrior = new Entity(this->textureManager.getTexture("Warrior"), 0, 0, 1, 1, 101, this->map);
+    Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
     this->map->addEntity(warrior);
     // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));

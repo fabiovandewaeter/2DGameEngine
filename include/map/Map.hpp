@@ -22,7 +22,7 @@ class Entity;
 class Map
 {
 public:
-    Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise);
+    Map(int tileSize, PerlinNoise *perlinNoise);
     ~Map();
 
     void loadChunks();
@@ -45,7 +45,6 @@ public:
     std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName, const Entity *entity);
 
 private:
-    TextureManager *textureManager;
     PerlinNoise *perlinNoise;
     CollisionManager *collisionManager;
     std::unordered_map<std::pair<int, int>, Chunk *, hash_pair> allChunks;

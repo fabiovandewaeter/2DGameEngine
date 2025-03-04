@@ -15,10 +15,13 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(Texture *texture, float x, float y, float width, float height, int HP, Map *map, Camera *camera, GUIManager *guiManager) : Entity(texture, x, y, width, height, HP, map), camera(camera), guiManager(guiManager) {};
+    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), guiManager(camera truc)
+    {
+        GUIManager *guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
+    };
     ~Player();
 
-    void handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager);
+    void handleEvents(SDL_Event *event, MouseManager *mouseManager);
     void update() override;
     void render();
     void move();
