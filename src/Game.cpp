@@ -153,10 +153,16 @@ void Game::render()
     SDL_RenderClear(this->renderer);
 
     SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
-    this->player->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
+    std::vector<Player *> *players = this->entityManager.getPlayers();
+    int size = players->size();
+    for (int i = 0; i < size; i++){
+        (*players)[i]->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
+    }
 
-    this->map->render(this->player);
-    this->player->render();
+    for (int i = 0; i < size; i++){
+        this->map->render(this->player);
+        (*players)[i]->render();
+    }
     this->guiManager->render(this->player);
 
     SDL_RenderPresent(this->renderer);

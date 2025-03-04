@@ -13,6 +13,7 @@
 #include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/AudioManager.hpp"
 #include "systems/core/TickManager.hpp"
+#include "systems/game_objects/EntityManager.hpp"
 #include "systems/game_objects/ItemFactory.hpp"
 #include "systems/game_objects/StructureFactory.hpp"
 
@@ -68,7 +69,7 @@ private:
     std::vector<Mix_Music *> *musics;
 
     // game objects
-    Player *player;
+    EntityManager entityManager;
 
     // systems
     TextureManager textureManager;

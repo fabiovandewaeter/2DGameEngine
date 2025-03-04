@@ -25,12 +25,12 @@ public:
     std::vector<Entity *> getEntities();
     std::vector<Entity *> getPotentialEntities(Entity *entity);
     std::vector<Entity *> getEntitiesInArea(SDL_FRect area);
-    Player *getPlayer();
+    std::vector<Player *> *getPlayers();
 
 private:
     Map *map;
     std::vector<Entity *> entities;
-    Player *player;
+    std::vector<Player *> players;
 };
 
 #endif
