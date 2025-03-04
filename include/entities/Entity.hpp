@@ -30,12 +30,14 @@ public:
     virtual void onLeftClick();
     virtual void onRightClick();
     virtual bool canMove();
-    virtual bool isMoving();
+    bool isMoving();
     void moveBy(float dx, float dy);
     void kill();
+    void teleportToHome();
 
-    float getPositionX();
-    float getPositionY();
+    // getter
+    float getPositionX() const;
+    float getPositionY() const;
     Texture *getTexture() const;
     SDL_FRect getHitBox() const;
     float getSpeed();
@@ -43,6 +45,7 @@ public:
     int getHP();
     Map *getMap() const;
 
+    // setter
     void setPosition(float x, float y);
     void setVelocity(float velocityX, float velocityY);
     void setVelocityX(float velocityX);

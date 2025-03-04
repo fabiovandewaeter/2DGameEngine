@@ -3,10 +3,6 @@
 #include "entities/Entity.hpp"
 #include "map/Chunk.hpp"
 
-Faction::Faction(std::string name)
-{
-    this->name = name;
-}
 Faction::~Faction()
 {
     int size = this->members.size();
@@ -21,6 +17,10 @@ Faction::~Faction()
     }
 }
 
+// getter
+std::pair<float, float> Faction::getHomeCoordinates() { return this->homeCoordinates; }
+
+// setter
 void Faction::addMember(Entity *entity)
 {
     this->members.push_back(entity);

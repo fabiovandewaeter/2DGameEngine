@@ -8,7 +8,7 @@
 void GetResourceAction::execute()
 {
     std::string structureClassName = "Tree";
-    std::unique_ptr<std::pair<float, float>> destination = this->entity->getMap()->findStructure(structureClassName);
+    std::unique_ptr<std::pair<float, float>> destination = this->entity->getMap()->findStructure(structureClassName, this->entity);
     if (destination)
     {
         this->entity->pushAction(new BreakStructureAction(destination->first, destination->second, this->entity)); // first because it's a stack

@@ -2,11 +2,12 @@
 
 #include "systems/core/Camera.hpp"
 #include "Texture.hpp"
-#include "entities/states/State.hpp"
 #include "map/Map.hpp"
 #include "entities/behaviors/Behavior.hpp"
 #include "systems/algorithms/AstarPathFinding.hpp"
+#include "entities/states/State.hpp"
 #include "entities/actions/Action.hpp"
+#include "entities/Faction.hpp"
 
 void Entity::update()
 {
@@ -32,6 +33,14 @@ void Entity::hit(int damage) { this->HP -= damage; }
 void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
 
+bool Entity::canMove()
+{
+    // EXAMPLE: check if it is stunned ...
+    return true;
+}
+
+bool Entity::isMoving() { return this->velX != 0 || this->velY != 0; }
+
 void Entity::moveBy(float dx, float dy)
 {
     // TODO: need change to not call map->handleCollisionsForEntity() 2 times
@@ -50,17 +59,20 @@ void Entity::moveBy(float dx, float dy)
 
 void Entity::kill() { this->HP = 0; }
 
-bool Entity::canMove()
+void Entity::teleportToHome()
 {
-    // EXAMPLE: check if it is stunned ...
-    return true;
+    std::pair<float, float> homeCoordinates = {0, 0};
+    if (this->faction != nullptr)
+    {
+        homeCoordinates = this->faction->getHomeCoordinates();
+    }
+    this->x = homeCoordinates.first;
+    this->y = homeCoordinates.second;
 }
 
-bool Entity::isMoving() { return this->velX != 0 || this->velY != 0; }
-
 // getter
-float Entity::getPositionX() { return this->x; }
-float Entity::getPositionY() { return this->y; }
+float Entity::getPositionX() const { return this->x; }
+float Entity::getPositionY() const { return this->y; }
 Texture *Entity::getTexture() const { return this->texture; }
 SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
 float Entity::getSpeed() { return this->speed; }
