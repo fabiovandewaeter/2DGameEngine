@@ -31,7 +31,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
         flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
     this->running = true;
-    if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+    //if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         /*std::cout << "Subsystems Initialised" << std::endl;
         // Create window
@@ -80,6 +80,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     SDL_SetWindowIcon(this->window, iconSurface);
     SDL_FreeSurface(iconSurface);*/
 
+    this->structureFactory = StructureFactory::getInstance();
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
     this->map = new Map(&this->tickManager, &this->structureFactory, &this->perlinNoise);
@@ -88,8 +89,6 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->itemFactory.init();
     loadItems();
 
-    this->structureFactory = StructureFactory::getInstance();
-    std::vector<std::string> a = this->structureFactory.getRegistredClasses();
     std::cout << "================= new MouseManager() =================" << std::endl;
     this->mouseManager = new MouseManager();
     std::cout << "================= new GUIManager() =================" << std::endl;
@@ -136,7 +135,6 @@ TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    // this->player->update();
     this->map->update();
 
     // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
