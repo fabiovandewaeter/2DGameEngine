@@ -5,6 +5,7 @@
 #include "entities/Entity.hpp"
 #include "Texture.hpp"
 #include "systems/utils/Constants.hpp"
+#include "map/Tile.hpp"
 
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
@@ -119,8 +120,15 @@ void Camera::render(const Entity *entity)
     SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
     if (isVisibleOnScreen(newRenderBox))
     {
-        render(entity->getTexture(), newRenderBox);
+        render(this->textureManager->getTexture(entity->getTextureName()), newRenderBox);
     }
+}
+
+void Camera::render(const Tile *tile)
+{
+    SDL_FRect renderBox = {tile->getPositionX(), tile->getPositionY(), 1, 1};
+    SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
+    render(this->textureManager->getTexture(tile->getTextureName()), newRenderBox);
 }
 
 void Camera::render(const Texture *texture, SDL_Rect renderBox)
@@ -187,5 +195,6 @@ float Camera::getPositionY() { return this->positionY; }
 int Camera::getWidth() { return this->width; }
 int Camera::getHeight() { return this->height; }
 double Camera::getScale() { return this->scale; }
+SDL_Window *Camera::getWindow() { return this->window; }
 SDL_Renderer *Camera::getRenderer() { return this->renderer; }
 TextureManager *Camera::getTextureManager() { return this->textureManager; }

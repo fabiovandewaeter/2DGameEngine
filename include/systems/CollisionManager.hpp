@@ -5,8 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "map/Map.hpp"
-
+class Map;
 class EntityManager;
 class Entity;
 

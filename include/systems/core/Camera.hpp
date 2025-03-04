@@ -10,9 +10,10 @@
 #include <iostream>
 
 #include "systems/core/TextureManager.hpp"
+#include "Texture.hpp"
 
 class Entity;
-class Texture;
+class Tile;
 
 // source : https://lazyfoo.net/tutorials/SDL/30_scrolling/index.php
 // Texture wrapper class
@@ -20,7 +21,7 @@ class Camera
 {
 public:
     // Camera(SDL_Renderer *renderer, int width, int height, double minScale, double maxScale, float positionX, float positionY, TextureManager *textureManager) : renderer(renderer), width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())}) { std::cout << "camera zoom need fix" << std::endl; };
-    Camera(int width, int height, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), textureManager(textureManager), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), backgroundTexture(textureManager->getTexture("BACKGROUND")), backgroundRenderRect({(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())})
+    Camera(int width, int height, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50)
     {
         std::cout << "camera zoom need fix" << std::endl;
         if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -56,7 +57,9 @@ public:
                 printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
                 delete this;
             }*/
-            this->textureManager = new TextureManager();
+            this->textureManager = new TextureManager(this);
+            this->backgroundTexture = textureManager->getTexture("BACKGROUND");
+            this->backgroundRenderRect = {(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
         }
 
         // window icon
@@ -70,12 +73,13 @@ public:
         SDL_FreeSurface(iconSurface);
     }
 
-    ~Camera();
+    ~Camera() = default;
 
     void handleEvents(SDL_Event *event);
     void update();
     void move();
     void render(const Entity *entity);
+    void render(const Tile *Tile);
     void render(const Texture *texture, SDL_Rect renderBox);
     void render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox);
     void renderBackground();
@@ -91,6 +95,7 @@ public:
     int getWidth();
     int getHeight();
     double getScale();
+    SDL_Window *getWindow();
     SDL_Renderer *getRenderer();
     TextureManager *getTextureManager();
 

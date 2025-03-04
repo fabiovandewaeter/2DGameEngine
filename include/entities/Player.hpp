@@ -8,6 +8,8 @@
 #include "Entity.hpp"
 #include "systems/core/GUIManager.hpp"
 #include "systems/core/MouseManager.hpp"
+#include "systems/core/Camera.hpp"
+#include "map/Map.hpp"
 
 class Map;
 class Camera;
@@ -15,10 +17,7 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), guiManager(camera truc)
-    {
-        GUIManager *guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
-    };
+    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), guiManager(new GUIManager(camera->getWindow(), camera->getRenderer(), camera->getTextureManager(), map->getTickManager(), map->getStructureFactory(), new MouseManager())) {}
     ~Player();
 
     void handleEvents(SDL_Event *event, MouseManager *mouseManager);

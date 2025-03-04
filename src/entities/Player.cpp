@@ -1,9 +1,5 @@
 #include "entities/Player.hpp"
 
-#include "systems/core/Camera.hpp"
-#include "map/Map.hpp"
-#include "systems/core/TextureManager.hpp"
-
 // 1 if false and sprintVelocity if true
 float sprint2 = 1;
 float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;

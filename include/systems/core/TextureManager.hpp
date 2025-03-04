@@ -12,11 +12,9 @@ class Camera;
 class TextureManager
 {
 public:
-    TextureManager();
-    TextureManager(Camera *camera);
+    TextureManager(Camera *camera) : camera(camera) { loadConfiguration(); }
     ~TextureManager();
 
-    void init(Camera *camera);
     void loadConfiguration();
     Texture *getTexture(std::string name);
 

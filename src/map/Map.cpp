@@ -3,11 +3,8 @@
 #include <iostream>
 
 #include "map/Chunk.hpp"
-#include "systems/CollisionManager.hpp"
-#include "systems/game_objects/EntityManager.hpp"
 #include "entities/Player.hpp"
 
-Map::Map(int tileSize, TextureManager *textureManager, PerlinNoise *perlinNoise) : textureManager(textureManager), perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)) { loadChunks(); }
 Map::~Map()
 {
     for (auto &pair : this->allChunks)
@@ -58,7 +55,7 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(float positionX, float positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, this, this->textureManager, this->perlinNoise, this->collisionManager);
+    Chunk *newChunk = new Chunk(positionX, positionY, this, this->perlinNoise, this->collisionManager);
     this->nearbyChunks.push_back(newChunk);
     std::pair<float, float> newCoordinates = {positionX, positionY};
     this->allChunks[newCoordinates] = newChunk;
@@ -124,7 +121,9 @@ Chunk *Map::getChunk(float x, float y)
 }
 
 int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
+TickManager *Map::getTickManager() { return this->tickManager; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }
+StructureFactory *Map::getStructureFactory() { return this->structureFactory; }
 
 std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string structureClassName, const Entity *entity)
 {

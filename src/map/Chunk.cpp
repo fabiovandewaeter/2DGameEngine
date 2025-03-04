@@ -19,25 +19,17 @@
 
 #include "structures/passiveStructures/Tree.hpp"
 
-Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, Map *map, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
     this->width = CHUNK_TILE_SIZE;
     this->height = CHUNK_TILE_SIZE;
     this->map = map;
-    this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
     loadOtherStructures();
-    if (positionX == 0 && positionY == 0)
-    {
-        float x = 5.0, y = 5.0;
-        std::pair<float, float> t = {x, y};
-        this->otherStructures[t] = new Tree(textureManager->getTexture("Tree"), x, y, nullptr, nullptr);
-        // this->otherStructures[t] = new Wall(textureManager->getTexture("Wall"), x, y, nullptr, nullptr);
-    }
 }
 
 Chunk::~Chunk()
@@ -67,7 +59,7 @@ void Chunk::loadTilesDefault()
     {
         for (int j = 0; j < CHUNK_TILE_SIZE; j++)
         {
-            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->positionX, j + this->positionY);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile("grass_0", i + this->positionX, j + this->positionY);
         }
     }
 }
@@ -100,7 +92,7 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(textureName, x, y);
         }
     }
 }

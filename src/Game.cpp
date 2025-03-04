@@ -4,16 +4,8 @@
 
 #include "Game.hpp"
 
-#include "systems/game_objects/EntityManager.hpp"
-#include "systems/core/MouseManager.hpp"
-#include "systems/core/GUIManager.hpp"
-#include "structures/activeStructures/Core.hpp"
-#include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
-#include "map/Chunk.hpp"
-#include "map/Tile.hpp"
 #include "entities/Player.hpp"
-#include "Texture.hpp"
 
 Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
 {
@@ -90,7 +82,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
 
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
-    this->map = new Map(Tile::getTileSize(), &this->perlinNoise);
+    this->map = new Map(&this->tickManager, &this->structureFactory, &this->perlinNoise);
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
     this->itemFactory.init();

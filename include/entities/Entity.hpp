@@ -6,6 +6,7 @@
 #include <SDL2/SDL_render.h>
 #include <stack>
 #include <vector>
+#include <string>
 
 class Texture;
 class State;
@@ -38,7 +39,7 @@ public:
     // getter
     float getPositionX() const;
     float getPositionY() const;
-    Texture *getTexture() const;
+    std::string getTextureName() const;
     SDL_FRect getHitBox() const;
     float getSpeed();
     float getRange();
