@@ -6,7 +6,7 @@ float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
 Player::~Player() { delete this->camera; }
 
-void Player::handleEvents(SDL_Event *event, MouseManager *mouseManager)
+void Player::handleEvents(SDL_Event *event)
 {
     this->camera->handleEvents(event);
     // If a key was pressed
@@ -67,7 +67,7 @@ void Player::handleEvents(SDL_Event *event, MouseManager *mouseManager)
     }
     if (!this->guiManager->handleEvents(event))
     {
-        mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
+        this->mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
 
@@ -81,7 +81,7 @@ void Player::render()
 {
     SDL_RenderClear(this->camera->getRenderer());
     this->camera->renderBackground();
-    this->map->render(this);
+    this->map->render(this->camera);
     this->guiManager->render(this);
     SDL_RenderPresent(this->camera->getRenderer());
 }

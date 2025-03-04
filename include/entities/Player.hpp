@@ -17,10 +17,10 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), guiManager(new GUIManager(camera->getWindow(), camera->getRenderer(), camera->getTextureManager(), map->getTickManager(), map->getStructureFactory(), new MouseManager())) {}
+    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), mouseManager(new MouseManager()), guiManager(new GUIManager(camera->getWindow(), camera->getRenderer(), camera->getTextureManager(), map->getTickManager(), map->getStructureFactory(), this->mouseManager)) {}
     ~Player();
 
-    void handleEvents(SDL_Event *event, MouseManager *mouseManager);
+    void handleEvents(SDL_Event *event);
     void update() override;
     void render();
     void move();
@@ -29,6 +29,7 @@ public:
 
 private:
     Camera *camera;
+    MouseManager *mouseManager;
     GUIManager *guiManager;
 };
 

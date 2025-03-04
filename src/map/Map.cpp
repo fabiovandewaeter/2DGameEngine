@@ -61,14 +61,14 @@ void Map::generateChunk(float positionX, float positionY)
     this->allChunks[newCoordinates] = newChunk;
 }
 
-void Map::render(Player *player)
+void Map::render(Camera *camera)
 {
     int size = this->nearbyChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->nearbyChunks[i]->render(player->getCamera());
+        this->nearbyChunks[i]->render(camera);
     }
-    this->entityManager->render(player->getCamera());
+    this->entityManager->render(camera);
 }
 
 void Map::update()
@@ -110,8 +110,6 @@ bool Map::isChunkGenerated(float x, float y)
 Chunk *Map::getChunk(float x, float y)
 {
     std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
-    // std::pair<int, int> newCoordinates = {x, y};
-
     if (this->allChunks.find(newCoordinates) == this->allChunks.end())
     {
         generateChunk(newCoordinates.first, newCoordinates.second);

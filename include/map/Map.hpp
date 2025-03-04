@@ -18,6 +18,7 @@ class PerlinNoise;
 class Chunk;
 class TickManager;
 class StructureFactory;
+class Camera;
 class Player;
 class Entity;
 
@@ -29,7 +30,7 @@ public:
 
     void loadChunks();
     // render Chunk and Entities
-    void render(Player *player);
+    void render(Camera *camera);
     void update();
 
     bool checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB);

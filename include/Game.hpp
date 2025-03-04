@@ -27,7 +27,6 @@ struct TimeData
 class Texture;
 class Player;
 class EntityManager;
-class MouseManager;
 class GUIManager;
 class Map;
 
@@ -68,7 +67,6 @@ private:
     PerlinNoise perlinNoise;
     AudioManager audioManager;
     ItemFactory itemFactory;
-    MouseManager *mouseManager;
     StructureFactory structureFactory;
 
     void loadMedia();

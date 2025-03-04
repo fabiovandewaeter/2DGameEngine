@@ -89,8 +89,8 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     this->itemFactory.init();
     loadItems();
 
-    std::cout << "================= new MouseManager() =================" << std::endl;
-    this->mouseManager = new MouseManager();
+    /*std::cout << "================= new MouseManager() =================" << std::endl;
+    this->mouseManager = new MouseManager();*/
     std::cout << "================= new GUIManager() =================" << std::endl;
     std::cout << "====================================================" << std::endl;
 }
@@ -126,7 +126,7 @@ void Game::handleEvents()
         int size = players->size();
         for (int i = 0; i < size; i++)
         {
-            (*players)[i]->handleEvents(&this->event, this->mouseManager);
+            (*players)[i]->handleEvents(&this->event);
         }
     }
 }
