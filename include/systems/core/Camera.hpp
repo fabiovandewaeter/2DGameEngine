@@ -14,6 +14,7 @@
 
 class Entity;
 class Tile;
+class Structure;
 
 // source : https://lazyfoo.net/tutorials/SDL/30_scrolling/index.php
 // Texture wrapper class
@@ -61,7 +62,6 @@ public:
             this->backgroundTexture = textureManager->getTexture("BACKGROUND");
             this->backgroundRenderRect = {(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
         }
-
         // window icon
         SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
         if (!iconSurface)
@@ -80,6 +80,7 @@ public:
     void move();
     void render(const Entity *entity);
     void render(const Tile *Tile);
+    void render(const Structure *Structure);
     void render(const Texture *texture, SDL_Rect renderBox);
     void render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox);
     void renderBackground();
