@@ -3,29 +3,28 @@ CXXVERSION = -std=c++14
 SRC_DIR = src
 BIN_DIR = bin
 OBJ_DIR = obj
-TARGET = $(BIN_DIR)/main
-WINDOWS_TARGET = $(BIN_DIR)\main.exe
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d)) # recursive wildcard
-
-# Detect OS
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-    PLATFORM = linux
-else ifeq ($(UNAME_S),Darwin)
-    PLATFORM = macos
-else
-    PLATFORM = windows
-endif
-
-# get all .cpp files
+rwildcard=$(foreach d,$(wildcard $(1)/*),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 SRC_FILES := $(call rwildcard,src,*.cpp)
 HEADER_FILES := $(call rwildcard,include,*.hpp)
-
-# get the path of all .o to generate
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
+DEP_FILES = $(OBJ_FILES:.o=.d) # Dependency files
+TARGET = $(BIN_DIR)/main
+WINDOWS_TARGET = $(BIN_DIR)\main.exe
+
+# Detect OS
+ifeq ($(OS),Windows_NT)
+    PLATFORM = windows
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Linux)
+        PLATFORM = linux
+    else ifeq ($(UNAME_S),Darwin)
+        PLATFORM = macos
+    endif
+endif
 
 # Base flags for compilation
-CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic $(CXXVERSION)
+CXXFLAGS = -I include -O2 -Wall -Wextra -Wpedantic $(CXXVERSION) -MMD -MP
 SDL_LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 SANITIZE_FLAGS = 
 ifneq ($(PLATFORM),windows)
@@ -66,22 +65,21 @@ else
 	make run
 endif
 
+ifeq ($(PLATFORM),windows)
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
+else
+	@mkdir -p $(dir $@)
+endif
+-include $(DEP_FILES) # Include dependency files
+
 # Compilation
-$(TARGET): $(OBJ_FILES) obj/microui/microui.o $(HEADER_FILES)
+$(TARGET): $(OBJ_FILES) obj/microui/microui.o
 ifeq ($(PLATFORM),windows)
 	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 else
 	@mkdir -p $(dir $@)
 endif
 	$(CXX) $(OBJ_FILES) obj/microui/microui.o -o  $(TARGET) $(CXXFLAGS) $(SDL_LIBS)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp include/%.hpp
-ifeq ($(PLATFORM),windows)
-	@if not exist "$(dir $@)" mkdir "$(dir $@)"
-else
-	@mkdir -p $(dir $@)
-endif
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 ifeq ($(PLATFORM),windows)
@@ -107,12 +105,7 @@ else
 endif
 
 run:
-ifeq ($(PLATFORM),windows)
-	.\$(WINDOWS_TARGET) 60
-else
 	./$(TARGET) 60
-endif
-
 
 # ================ TESTS ================
 
@@ -155,3 +148,5 @@ ifeq ($(PLATFORM),windows)
 else
 	./$(TEST_TARGET)
 endif
+
+.PHONY: all clean run test

@@ -11,6 +11,7 @@ class Action
 {
 public:
     Action(Entity *entity) : entity(entity) {}
+    ~Action() = default;
     virtual void execute() = 0;
     virtual bool isCompleted() = 0;
 

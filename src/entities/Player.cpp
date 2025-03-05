@@ -1,13 +1,12 @@
 #include "entities/Player.hpp"
 
-#include "systems/core/Camera.hpp"
-#include "map/Map.hpp"
-
 // 1 if false and sprintVelocity if true
 float sprint2 = 1;
 float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
-void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager *mouseManager)
+Player::~Player() { delete this->camera; }
+
+void Player::handleEvents(SDL_Event *event)
 {
     this->camera->handleEvents(event);
     // If a key was pressed
@@ -66,9 +65,9 @@ void Player::handleEvents(SDL_Event *event, GUIManager *guiManager, MouseManager
         this->velX = sprint2 * (rightVelX2 - leftVelX2);
         this->velY = sprint2 * (downVelY2 - upVelY2);
     }
-    if (!guiManager->handleEvents(event))
+    if (!this->guiManager->handleEvents(event))
     {
-        mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
+        this->mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
 
@@ -78,7 +77,14 @@ void Player::update()
     move();
 }
 
-void Player::render() { Entity::render(this->camera); }
+void Player::render()
+{
+    SDL_RenderClear(this->camera->getRenderer());
+    this->camera->renderBackground();
+    this->map->render(this->camera);
+    this->guiManager->render(this);
+    SDL_RenderPresent(this->camera->getRenderer());
+}
 
 void Player::move()
 {

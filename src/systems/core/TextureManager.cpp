@@ -3,15 +3,7 @@
 #include "Texture.hpp"
 #include "systems/utils/JSONManager.hpp"
 
-TextureManager::TextureManager() {}
-TextureManager::TextureManager(Camera *camera) { init(camera); }
 TextureManager::~TextureManager() {}
-
-void TextureManager::init(Camera *camera)
-{
-    this->camera = camera;
-    loadConfiguration();
-}
 
 void TextureManager::loadConfiguration()
 {

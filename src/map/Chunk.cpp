@@ -19,25 +19,17 @@
 
 #include "structures/passiveStructures/Tree.hpp"
 
-Chunk::Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, Map *map, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
 {
     this->positionX = positionX;
     this->positionY = positionY;
     this->width = CHUNK_TILE_SIZE;
     this->height = CHUNK_TILE_SIZE;
     this->map = map;
-    this->textureManager = textureManager;
     this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
     loadOtherStructures();
-    if (positionX == 0 && positionY == 0)
-    {
-        float x = 5.0, y = 5.0;
-        std::pair<float, float> t = {x, y};
-        this->otherStructures[t] = new Tree(textureManager->getTexture("Tree"), x, y, nullptr, nullptr);
-        // this->otherStructures[t] = new Wall(textureManager->getTexture("Wall"), x, y, nullptr, nullptr);
-    }
 }
 
 Chunk::~Chunk()
@@ -67,7 +59,7 @@ void Chunk::loadTilesDefault()
     {
         for (int j = 0; j < CHUNK_TILE_SIZE; j++)
         {
-            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture("grass_0"), i + this->positionX, j + this->positionY);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile("grass_0", i + this->positionX, j + this->positionY);
         }
     }
 }
@@ -100,7 +92,7 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(this->textureManager->getTexture(textureName), x, y);
+            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(textureName, x, y);
         }
     }
 }
@@ -245,7 +237,6 @@ void Chunk::destroyStructure(float x, float y)
     if (isStructure(x, y))
     {
         std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-
         Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
@@ -265,7 +256,6 @@ Structure *Chunk::breakStructure(float x, float y)
     if (isStructure(x, y))
     {
         std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-
         Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
@@ -283,23 +273,18 @@ Structure *Chunk::breakStructure(float x, float y)
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
 
-
 std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName, const Entity *entity)
 {
     float minDistance = std::numeric_limits<float>::max();
     std::unique_ptr<std::pair<float, float>> closestCoords = nullptr;
-    
-    float entityX = entity->getPositionX();
-    float entityY = entity->getPositionY();
-    
     // Parcourt les structures "updatable"
     for (auto &entry : this->updatableStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)
         {
-            float dx = structure->getPositionX() - entityX;
-            float dy = structure->getPositionY() - entityY;
+            float dx = structure->getPositionX() - entity->getPositionX();
+            float dy = structure->getPositionY() - entity->getPositionY();
             float distance = std::sqrt(dx * dx + dy * dy);
             if (distance < minDistance)
             {
@@ -308,15 +293,14 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             }
         }
     }
-    
     // Parcourt les autres structures
     for (auto &entry : this->otherStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)
         {
-            float dx = structure->getPositionX() - entityX;
-            float dy = structure->getPositionY() - entityY;
+            float dx = structure->getPositionX() - entity->getPositionX();
+            float dy = structure->getPositionY() - entity->getPositionY();
             float distance = std::sqrt(dx * dx + dy * dy);
             if (distance < minDistance)
             {
@@ -325,6 +309,5 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             }
         }
     }
-    
     return closestCoords;
 }

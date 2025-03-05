@@ -23,7 +23,7 @@ class Player;
 class GUIManager
 {
 public:
-    GUIManager(SDL_Window *windows, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager);
+    GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager);
     ~GUIManager();
 
     bool isMouseOverGUI(int x, int y);

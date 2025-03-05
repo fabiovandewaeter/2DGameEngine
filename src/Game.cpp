@@ -4,18 +4,12 @@
 
 #include "Game.hpp"
 
-#include "systems/core/MouseManager.hpp"
-#include "systems/core/GUIManager.hpp"
-#include "structures/activeStructures/Core.hpp"
-#include "structures/activeStructures/Turret.hpp"
 #include "map/Map.hpp"
-#include "map/Chunk.hpp"
-#include "map/Tile.hpp"
 #include "entities/Player.hpp"
-#include "Texture.hpp"
 
 Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
 {
+    this->title = title;
     std::cout << "\n======================================================" << std::endl;
     this->fixedFPS = 60;
     this->fixedUPS = 60;
@@ -27,7 +21,7 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     std::cout << "UPS: " << UPS << std::endl;
     std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
     // initialize window
-    int flags = 0;
+    this->flags = 0;
     if (fullscreen)
     {
         flags = flags | SDL_WINDOW_FULLSCREEN;
@@ -37,75 +31,19 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
         flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
     this->running = true;
-    if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-    {
-        std::cout << "Subsystems Initialised" << std::endl;
-        // Create window
-        if (!(this->window = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags)))
-        {
-            std::cout << "FAIL : Window NOT created" << std::endl;
-            running = false;
-        }
-        // Create renderer
-        if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
-        {
-            SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
-            std::cout << "Renderer created" << std::endl;
-        }
-        else
-        {
-            std::cout << "FAIL : Renderer NOT created" << std::endl;
-            running = false;
-        }
-        // Initialize PNG loading
-        int imgFlags = IMG_INIT_PNG;
-        if (!(IMG_Init(imgFlags) & imgFlags))
-        {
-            std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
-            running = false;
-        }
-        // Initialize SDL_ttf
-        if (TTF_Init() == -1)
-        {
-            printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-            running = false;
-        }
-        // Initialize SDL_mixer
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-        {
-            printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-            running = false;
-        }
-    }
-    // window icon
-    SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
-    if (!iconSurface)
-    {
-        std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
-    }
-    SDL_SetWindowIcon(this->window, iconSurface);
-    SDL_FreeSurface(iconSurface);
 
-    this->camera = new Camera(this->renderer, this->screenWidth, this->screenHeight, 10, 20000, 0, 0);
+    this->structureFactory = StructureFactory::getInstance();
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
-    this->map = new Map(Tile::getTileSize(), &this->textureManager, &this->perlinNoise);
+    this->map = new Map(&this->tickManager, &this->structureFactory, &this->perlinNoise);
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
     this->itemFactory.init();
     loadItems();
-
-    this->structureFactory = StructureFactory::getInstance();
-    std::vector<std::string> a = this->structureFactory.getRegistredClasses();
-    std::cout << "================= new MouseManager() =================" << std::endl;
-    this->mouseManager = new MouseManager();
-    std::cout << "================= new GUIManager() =================" << std::endl;
-    this->guiManager = new GUIManager(this->window, this->renderer, &this->textureManager, &this->tickManager, &this->structureFactory, this->mouseManager);
     std::cout << "====================================================" << std::endl;
 }
-Game::~Game()
-{
-}
+
+Game::~Game() {}
 
 void Game::run()
 {
@@ -130,18 +68,50 @@ void Game::handleEvents()
         {
             this->running = false;
         }
-        this->player->handleEvents(&this->event, this->guiManager, this->mouseManager);
+        else
+        {
+            Uint32 eventWindowID = 0;
+            switch (this->event.type)
+            {
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                eventWindowID = this->event.button.windowID;
+                break;
+            case SDL_MOUSEMOTION:
+                eventWindowID = this->event.motion.windowID;
+                break;
+            case SDL_WINDOWEVENT:
+                eventWindowID = this->event.window.windowID;
+                break;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                eventWindowID = this->event.key.windowID;
+                break;
+            }
+            std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
+            int size = players->size();
+            for (int i = 0; i < size; i++)
+            {
+                Player *player = (*players)[i];
+                if (player->getCamera()->getWindowID() == eventWindowID)
+                {
+                    player->handleEvents(&this->event);
+                    break;
+                }
+            }
+        }
     }
 }
-
-#include "systems/algorithms/AstarPathFinding.hpp"
 
 TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
     // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    // this->player->update();
     this->map->update();
+    if (this->map->getEntityManager()->getNumberOfPlayers() <= 0)
+    {
+        this->running = false;
+    }
 
     // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
@@ -150,17 +120,17 @@ TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
-    SDL_RenderClear(this->renderer);
+    // SDL_RenderClear(this->renderer);
 
-    SDL_Rect backgroundRenderRect = {(int)((this->screenWidth / 2) - (this->backgroundTexture->getCenterX())), (int)((this->screenHeight / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
-    this->player->getCamera()->render(this->backgroundTexture, backgroundRenderRect);
+    std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
+    int size = players->size();
+    for (int i = 0; i < size; i++)
+    {
+        (*players)[i]->render();
+    }
 
-    this->map->render(this->player);
-    this->player->render();
-    this->guiManager->render(this->player);
-
-    SDL_RenderPresent(this->renderer);
-    // countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
+    // SDL_RenderPresent(this->renderer);
+    //  countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 
 void Game::clean()
@@ -168,8 +138,6 @@ void Game::clean()
     delete this->map;
     this->audioManager.free();
 
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -185,8 +153,6 @@ void Game::setUPS(unsigned int ups)
 }
 
 Uint64 Game::getFrameDelay() { return this->frameDelay; }
-SDL_Window *Game::getWindow() { return this->window; }
-SDL_Renderer *Game::getRenderer() { return this->renderer; }
 
 void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {
@@ -205,8 +171,6 @@ void Game::loadMedia()
 {
     std::cout << "================= Game::LoadMedia() =================" << std::endl;
     // textures
-    this->textureManager.init(this->camera);
-    this->backgroundTexture = this->textureManager.getTexture("BACKGROUND");
 
     // audio
     this->audioManager.init();
@@ -219,13 +183,17 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    this->player = new Player(this->textureManager.getTexture("Player"), 0, 0, 1, 1, 103, this->map, this->camera);
-    this->map->addPlayer(this->player);
+    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Player *player = new Player("Player", 0, 0, 1, 1, 103, this->map, camera);
+    this->map->addPlayer(player);
+    Camera *camera2 = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Player *player2 = new Player("GREEN", 0, 0, 1, 1, 103, this->map, camera2);
+    this->map->addPlayer(player2);
 
     // test
-    Entity *warrior = new Entity(this->textureManager.getTexture("Warrior"), 0, 0, 1, 1, 101, this->map);
+    /*Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    this->map->addEntity(warrior);
+    this->map->addEntity(warrior);*/
     // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));
 }
 

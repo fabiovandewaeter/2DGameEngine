@@ -22,7 +22,9 @@ static int text_width(mu_Font font, const char *text, int len)
     }
     return len * 5;
 }
+
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
+
 GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager)
 {
     this->button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
@@ -55,6 +57,7 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
 void GUIManager::loadConfiguration()
 {
 }
+
 void GUIManager::loadIcons()
 {
     // for mu_draw_icon id parameter

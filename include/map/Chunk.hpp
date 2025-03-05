@@ -25,7 +25,7 @@ class Entity;
 class Chunk
 {
 public:
-    Chunk(int positionX, int positionY, Map *map, TextureManager *textureManager, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
+    Chunk(int positionX, int positionY, Map *map, PerlinNoise *perlinNoise, CollisionManager *collisionManager);
     ~Chunk();
 
     void loadTiles();
@@ -49,7 +49,6 @@ public:
 
 private:
     Tile *allTiles[CHUNK_TILE_SIZE * CHUNK_TILE_SIZE];
-    TextureManager *textureManager;
 
     Map *map;
     std::unordered_map<std::pair<int, int>, Structure *, hash_pair> updatableStructures;

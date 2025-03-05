@@ -2,9 +2,10 @@
 #include "tracy_profiler/tracy/Tracy.hpp"
 #endif
 
+#include <iostream>
+
 #include "systems/CollisionManager.hpp"
 
-#include <iostream>
 #include "systems/game_objects/EntityManager.hpp"
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"

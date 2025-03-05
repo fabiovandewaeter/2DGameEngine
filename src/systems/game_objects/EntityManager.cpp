@@ -47,14 +47,16 @@ void EntityManager::render(Camera *camera)
 
 void EntityManager::addPlayer(Player *player)
 {
-    this->player = player;
+    this->players.push_back(player);
     addEntity((Entity *)player);
 }
+
 void EntityManager::addEntity(Entity *entity)
 {
     this->entities.push_back(entity);
     std::cout << this->entities.size() << std::endl;
 }
+
 bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
     return !(rectA.x + rectA.w <= rectB.x ||
@@ -62,15 +64,18 @@ bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
              rectA.y + rectA.h <= rectB.y ||
              rectA.y >= rectB.y + rectB.h);
 }
+
 std::vector<Entity *> EntityManager::getEntities()
 {
     return this->entities;
 }
+
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     // TODO: NEED CHANGE IN EntityManager::getPotentialEntities() TO ONLY RETURN THE POTENTIAL ENTITIES AND NOT ALL ENTITIES
     return this->entities;
 }
+
 std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
 {
     std::vector<Entity *> res;
@@ -84,4 +89,6 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
     }
     return res;
 }
-Player *EntityManager::getPlayer() { return this->player; }
+
+std::vector<Player *> *EntityManager::getPlayers() { return &this->players; }
+int EntityManager::getNumberOfPlayers() { return this->players.size(); }

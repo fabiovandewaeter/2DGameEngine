@@ -6,6 +6,7 @@
 #include <SDL2/SDL_render.h>
 #include <stack>
 #include <vector>
+#include <string>
 
 class Texture;
 class State;
@@ -19,7 +20,7 @@ class Structure;
 class Entity
 {
 public:
-    Entity(Texture *texture, float x, float y, float width, float height, int HP, Map *map) : texture(texture), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
+    Entity(std::string textureName, float x, float y, float width, float height, int HP, Map *map) : textureName(textureName), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -38,7 +39,7 @@ public:
     // getter
     float getPositionX() const;
     float getPositionY() const;
-    Texture *getTexture() const;
+    std::string getTextureName() const;
     SDL_FRect getHitBox() const;
     float getSpeed();
     float getRange();
@@ -57,7 +58,7 @@ public:
     void giveStructure(Structure *structure);
 
 protected:
-    Texture *texture;
+    std::string textureName;
     float x, y;
     float width, height;
     float velX, velY;

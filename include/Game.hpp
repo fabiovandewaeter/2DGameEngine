@@ -6,9 +6,9 @@
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <time.h>
+
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
-#include "systems/CollisionManager.hpp"
 #include "systems/core/IOManager.hpp"
 #include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/AudioManager.hpp"
@@ -26,7 +26,7 @@ struct TimeData
 };
 class Texture;
 class Player;
-class MouseManager;
+class EntityManager;
 class GUIManager;
 class Map;
 
@@ -46,39 +46,27 @@ public:
     void setFPS(unsigned int fps);
     void setUPS(unsigned int ups);
     Uint64 getFrameDelay();
-    SDL_Window *getWindow();
-    SDL_Renderer *getRenderer();
 
 private:
     bool running;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    Camera *camera;
     int screenWidth, screenHeight;
     unsigned int fixedFPS;
     unsigned int fixedUPS;
     Uint64 frameDelay;
     TickManager tickManager;
     SDL_Event event;
-
-    // textures
-    Texture *backgroundTexture;
+    std::string title;
+    int flags;
 
     // musics
     std::vector<Mix_Music *> *musics;
 
-    // game objects
-    Player *player;
-
     // systems
-    TextureManager textureManager;
     IOManager ioManager;
     Map *map;
     PerlinNoise perlinNoise;
     AudioManager audioManager;
     ItemFactory itemFactory;
-    GUIManager *guiManager;
-    MouseManager *mouseManager;
     StructureFactory structureFactory;
 
     void loadMedia();

@@ -5,6 +5,13 @@
 #include "entities/Entity.hpp"
 #include "Texture.hpp"
 #include "systems/utils/Constants.hpp"
+#include "map/Tile.hpp"
+
+Camera::~Camera()
+{
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
+}
 
 const double BASE_SCALE = 1.0;
 // 1 if false and sprintVelocity if true
@@ -119,8 +126,15 @@ void Camera::render(const Entity *entity)
     SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
     if (isVisibleOnScreen(newRenderBox))
     {
-        render(entity->getTexture(), newRenderBox);
+        render(this->textureManager->getTexture(entity->getTextureName()), newRenderBox);
     }
+}
+
+void Camera::render(const Tile *tile)
+{
+    SDL_FRect renderBox = {tile->getPositionX(), tile->getPositionY(), 1, 1};
+    SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
+    render(this->textureManager->getTexture(tile->getTextureName()), newRenderBox);
 }
 
 void Camera::render(const Texture *texture, SDL_Rect renderBox)
@@ -132,6 +146,8 @@ void Camera::render(const Texture *texture, SDL_Rect srcBox, SDL_Rect dstBox)
 {
     SDL_RenderCopy(this->renderer, texture->getTexture(), &srcBox, &dstBox);
 }
+
+void Camera::renderBackground() { render(this->backgroundTexture, backgroundRenderRect); }
 
 SDL_Rect Camera::convertInGameToCameraCoordinates(SDL_FRect rect)
 {
@@ -180,9 +196,12 @@ void Camera::setPosition(float x, float y)
     this->positionY = y;
 }
 
-float Camera::getPositionX() { return this->positionX; }
-float Camera::getPositionY() { return this->positionY; }
-int Camera::getWidth() { return this->width; }
-int Camera::getHeight() { return this->height; }
-double Camera::getScale() { return this->scale; }
-SDL_Renderer *Camera::getRenderer() { return this->renderer; }
+float Camera::getPositionX() const { return this->positionX; }
+float Camera::getPositionY() const { return this->positionY; }
+int Camera::getWidth() const { return this->width; }
+int Camera::getHeight() const { return this->height; }
+double Camera::getScale() const { return this->scale; }
+SDL_Window *Camera::getWindow() const { return this->window; }
+Uint32 Camera::getWindowID() const { return this->windowID; }
+SDL_Renderer *Camera::getRenderer() const { return this->renderer; }
+TextureManager *Camera::getTextureManager() const { return this->textureManager; }

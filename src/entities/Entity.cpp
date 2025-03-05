@@ -73,7 +73,7 @@ void Entity::teleportToHome()
 // getter
 float Entity::getPositionX() const { return this->x; }
 float Entity::getPositionY() const { return this->y; }
-Texture *Entity::getTexture() const { return this->texture; }
+std::string Entity::getTextureName() const { return this->textureName; }
 SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
 float Entity::getSpeed() { return this->speed; }
 int Entity::getHP() { return this->HP; }

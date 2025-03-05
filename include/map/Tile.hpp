@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL_rect.h>
 #include <vector>
+#include <string>
 
 #include "systems/utils/Constants.hpp"
 
@@ -13,19 +14,21 @@ class Item;
 class Tile
 {
 public:
-    Tile(Texture *texture, float x, float y);
-    Tile(Texture *texture, float x, float y, Item *mineableResource);
+    Tile(std::string textureName, float x, float y) : textureName(textureName), x(x), y(y), mineableResource(Tile::defaultMineableResource) {}
+    Tile(std::string textureName, float x, float y, Item *mineableResource) : textureName(textureName), x(x), y(y), mineableResource(mineableResource) {}
     ~Tile();
 
     void render(Camera *camera);
-    float getCenterX();
-    float getCenterY();
-    int getTextureId();
+    float getPositionX() const;
+    float getPositionY() const;
+    float getCenterX() const;
+    float getCenterY() const;
     static int getTileSize();
-    Item *getMineableResource();
+    Item *getMineableResource() const;
+    std::string getTextureName() const;
 
 private:
-    Texture *texture;
+    std::string textureName;
     float x, y;
     static Item *defaultMineableResource;
     Item *mineableResource;
