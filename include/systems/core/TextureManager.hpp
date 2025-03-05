@@ -15,12 +15,13 @@ public:
     TextureManager(Camera *camera) : camera(camera) { loadConfiguration(); }
     ~TextureManager();
 
-    void loadConfiguration();
     Texture *getTexture(std::string name);
 
 private:
     Camera *camera;
     std::unordered_map<std::string, Texture *> textures;
+
+    void loadConfiguration();
 };
 
 #endif

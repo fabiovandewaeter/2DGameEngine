@@ -21,7 +21,7 @@ class Structure
 {
 public:
     Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
-    Structure(Texture *texture, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : texture(texture), x(x), y(y), width(1), height(1), HP(HP), solid(solid), destroyed(false) {}
+    Structure(std::string textureName, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : textureName(textureName), x(x), y(y), width(1), height(1), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();
@@ -31,26 +31,25 @@ public:
     virtual void onLeftClick();
     virtual void onRightClick();
 
-    SDL_FRect getHitBox();
-    int getHP();
-    bool isSolid();
-    bool isDestroyed();
+    bool isSolid() const;
+    bool isDestroyed() const;
+
+    // getter
+    int getHP() const;
+    float getPositionX() const;
+    float getPositionY() const;
+    SDL_FRect getHitBox() const;
+    std::string getTextureName() const;
+    virtual std::string getClassName() = 0;
+
+    // setter
     void setX(float x);
     void setY(float y);
     void setHitBox(SDL_FRect hitBox);
-    void setTexture(Texture *texture);
-    static std::string getName() { return "Structure"; };
-    static int getTexture()
-    {
-        std::cout << "ERROR: default Structure::getTexture() should not be used" << std::endl;
-        return -1;
-    };
-    virtual std::string getClassName() = 0;
-    float getPositionX();
-    float getPositionY();
+    void setTextureName(std::string textureName);
 
 protected:
-    Texture *texture;
+    std::string textureName;
     float x, y;
     float width, height;
     bool solid;

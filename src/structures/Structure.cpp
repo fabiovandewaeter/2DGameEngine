@@ -5,15 +5,7 @@
 
 Structure::~Structure() {}
 
-void Structure::render(Camera *camera)
-{
-    SDL_FRect renderBox = {this->x, this->y, this->width, this->height};
-    SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
-    if (camera->isVisibleOnScreen(newRenderBox))
-    {
-        camera->render(this->texture, newRenderBox);
-    }
-}
+void Structure::render(Camera *camera) { camera->render(this); }
 
 void Structure::update() {}
 void Structure::destroy() { delete this; }
@@ -21,11 +13,18 @@ void Structure::onCollision(Entity *entity) { std::cout << "Structure#onCollisio
 void Structure::onLeftClick() { std::cout << "Structure::onLeftClick() does nothing" << std::endl; }
 void Structure::onRightClick() { std::cout << "Structure::onRightClick() does nothing" << std::endl; }
 
-SDL_FRect Structure::getHitBox() { return {this->x, this->y, this->width, this->height}; }
-int Structure::getHP() { return this->HP; }
-bool Structure::isSolid() { return this->solid; }
-bool Structure::isDestroyed() { return this->destroyed; }
+bool Structure::isSolid() const { return this->solid; }
+bool Structure::isDestroyed() const { return this->destroyed; }
 
+// getter
+int Structure::getHP() const { return this->HP; }
+float Structure::getPositionX() const { return this->x; }
+float Structure::getPositionY() const { return this->y; }
+SDL_FRect Structure::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
+std::string Structure::getTextureName() const { return this->textureName; }
+int Structure::getTileSize() { return Tile::getTileSize(); }
+
+// setter
 void Structure::setHitBox(SDL_FRect hitBox)
 {
     this->x = hitBox.x;
@@ -36,14 +35,4 @@ void Structure::setHitBox(SDL_FRect hitBox)
 
 void Structure::setX(float x) { this->x = x; }
 void Structure::setY(float y) { this->y = y; }
-void Structure::setTexture(Texture *texture) { this->texture = texture; }
-int Structure::getTileSize() { return Tile::getTileSize(); }
-
-float Structure::getPositionX()
-{
-    return this->x;
-}
-float Structure::getPositionY()
-{
-    return this->y;
-}
+void Structure::setTextureName(std::string textureName) { this->textureName = textureName; }

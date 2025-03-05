@@ -17,8 +17,8 @@ public:
     StructureFactory();
     ~StructureFactory();
 
-    void registerClass(const std::string className, std::function<Structure *(Texture *, float, float, Player *, TickManager *)> constructor);
-    std::function<Structure *(Texture *, float, float, Player *, TickManager *)> getConstructor(std::string className);
+    void registerClass(const std::string className, std::function<Structure *(std::string , float, float, Player *, TickManager *)> constructor);
+    std::function<Structure *(std::string , float, float, Player *, TickManager *)> getConstructor(std::string className);
     std::vector<std::string> getRegistredClasses();
 
     static StructureFactory &getInstance()
@@ -28,7 +28,7 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, std::function<Structure *(Texture *, float, float, Player *, TickManager *)>> registry;
+    std::unordered_map<std::string, std::function<Structure *(std::string , float, float, Player *, TickManager *)>> registry;
 };
 
 // to add at the end of every Structure subclasses .cpp files
@@ -38,7 +38,7 @@ private:
         classname##Registrar()                                                                                                                                                   \
         {                                                                                                                                                                        \
             StructureFactory::getInstance().registerClass(                                                                                                                       \
-                #classname, [](Texture *texture, float x, float y, Player *placedBy, TickManager *tickManager) { return new classname(texture, x, y, placedBy, tickManager); }); \
+                #classname, [](std::string textureName, float x, float y, Player *placedBy, TickManager *tickManager) { return new classname(textureName, x, y, placedBy, tickManager); }); \
         }                                                                                                                                                                        \
     } global_##classname##_registrar;
 

@@ -6,6 +6,7 @@
 #include "Texture.hpp"
 #include "systems/utils/Constants.hpp"
 #include "map/Tile.hpp"
+#include "structures/Structure.hpp"
 
 Camera::~Camera()
 {
@@ -135,6 +136,16 @@ void Camera::render(const Tile *tile)
     SDL_FRect renderBox = {tile->getPositionX(), tile->getPositionY(), 1, 1};
     SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
     render(this->textureManager->getTexture(tile->getTextureName()), newRenderBox);
+}
+
+void Camera::render(const Structure *structure)
+{
+    SDL_FRect renderBox = structure->getHitBox();
+    SDL_Rect newRenderBox = convertInGameToCameraCoordinates(renderBox);
+    if (isVisibleOnScreen(newRenderBox))
+    {
+        render(this->textureManager->getTexture(structure->getTextureName()), newRenderBox);
+    }
 }
 
 void Camera::render(const Texture *texture, SDL_Rect renderBox)

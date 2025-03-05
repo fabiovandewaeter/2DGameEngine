@@ -112,7 +112,6 @@ void Game::update()
     {
         this->running = false;
     }
-
     // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
 
@@ -120,16 +119,12 @@ TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
     // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
-    // SDL_RenderClear(this->renderer);
-
     std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
     int size = players->size();
     for (int i = 0; i < size; i++)
     {
         (*players)[i]->render();
     }
-
-    // SDL_RenderPresent(this->renderer);
     //  countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
 }
 

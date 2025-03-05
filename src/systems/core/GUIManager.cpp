@@ -54,9 +54,7 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
     loadConfiguration();
 }
 
-void GUIManager::loadConfiguration()
-{
-}
+void GUIManager::loadConfiguration() {}
 
 void GUIManager::loadIcons()
 {
@@ -112,13 +110,11 @@ void GUIManager::test_window(mu_Context *ctx, Player *player)
 
 void GUIManager::changeMouseManagerClickOnEmptyTileStrategy(std::string structureName, Player *placedBy)
 {
-    std::function<Structure *(Texture *, float, float, Player *, TickManager *)> constructor = this->structureFactory->getConstructor(structureName);
-    Texture *texture = this->textureManager->getTexture(structureName);
-    TickManager *tempoTickManager= this->tickManager;
-    std::function<Structure *(float, float)> newFunction = [constructor, texture, placedBy, tempoTickManager](float i, float j) -> Structure *
+    std::function<Structure *(std::string, float, float, Player *, TickManager *)> constructor = this->structureFactory->getConstructor(structureName);
+    TickManager *tempoTickManager = this->tickManager;
+    std::function<Structure *(float, float)> newFunction = [constructor, structureName, placedBy, tempoTickManager](float i, float j) -> Structure *
     {
-        Structure *structure = constructor(texture, i, j, placedBy, tempoTickManager);
-        structure->setTexture(texture);
+        Structure *structure = constructor(structureName, i, j, placedBy, tempoTickManager);
         return structure;
     };
     this->mouseManager->setClickOnEmptyTileStrategy(newFunction);

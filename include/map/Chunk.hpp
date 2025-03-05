@@ -12,8 +12,6 @@
 #include "systems/utils/Constants.hpp"
 
 class Map;
-class TextureManager;
-class Texture;
 class PerlinNoise;
 class CollisionManager;
 class Camera;
