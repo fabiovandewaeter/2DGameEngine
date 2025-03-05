@@ -26,6 +26,7 @@ public:
     std::vector<Entity *> getPotentialEntities(Entity *entity);
     std::vector<Entity *> getEntitiesInArea(SDL_FRect area);
     std::vector<Player *> *getPlayers();
+    int getNumberOfPlayers();
 
 private:
     Map *map;

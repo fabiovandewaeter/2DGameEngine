@@ -79,6 +79,8 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 
 void MouseManager::handleEvents(SDL_Event *event, Player *player)
 {
+	Uint32 playerWindowID = SDL_GetWindowID(player->getCamera()->getWindow());
+    if (event->motion.windowID != playerWindowID) return;
 	if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
 	{
 		int x, y;
@@ -88,7 +90,6 @@ void MouseManager::handleEvents(SDL_Event *event, Player *player)
 		{
 		case SDL_MOUSEMOTION:
 			break;
-
 		case SDL_MOUSEBUTTONDOWN:
 			if (handleClickOnEntity(event, player, x, y))
 			{ // skip handleClickOnMap() if the click is on an Entity
@@ -96,7 +97,6 @@ void MouseManager::handleEvents(SDL_Event *event, Player *player)
 			}
 			handleClickOnMap(event, player, x, y);
 			break;
-
 		case SDL_MOUSEBUTTONUP:
 			break;
 		}

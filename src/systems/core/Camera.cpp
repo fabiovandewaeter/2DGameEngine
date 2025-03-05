@@ -196,11 +196,12 @@ void Camera::setPosition(float x, float y)
     this->positionY = y;
 }
 
-float Camera::getPositionX() { return this->positionX; }
-float Camera::getPositionY() { return this->positionY; }
-int Camera::getWidth() { return this->width; }
-int Camera::getHeight() { return this->height; }
-double Camera::getScale() { return this->scale; }
-SDL_Window *Camera::getWindow() { return this->window; }
-SDL_Renderer *Camera::getRenderer() { return this->renderer; }
-TextureManager *Camera::getTextureManager() { return this->textureManager; }
+float Camera::getPositionX() const { return this->positionX; }
+float Camera::getPositionY() const { return this->positionY; }
+int Camera::getWidth() const { return this->width; }
+int Camera::getHeight() const { return this->height; }
+double Camera::getScale() const { return this->scale; }
+SDL_Window *Camera::getWindow() const { return this->window; }
+Uint32 Camera::getWindowID() const { return this->windowID; }
+SDL_Renderer *Camera::getRenderer() const { return this->renderer; }
+TextureManager *Camera::getTextureManager() const { return this->textureManager; }

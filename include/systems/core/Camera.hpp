@@ -32,6 +32,7 @@ public:
                 std::cout << "FAIL : Window NOT created" << std::endl;
                 delete this;
             }
+            this->windowID = SDL_GetWindowID(this->window);
             // Create renderer
             if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
             {
@@ -89,14 +90,15 @@ public:
     bool isVisibleOnScreen(const SDL_Rect rect);
 
     void setPosition(float x, float y);
-    float getPositionX();
-    float getPositionY();
-    int getWidth();
-    int getHeight();
-    double getScale();
-    SDL_Window *getWindow();
-    SDL_Renderer *getRenderer();
-    TextureManager *getTextureManager();
+    float getPositionX() const;
+    float getPositionY() const;
+    int getWidth() const;
+    int getHeight() const;
+    double getScale() const;
+    SDL_Window *getWindow() const;
+    Uint32 getWindowID() const;
+    SDL_Renderer *getRenderer() const;
+    TextureManager *getTextureManager() const;
 
 private:
     // Image dimensions
@@ -110,6 +112,7 @@ private:
     float sprintVelocity;
 
     SDL_Window *window;
+    Uint32 windowID;
     SDL_Renderer *renderer;
     TextureManager *textureManager;
     Texture *backgroundTexture;
