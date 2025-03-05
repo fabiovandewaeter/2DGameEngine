@@ -87,6 +87,9 @@ void Game::handleEvents()
             case SDL_KEYUP:
                 eventWindowID = this->event.key.windowID;
                 break;
+            case SDL_MOUSEWHEEL:
+                eventWindowID = this->event.wheel.windowID;
+                break;
             }
             std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
             int size = players->size();
