@@ -51,11 +51,11 @@ public:
                 delete this;
             }
             // Initialize SDL_ttf
-            /*if (TTF_Init() == -1)
+            if (TTF_Init() == -1)
             {
                 printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
                 delete this;
-            }*/
+            }
             this->textureManager = new TextureManager(this);
             this->backgroundTexture = textureManager->getTexture("BACKGROUND");
             this->backgroundRenderRect = {(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
