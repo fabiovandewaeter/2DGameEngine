@@ -14,8 +14,8 @@ class Structure;
 class MouseManager
 {
 public:
-	MouseManager();
-	~MouseManager();
+	MouseManager() = default;
+	~MouseManager() = default;
 
 	void handleEvents(SDL_Event *event, Player *player);
 	void setClickOnEmptyTileStrategy(std::function<Structure *(float, float)>);

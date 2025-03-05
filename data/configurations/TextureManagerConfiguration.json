@@ -67,6 +67,14 @@
         {
             "name": "Warrior",
             "path": "assets/img/entities/Warrior.png"
+        },
+        {
+            "name": "Explorer",
+            "path": "assets/img/entities/Explorer.png"
+        },
+        {
+            "name": "GREEN",
+            "path": "assets/img/entities/GREEN.png"
         }
     ]
 }

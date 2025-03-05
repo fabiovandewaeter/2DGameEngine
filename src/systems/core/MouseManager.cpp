@@ -8,9 +8,6 @@
 #include "entities/Entity.hpp"
 #include "entities/Player.hpp"
 
-MouseManager::MouseManager() {}
-MouseManager::~MouseManager() {}
-
 // source : https://lazyfoo.net/tutorials/SDL/17_mouse_events/index.php
 
 bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, int y)

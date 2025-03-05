@@ -210,6 +210,9 @@ void Game::loadEntities()
     Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
     Player *player = new Player("Player", 0, 0, 1, 1, 103, this->map, camera);
     this->map->addPlayer(player);
+    Camera *camera2 = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Player *player2 = new Player("GREEN", 0, 0, 1, 1, 103, this->map, camera);
+    this->map->addPlayer(player2);
 
     // test
     Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
