@@ -15,13 +15,15 @@ public:
     ~Action() = default;
     // execute the Action ; the execution can take multiple ticks and will make isCompleted() returns true when finished
     virtual void execute() = 0;
-    bool isCompleted() { return this->completed; }
+    bool isCompleted();
 
 protected:
     Entity *entity;
     bool completed;
     std::queue<Action *> subActions;
     int subActionsIndex;
+
+    void executeSubActions();
 };
 
 #endif

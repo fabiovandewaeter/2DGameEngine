@@ -14,6 +14,8 @@ public:
 
 private:
     float goalX, goalY;
+
+    bool isTargetInRange(Entity *attacker, float goalX, float goalY);
 };
 
 #endif

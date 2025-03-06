@@ -92,3 +92,7 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
 
 std::vector<Player *> *EntityManager::getPlayers() { return &this->players; }
 int EntityManager::getNumberOfPlayers() { return this->players.size(); }
+
+Entity *EntityManager::findClosestEnemy(const Entity *entity)
+{
+}

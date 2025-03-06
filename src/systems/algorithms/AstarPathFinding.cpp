@@ -29,56 +29,11 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-
     float tileStartX = startX;
     float tileStartY = startY;
     float tileGoalX = goalX;
     float tileGoalY = goalY;
-    float epsilon = 0.0001f;   // default
-    
-    if (map->getChunk(goalX, goalY)->isStructure(goalX, goalY))
-    {
-        /*epsilon = 0.6f;
-        // TODO: fix that because it's ugly
-        if (startX < goalX)
-        {
-            //tileGoalX += 0.5f;
-            tileGoalX -= 0.5f;
-        }
-        else if (startX > goalX)
-        {
-            //tileGoalX -= 0.5f;
-            tileGoalX += 0.5f;
-        }
-        if (startY < goalY)
-        {
-            //tileGoalY += 0.5f;
-            tileGoalY -= 0.5f;
-        }
-        else if (startY > goalY)
-        {
-            //tileGoalY -= 0.5f;
-            tileGoalY += 0.5f;
-        }*/
-    }
-    else{
-        /*if (startX < goalX)
-        {
-            tileGoalX += 2.0f;
-        }
-        else if (startX > goalX)
-        {
-            tileGoalX -= 2.0f;
-        }
-        if (startY < goalY)
-        {
-            tileGoalY += 2.0f;
-        }
-        else if (startY > goalY)
-        {
-            tileGoalY -= 2.0f;
-        }*/
-    }
+    float epsilon = 0.0001f;   // default threshold
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;

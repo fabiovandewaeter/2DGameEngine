@@ -14,27 +14,25 @@ void Entity::update()
     if (this->actionStack.empty())
     {
         this->behavior->execute();
-        std::cout << "behavior" << this->actionStack.size() << std::endl;
     }
     if (!this->actionStack.empty())
     {
-        std::cout << "non empty" << std::endl;
         Action *currentAction = actionStack.top();
         currentAction->execute();
         if (currentAction->isCompleted())
         {
             delete currentAction;
             actionStack.pop();
-            std::cout << "pop" << std::endl;
         }
     }
 }
 
 void Entity::render(Camera *camera) { camera->render(this); }
 void Entity::onCollision(Entity *entity) { std::cout << "Entity#onCollision() does nothing" << std::endl; }
-void Entity::hit(int damage) { this->HP -= damage; }
+void Entity::onHit(int damage) { this->HP -= damage; }
 void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
+void Entity::attack(Entity *target) { target->onHit(10); }
 
 bool Entity::canMove()
 {
@@ -80,6 +78,7 @@ std::string Entity::getTextureName() const { return this->textureName; }
 SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
 float Entity::getSpeed() { return this->speed; }
 int Entity::getHP() { return this->HP; }
+bool Entity::isDead() { return this->HP <= 0; }
 float Entity::getRange() { return this->range; }
 Map *Entity::getMap() const { return this->map; }
 

@@ -21,6 +21,7 @@ class StructureFactory;
 class Camera;
 class Player;
 class Entity;
+class Structure;
 
 class Map
 {
@@ -47,7 +48,8 @@ public:
     EntityManager *getEntityManager();
     TickManager *getTickManager();
     StructureFactory *getStructureFactory();
-    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName, const Entity *entity);
+    Structure *findClosestStructure(const std::string structureClassName, const Entity *entity);
+    Entity *findClosestEnemy(const Entity *entity);
 
 private:
     PerlinNoise *perlinNoise;

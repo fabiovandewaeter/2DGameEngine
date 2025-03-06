@@ -123,13 +123,13 @@ TickManager *Map::getTickManager() { return this->tickManager; }
 EntityManager *Map::getEntityManager() { return this->entityManager; }
 StructureFactory *Map::getStructureFactory() { return this->structureFactory; }
 
-std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string structureClassName, const Entity *entity)
+Structure *Map::findClosestStructure(const std::string structureClassName, const Entity *entity)
 {
-    std::unique_ptr<std::pair<float, float>> res;
+    Structure *res;
     for (auto &chunkPair : allChunks)
     {
         Chunk *chunk = chunkPair.second;
-        res = chunk->findStructure(structureClassName, entity);
+        res = chunk->findClosestStructure(structureClassName, entity);
         if (res != nullptr)
         {
             return res;
@@ -137,3 +137,5 @@ std::unique_ptr<std::pair<float, float>> Map::findStructure(const std::string st
     }
     return nullptr;
 }
+
+Entity *Map::findClosestEnemy(const Entity *entity) { return this->entityManager->findClosestEnemy(entity); }

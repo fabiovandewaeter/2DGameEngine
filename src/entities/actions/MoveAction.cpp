@@ -5,6 +5,12 @@
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 
+MoveAction::MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), currentIndex(0), stuckedCount(0), lastPosition({0, 0})
+{
+    this->path = AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY);
+    this->threshold = (this->entity->getMap()->getChunk(this->goalX, this->goalY)->isStructure(this->goalX, this->goalY)) ? this->entity->getRange() + 1 : 0.0001f;
+}
+
 void MoveAction::execute()
 {
     if (this->currentIndex >= this->path.size())
@@ -44,7 +50,7 @@ void MoveAction::execute()
 
     if (distance < this->threshold)
     {
-        this->currentIndex++; // Passe à la cible suivante
+        this->currentIndex++;
     }
     else
     {

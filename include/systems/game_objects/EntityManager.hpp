@@ -27,6 +27,7 @@ public:
     std::vector<Entity *> getEntitiesInArea(SDL_FRect area);
     std::vector<Player *> *getPlayers();
     int getNumberOfPlayers();
+    Entity *findClosestEnemy(const Entity *entity);
 
 private:
     Map *map;

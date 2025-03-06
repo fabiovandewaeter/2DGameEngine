@@ -10,12 +10,12 @@
 void BreakStructureAction::execute()
 {
     float threshold = this->entity->getRange() + 1;
-    if ((std::fabs(this->entity->getPositionX() - this->goalX) < threshold) && (std::fabs(this->entity->getPositionY() - this->goalY) < threshold))
+    if (isTargetInRange(this->entity, this->goalX, this->goalY))
     {
         Chunk *chunk = this->entity->getMap()->getChunk(this->goalX, this->goalY);
         if (chunk != nullptr)
         {
-            Structure *structure = chunk->breakStructure(goalX, goalY);
+            Structure *structure = chunk->breakStructure(this->goalX, this->goalY);
             if (structure != nullptr)
             {
                 this->entity->giveStructure(structure);
@@ -24,7 +24,15 @@ void BreakStructureAction::execute()
     }
     else
     {
-        std::cout << "BreakStructureAction::execute() : Entity not in range" << std::endl;
+        std::cout << "ERROR BreakStructureAction::execute() : Entity not in range" << std::endl;
     }
     this->completed = true;
+}
+
+bool BreakStructureAction::isTargetInRange(Entity *attacker, float goalX, float goalY)
+{
+    float dx = goalX - attacker->getPositionX();
+    float dy = goalY - attacker->getPositionY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    return distance <= attacker->getRange() + 1;
 }

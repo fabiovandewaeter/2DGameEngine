@@ -27,9 +27,12 @@ public:
     // void move();
     virtual void render(Camera *camera);
     virtual void onCollision(Entity *);
-    virtual void hit(int damage);
+    // take damages
+    virtual void onHit(int damage);
     virtual void onLeftClick();
     virtual void onRightClick();
+    // attack
+    virtual void attack(Entity *target);
     virtual bool canMove();
     bool isMoving();
     void moveBy(float dx, float dy);
@@ -42,8 +45,9 @@ public:
     std::string getTextureName() const;
     SDL_FRect getHitBox() const;
     float getSpeed();
-    float getRange();
     int getHP();
+    bool isDead();
+    float getRange();
     Map *getMap() const;
 
     // setter

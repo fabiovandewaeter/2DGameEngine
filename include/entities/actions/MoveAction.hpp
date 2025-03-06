@@ -13,7 +13,7 @@
 class MoveAction : public Action
 {
 public:
-    MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), path(AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY)), currentIndex(0), stuckedCount(0), threshold((this->entity->getMap()->getChunk(this->goalX, this->goalY)->isStructure(this->goalX, this->goalY)) ? this->entity->getRange() + 1 : 0.0001f), lastPosition({0, 0}) {}
+    MoveAction(float goalX, float goalY, Entity *entity);
     void execute() override;
 
 private:
