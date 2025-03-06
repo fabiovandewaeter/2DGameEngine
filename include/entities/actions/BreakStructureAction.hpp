@@ -9,13 +9,11 @@
 class BreakStructureAction : public Action
 {
 public:
-    BreakStructureAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), completed(false) {}
+    BreakStructureAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY) {}
     void execute() override;
-    bool isCompleted() override;
 
 private:
     float goalX, goalY;
-    bool completed;
 };
 
 #endif

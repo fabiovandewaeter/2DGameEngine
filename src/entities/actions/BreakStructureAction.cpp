@@ -28,5 +28,3 @@ void BreakStructureAction::execute()
     }
     this->completed = true;
 }
-
-bool BreakStructureAction::isCompleted() { return this->completed; }

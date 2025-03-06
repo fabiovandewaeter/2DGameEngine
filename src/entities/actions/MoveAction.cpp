@@ -12,9 +12,6 @@ void MoveAction::execute()
         this->completed = true;
         return;
     }
-    else{
-        std::cout << "non" << std::endl;
-    }
 
     // On stocke la position actuelle pour détecter le déplacement
     float moveDelta = std::sqrt(std::pow(this->entity->getPositionX() - this->lastPosition.x, 2) + std::pow(this->entity->getPositionY() - this->lastPosition.y, 2));
@@ -56,5 +53,3 @@ void MoveAction::execute()
         this->entity->moveBy(dirX * this->entity->getSpeed(), dirY * this->entity->getSpeed());
     }
 }
-
-bool MoveAction::isCompleted() { return this->completed; }

@@ -6,5 +6,5 @@
 
 void WarriorBehavior::execute()
 {
-    this->getResourceAction->execute();
+    this->entity->pushAction(new GetResourceAction("Tree", this->entity));
 }

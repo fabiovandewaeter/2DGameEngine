@@ -181,17 +181,18 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
-    Player *player = new Player("Player", 0, 0, 1, 1, 103, this->map, camera);
-    this->map->addPlayer(player);
     Camera *camera2 = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
     Player *player2 = new Player("GREEN", 0, 0, 1, 1, 103, this->map, camera2);
     this->map->addPlayer(player2);
 
+    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Player *player = new Player("Player", 0, 0, 1, 1, 103, this->map, camera);
+    this->map->addPlayer(player);
+
     // test
-    /*Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
+    Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    this->map->addEntity(warrior);*/
+    this->map->addEntity(warrior);
     // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));
 }
 

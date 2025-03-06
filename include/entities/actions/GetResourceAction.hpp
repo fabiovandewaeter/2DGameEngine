@@ -7,9 +7,8 @@
 class GetResourceAction : public Action
 {
 public:
-    GetResourceAction(std::string resourceToGet, Entity *entity) : Action(entity), resourceToGet(resourceToGet) {}
+    GetResourceAction(std::string resourceToGet, Entity *entity);
     void execute() override;
-    bool isCompleted() override;
 
 private:
     std::string resourceToGet;

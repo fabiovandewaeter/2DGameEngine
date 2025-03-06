@@ -14,15 +14,18 @@ void Entity::update()
     if (this->actionStack.empty())
     {
         this->behavior->execute();
+        std::cout << "behavior" << this->actionStack.size() << std::endl;
     }
     if (!this->actionStack.empty())
     {
+        std::cout << "non empty" << std::endl;
         Action *currentAction = actionStack.top();
         currentAction->execute();
         if (currentAction->isCompleted())
         {
             delete currentAction;
             actionStack.pop();
+            std::cout << "pop" << std::endl;
         }
     }
 }
