@@ -1,6 +1,7 @@
 #include "systems/game_objects/EntityManager.hpp"
 
 #include <cmath>
+#include <limits>
 
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
