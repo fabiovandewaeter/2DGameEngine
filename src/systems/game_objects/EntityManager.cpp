@@ -95,4 +95,5 @@ int EntityManager::getNumberOfPlayers() { return this->players.size(); }
 
 Entity *EntityManager::findClosestEnemy(const Entity *entity)
 {
+    return nullptr;
 }

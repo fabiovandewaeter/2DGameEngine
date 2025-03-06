@@ -193,7 +193,10 @@ void Game::loadEntities()
     Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
     this->map->addEntity(warrior);
-    // this->map->addEntity(new Entity(this->textureManager.getTexture("Explorer"), 0, 0, 1, 1, 102, this->map, new ExplorerBehavior()));
+
+    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 101, this->map);
+    explorer->setBehavior(new ExplorerBehavior(explorer));
+    this->map->addEntity(explorer);
 }
 
 void Game::loadItems()
