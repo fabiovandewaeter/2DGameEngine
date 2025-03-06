@@ -81,6 +81,7 @@ int Entity::getHP() { return this->HP; }
 bool Entity::isDead() { return this->HP <= 0; }
 float Entity::getRange() { return this->range; }
 Map *Entity::getMap() const { return this->map; }
+Faction *Entity::getFaction() const { return this->faction; }
 
 // setter
 void Entity::setPosition(float x, float y)

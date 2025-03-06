@@ -49,6 +49,7 @@ public:
     bool isDead();
     float getRange();
     Map *getMap() const;
+    Faction *getFaction() const;
 
     // setter
     void setPosition(float x, float y);

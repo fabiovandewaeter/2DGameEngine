@@ -3,9 +3,6 @@
 
 #include "Action.hpp"
 
-#include <vector>
-#include "SDL2/SDL_rect.h"
-
 class BreakStructureAction : public Action
 {
 public:
