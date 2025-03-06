@@ -4,6 +4,8 @@
 
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
+#include "map/Chunk.hpp"
+#include "systems/algorithms/AstarPathFinding.hpp"
 
 MoveAction::MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), currentIndex(0), stuckedCount(0), lastPosition({0, 0})
 {

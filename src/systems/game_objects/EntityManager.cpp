@@ -117,22 +117,17 @@ Entity *EntityManager::findClosestEnemy(const Entity *entity)
             if (entityFaction->isAlliedWith(otherFaction))
                 continue;
         }
-        else if (!entityFaction && !otherFaction)
+        else if (!entityFaction || !otherFaction)
         {
-            // Si aucune faction définie, considérer tout le monde comme ennemi
-        }
-        else
-        {
-            // Si une seule entité a une faction, considérer comme ennemi
-        }
-        float dx = other->getPositionX() - entity->getPositionX();
-        float dy = other->getPositionY() - entity->getPositionY();
-        float distance = std::sqrt(dx * dx + dy * dy);
+            float dx = other->getPositionX() - entity->getPositionX();
+            float dy = other->getPositionY() - entity->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
 
-        if (distance < minDistance)
-        {
-            minDistance = distance;
-            closestEnemy = other;
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestEnemy = other;
+            }
         }
     }
     return closestEnemy;

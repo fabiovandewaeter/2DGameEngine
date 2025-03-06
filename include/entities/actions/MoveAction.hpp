@@ -6,9 +6,6 @@
 #include <vector>
 #include "SDL2/SDL_rect.h"
 
-#include "systems/algorithms/AstarPathFinding.hpp"
-#include "map/Map.hpp"
-#include "map/Chunk.hpp"
 
 class MoveAction : public Action
 {

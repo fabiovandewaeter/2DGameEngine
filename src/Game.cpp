@@ -185,16 +185,16 @@ void Game::loadEntities()
     Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, this->map, camera2);
     this->map->addPlayer(player2);
 
-    /*Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
+    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
     Player *player = new Player("Player", 0, 0, 1, 1, 100000, this->map, camera);
-    this->map->addPlayer(player);*/
+    this->map->addPlayer(player);
 
     // test
-    Entity *warrior = new Entity("Warrior", 0, 0, 1, 1, 101, this->map);
+    Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
     this->map->addEntity(warrior);
 
-    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 101, this->map);
+    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, this->map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
     this->map->addEntity(explorer);
 }
