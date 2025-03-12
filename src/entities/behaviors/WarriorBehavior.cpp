@@ -7,9 +7,15 @@
 
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
+int a = 0;
 void WarriorBehavior::execute()
 {
     // this->entity->pushAction(new GetResourceAction("Tree", this->entity));
     Entity *target = this->entity->getMap()->findClosestEnemy(this->entity);
     this->entity->pushAction(new KillEntityAction(this->entity, target));
+    if (a > 0)
+    {
+        exit(1);
+    }
+    a++;
 }

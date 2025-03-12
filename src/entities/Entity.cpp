@@ -32,7 +32,11 @@ void Entity::onCollision(Entity *entity) { std::cout << "Entity#onCollision() do
 void Entity::onHit(int damage) { this->HP -= damage; }
 void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
-void Entity::attack(Entity *target) { target->onHit(10); std::cout << "attack" << std::endl; }
+void Entity::attack(Entity *target)
+{
+    target->onHit(10);
+    std::cout << "attack" << std::endl;
+}
 
 bool Entity::canMove()
 {
