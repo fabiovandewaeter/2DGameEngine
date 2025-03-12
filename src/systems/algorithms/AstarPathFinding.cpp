@@ -33,7 +33,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     float tileStartY = startY;
     float tileGoalX = goalX;
     float tileGoalY = goalY;
-    float epsilon = 0.0001f;   // default threshold
+    float epsilon = 0.0001f; // default threshold
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
@@ -92,7 +92,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
             }
 
             // if is a Structe AND is not the Structe we want to reach
-            if (chunk->isStructure(nx, ny) && !(std::fabs(nx - tileGoalX) < epsilon && std::fabs(ny - tileGoalY)) < epsilon)
+            if (chunk->isStructure(nx, ny) && !(std::fabs(nx - tileGoalX) < epsilon && std::fabs(ny - tileGoalY) < epsilon))
             {
                 continue;
             }
