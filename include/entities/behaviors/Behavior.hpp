@@ -10,7 +10,7 @@ class Behavior
 public:
     Behavior(Entity *entity) : entity(entity) {}
     virtual ~Behavior() = default;
-    virtual void execute() = 0;
+    virtual void update() = 0;
 
 protected:
     Entity *entity;

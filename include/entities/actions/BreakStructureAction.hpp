@@ -6,13 +6,13 @@
 class BreakStructureAction : public Action
 {
 public:
-    BreakStructureAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY) {}
-    void execute() override;
+    BreakStructureAction(float goalX, float goalY, Entity *actor);
+    void update() override;
+    bool isCompleted() const override;
 
 private:
     float goalX, goalY;
-
-    bool isTargetInRange(Entity *attacker, float goalX, float goalY);
+    bool structureBroken;
 };
 
 #endif

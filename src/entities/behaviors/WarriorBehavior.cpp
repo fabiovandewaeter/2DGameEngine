@@ -8,7 +8,7 @@
 #include "entities/Entity.hpp"
 #include "map/Map.hpp"
 int a = 0;
-void WarriorBehavior::execute()
+void WarriorBehavior::update()
 {
     // this->entity->pushAction(new GetResourceAction("Tree", this->entity));
     Entity *target = this->entity->getMap()->findClosestEnemy(this->entity);

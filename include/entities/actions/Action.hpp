@@ -11,19 +11,14 @@ class Entity;
 class Action
 {
 public:
-    Action(Entity *entity) : entity(entity), completed(false), subActionsIndex(0) {}
-    ~Action() = default;
+    Action(Entity *actor) : actor(actor) {}
+    virtual ~Action() = default;
     // execute the Action ; the execution can take multiple ticks and will make isCompleted() returns true when finished
-    virtual void execute() = 0;
-    bool isCompleted();
+    virtual void update() = 0;
+    virtual bool isCompleted() const = 0;
 
 protected:
-    Entity *entity;
-    bool completed;
-    std::queue<Action *> subActions;
-    int subActionsIndex;
-
-    void executeSubActions();
+    Entity *actor;
 };
 
 #endif

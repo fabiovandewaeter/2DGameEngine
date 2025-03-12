@@ -13,12 +13,12 @@ void Entity::update()
 {
     if (this->actionStack.empty())
     {
-        this->behavior->execute();
+        this->behavior->update();
     }
     if (!this->actionStack.empty())
     {
         Action *currentAction = actionStack.top();
-        currentAction->execute();
+        currentAction->update();
         if (currentAction->isCompleted())
         {
             delete currentAction;

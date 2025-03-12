@@ -8,7 +8,7 @@ class WarriorBehavior : public Behavior
 {
 public:
     WarriorBehavior(Entity *entity) : Behavior(entity) {}
-    void execute() override;
+    void update() override;
 
 private:
 };

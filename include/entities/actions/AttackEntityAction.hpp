@@ -7,12 +7,12 @@ class AttackEntityAction : public Action
 {
 public:
     AttackEntityAction(Entity *attacker, Entity *target);
-    void execute() override;
+    void update() override;
+    bool isCompleted() const override;
 
 private:
     Entity *target;
-
-    bool isTargetInRange(Entity *attacker, Entity *target);
+    bool attackPerformed;
 };
 
 #endif

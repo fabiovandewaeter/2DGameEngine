@@ -5,35 +5,30 @@
 #include "entities/actions/MoveAction.hpp"
 #include "entities/actions/BreakStructureAction.hpp"
 
-AttackEntityAction::AttackEntityAction(Entity *attacker, Entity *target) : Action(attacker), target(target)
+AttackEntityAction::AttackEntityAction(Entity *attacker, Entity *target)
+    : Action(attacker), target(target), attackPerformed(false)
 {
-    if (target)
+    if (!target)
     {
-        float threshold = this->entity->getRange() + 1;
-        if (isTargetInRange(this->entity, this->target))
-        {
-            this->entity->attack(this->target);
-        }
-    }
-    else
-    {
-        std::cout << "Error BreakStructureAction::execute() : Entity not in range" << std::endl;
+        std::cerr << "Error AttackEntityAction : cible nulle." << std::endl;
     }
 }
 
-void AttackEntityAction::execute()
+void AttackEntityAction::update()
 {
-    if (!this->target || this->target->isDead())
+    if (!target || target->isDead())
     {
-        std::cout << "AttackEntityAction::execute() : Target is dead" << std::endl;
+        return;
     }
-    executeSubActions();
-}
-
-bool AttackEntityAction::isTargetInRange(Entity *attacker, Entity *target)
-{
-    float dx = target->getPositionX() - attacker->getPositionX();
-    float dy = target->getPositionY() - attacker->getPositionY();
+    // Vérification que l'entité est à portée pour attaquer
+    float dx = target->getPositionX() - actor->getPositionX();
+    float dy = target->getPositionY() - actor->getPositionY();
     float distance = std::sqrt(dx * dx + dy * dy);
-    return distance <= attacker->getRange() + 1;
+    if (distance <= actor->getRange() + 1 && !attackPerformed)
+    {
+        actor->attack(target);
+        attackPerformed = true;
+    }
 }
+
+bool AttackEntityAction::isCompleted() const { return attackPerformed; }
