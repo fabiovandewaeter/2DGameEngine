@@ -9,8 +9,9 @@
 
 MoveAction::MoveAction(float goalX, float goalY, Entity *entity) : Action(entity), goalX(goalX), goalY(goalY), currentIndex(0), stuckedCount(0), lastPosition({0, 0})
 {
+    // TODO: find best value for threshold
     this->path = AstarPathFinding::findPath(this->entity->getMap(), entity->getPositionX(), entity->getPositionY(), goalX, goalY);
-    this->threshold = (this->entity->getMap()->getChunk(this->goalX, this->goalY)->isStructure(this->goalX, this->goalY)) ? this->entity->getRange() + 1 : 1 + 0.0001f;
+    this->threshold = (this->entity->getMap()->getChunk(this->goalX, this->goalY)->isStructure(this->goalX, this->goalY)) ? this->entity->getRange() + 1 : 0.04 + 0.0001f; // don't know why 0.04
 }
 
 void MoveAction::execute()

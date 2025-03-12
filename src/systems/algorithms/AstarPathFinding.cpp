@@ -31,7 +31,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     float tileStartY = startY;
     float tileGoalX = goalX;
     float tileGoalY = goalY;
-    float epsilon = 0.0001f; // default threshold
+    const float epsilon = 0.0001f; // default threshold
 
     // File de priorité (open set) pour les nœuds
     std::priority_queue<Node *, std::vector<Node *>, CompareNode> openSet;
