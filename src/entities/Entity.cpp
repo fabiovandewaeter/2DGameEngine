@@ -44,7 +44,7 @@ bool Entity::canMove()
     return true;
 }
 
-bool Entity::isMoving() { return velX != 0 || velY != 0; }
+bool Entity::isMoving() { return velocityX != 0 || velocityY != 0; }
 
 void Entity::moveBy(float dx, float dy)
 {
@@ -54,11 +54,11 @@ void Entity::moveBy(float dx, float dy)
         // check for X axis
         float newPosX = getPositionX() + (VELOCITY_MULTIPLIER * dx);
         SDL_FRect tempRect = map->handleCollisionsForEntity(this, newPosX, getPositionY());
-        x = tempRect.x;
+        positionX = tempRect.x;
         // check for Y axis
         float newPosY = getPositionY() + (VELOCITY_MULTIPLIER * dy);
         tempRect = map->handleCollisionsForEntity(this, getPositionX(), newPosY);
-        y = tempRect.y;
+        positionY = tempRect.y;
     }
 }
 
@@ -71,15 +71,15 @@ void Entity::teleportToHome()
     {
         homeCoordinates = faction->getHomeCoordinates();
     }
-    x = homeCoordinates.first;
-    y = homeCoordinates.second;
+    positionX = homeCoordinates.first;
+    positionY = homeCoordinates.second;
 }
 
 // getter
-float Entity::getPositionX() const { return x; }
-float Entity::getPositionY() const { return y; }
+float Entity::getPositionX() const { return positionX; }
+float Entity::getPositionY() const { return positionY; }
 std::string Entity::getTextureName() const { return textureName; }
-SDL_FRect Entity::getHitBox() const { return {x, y, width, height}; }
+SDL_FRect Entity::getHitBox() const { return {positionX, positionY, width, height}; }
 float Entity::getSpeed() { return speed; }
 int Entity::getHP() { return HP; }
 bool Entity::isDead() { return HP <= 0; }
@@ -90,18 +90,18 @@ Faction *Entity::getFaction() const { return faction; }
 // setter
 void Entity::setPosition(float x, float y)
 {
-    this->x = x;
-    this->y = y;
+    positionX = x;
+    positionY = y;
 }
 
 void Entity::setVelocity(float velocityX, float velocityY)
 {
-    velX = velocityX;
-    velY = velocityY;
+    this->velocityX = velocityX;
+    this->velocityY = velocityY;
 }
 
-void Entity::setVelocityX(float velocityX) { velX = velocityX; }
-void Entity::setVelocityY(float velocityY) { velY = velocityY; }
+void Entity::setVelocityX(float velocityX) { this->velocityX = velocityX; }
+void Entity::setVelocityY(float velocityY) { this->velocityY = velocityY; }
 void Entity::setFaction(Faction *faction) { this->faction = faction; }
 void Entity::setBehavior(Behavior *behavior) { this->behavior = behavior; }
 void Entity::pushAction(Action *action) { actionStack.push(action); }

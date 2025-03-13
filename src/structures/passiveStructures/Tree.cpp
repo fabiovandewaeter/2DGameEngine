@@ -4,4 +4,4 @@
 
 REGISTER_CLASS(Tree)
 
-void Tree::onRightClick() { this->destroyed = true; }
+void Tree::onRightClick() { destroyed = true; }

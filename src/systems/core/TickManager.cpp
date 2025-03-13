@@ -9,18 +9,9 @@ TickManager::TickManager()
 }
 TickManager::~TickManager() {}
 
-Uint64 TickManager::getNormalizedTick()
-{
-    return SDL_GetPerformanceCounter() / (this->frequency / 10000000);
-}
-void TickManager::setFrameStart()
-{
-    this->frameStart = getNormalizedTick();
-}
-Uint64 TickManager::getTicks()
-{
-    return this->ticks;
-}
+Uint64 TickManager::getNormalizedTick() { return SDL_GetPerformanceCounter() / (frequency / 10000000); }
+void TickManager::setFrameStart() { frameStart = getNormalizedTick(); }
+Uint64 TickManager::getTicks() { return ticks; }
 
 // if the loop lasted less than on frame at the speed of game.fixedUPS, wait until the end
 void TickManager::waitTick(const Uint64 &gameFrameDelay)
@@ -40,5 +31,5 @@ void TickManager::waitTick(const Uint64 &gameFrameDelay)
             deltaTime = getNormalizedTick() - frameStart;
         }
     }
-    this->ticks++;
+    ticks++;
 }

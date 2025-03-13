@@ -19,14 +19,8 @@
 
 #include "structures/passiveStructures/Tree.hpp"
 
-Chunk::Chunk(int positionX, int positionY, Map *map, PerlinNoise *perlinNoise, CollisionManager *collisionManager)
+Chunk::Chunk(int positionX, int positionY, Map *map, PerlinNoise *perlinNoise, CollisionManager *collisionManager) : positionX(positionX), positionY(positionY), width(CHUNK_TILE_SIZE), height(CHUNK_TILE_SIZE), map(map), perlinNoise(perlinNoise)
 {
-    this->positionX = positionX;
-    this->positionY = positionY;
-    this->width = CHUNK_TILE_SIZE;
-    this->height = CHUNK_TILE_SIZE;
-    this->map = map;
-    this->perlinNoise = perlinNoise;
     loadTiles();
     loadUpdatableStructures();
     loadOtherStructures();
@@ -70,9 +64,9 @@ void Chunk::loadTilesWithPerlinNoise()
     {
         for (int j = 0; j < CHUNK_TILE_SIZE; j++)
         {
-            float x = i + this->positionX;
-            float y = j + this->positionY;
-            double res = this->perlinNoise->perlin2d(x, y, 0.001f, 1);
+            float positionX = i + this->positionX;
+            float positionY = j + this->positionY;
+            double res = this->perlinNoise->perlin2d(positionX, positionY, 0.001f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
             if (res < 1.0 / numberOfTileTextures)
@@ -92,7 +86,7 @@ void Chunk::loadTilesWithPerlinNoise()
                 textureIndex = 3;
             }
             std::string textureName = "grass_" + std::to_string(textureIndex);
-            this->allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(textureName, x, y);
+            allTiles[CHUNK_TILE_SIZE * i + j] = new Tile(textureName, positionX, positionY);
         }
     }
 }
@@ -102,20 +96,20 @@ void Chunk::loadOtherStructures() {}
 
 void Chunk::render(Camera *camera)
 {
-    SDL_FRect renderBox = {this->positionX, this->positionY, this->width, this->height};
+    SDL_FRect renderBox = {positionX, positionY, width, height};
     SDL_Rect newRenderBox = camera->convertInGameToCameraCoordinates(renderBox);
     if (camera->isVisibleOnScreen(newRenderBox))
     {
         for (int i = 0; i < CHUNK_TILE_SIZE * CHUNK_TILE_SIZE; i++)
         {
-            this->allTiles[i]->render(camera);
+            allTiles[i]->render(camera);
         }
     }
-    for (auto &pair : this->updatableStructures)
+    for (auto &pair : updatableStructures)
     {
         pair.second->render(camera);
     }
-    for (auto &pair : this->otherStructures)
+    for (auto &pair : otherStructures)
     {
         pair.second->render(camera);
     }
@@ -125,7 +119,7 @@ void Chunk::update()
 {
     std::vector<std::pair<int, int>> updatableStructuresToRemove;
     std::vector<std::pair<int, int>> otherStructuresToRemove;
-    for (auto &[coords, structure] : this->updatableStructures)
+    for (auto &[coords, structure] : updatableStructures)
     {
         structure->update();
         if (structure->isDestroyed())
@@ -134,7 +128,7 @@ void Chunk::update()
         }
     }
     // NEED CHANGE TO NOT CHECK EVERY TICK IF ALL WALLS ARE DESTROYED
-    for (auto &[coords, structure] : this->otherStructures)
+    for (auto &[coords, structure] : otherStructures)
     {
         if (structure->isDestroyed())
         {
@@ -143,25 +137,25 @@ void Chunk::update()
     }
     for (const auto &coords : updatableStructuresToRemove)
     {
-        delete this->updatableStructures[coords];
-        this->updatableStructures.erase(coords);
+        delete updatableStructures[coords];
+        updatableStructures.erase(coords);
     }
     for (const auto &coords : otherStructuresToRemove)
     {
-        delete this->otherStructures[coords];
-        this->otherStructures.erase(coords);
+        delete otherStructures[coords];
+        otherStructures.erase(coords);
     }
 }
 
-std::pair<int, int> Chunk::convertToLocalTileCoordinates(float x, float y)
+std::pair<int, int> Chunk::convertToLocalTileCoordinates(float positionX, float positionY)
 {
-    int newX = static_cast<int>(std::floor(x)) % CHUNK_TILE_SIZE;
-    int newY = static_cast<int>(std::floor(y)) % CHUNK_TILE_SIZE;
-    if (x < 0)
+    int newX = static_cast<int>(std::floor(positionX)) % CHUNK_TILE_SIZE;
+    int newY = static_cast<int>(std::floor(positionY)) % CHUNK_TILE_SIZE;
+    if (positionX < 0)
     {
         newX = CHUNK_TILE_SIZE + newX;
     }
-    if (y < 0)
+    if (positionY < 0)
     {
         newY = CHUNK_TILE_SIZE + newY;
     }
@@ -170,24 +164,24 @@ std::pair<int, int> Chunk::convertToLocalTileCoordinates(float x, float y)
 }
 
 // returns the tile that contains the coordinates
-Tile *Chunk::getTile(float x, float y)
+Tile *Chunk::getTile(float positionX, float positionY)
 {
-    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-    return this->allTiles[CHUNK_TILE_SIZE * newCoordinates.first + newCoordinates.second];
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
+    return allTiles[CHUNK_TILE_SIZE * newCoordinates.first + newCoordinates.second];
 }
 
-Structure *Chunk::getStructure(float x, float y)
+Structure *Chunk::getStructure(float positionX, float positionY)
 {
-    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-    auto it = this->updatableStructures.find(newCoordinates);
-    if (it != this->updatableStructures.end())
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
+    auto it = updatableStructures.find(newCoordinates);
+    if (it != updatableStructures.end())
     {
         return it->second;
     }
     else
     {
-        it = this->otherStructures.find(newCoordinates);
-        if (it != this->otherStructures.end())
+        it = otherStructures.find(newCoordinates);
+        if (it != otherStructures.end())
         {
             return it->second;
         }
@@ -195,18 +189,18 @@ Structure *Chunk::getStructure(float x, float y)
     return nullptr;
 }
 
-bool Chunk::isStructure(float x, float y)
+bool Chunk::isStructure(float positionX, float positionY)
 {
-    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-    auto it = this->updatableStructures.find(newCoordinates);
-    if (it != this->updatableStructures.end())
+    std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
+    auto it = updatableStructures.find(newCoordinates);
+    if (it != updatableStructures.end())
     {
         return true;
     }
     else
     {
-        it = this->otherStructures.find(newCoordinates);
-        if (it != this->otherStructures.end())
+        it = otherStructures.find(newCoordinates);
+        if (it != otherStructures.end())
         {
             return true;
         }
@@ -214,56 +208,56 @@ bool Chunk::isStructure(float x, float y)
     return false;
 }
 
-void Chunk::addStructure(Structure *structure, float x, float y)
+void Chunk::addStructure(Structure *structure, float positionX, float positionY)
 {
-    if (!isStructure(x, y))
+    if (!isStructure(positionX, positionY))
     {
-        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
-        SDL_FRect box = {std::floor(x), std::floor(y), 1, 1}; // floor to make sure the coordinates are based on the grid
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
+        SDL_FRect box = {std::floor(positionX), std::floor(positionY), 1, 1}; // floor to make sure the coordinates are based on the grid
         structure->setHitBox(box);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
-            this->updatableStructures[newCoordinates] = structure;
+            updatableStructures[newCoordinates] = structure;
         }
         else
         {
-            this->otherStructures[newCoordinates] = structure;
+            otherStructures[newCoordinates] = structure;
         }
     }
 }
 
-void Chunk::destroyStructure(float x, float y)
+void Chunk::destroyStructure(float positionX, float positionY)
 {
-    if (isStructure(x, y))
+    if (isStructure(positionX, positionY))
     {
-        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
         Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
-            this->updatableStructures.erase(newCoordinates);
+            updatableStructures.erase(newCoordinates);
         }
         else
         {
-            this->otherStructures.erase(newCoordinates);
+            otherStructures.erase(newCoordinates);
         }
         std::cout << "Chunk::destroyStructure() : structure destroyed at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
         structure->destroy();
     }
 }
 
-Structure *Chunk::breakStructure(float x, float y)
+Structure *Chunk::breakStructure(float positionX, float positionY)
 {
-    if (isStructure(x, y))
+    if (isStructure(positionX, positionY))
     {
-        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(x, y);
+        std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
         Structure *structure = getStructure(newCoordinates.first, newCoordinates.second);
         if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
         {
-            this->updatableStructures.erase(newCoordinates);
+            updatableStructures.erase(newCoordinates);
         }
         else
         {
-            this->otherStructures.erase(newCoordinates);
+            otherStructures.erase(newCoordinates);
         }
         std::cout << "Chunk::breakStructure() : structure broken at (" << newCoordinates.first << "," << newCoordinates.second << ")" << std::endl;
         return structure;
@@ -273,12 +267,12 @@ Structure *Chunk::breakStructure(float x, float y)
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
 
-Structure* Chunk::findClosestStructure(const std::string structureClassName, const Entity *entity)
+Structure *Chunk::findClosestStructure(const std::string structureClassName, const Entity *entity)
 {
     float minDistance = std::numeric_limits<float>::max();
-    Structure* closestStructure = nullptr;
+    Structure *closestStructure = nullptr;
     // Parcourt les structures "updatable"
-    for (auto &entry : this->updatableStructures)
+    for (auto &entry : updatableStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)
@@ -294,7 +288,7 @@ Structure* Chunk::findClosestStructure(const std::string structureClassName, con
         }
     }
     // Parcourt les autres structures
-    for (auto &entry : this->otherStructures)
+    for (auto &entry : otherStructures)
     {
         Structure *structure = entry.second;
         if (structure && structure->getClassName() == structureClassName)

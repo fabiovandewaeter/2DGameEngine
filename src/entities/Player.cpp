@@ -4,11 +4,11 @@
 float sprint2 = 1;
 float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
-Player::~Player() { delete this->camera; }
+Player::~Player() { delete camera; }
 
 void Player::handleEvents(SDL_Event *event)
 {
-    this->camera->handleEvents(event);
+    camera->handleEvents(event);
     // If a key was pressed
     if (event->type == SDL_KEYDOWN && event->key.repeat == 0)
     {
@@ -32,12 +32,12 @@ void Player::handleEvents(SDL_Event *event)
             sprint2 = SPRINT_MULTIPLIER;
             break;
         case SDLK_DELETE:
-            this->x = 0;
-            this->y = 0;
+            positionX = 0;
+            positionY = 0;
             break;
         }
-        this->velX = sprint2 * (rightVelX2 - leftVelX2);
-        this->velY = sprint2 * (downVelY2 - upVelY2);
+        velocityX = sprint2 * (rightVelX2 - leftVelX2);
+        velocityY = sprint2 * (downVelY2 - upVelY2);
     }
     // If a key was released
     else if (event->type == SDL_KEYUP && event->key.repeat == 0)
@@ -62,28 +62,28 @@ void Player::handleEvents(SDL_Event *event)
             sprint2 = 1;
             break;
         }
-        this->velX = sprint2 * (rightVelX2 - leftVelX2);
-        this->velY = sprint2 * (downVelY2 - upVelY2);
+        velocityX = sprint2 * (rightVelX2 - leftVelX2);
+        velocityY = sprint2 * (downVelY2 - upVelY2);
     }
-    if (!this->guiManager->handleEvents(event))
+    if (!guiManager->handleEvents(event))
     {
-        this->mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
+        mouseManager->handleEvents(event, this); // doesnt click on the map if click on GUI
     }
 }
 
 void Player::update()
 {
-    this->camera->update();
+    camera->update();
     move();
 }
 
 void Player::render()
 {
-    SDL_RenderClear(this->camera->getRenderer());
-    this->camera->renderBackground();
-    this->map->render(this->camera);
-    this->guiManager->render(this);
-    SDL_RenderPresent(this->camera->getRenderer());
+    SDL_RenderClear(camera->getRenderer());
+    camera->renderBackground();
+    map->render(camera);
+    guiManager->render(this);
+    SDL_RenderPresent(camera->getRenderer());
 }
 
 void Player::move()
@@ -92,14 +92,14 @@ void Player::move()
     if (canMove() && isMoving())
     {
         // check for X axis
-        float newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * this->velX);
-        SDL_FRect tempRect = this->map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        this->x = tempRect.x;
+        float newPosX = getPositionX() + (VELOCITY_MULTIPLIER * velocityX);
+        SDL_FRect tempRect = map->handleCollisionsForEntity(this, newPosX, getPositionY());
+        positionX = tempRect.x;
         // check for Y axis
-        float newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * this->velY);
-        tempRect = this->map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
-        this->y = tempRect.y;
+        float newPosY = getPositionY() + (VELOCITY_MULTIPLIER * velocityY);
+        tempRect = map->handleCollisionsForEntity(this, getPositionX(), newPosY);
+        positionY = tempRect.y;
     }
 }
 
-Camera *Player::getCamera() { return this->camera; }
+Camera *Player::getCamera() { return camera; }

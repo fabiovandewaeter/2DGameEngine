@@ -60,9 +60,9 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 		}
 		else
 		{
-			if (this->clickOnEmptyTileStrategy != nullptr)
+			if (clickOnEmptyTileStrategy != nullptr)
 			{
-				Structure *newStructure = this->clickOnEmptyTileStrategy(newCoordinates.first, newCoordinates.second);
+				Structure *newStructure = clickOnEmptyTileStrategy(newCoordinates.first, newCoordinates.second);
 				chunk->addStructure(newStructure, newCoordinates.first, newCoordinates.second);
 			}
 		}
@@ -80,7 +80,8 @@ bool MouseManager::handleClickOnMap(SDL_Event *event, Player *player, int x, int
 void MouseManager::handleEvents(SDL_Event *event, Player *player)
 {
 	Uint32 playerWindowID = SDL_GetWindowID(player->getCamera()->getWindow());
-    if (event->motion.windowID != playerWindowID) return;
+	if (event->motion.windowID != playerWindowID)
+		return;
 	if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
 	{
 		int x, y;
@@ -103,4 +104,4 @@ void MouseManager::handleEvents(SDL_Event *event, Player *player)
 	}
 }
 
-void MouseManager::setClickOnEmptyTileStrategy(std::function<Structure *(float, float)> strategy) { this->clickOnEmptyTileStrategy = strategy; }
+void MouseManager::setClickOnEmptyTileStrategy(std::function<Structure *(float, float)> strategy) { clickOnEmptyTileStrategy = strategy; }

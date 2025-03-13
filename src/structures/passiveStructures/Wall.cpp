@@ -4,4 +4,4 @@
 
 REGISTER_CLASS(Wall)
 
-void Wall::onRightClick() { this->destroyed = true; }
+void Wall::onRightClick() { destroyed = true; }

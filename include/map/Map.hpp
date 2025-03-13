@@ -35,14 +35,14 @@ public:
     void update();
 
     bool checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB);
-    bool isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect);
+    bool isPointInCollisionWithRectangle(float positionX, float positionY, SDL_FRect rect);
     bool isRectangleInCollisionWithSolidStructure(SDL_FRect rect);
     SDL_FRect handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY);
     void addPlayer(Player *player);
     void addEntity(Entity *entity);
 
-    bool isChunkGenerated(float x, float y);
-    Chunk *getChunk(float x, float y);
+    bool isChunkGenerated(float positionX, float positionY);
+    Chunk *getChunk(float positionX, float positionY);
     int getTileSize();
     int getChunkSize();
     EntityManager *getEntityManager();
@@ -60,8 +60,8 @@ private:
     TickManager *tickManager;
     StructureFactory *structureFactory;
 
-    // return the coordinates of the Chunk that contains the coordiantes (x, y)
-    std::pair<int, int> convertToChunkCoordinates(float x, float y);
+    // return the coordinates of the Chunk that contains the coordiantes (x, positionY)
+    std::pair<int, int> convertToChunkCoordinates(float positionX, float positionY);
     void generateChunk(float positionX, float positionY);
     void loadSquareMap(int size);
 };

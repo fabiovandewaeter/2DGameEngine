@@ -14,10 +14,10 @@ public:
     void init();
     void loadMedia();
 
-    std::vector<Mix_Music *> *getMusic();
+    std::vector<Mix_Music *> *getMusics();
 
 private:
-    std::vector<Mix_Music *> music;
+    std::vector<Mix_Music *> musics;
 };
 
 #endif

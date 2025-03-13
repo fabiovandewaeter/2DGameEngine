@@ -12,7 +12,7 @@ REGISTER_CLASS(Core)
 
 void Core::update()
 {
-    if (this->active)
+    if (active)
     {
         spawnEntities();
     }
@@ -23,15 +23,15 @@ void Core::spawnEntities()
 {
     /*if (spawnCooldownCounter >= SPAWN_COOLDOWN)
     {
-        std::vector<SDL_FRect> potentialSpawnTiles = this->getPotentialSpawnTiles((SDL_FRect){-1, -1, 16, 16});
+        std::vector<SDL_FRect> potentialSpawnTiles = getPotentialSpawnTiles((SDL_FRect){-1, -1, 16, 16});
         int i = 0;
         int size = potentialSpawnTiles.size();
         bool finished = false;
         while (i < size && !finished)
         {
-            if (!this->map->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
+            if (!map->checkCollisionWithSolidStructure(potentialSpawnTiles[i]))
             {
-                this->entityManager->addEntity(this->entityManager->generateDefaultEntity(potentialSpawnTiles[i]));
+                entityManager->addEntity(entityManager->generateDefaultEntity(potentialSpawnTiles[i]));
                 finished = true;
             }
             i++;
@@ -46,13 +46,13 @@ void Core::spawnEntities()
 std::vector<SDL_FRect> Core::getPotentialSpawnTiles(SDL_FRect entityHitBox)
 {
     std::vector<SDL_FRect> potentialSpawnTiles;
-    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y - entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x, this->y - entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y - entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x + entityHitBox.w, this->y + entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x, this->y + entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y + entityHitBox.h, this->width, this->height});
-    potentialSpawnTiles.push_back((SDL_FRect){this->x - entityHitBox.w, this->y, this->width, this->height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX - entityHitBox.w, positionY - entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX, positionY - entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX + entityHitBox.w, positionY - entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX + entityHitBox.w, positionY, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX + entityHitBox.w, positionY + entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX, positionY + entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX - entityHitBox.w, positionY + entityHitBox.h, width, height});
+    potentialSpawnTiles.push_back((SDL_FRect){positionX - entityHitBox.w, positionY, width, height});
     return potentialSpawnTiles;
 }

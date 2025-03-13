@@ -9,7 +9,6 @@
 
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
-#include "systems/core/IOManager.hpp"
 #include "systems/algorithms/PerlinNoise.hpp"
 #include "systems/core/AudioManager.hpp"
 #include "systems/core/TickManager.hpp"
@@ -33,7 +32,7 @@ class Map;
 class Game
 {
 public:
-    Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS);
+    Game(std::string title, int windowPositionX, int windowPositionY, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS);
     ~Game();
 
     void run();
@@ -49,9 +48,9 @@ public:
 
 private:
     bool running;
-    int screenWidth, screenHeight;
-    unsigned int fixedFPS;
-    unsigned int fixedUPS;
+    int windowWidth, windowHeight;
+    unsigned int FPS;
+    unsigned int UPS;
     Uint64 frameDelay;
     TickManager tickManager;
     SDL_Event event;
@@ -62,7 +61,6 @@ private:
     std::vector<Mix_Music *> *musics;
 
     // systems
-    IOManager ioManager;
     Map *map;
     PerlinNoise perlinNoise;
     AudioManager audioManager;

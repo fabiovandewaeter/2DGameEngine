@@ -11,19 +11,19 @@
 
 void EntityManager::loadEntities()
 {
-    // this->entities.push_back(new Entity((*this->entityTextures)[1], (SDL_FRect){50, 50, 16, 16}, 100));
+    // entities.push_back(new Entity((*entityTextures)[1], (SDL_FRect){50, 50, 16, 16}, 100));
 }
 
 void EntityManager::update()
 {
-    int size = this->entities.size();
+    int size = entities.size();
     std::vector<int> deadEntities;
 
     // update entities
     for (int i = 0; i < size; i++)
     {
-        this->entities[i]->update();
-        if (this->entities[i]->getHP() <= 0)
+        entities[i]->update();
+        if (entities[i]->getHP() <= 0)
         {
             deadEntities.push_back(i);
         }
@@ -33,15 +33,15 @@ void EntityManager::update()
     for (int i = deadEntities.size() - 1; i >= 0; i--)
     {
         int index = deadEntities[i];
-        Entity *tempo = this->entities[index];
-        this->entities.erase(this->entities.begin() + index);
+        Entity *tempo = entities[index];
+        entities.erase(entities.begin() + index);
         delete tempo;
     }
 }
 
 void EntityManager::render(Camera *camera)
 {
-    int size = this->entities.size();
+    int size = entities.size();
     for (int i = 0; i < size; i++)
     {
         entities[i]->render(camera);
@@ -50,14 +50,14 @@ void EntityManager::render(Camera *camera)
 
 void EntityManager::addPlayer(Player *player)
 {
-    this->players.push_back(player);
+    players.push_back(player);
     addEntity((Entity *)player);
 }
 
 void EntityManager::addEntity(Entity *entity)
 {
-    this->entities.push_back(entity);
-    std::cout << this->entities.size() << std::endl;
+    entities.push_back(entity);
+    std::cout << entities.size() << std::endl;
 }
 
 bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
@@ -68,33 +68,30 @@ bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
              rectA.y >= rectB.y + rectB.h);
 }
 
-std::vector<Entity *> EntityManager::getEntities()
-{
-    return this->entities;
-}
+std::vector<Entity *> EntityManager::getEntities() { return entities; }
 
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
     // TODO: NEED CHANGE IN EntityManager::getPotentialEntities() TO ONLY RETURN THE POTENTIAL ENTITIES AND NOT ALL ENTITIES
-    return this->entities;
+    return entities;
 }
 
 std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
 {
     std::vector<Entity *> res;
-    int size = this->entities.size();
+    int size = entities.size();
     for (int i = 0; i < size; i++)
     {
-        if (checkCollision(this->entities[i]->getHitBox(), area))
+        if (checkCollision(entities[i]->getHitBox(), area))
         {
-            res.push_back(this->entities[i]);
+            res.push_back(entities[i]);
         }
     }
     return res;
 }
 
-std::vector<Player *> *EntityManager::getPlayers() { return &this->players; }
-int EntityManager::getNumberOfPlayers() { return this->players.size(); }
+std::vector<Player *> *EntityManager::getPlayers() { return &players; }
+int EntityManager::getNumberOfPlayers() { return players.size(); }
 
 Entity *EntityManager::findClosestEnemy(const Entity *entity)
 {

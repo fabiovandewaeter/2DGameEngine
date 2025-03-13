@@ -16,11 +16,11 @@ ItemFactory::~ItemFactory() {}
 
 void ItemFactory::free()
 {
-    for (auto &pair : this->allItems)
+    for (auto &pair : allItems)
     {
         delete pair.second;
     }
-    this->allItems.clear();
+    allItems.clear();
 }
 
 void ItemFactory::init() {}
@@ -96,7 +96,7 @@ void ItemFactory::loadEquipments(std::string file_name)
     for (int i = 0; i < quantityFound; i += numberOfFields)
     {
         Item *newEquipment = new Item(results[i], nullptr, 0, true);
-        this->allItems[results[i]] = newEquipment;
+        allItems[results[i]] = newEquipment;
         std::cout << "Equipment loaded: " << results[i] << std::endl;
     }
 }
@@ -111,7 +111,7 @@ void ItemFactory::loadResources(std::string file_name)
     for (int i = 0; i < quantityFound; i += numberOfFields)
     {
         Item *newResource = new Item(results[i], nullptr, 0, false);
-        this->allItems[results[i]] = newResource;
+        allItems[results[i]] = newResource;
         std::cout << "Resource loaded: " << results[i] << std::endl;
     }
 }

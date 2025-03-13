@@ -10,12 +10,12 @@ REGISTER_CLASS(Turret)
 
 void Turret::update()
 {
-    if (this->active)
+    if (active)
     {
-        int size = this->abilities.size();
+        int size = abilities.size();
         for (int i = 0; i < size; i++)
         {
-            this->abilities[i]->apply(this->x + (this->width / 2), this->y + (this->height / 2));
+            abilities[i]->apply(positionX + (width / 2), positionY + (height / 2));
         }
     }
 }

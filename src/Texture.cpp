@@ -2,24 +2,15 @@
 
 #include "systems/core/Camera.hpp"
 
-int counter = 0;
-Texture::Texture() {}
-Texture::Texture(Camera *camera, std::string path)
+int Texture::idCounter = 0;
+
+Texture::Texture(Camera *camera, std::string path) : texture(NULL), camera(camera), renderer(camera->getRenderer()), width(0), height(0), id(idCounter)
 {
-    // Initialize
-    this->texture = NULL;
-    this->camera = camera;
-    this->renderer = this->camera->getRenderer();
-    this->width = 0;
-    this->height = 0;
-    this->id = counter;
     loadFromFile(path);
-    counter++;
+    idCounter++;
 }
-Texture::~Texture()
-{
-    free();
-}
+
+Texture::~Texture() { free(); }
 
 void Texture::free()
 {
@@ -50,19 +41,19 @@ Texture *Texture::loadFromFile(std::string path)
         // Color key image
         SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xFF, 0xFF, 0xFF));
         // Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface(this->renderer, loadedSurface);
+        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
         if (newTexture == NULL)
         {
             printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
         }
         else
         {
-            this->width = loadedSurface->w;
-            this->height = loadedSurface->h;
+            width = loadedSurface->w;
+            height = loadedSurface->h;
         }
         SDL_FreeSurface(loadedSurface);
     }
-    this->texture = newTexture;
+    texture = newTexture;
     return this;
 }
 
@@ -77,16 +68,16 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     else
     {
         // Create texture from surface pixels
-        this->texture = SDL_CreateTextureFromSurface(this->renderer, textSurface);
-        if (this->texture == NULL)
+        texture = SDL_CreateTextureFromSurface(renderer, textSurface);
+        if (texture == NULL)
         {
             printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
         }
         else
         {
             // Get image dimensions
-            this->width = textSurface->w;
-            this->height = textSurface->h;
+            width = textSurface->w;
+            height = textSurface->h;
         }
 
         // Get rid of old surface
@@ -95,15 +86,15 @@ Texture *Texture::loadFromRenderedText(TTF_Font *font, std::string text, SDL_Col
     return this;
 }
 
-SDL_Texture *Texture::getTexture() const { return this->texture; }
-int Texture::getWidth() { return this->width; }
-int Texture::getHeight() { return this->height; }
+SDL_Texture *Texture::getTexture() const { return texture; }
+int Texture::getWidth() { return width; }
+int Texture::getHeight() { return height; }
 void Texture::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
 }
-int Texture::getCenterX() { return this->getWidth() / 2; }
-int Texture::getCenterY() { return this->getHeight() / 2; }
-int Texture::getId() { return this->id; }
+int Texture::getCenterX() { return getWidth() / 2; }
+int Texture::getCenterY() { return getHeight() / 2; }
+int Texture::getId() { return id; }
 int Texture::getTextureDefaultSize() { return TEXTURE_DEFAULT_SIZE; }

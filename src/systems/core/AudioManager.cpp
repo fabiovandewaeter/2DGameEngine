@@ -6,11 +6,11 @@ AudioManager::AudioManager() {}
 AudioManager::~AudioManager() {}
 void AudioManager::free()
 {
-    int size = this->music.size();
+    int size = musics.size();
     for (int i = 0; i < size; i++)
     {
-        Mix_FreeMusic(this->music[i]);
-        this->music[i] = NULL;
+        Mix_FreeMusic(musics[i]);
+        musics[i] = NULL;
     }
 }
 
@@ -19,11 +19,11 @@ void AudioManager::init()
 }
 void AudioManager::loadMedia()
 {
-    /*this->music.push_back(Mix_LoadMUS("assets/audio/music/Evangelion.wav"));
-    Mix_PlayMusic(this->music[0], -1);*/
+    /*music.push_back(Mix_LoadMUS("assets/audio/music/Evangelion.wav"));
+    Mix_PlayMusic(music[0], -1);*/
 }
 
-std::vector<Mix_Music *> *AudioManager::getMusic()
+std::vector<Mix_Music *> *AudioManager::getMusics()
 {
-    return &this->music;
+    return &musics;
 }

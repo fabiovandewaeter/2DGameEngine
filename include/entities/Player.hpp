@@ -17,7 +17,7 @@ class Camera;
 class Player : public Entity
 {
 public:
-    Player(std::string textureName, float x, float y, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, x, y, width, height, HP, map), camera(camera), mouseManager(new MouseManager()), guiManager(new GUIManager(camera->getWindow(), camera->getRenderer(), camera->getTextureManager(), map->getTickManager(), map->getStructureFactory(), this->mouseManager)) {}
+    Player(std::string textureName, float positionX, float positionY, float width, float height, int HP, Map *map, Camera *camera) : Entity(textureName, positionX, positionY, width, height, HP, map), camera(camera), mouseManager(new MouseManager()), guiManager(new GUIManager(camera->getWindow(), camera->getRenderer(), camera->getTextureManager(), map->getTickManager(), map->getStructureFactory(), mouseManager)) {}
     ~Player();
 
     void handleEvents(SDL_Event *event);

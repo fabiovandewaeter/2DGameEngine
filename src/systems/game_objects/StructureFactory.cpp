@@ -5,13 +5,13 @@ StructureFactory::~StructureFactory() {}
 
 void StructureFactory::registerClass(const std::string className, std::function<Structure *(std::string, float, float, Player *, TickManager *)> constructor)
 {
-    this->registry[className] = constructor;
+    registry[className] = constructor;
 }
 
 std::function<Structure *(std::string, float, float, Player *, TickManager *)> StructureFactory::getConstructor(std::string className)
 {
-    auto it = this->registry.find(className);
-    if (it != this->registry.end())
+    auto it = registry.find(className);
+    if (it != registry.end())
     {
         return it->second;
     }
@@ -20,7 +20,7 @@ std::function<Structure *(std::string, float, float, Player *, TickManager *)> S
 std::vector<std::string> StructureFactory::getRegistredClasses()
 {
     std::vector<std::string> keys;
-    for (const auto &pair : this->registry)
+    for (const auto &pair : registry)
     {
         keys.push_back(pair.first);
     }

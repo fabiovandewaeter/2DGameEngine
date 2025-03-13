@@ -7,21 +7,16 @@
 #include "map/Map.hpp"
 #include "entities/Player.hpp"
 
-Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fullscreen, bool vsync, int UPS)
+Game::Game(std::string title, int windowPositionX, int windowPositioNY, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS) : title(title), FPS(60), UPS(60), windowWidth(windowWidth), windowHeight(windowHeight)
 {
-    this->title = title;
     std::cout << "\n======================================================" << std::endl;
-    this->fixedFPS = 60;
-    this->fixedUPS = 60;
-    this->screenWidth = width;
-    this->screenHeight = height;
     setUPS(UPS);
-    std::cout << "Window width: " << width << std::endl;
-    std::cout << "Window height: " << height << std::endl;
+    std::cout << "Window width: " << windowWidth << std::endl;
+    std::cout << "Window height: " << windowHeight << std::endl;
     std::cout << "UPS: " << UPS << std::endl;
     std::cout << "vsync: " << (vsync ? "true" : "false") << std::endl;
     // initialize window
-    this->flags = 0;
+    flags = 0;
     if (fullscreen)
     {
         flags = flags | SDL_WINDOW_FULLSCREEN;
@@ -30,15 +25,15 @@ Game::Game(std::string title, int xpos, int ypos, int width, int height, bool fu
     {
         flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
-    this->running = true;
+    running = true;
 
-    this->structureFactory = StructureFactory::getInstance();
+    structureFactory = StructureFactory::getInstance();
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
-    this->map = new Map(&this->tickManager, &this->structureFactory, &this->perlinNoise);
+    map = new Map(&tickManager, &structureFactory, &perlinNoise);
     loadEntities();
     std::cout << "================= itemFactory.init() =================" << std::endl;
-    this->itemFactory.init();
+    itemFactory.init();
     loadItems();
     std::cout << "====================================================" << std::endl;
 }
@@ -47,7 +42,7 @@ Game::~Game() {}
 
 void Game::run()
 {
-    while (this->isRunning())
+    while (isRunning())
     {
         tickManager.setFrameStart();
         handleEvents();
@@ -62,43 +57,43 @@ void Game::run()
 
 void Game::handleEvents()
 {
-    while (SDL_PollEvent(&this->event) != 0)
+    while (SDL_PollEvent(&event) != 0)
     {
-        if (this->event.type == SDL_QUIT)
+        if (event.type == SDL_QUIT)
         {
-            this->running = false;
+            running = false;
         }
         else
         {
             Uint32 eventWindowID = 0;
-            switch (this->event.type)
+            switch (event.type)
             {
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                eventWindowID = this->event.button.windowID;
+                eventWindowID = event.button.windowID;
                 break;
             case SDL_MOUSEMOTION:
-                eventWindowID = this->event.motion.windowID;
+                eventWindowID = event.motion.windowID;
                 break;
             case SDL_WINDOWEVENT:
-                eventWindowID = this->event.window.windowID;
+                eventWindowID = event.window.windowID;
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                eventWindowID = this->event.key.windowID;
+                eventWindowID = event.key.windowID;
                 break;
             case SDL_MOUSEWHEEL:
-                eventWindowID = this->event.wheel.windowID;
+                eventWindowID = event.wheel.windowID;
                 break;
             }
-            std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
+            std::vector<Player *> *players = map->getEntityManager()->getPlayers();
             int size = players->size();
             for (int i = 0; i < size; i++)
             {
                 Player *player = (*players)[i];
                 if (player->getCamera()->getWindowID() == eventWindowID)
                 {
-                    player->handleEvents(&this->event);
+                    player->handleEvents(&event);
                     break;
                 }
             }
@@ -109,11 +104,11 @@ void Game::handleEvents()
 TimeData timeData = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::update()
 {
-    // if (limiter("UPS", timeData.counterLimiter, 1000 / this->fixedUPS, timeData.lastTimeLimiter))
-    this->map->update();
-    if (this->map->getEntityManager()->getNumberOfPlayers() <= 0)
+    // if (limiter("UPS", timeData.counterLimiter, 1000 / UPS, timeData.lastTimeLimiter))
+    map->update();
+    if (map->getEntityManager()->getNumberOfPlayers() <= 0)
     {
-        this->running = false;
+        running = false;
     }
     // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
@@ -121,8 +116,8 @@ void Game::update()
 TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
 void Game::render()
 {
-    // if (limiter("FPS", timeData2.counterLimiter, 1000 / this->fixedFPS, timeData2.lastTimeLimiter))
-    std::vector<Player *> *players = this->map->getEntityManager()->getPlayers();
+    // if (limiter("FPS", timeData2.counterLimiter, 1000 / FPS, timeData2.lastTimeLimiter))
+    std::vector<Player *> *players = map->getEntityManager()->getPlayers();
     int size = players->size();
     for (int i = 0; i < size; i++)
     {
@@ -133,24 +128,24 @@ void Game::render()
 
 void Game::clean()
 {
-    delete this->map;
-    this->audioManager.free();
+    delete map;
+    audioManager.free();
 
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
 }
 
-bool Game::isRunning() { return this->running; }
-void Game::setFPS(unsigned int fps) { this->fixedFPS = fps; }
+bool Game::isRunning() { return running; }
+void Game::setFPS(unsigned int fps) { FPS = fps; }
 
 void Game::setUPS(unsigned int ups)
 {
-    this->fixedUPS = ups;
-    this->frameDelay = 10000000 / this->fixedUPS;
+    UPS = ups;
+    frameDelay = 10000000 / UPS;
 }
 
-Uint64 Game::getFrameDelay() { return this->frameDelay; }
+Uint64 Game::getFrameDelay() { return frameDelay; }
 
 void Game::countPrinter(std::string name, Uint64 &counter, Uint64 &interval, Uint64 &lastTime)
 {
@@ -171,9 +166,9 @@ void Game::loadMedia()
     // textures
 
     // audio
-    this->audioManager.init();
-    this->audioManager.loadMedia();
-    this->musics = this->audioManager.getMusic();
+    audioManager.init();
+    audioManager.loadMedia();
+    musics = audioManager.getMusics();
 }
 
 #include "entities/behaviors/WarriorBehavior.hpp"
@@ -181,26 +176,26 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    Camera *camera2 = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
-    Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, this->map, camera2);
-    this->map->addPlayer(player2);
+    Camera *camera2 = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0);
+    Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, map, camera2);
+    map->addPlayer(player2);
 
-    Camera *camera = new Camera(this->screenWidth, this->screenHeight, this->flags, 10, 20000, this->title, 0, 0);
-    Player *player = new Player("Player", 0, 0, 1, 1, 100000, this->map, camera);
-    this->map->addPlayer(player);
+    Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0);
+    Player *player = new Player("Player", 0, 0, 1, 1, 100000, map, camera);
+    map->addPlayer(player);
 
     // test
-    Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, this->map);
+    Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    this->map->addEntity(warrior);
+    map->addEntity(warrior);
 
-    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, this->map);
+    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
-    this->map->addEntity(explorer);
+    map->addEntity(explorer);
 }
 
 void Game::loadItems()
 {
     std::cout << "================= Game::LoadItems() =================" << std::endl;
-    this->itemFactory.load();
+    itemFactory.load();
 }

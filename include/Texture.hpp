@@ -15,7 +15,6 @@ class Camera;
 class Texture
 {
 public:
-    Texture();
     // Texture are liked to one SDL_Renderer
     Texture(Camera *camera, std::string path);
     ~Texture();
@@ -36,6 +35,7 @@ private:
     SDL_Renderer *renderer;
     int width, height;
     int id;
+    static int idCounter;
 
     Texture *loadFromFile(std::string path);
     Texture *loadFromRenderedText(TTF_Font *font, std::string text, SDL_Color textColor);

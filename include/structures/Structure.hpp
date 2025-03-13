@@ -21,7 +21,7 @@ class Structure
 {
 public:
     Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
-    Structure(std::string textureName, float x, float y, int HP, bool solid, Player *placedBy, TickManager *tickManager) : textureName(textureName), x(x), y(y), width(1), height(1), HP(HP), solid(solid), destroyed(false) {}
+    Structure(std::string textureName, float positionX, float positionY, int HP, bool solid, Player *placedBy, TickManager *tickManager) : textureName(textureName), positionX(positionX), positionY(positionY), width(1), height(1), HP(HP), solid(solid), destroyed(false) {}
     ~Structure();
 
     void update();
@@ -43,14 +43,14 @@ public:
     virtual std::string getClassName() = 0;
 
     // setter
-    void setX(float x);
-    void setY(float y);
+    void setX(float positionX);
+    void setY(float positionY);
     void setHitBox(SDL_FRect hitBox);
     void setTextureName(std::string textureName);
 
 protected:
     std::string textureName;
-    float x, y;
+    float positionX, positionY;
     float width, height;
     bool solid;
     unsigned int HP;

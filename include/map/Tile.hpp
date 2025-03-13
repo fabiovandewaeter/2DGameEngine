@@ -14,9 +14,9 @@ class Item;
 class Tile
 {
 public:
-    Tile(std::string textureName, float x, float y) : textureName(textureName), x(x), y(y), mineableResource(Tile::defaultMineableResource) {}
-    Tile(std::string textureName, float x, float y, Item *mineableResource) : textureName(textureName), x(x), y(y), mineableResource(mineableResource) {}
-    ~Tile();
+    Tile(std::string textureName, float positionX, float positionY) : textureName(textureName), positionX(positionX), positionY(positionY), mineableResource(Tile::defaultMineableResource) {}
+    Tile(std::string textureName, float positionX, float positionY, Item *mineableResource) : textureName(textureName), positionX(positionX), positionY(positionY), mineableResource(mineableResource) {}
+    ~Tile() = default;
 
     void render(Camera *camera);
     float getPositionX() const;
@@ -29,7 +29,7 @@ public:
 
 private:
     std::string textureName;
-    float x, y;
+    float positionX, positionY;
     static Item *defaultMineableResource;
     Item *mineableResource;
 };

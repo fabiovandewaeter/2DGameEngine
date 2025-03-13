@@ -9,13 +9,10 @@ Mine::~Mine() {}
 
 void Mine::update()
 {
-    if (this->active && (this->quantityResource < this->capacity))
+    if (active && (quantityResource < capacity))
     {
         quantityResource++;
     }
 }
 
-std::tuple<Item *, int> Mine::getInventory()
-{
-    return std::make_tuple(this->minedResource, this->quantityResource);
-}
+std::tuple<Item *, int> Mine::getInventory() { return std::make_tuple(minedResource, quantityResource); }

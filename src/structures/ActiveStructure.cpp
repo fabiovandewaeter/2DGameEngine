@@ -4,14 +4,14 @@
 
 ActiveStructure::~ActiveStructure()
 {
-    int size = this->abilities.size();
+    int size = abilities.size();
     for (int i = 0; i < size; i++)
     {
-        delete this->abilities[i];
+        delete abilities[i];
     }
 }
 
 void ActiveStructure::onLeftClick()
 {
-    this->active = !this->active;
+    active = !active;
 }

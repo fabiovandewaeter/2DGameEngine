@@ -21,23 +21,23 @@ class Structure;
 class Camera
 {
 public:
-    Camera(int width, int height, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : width(width), height(height), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velX(0), velY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50)
+    Camera(int windowWidth, int windowHeight, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : windowWidth(windowWidth), windowHeight(windowHeight), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velocityX(0), velocityY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50)
     {
         std::cout << "camera zoom need fix" << std::endl;
         if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
         {
             std::cout << "Subsystems Initialised" << std::endl;
             // Create window
-            if (!(this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags)))
+            if (!(window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, flags)))
             {
                 std::cout << "FAIL : Window NOT created" << std::endl;
                 delete this;
             }
-            this->windowID = SDL_GetWindowID(this->window);
+            windowID = SDL_GetWindowID(window);
             // Create renderer
-            if ((this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED)))
+            if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)))
             {
-                SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, 255);
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 std::cout << "Renderer created" << std::endl;
             }
             else
@@ -58,9 +58,9 @@ public:
                 printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
                 delete this;
             }
-            this->textureManager = new TextureManager(this);
-            this->backgroundTexture = textureManager->getTexture("BACKGROUND");
-            this->backgroundRenderRect = {(int)((this->width / 2) - (this->backgroundTexture->getCenterX())), (int)((this->height / 2) - (this->backgroundTexture->getCenterY())), (int)(this->backgroundTexture->getWidth()), (int)(this->backgroundTexture->getHeight())};
+            textureManager = new TextureManager(this);
+            backgroundTexture = textureManager->getTexture("BACKGROUND");
+            backgroundRenderRect = {(int)((windowWidth / 2) - (backgroundTexture->getCenterX())), (int)((windowHeight / 2) - (backgroundTexture->getCenterY())), (int)(backgroundTexture->getWidth()), (int)(backgroundTexture->getHeight())};
         }
         // window icon
         SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
@@ -69,7 +69,7 @@ public:
             std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
             delete this;
         }
-        SDL_SetWindowIcon(this->window, iconSurface);
+        SDL_SetWindowIcon(window, iconSurface);
         SDL_FreeSurface(iconSurface);
     }
 
@@ -93,8 +93,8 @@ public:
     void setPosition(float x, float y);
     float getPositionX() const;
     float getPositionY() const;
-    int getWidth() const;
-    int getHeight() const;
+    int getWindowWidth() const;
+    int getWindowHeight() const;
     double getScale() const;
     SDL_Window *getWindow() const;
     Uint32 getWindowID() const;
@@ -103,8 +103,8 @@ public:
 
 private:
     // Image dimensions
-    int width, height;
-    float velX, velY;
+    int windowWidth, windowHeight;
+    float velocityX, velocityY;
     double scale, scaleSpeed, minScale, maxScale;
 
     // in-game coordinates

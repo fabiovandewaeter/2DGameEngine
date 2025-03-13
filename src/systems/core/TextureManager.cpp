@@ -20,7 +20,7 @@ void TextureManager::loadConfiguration()
                 {
                     std::string texturePath = textureData["path"].GetString();
                     std::cout << "Load texture: " << texturePath << std::endl;
-                    this->textures[textureData["name"].GetString()] = new Texture(this->camera, texturePath);
+                    textures[textureData["name"].GetString()] = new Texture(camera, texturePath);
                 }
             }
         }
@@ -29,10 +29,10 @@ void TextureManager::loadConfiguration()
 
 Texture *TextureManager::getTexture(std::string name)
 {
-    auto it = this->textures.find(name);
+    auto it = textures.find(name);
     if (it != textures.end())
     {
         return it->second;
     }
-    return this->textures["DEFAULT"];
+    return textures["DEFAULT"];
 }

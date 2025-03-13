@@ -3,14 +3,14 @@
 
 class Entity;
 
-class State{
+class State
+{
 public:
-    State();
-    State(Entity *entity);
-    ~State();
-    
-    void init(Entity *entity);
+    State(Entity *entity) : entity(entity) {}
+    ~State() = default;
+
     void update();
+
 private:
     Entity *entity;
 };

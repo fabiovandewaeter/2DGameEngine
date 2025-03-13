@@ -9,6 +9,6 @@
 #include "map/Map.hpp"
 void WarriorBehavior::update()
 {
-    Entity *target = this->entity->getMap()->findClosestEnemy(this->entity);
-    this->entity->pushAction(new KillEntityAction(this->entity, target));
+    Entity *target = entity->getMap()->findClosestEnemy(entity);
+    entity->pushAction(new KillEntityAction(entity, target));
 }

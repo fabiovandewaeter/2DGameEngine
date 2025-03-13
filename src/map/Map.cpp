@@ -7,12 +7,12 @@
 
 Map::~Map()
 {
-    for (auto &pair : this->allChunks)
+    for (auto &pair : allChunks)
     {
         delete pair.second;
     }
-    this->allChunks.clear();
-    this->nearbyChunks.clear();
+    allChunks.clear();
+    nearbyChunks.clear();
 }
 
 void Map::loadChunks()
@@ -55,51 +55,51 @@ void Map::loadSquareMap(int size)
 
 void Map::generateChunk(float positionX, float positionY)
 {
-    Chunk *newChunk = new Chunk(positionX, positionY, this, this->perlinNoise, this->collisionManager);
-    this->nearbyChunks.push_back(newChunk);
+    Chunk *newChunk = new Chunk(positionX, positionY, this, perlinNoise, collisionManager);
+    nearbyChunks.push_back(newChunk);
     std::pair<float, float> newCoordinates = {positionX, positionY};
-    this->allChunks[newCoordinates] = newChunk;
+    allChunks[newCoordinates] = newChunk;
 }
 
 void Map::render(Camera *camera)
 {
-    int size = this->nearbyChunks.size();
+    int size = nearbyChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->nearbyChunks[i]->render(camera);
+        nearbyChunks[i]->render(camera);
     }
-    this->entityManager->render(camera);
+    entityManager->render(camera);
 }
 
 void Map::update()
 {
-    int size = this->nearbyChunks.size();
+    int size = nearbyChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->nearbyChunks[i]->update();
+        nearbyChunks[i]->update();
     }
-    this->entityManager->update();
+    entityManager->update();
 }
 
-bool Map::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB) { return this->collisionManager->checkRectanglesCollision(rectA, rectB); }
-bool Map::isPointInCollisionWithRectangle(float x, float y, SDL_FRect rect) { return this->collisionManager->isPointInCollisionWithRectangle(x, y, rect); }
-bool Map::isRectangleInCollisionWithSolidStructure(SDL_FRect rect) { return this->collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
-SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY) { return this->collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY); }
-void Map::addPlayer(Player *player) { this->entityManager->addPlayer(player); }
-void Map::addEntity(Entity *entity) { this->entityManager->addEntity(entity); }
+bool Map::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB) { return collisionManager->checkRectanglesCollision(rectA, rectB); }
+bool Map::isPointInCollisionWithRectangle(float positionX, float positionY, SDL_FRect rect) { return collisionManager->isPointInCollisionWithRectangle(positionX, positionY, rect); }
+bool Map::isRectangleInCollisionWithSolidStructure(SDL_FRect rect) { return collisionManager->isRectangleInCollisionWithSolidStructure(rect); }
+SDL_FRect Map::handleCollisionsForEntity(Entity *entity, float newPosX, float newPosY) { return collisionManager->handleCollisionsForEntity(entity, newPosX, newPosY); }
+void Map::addPlayer(Player *player) { entityManager->addPlayer(player); }
+void Map::addEntity(Entity *entity) { entityManager->addEntity(entity); }
 
-std::pair<int, int> Map::convertToChunkCoordinates(float x, float y)
+std::pair<int, int> Map::convertToChunkCoordinates(float positionX, float positionY)
 {
-    int chunkX = static_cast<int>(std::floor(x / CHUNK_TILE_SIZE));
-    int chunkY = static_cast<int>(std::floor(y / CHUNK_TILE_SIZE));
+    int chunkX = static_cast<int>(std::floor(positionX / CHUNK_TILE_SIZE));
+    int chunkY = static_cast<int>(std::floor(positionY / CHUNK_TILE_SIZE));
     return {chunkX * CHUNK_TILE_SIZE, chunkY * CHUNK_TILE_SIZE};
 }
 
 // returns true if the chunk exist
-bool Map::isChunkGenerated(float x, float y)
+bool Map::isChunkGenerated(float positionX, float positionY)
 {
-    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
-    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(positionX, positionY);
+    if (allChunks.find(newCoordinates) == allChunks.end())
     {
         return false;
     }
@@ -107,21 +107,21 @@ bool Map::isChunkGenerated(float x, float y)
 }
 
 // returns the chunk that contains the coordinates ; generates the chunk if it is not already done
-Chunk *Map::getChunk(float x, float y)
+Chunk *Map::getChunk(float positionX, float positionY)
 {
-    std::pair<int, int> newCoordinates = convertToChunkCoordinates(x, y);
-    if (this->allChunks.find(newCoordinates) == this->allChunks.end())
+    std::pair<int, int> newCoordinates = convertToChunkCoordinates(positionX, positionY);
+    if (allChunks.find(newCoordinates) == allChunks.end())
     {
         generateChunk(newCoordinates.first, newCoordinates.second);
-        std::cout << "Chunk generated at (" << newCoordinates.first << "," << newCoordinates.second << ") | Total: " << this->allChunks.size() << std::endl;
+        std::cout << "Chunk generated at (" << newCoordinates.first << "," << newCoordinates.second << ") | Total: " << allChunks.size() << std::endl;
     }
-    return this->allChunks[newCoordinates];
+    return allChunks[newCoordinates];
 }
 
 int Map::getChunkSize() { return CHUNK_TILE_SIZE; }
-TickManager *Map::getTickManager() { return this->tickManager; }
-EntityManager *Map::getEntityManager() { return this->entityManager; }
-StructureFactory *Map::getStructureFactory() { return this->structureFactory; }
+TickManager *Map::getTickManager() { return tickManager; }
+EntityManager *Map::getEntityManager() { return entityManager; }
+StructureFactory *Map::getStructureFactory() { return structureFactory; }
 
 Structure *Map::findClosestStructure(const std::string structureClassName, const Entity *entity)
 {
@@ -138,4 +138,4 @@ Structure *Map::findClosestStructure(const std::string structureClassName, const
     return nullptr;
 }
 
-Entity *Map::findClosestEnemy(const Entity *entity) { return this->entityManager->findClosestEnemy(entity); }
+Entity *Map::findClosestEnemy(const Entity *entity) { return entityManager->findClosestEnemy(entity); }

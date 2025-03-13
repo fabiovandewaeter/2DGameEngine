@@ -5,25 +5,26 @@
 
 Faction::~Faction()
 {
-    int size = this->members.size();
+    int size = members.size();
     for (int i = 0; i < size; i++)
     {
-        this->members[i]->setFaction(nullptr);
+        members[i]->setFaction(nullptr);
     }
-    size = this->ownedChunks.size();
+    size = ownedChunks.size();
     for (int i = 0; i < size; i++)
     {
-        this->ownedChunks[i]->setFaction(nullptr);
+        ownedChunks[i]->setFaction(nullptr);
     }
 }
 
 // getter
-std::pair<float, float> Faction::getHomeCoordinates() { return this->homeCoordinates; }
+std::pair<float, float> Faction::getHomeCoordinates() { return homeCoordinates; }
 bool Faction::isAlliedWith(Faction *faction) { return false; }
+unsigned long long Faction::getScore() { return score; }
 
 // setter
 void Faction::addMember(Entity *entity)
 {
-    this->members.push_back(entity);
+    members.push_back(entity);
     entity->setFaction(this);
 }

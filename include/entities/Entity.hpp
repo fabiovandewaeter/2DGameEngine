@@ -20,7 +20,7 @@ class Structure;
 class Entity
 {
 public:
-    Entity(std::string textureName, float x, float y, float width, float height, int HP, Map *map) : textureName(textureName), x(x), y(y), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velX(0), velY(0), behavior(nullptr), faction(nullptr) {};
+    Entity(std::string textureName, float positionX, float positionY, float width, float height, int HP, Map *map) : textureName(textureName), positionX(positionX), positionY(positionY), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velocityX(0), velocityY(0), behavior(nullptr), faction(nullptr) {};
     ~Entity() = default;
 
     virtual void update();
@@ -64,9 +64,9 @@ public:
 
 protected:
     std::string textureName;
-    float x, y;
+    float positionX, positionY;
     float width, height;
-    float velX, velY;
+    float velocityX, velocityY;
     float speed;
     int HP;
     // range to break Structure
