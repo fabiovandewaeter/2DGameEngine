@@ -62,7 +62,7 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 
         if (count <= 0)
         {
-            std::cout << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
+            std::cerr << "ERROR : AstarPathFinding::findPath() => aborted because of too many tiles explored" << std::endl;
             return res;
         }
         count--;

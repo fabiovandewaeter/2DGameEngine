@@ -20,7 +20,7 @@ GetResourceAction::GetResourceAction(const std::string &resourceToGet, Entity *a
     }
     else
     {
-        std::cout << "GetResourceAction::GetResourceAction() : " << this->resourceToGet << " not found on the Map" << std::endl;
+        std::cerr << "ERROR : GetResourceAction::GetResourceAction() => " << this->resourceToGet << " not found on the Map" << std::endl;
         state = State::FINISHED;
     }
 }
@@ -58,4 +58,11 @@ void GetResourceAction::update()
     }
 }
 
-bool GetResourceAction::isCompleted() const { return state == State::FINISHED; }
+bool GetResourceAction::isCompleted() const
+{
+    if (state == State::FINISHED)
+    {
+        return true;
+    }
+    return state == State::FINISHED;
+}

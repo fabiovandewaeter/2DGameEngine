@@ -9,7 +9,7 @@ KillEntityAction::KillEntityAction(Entity *attacker, Entity *target) : Action(at
 {
     if (!target)
     {
-        std::cerr << "ERROR KillEntityAction : no Entity found on the Map" << std::endl;
+        std::cerr << "ERROR : KillEntityAction => no Entity found on the Map" << std::endl;
         state = State::FINISHED;
     }
 }

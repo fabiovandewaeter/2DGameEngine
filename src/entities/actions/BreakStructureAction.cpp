@@ -37,7 +37,7 @@ void BreakStructureAction::update()
     }
     else
     {
-        std::cout << "ERROR BreakStructureAction::update() : Entity not in range" << std::endl;
+        std::cerr << "ERROR : BreakStructureAction::update() => Entity not in range" << std::endl;
     }
 
     structureBroken = true;
