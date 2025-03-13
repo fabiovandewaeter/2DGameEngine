@@ -1,24 +1,68 @@
 #include "entities/actions/GetResourceAction.hpp"
 
 #include "systems/algorithms/AstarPathFinding.hpp"
+#include "structures/Structure.hpp"
 #include "map/Map.hpp"
 #include "entities/actions/MoveAction.hpp"
 #include "entities/actions/BreakStructureAction.hpp"
 
-void GetResourceAction::execute()
+GetResourceAction::GetResourceAction(const std::string &resourceToGet, Entity *actor)
+    : Action(actor), resourceToGet(resourceToGet), state(State::INIT)
 {
-    std::string structureClassName = "Tree";
-    std::unique_ptr<std::pair<float, float>> destination = this->entity->getMap()->findStructure(structureClassName, this->entity);
-    if (destination)
+    // Recherche de la structure la plus proche contenant la ressource demandée
+    Structure *targetedStructure = actor->getMap()->findClosestStructure(this->resourceToGet, actor);
+    if (targetedStructure)
     {
-        this->entity->pushAction(new BreakStructureAction(destination->first, destination->second, this->entity)); // first because it's a stack
-        this->entity->pushAction(new MoveAction(destination->first, destination->second, this->entity));
-        // this->entity->pushAction(new MoveAction(-2,0, this->entity));
+        destination = {targetedStructure->getPositionX(), targetedStructure->getPositionY()};
+        // Initialisation de la sous-action de déplacement
+        moveAction = std::make_unique<MoveAction>(destination.first, destination.second, actor);
+        state = State::MOVING;
     }
     else
     {
-        std::cout << "GetResourceAction::execute() : " << structureClassName << " not found on the Map" << std::endl;
+        std::cerr << "ERROR : GetResourceAction::GetResourceAction() => " << this->resourceToGet << " not found on the Map" << std::endl;
+        state = State::FINISHED;
     }
 }
 
-bool GetResourceAction::isCompleted() { return false; }
+void GetResourceAction::update()
+{
+    switch (state)
+    {
+    case State::MOVING:
+        if (moveAction)
+        {
+            moveAction->update();
+            if (moveAction->isCompleted())
+            {
+                // Une fois le déplacement terminé, on passe à l'action de casse
+                breakStructureAction = std::make_unique<BreakStructureAction>(destination.first, destination.second, actor);
+                state = State::BREAKING;
+            }
+        }
+        break;
+
+    case State::BREAKING:
+        if (breakStructureAction)
+        {
+            breakStructureAction->update();
+            if (breakStructureAction->isCompleted())
+            {
+                state = State::FINISHED;
+            }
+        }
+        break;
+
+    default:
+        break;
+    }
+}
+
+bool GetResourceAction::isCompleted() const
+{
+    if (state == State::FINISHED)
+    {
+        return true;
+    }
+    return state == State::FINISHED;
+}

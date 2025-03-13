@@ -11,14 +11,14 @@
 
 void Entity::update()
 {
-    if (this->actionStack.empty())
+    if (actionStack.empty())
     {
-        this->behavior->execute();
+        behavior->update();
     }
-    if (!this->actionStack.empty())
+    if (!actionStack.empty())
     {
         Action *currentAction = actionStack.top();
-        currentAction->execute();
+        currentAction->update();
         if (currentAction->isCompleted())
         {
             delete currentAction;
@@ -29,9 +29,14 @@ void Entity::update()
 
 void Entity::render(Camera *camera) { camera->render(this); }
 void Entity::onCollision(Entity *entity) { std::cout << "Entity#onCollision() does nothing" << std::endl; }
-void Entity::hit(int damage) { this->HP -= damage; }
+void Entity::onHit(int damage) { HP -= damage; }
 void Entity::onLeftClick() { std::cout << "Entity::onLeftClick() does nothing" << std::endl; }
 void Entity::onRightClick() { kill(); }
+void Entity::attack(Entity *target)
+{
+    target->onHit(10);
+    std::cout << "attack" << std::endl;
+}
 
 bool Entity::canMove()
 {
@@ -39,7 +44,7 @@ bool Entity::canMove()
     return true;
 }
 
-bool Entity::isMoving() { return this->velX != 0 || this->velY != 0; }
+bool Entity::isMoving() { return velX != 0 || velY != 0; }
 
 void Entity::moveBy(float dx, float dy)
 {
@@ -47,38 +52,40 @@ void Entity::moveBy(float dx, float dy)
     if (canMove())
     {
         // check for X axis
-        float newPosX = this->getPositionX() + (VELOCITY_MULTIPLIER * dx);
-        SDL_FRect tempRect = map->handleCollisionsForEntity(this, newPosX, this->getPositionY());
-        this->x = tempRect.x;
+        float newPosX = getPositionX() + (VELOCITY_MULTIPLIER * dx);
+        SDL_FRect tempRect = map->handleCollisionsForEntity(this, newPosX, getPositionY());
+        x = tempRect.x;
         // check for Y axis
-        float newPosY = this->getPositionY() + (VELOCITY_MULTIPLIER * dy);
-        tempRect = map->handleCollisionsForEntity(this, this->getPositionX(), newPosY);
-        this->y = tempRect.y;
+        float newPosY = getPositionY() + (VELOCITY_MULTIPLIER * dy);
+        tempRect = map->handleCollisionsForEntity(this, getPositionX(), newPosY);
+        y = tempRect.y;
     }
 }
 
-void Entity::kill() { this->HP = 0; }
+void Entity::kill() { HP = 0; }
 
 void Entity::teleportToHome()
 {
     std::pair<float, float> homeCoordinates = {0, 0};
-    if (this->faction != nullptr)
+    if (faction != nullptr)
     {
-        homeCoordinates = this->faction->getHomeCoordinates();
+        homeCoordinates = faction->getHomeCoordinates();
     }
-    this->x = homeCoordinates.first;
-    this->y = homeCoordinates.second;
+    x = homeCoordinates.first;
+    y = homeCoordinates.second;
 }
 
 // getter
-float Entity::getPositionX() const { return this->x; }
-float Entity::getPositionY() const { return this->y; }
-std::string Entity::getTextureName() const { return this->textureName; }
-SDL_FRect Entity::getHitBox() const { return {this->x, this->y, this->width, this->height}; }
-float Entity::getSpeed() { return this->speed; }
-int Entity::getHP() { return this->HP; }
-float Entity::getRange() { return this->range; }
-Map *Entity::getMap() const { return this->map; }
+float Entity::getPositionX() const { return x; }
+float Entity::getPositionY() const { return y; }
+std::string Entity::getTextureName() const { return textureName; }
+SDL_FRect Entity::getHitBox() const { return {x, y, width, height}; }
+float Entity::getSpeed() { return speed; }
+int Entity::getHP() { return HP; }
+bool Entity::isDead() { return HP <= 0; }
+float Entity::getRange() { return range; }
+Map *Entity::getMap() const { return map; }
+Faction *Entity::getFaction() const { return faction; }
 
 // setter
 void Entity::setPosition(float x, float y)
@@ -89,15 +96,15 @@ void Entity::setPosition(float x, float y)
 
 void Entity::setVelocity(float velocityX, float velocityY)
 {
-    this->velX = velocityX;
-    this->velY = velocityY;
+    velX = velocityX;
+    velY = velocityY;
 }
 
-void Entity::setVelocityX(float velocityX) { this->velX = velocityX; }
-void Entity::setVelocityY(float velocityY) { this->velY = velocityY; }
+void Entity::setVelocityX(float velocityX) { velX = velocityX; }
+void Entity::setVelocityY(float velocityY) { velY = velocityY; }
 void Entity::setFaction(Faction *faction) { this->faction = faction; }
 void Entity::setBehavior(Behavior *behavior) { this->behavior = behavior; }
-void Entity::pushAction(Action *action) { this->actionStack.push(action); }
+void Entity::pushAction(Action *action) { actionStack.push(action); }
 
 void Entity::giveStructure(Structure *structure)
 {

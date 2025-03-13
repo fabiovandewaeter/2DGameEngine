@@ -7,26 +7,40 @@
 #include "map/Chunk.hpp"
 #include "structures/Structure.hpp"
 
-void BreakStructureAction::execute()
+BreakStructureAction::BreakStructureAction(float goalX, float goalY, Entity *actor)
+    : Action(actor), goalX(goalX), goalY(goalY), structureBroken(false)
 {
-    float threshold = this->entity->getRange() + 1;
-    if ((std::fabs(this->entity->getPositionX() - this->goalX) < threshold) && (std::fabs(this->entity->getPositionY() - this->goalY) < threshold))
+}
+
+void BreakStructureAction::update()
+{
+    // Si l'action a déjà été exécutée, on ne fait rien.
+    if (structureBroken)
+        return;
+
+    float threshold = actor->getRange() + 1;
+    float dx = goalX - actor->getPositionX();
+    float dy = goalY - actor->getPositionY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+
+    if (distance <= threshold)
     {
-        Chunk *chunk = this->entity->getMap()->getChunk(this->goalX, this->goalY);
+        auto chunk = actor->getMap()->getChunk(goalX, goalY);
         if (chunk != nullptr)
         {
-            Structure *structure = chunk->breakStructure(goalX, goalY);
+            auto structure = chunk->breakStructure(goalX, goalY);
             if (structure != nullptr)
             {
-                this->entity->giveStructure(structure);
+                actor->giveStructure(structure);
             }
         }
     }
     else
     {
-        std::cout << "BreakStructureAction::execute() : Entity not in range" << std::endl;
+        std::cerr << "ERROR : BreakStructureAction::update() => Entity not in range" << std::endl;
     }
-    this->completed = true;
+
+    structureBroken = true;
 }
 
-bool BreakStructureAction::isCompleted() { return this->completed; }
+bool BreakStructureAction::isCompleted() const { return structureBroken; }

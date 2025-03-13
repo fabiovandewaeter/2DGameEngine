@@ -273,10 +273,10 @@ Structure *Chunk::breakStructure(float x, float y)
 
 void Chunk::setFaction(Faction *faction) { this->faction = faction; }
 
-std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string structureClassName, const Entity *entity)
+Structure* Chunk::findClosestStructure(const std::string structureClassName, const Entity *entity)
 {
     float minDistance = std::numeric_limits<float>::max();
-    std::unique_ptr<std::pair<float, float>> closestCoords = nullptr;
+    Structure* closestStructure = nullptr;
     // Parcourt les structures "updatable"
     for (auto &entry : this->updatableStructures)
     {
@@ -289,7 +289,7 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             if (distance < minDistance)
             {
                 minDistance = distance;
-                closestCoords = std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+                closestStructure = structure;
             }
         }
     }
@@ -305,9 +305,9 @@ std::unique_ptr<std::pair<float, float>> Chunk::findStructure(const std::string 
             if (distance < minDistance)
             {
                 minDistance = distance;
-                closestCoords = std::make_unique<std::pair<float, float>>(structure->getPositionX(), structure->getPositionY());
+                closestStructure = structure;
             }
         }
     }
-    return closestCoords;
+    return closestStructure;
 }

@@ -9,5 +9,5 @@ HealEffect::~HealEffect() {}
 void HealEffect::applyEffect(Entity *entity)
 {
     std::cout << "HealEffect : " << entity->getHP() << std::endl;
-    entity->hit(-this->hp);
+    entity->onHit(-this->hp);
 }

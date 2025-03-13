@@ -19,6 +19,7 @@ Faction::~Faction()
 
 // getter
 std::pair<float, float> Faction::getHomeCoordinates() { return this->homeCoordinates; }
+bool Faction::isAlliedWith(Faction *faction) { return false; }
 
 // setter
 void Faction::addMember(Entity *entity)

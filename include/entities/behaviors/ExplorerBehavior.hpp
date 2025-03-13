@@ -7,7 +7,7 @@ class ExplorerBehavior : public Behavior
 {
 public:
     ExplorerBehavior(Entity *entity) : Behavior(entity) {}
-    void execute() override;
+    void update() override;
 
 private:
 };

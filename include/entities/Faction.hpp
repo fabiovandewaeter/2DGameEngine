@@ -15,6 +15,8 @@ public:
 
     // getter
     std::pair<float, float> getHomeCoordinates();
+    // return true if is allied with the faction
+    bool isAlliedWith(Faction *faction);
 
     // setter
     void addMember(Entity *entity);

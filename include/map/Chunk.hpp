@@ -43,7 +43,7 @@ public:
     // break the Structure and returns it
     Structure *breakStructure(float x, float y);
     void setFaction(Faction *faction);
-    std::unique_ptr<std::pair<float, float>> findStructure(const std::string structureClassName, const Entity *entity);
+    Structure* findClosestStructure(const std::string structureClassName, const Entity *entity);
 
 private:
     Tile *allTiles[CHUNK_TILE_SIZE * CHUNK_TILE_SIZE];

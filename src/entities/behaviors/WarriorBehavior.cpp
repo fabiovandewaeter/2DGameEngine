@@ -3,8 +3,19 @@
 #include <iostream>
 
 #include "entities/actions/GetResourceAction.hpp"
+#include "entities/actions/KillEntityAction.hpp"
 
-void WarriorBehavior::execute()
+#include "entities/Entity.hpp"
+#include "map/Map.hpp"
+int a = 0;
+void WarriorBehavior::update()
 {
-    this->getResourceAction->execute();
+    Entity *target = this->entity->getMap()->findClosestEnemy(this->entity);
+    // this->entity->pushAction(new KillEntityAction(this->entity, target));
+
+    if (a > 0)
+    {
+        // exit(1);
+    }
+    a++;
 }

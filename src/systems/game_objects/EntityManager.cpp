@@ -1,10 +1,13 @@
 #include "systems/game_objects/EntityManager.hpp"
 
+#include <cmath>
+#include <limits>
+
 #include "systems/core/Camera.hpp"
 #include "systems/core/TextureManager.hpp"
 #include "Texture.hpp"
 #include "entities/Entity.hpp"
-#include "entities/Entity.hpp"
+#include "entities/Faction.hpp"
 
 void EntityManager::loadEntities()
 {
@@ -92,3 +95,40 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
 
 std::vector<Player *> *EntityManager::getPlayers() { return &this->players; }
 int EntityManager::getNumberOfPlayers() { return this->players.size(); }
+
+Entity *EntityManager::findClosestEnemy(const Entity *entity)
+{
+    Entity *closestEnemy = nullptr;
+    float minDistance = std::numeric_limits<float>::max();
+    Faction *entityFaction = entity->getFaction();
+
+    for (Entity *other : entities)
+    {
+        // Ne pas se considérer soi-même comme ennemi
+        if (other == entity)
+            continue;
+
+        // Vérifier l'appartenance aux factions
+        Faction *otherFaction = other->getFaction();
+
+        if (entityFaction && otherFaction)
+        {
+            // Si les factions sont alliées, on skip
+            if (entityFaction->isAlliedWith(otherFaction))
+                continue;
+        }
+        else if (!entityFaction || !otherFaction)
+        {
+            float dx = other->getPositionX() - entity->getPositionX();
+            float dy = other->getPositionY() - entity->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestEnemy = other;
+            }
+        }
+    }
+    return closestEnemy;
+}
