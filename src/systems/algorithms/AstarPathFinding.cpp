@@ -51,8 +51,10 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
     allNodes[{tileStartX, tileStartY}] = startNode;
 
     // Définition des 8 directions possibles (4 cardinales et 4 diagonales)
-    const float dx[8] = {1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, -1.0f, -1.0f};
-    const float dy[8] = {0.0f, 0.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, -1.0f};
+    // const float dx[8] = {1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, -1.0f, -1.0f};
+    // const float dy[8] = {0.0f, 0.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, -1.0f};
+    const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+    const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 
     int count = 1000;
     while (!openSet.empty())
@@ -79,8 +81,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         // Pour chaque voisin (8 directions)
         for (int i = 0; i < 8; i++)
         {
-            float nx = current->x + dx[i];
-            float ny = current->y + dy[i];
+            int nx = current->x + dx[i];
+            int ny = current->y + dy[i];
 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);
