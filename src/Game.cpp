@@ -192,7 +192,7 @@ void Game::loadEntities()
     // test
     Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, this->map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    // this->map->addEntity(warrior);
+    this->map->addEntity(warrior);
 
     Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, this->map);
     explorer->setBehavior(new ExplorerBehavior(explorer));

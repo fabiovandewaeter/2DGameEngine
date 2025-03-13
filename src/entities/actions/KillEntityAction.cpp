@@ -7,6 +7,7 @@
 
 KillEntityAction::KillEntityAction(Entity *attacker, Entity *target) : Action(attacker), target(target), state(State::INIT)
 {
+    std::cout << "NEW" << std::endl;
     if (!target)
     {
         std::cerr << "ERROR : KillEntityAction => no Entity found on the Map" << std::endl;
@@ -33,18 +34,37 @@ void KillEntityAction::update()
         if (moveAction)
         {
             moveAction->update();
-            if (moveAction->isCompleted())
+            float dx = target->getPositionX() - actor->getPositionX();
+            float dy = target->getPositionY() - actor->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
+            // if (moveAction->isCompleted() || (distance <= actor->getRange() + 1))
+            if (distance <= actor->getRange() + 1)
             {
                 attackEntityAction = std::make_unique<AttackEntityAction>(actor, target);
                 state = State::ATTACKING;
+            }
+            else if (moveAction->isCompleted())
+            {
+                moveAction = std::make_unique<MoveAction>(target->getPositionX(), target->getPositionY(), actor);
+                break;
             }
         }
         break;
     case State::ATTACKING:
         if (attackEntityAction)
         {
+            float dx = target->getPositionX() - actor->getPositionX();
+            float dy = target->getPositionY() - actor->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
+            if (!(distance <= actor->getRange() + 1))
+            {
+                moveAction = std::make_unique<MoveAction>(target->getPositionX(), target->getPositionY(), actor);
+                state = State::MOVING;
+                break;
+            }
             attackEntityAction->update();
-            if (attackEntityAction->isCompleted())
+            if (target->isDead())
+            // if (attackEntityAction->isCompleted())
             {
                 state = State::FINISHED;
             }
