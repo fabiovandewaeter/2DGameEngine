@@ -28,6 +28,8 @@ private:
     State state;
     std::unique_ptr<MoveAction> moveAction;
     std::unique_ptr<AttackEntityAction> attackEntityAction;
+
+    float calculateDistance(float sourceX, float sourceY, float goalX, float goalY);
 };
 
 #endif
