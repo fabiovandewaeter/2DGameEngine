@@ -27,14 +27,14 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    /*float tileStartX = startX;
-    float tileStartY = startY;
-    float tileGoalX = goalX;
-    float tileGoalY = goalY;*/
-    int tileStartX = static_cast<int>(std::floor(startX));
+    /*int tileStartX = static_cast<int>(std::floor(startX));
     int tileStartY = static_cast<int>(std::floor(startY));
     int tileGoalX = static_cast<int>(std::floor(goalX));
-    int tileGoalY = static_cast<int>(std::floor(goalY));
+    int tileGoalY = static_cast<int>(std::floor(goalY));*/
+    int tileStartX = static_cast<int>(std::round(startX));
+    int tileStartY = static_cast<int>(std::round(startY));
+    int tileGoalX = static_cast<int>(std::round(goalX));
+    int tileGoalY = static_cast<int>(std::round(goalY));
     const float epsilon = 0.0001f; // default threshold
 
     // File de priorité (open set) pour les nœuds

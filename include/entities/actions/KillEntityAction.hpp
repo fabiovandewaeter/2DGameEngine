@@ -5,6 +5,9 @@
 
 #include "Action.hpp"
 
+class MoveAction;
+class AttackEntityAction;
+
 class KillEntityAction : public Action
 {
 public:
@@ -23,8 +26,8 @@ private:
 
     Entity *target;
     State state;
-    std::unique_ptr<Action> moveAction;
-    std::unique_ptr<Action> attackEntityAction;
+    std::unique_ptr<MoveAction> moveAction;
+    std::unique_ptr<AttackEntityAction> attackEntityAction;
 };
 
 #endif
