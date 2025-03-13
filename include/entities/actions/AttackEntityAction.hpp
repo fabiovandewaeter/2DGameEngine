@@ -13,6 +13,8 @@ public:
 private:
     Entity *target;
     bool attackPerformed;
+
+    float calculateDistance(float sourceX, float sourceY, float goalX, float goalY);
 };
 
 #endif

@@ -22,9 +22,7 @@ void AttackEntityAction::update()
         return;
     }
     // Vérification que l'entité est à portée pour attaquer
-    float dx = target->getPositionX() - actor->getPositionX();
-    float dy = target->getPositionY() - actor->getPositionY();
-    float distance = std::sqrt(dx * dx + dy * dy);
+    float distance = calculateDistance(actor->getPositionX(), actor->getPositionY(), target->getPositionX(), target->getPositionY());
     if (distance <= actor->getRange() + 1)
     {
         actor->attack(target);
@@ -33,3 +31,10 @@ void AttackEntityAction::update()
 }
 
 bool AttackEntityAction::isCompleted() const { return attackPerformed; }
+
+float AttackEntityAction::calculateDistance(float sourceX, float sourceY, float goalX, float goalY)
+{
+    float dx = goalX - sourceX;
+    float dy = goalY - sourceY;
+    return std::sqrt(dx * dx + dy * dy);
+}
