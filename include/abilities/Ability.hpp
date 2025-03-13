@@ -12,10 +12,10 @@ class TickManager;
 class Ability
 {
 public:
-    Ability(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager);
+    Ability(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager) : pattern(pattern), effects(effects), cooldown(cooldown), cooldownStartTick(0), tickManager(tickManager) {}
     ~Ability();
 
-    void apply(int x, int y);
+    void apply(int positionX, int positionY);
 
 private:
     Pattern *pattern;

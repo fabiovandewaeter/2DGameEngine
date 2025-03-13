@@ -4,14 +4,6 @@
 #include "abilities/effects/Effect.hpp"
 #include "systems/core/TickManager.hpp"
 
-Ability::Ability(Pattern *pattern, std::vector<Effect *> effects, Uint64 cooldown, TickManager *tickManager)
-{
-    this->pattern = pattern;
-    this->effects = effects;
-    this->cooldown = cooldown;
-    this->cooldownStartTick = 0;
-    this->tickManager = tickManager;
-}
 Ability::~Ability()
 {
     delete pattern;
@@ -22,20 +14,20 @@ Ability::~Ability()
     }
 }
 
-void Ability::apply(int x, int y)
+void Ability::apply(int positionX, int positionY)
 {
-    if ((this->tickManager->getTicks() - this->cooldownStartTick) > this->cooldown)
+    if ((tickManager->getTicks() - cooldownStartTick) > cooldown)
     {
-        std::vector<Entity *> entities = this->pattern->getAffectedEntities(x, y);
+        std::vector<Entity *> entities = pattern->getAffectedEntities(positionX, positionY);
         int size = entities.size();
-        int sizeEffectsList = this->effects.size();
+        int sizeEffectsList = effects.size();
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < sizeEffectsList; j++)
             {
-                this->effects[j]->applyEffect(entities[i]);
+                effects[j]->applyEffect(entities[i]);
             }
         }
-        this->cooldownStartTick = this->tickManager->getTicks();
+        cooldownStartTick = tickManager->getTicks();
     }
 }

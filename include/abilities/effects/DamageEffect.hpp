@@ -6,8 +6,8 @@
 class DamageEffect : public Effect
 {
 public:
-    DamageEffect(int damage);
-    ~DamageEffect();
+    DamageEffect(int damage) : damage(damage) {}
+    ~DamageEffect() = default;
 
     void applyEffect(Entity *entity) override;
 
