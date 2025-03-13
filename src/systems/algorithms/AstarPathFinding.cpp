@@ -27,10 +27,14 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
 {
     std::vector<SDL_FPoint> res;
     // Conversion des positions pixels -> indices de cases
-    float tileStartX = startX;
+    /*float tileStartX = startX;
     float tileStartY = startY;
     float tileGoalX = goalX;
-    float tileGoalY = goalY;
+    float tileGoalY = goalY;*/
+    int tileStartX = static_cast<int>(std::floor(startX));
+    int tileStartY = static_cast<int>(std::floor(startY));
+    int tileGoalX = static_cast<int>(std::floor(goalX));
+    int tileGoalY = static_cast<int>(std::floor(goalY));
     const float epsilon = 0.0001f; // default threshold
 
     // File de priorité (open set) pour les nœuds
@@ -81,8 +85,8 @@ std::vector<SDL_FPoint> AstarPathFinding::findPath(Map *map, float startX, float
         // Pour chaque voisin (8 directions)
         for (int i = 0; i < 8; i++)
         {
-            int nx = current->x + dx[i];
-            int ny = current->y + dy[i];
+            float nx = current->x + dx[i];
+            float ny = current->y + dy[i];
 
             // Vérification : on récupère le chunk correspondant à la case (les coordonnées sont en indices)
             Chunk *chunk = map->getChunk(nx, ny);

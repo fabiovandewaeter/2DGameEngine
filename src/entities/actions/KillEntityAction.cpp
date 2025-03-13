@@ -33,7 +33,11 @@ void KillEntityAction::update()
         if (moveAction)
         {
             moveAction->update();
-            if (moveAction->isCompleted())
+            float dx = target->getPositionX() - actor->getPositionX();
+            float dy = target->getPositionY() - actor->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
+            // if (moveAction->isCompleted() || (distance <= actor->getRange() + 1))
+            if (moveAction->isCompleted() || (distance <= actor->getRange() + 1))
             {
                 attackEntityAction = std::make_unique<AttackEntityAction>(actor, target);
                 state = State::ATTACKING;
@@ -43,6 +47,15 @@ void KillEntityAction::update()
     case State::ATTACKING:
         if (attackEntityAction)
         {
+            float dx = target->getPositionX() - actor->getPositionX();
+            float dy = target->getPositionY() - actor->getPositionY();
+            float distance = std::sqrt(dx * dx + dy * dy);
+            if (!(distance <= actor->getRange() + 1))
+            {
+                moveAction = std::make_unique<MoveAction>(target->getPositionX(), target->getPositionY(), actor);
+                state = State::MOVING;
+                break;
+            }
             attackEntityAction->update();
             if (attackEntityAction->isCompleted())
             {
