@@ -110,7 +110,18 @@ void Camera::handleEvents(SDL_Event *event)
     }
 }
 
-void Camera::update() { move(); }
+void Camera::update()
+{
+    if (active)
+    {
+        SDL_ShowWindow(window);
+    }
+    else
+    {
+        SDL_HideWindow(window);
+    }
+    move();
+}
 
 void Camera::move()
 {
@@ -198,12 +209,6 @@ bool Camera::isVisibleOnScreen(SDL_Rect rect)
     return true;
 }
 
-void Camera::setPosition(float x, float y)
-{
-    positionX = x;
-    positionY = y;
-}
-
 float Camera::getPositionX() const { return positionX; }
 float Camera::getPositionY() const { return positionY; }
 int Camera::getWindowWidth() const { return windowWidth; }
@@ -213,3 +218,10 @@ SDL_Window *Camera::getWindow() const { return window; }
 Uint32 Camera::getWindowID() const { return windowID; }
 SDL_Renderer *Camera::getRenderer() const { return renderer; }
 TextureManager *Camera::getTextureManager() const { return textureManager; }
+bool Camera::isActive() const { return active; }
+
+void Camera::setPosition(float x, float y)
+{
+    positionX = x;
+    positionY = y;
+}

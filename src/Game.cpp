@@ -176,11 +176,11 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    Camera *camera2 = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0);
+    Camera *camera2 = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, true);
     Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, map, camera2);
     map->addPlayer(player2);
 
-    Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0);
+    Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, false);
     Player *player = new Player("Player", 0, 0, 1, 1, 100000, map, camera);
     map->addPlayer(player);
 

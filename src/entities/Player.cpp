@@ -79,11 +79,14 @@ void Player::update()
 
 void Player::render()
 {
-    SDL_RenderClear(camera->getRenderer());
-    camera->renderBackground();
-    map->render(camera);
-    guiManager->render(this);
-    SDL_RenderPresent(camera->getRenderer());
+    if (camera->isActive())
+    {
+        SDL_RenderClear(camera->getRenderer());
+        camera->renderBackground();
+        map->render(camera);
+        guiManager->render(this);
+        SDL_RenderPresent(camera->getRenderer());
+    }
 }
 
 void Player::move()

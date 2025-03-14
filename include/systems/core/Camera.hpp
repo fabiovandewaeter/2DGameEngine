@@ -21,8 +21,12 @@ class Structure;
 class Camera
 {
 public:
-    Camera(int windowWidth, int windowHeight, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY) : windowWidth(windowWidth), windowHeight(windowHeight), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velocityX(0), velocityY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50)
+    Camera(int windowWidth, int windowHeight, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY, bool active) : windowWidth(windowWidth), windowHeight(windowHeight), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velocityX(0), velocityY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), active(active)
     {
+        if (!active)
+        {
+            flags |= SDL_WINDOW_HIDDEN;
+        }
         std::cout << "camera zoom need fix" << std::endl;
         if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
         {
@@ -100,6 +104,7 @@ public:
     Uint32 getWindowID() const;
     SDL_Renderer *getRenderer() const;
     TextureManager *getTextureManager() const;
+    bool isActive() const;
 
 private:
     // Image dimensions
@@ -111,6 +116,9 @@ private:
     float positionX, positionY;
     float velocityMultiplier;
     float sprintVelocity;
+
+    // true if the Camera can render things
+    bool active;
 
     SDL_Window *window;
     Uint32 windowID;

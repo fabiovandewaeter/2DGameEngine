@@ -17,7 +17,7 @@ public:
     std::pair<float, float> getHomeCoordinates();
     // return true if is allied with the faction
     bool isAlliedWith(Faction *faction);
-    unsigned long long getScore();
+    long long getScore();
 
     // setter
     void addMember(Entity *entity);
@@ -26,7 +26,7 @@ private:
     std::string name;
     std::vector<Entity *> members;
     std::vector<Chunk *> ownedChunks;
-    unsigned long long score;
+    long long score;
 
     std::pair<float, float> homeCoordinates;
 };
