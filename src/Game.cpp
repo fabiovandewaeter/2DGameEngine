@@ -110,7 +110,7 @@ void Game::update()
     {
         running = false;
     }
-    // countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
+    countPrinter("UPS", timeData.counter, timeData.interval, timeData.lastTime);
 }
 
 TimeData timeData2 = {SDL_GetTicks64(), 0, 1000, SDL_GetTicks64(), 0};
@@ -187,11 +187,11 @@ void Game::loadEntities()
     // test
     Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    map->addEntity(warrior);
+    // map->addEntity(warrior);
 
     Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
-    map->addEntity(explorer);
+    // map->addEntity(explorer);
 }
 
 void Game::loadItems()
