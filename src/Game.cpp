@@ -34,19 +34,19 @@ Game::Game(std::string title, int windowPositionX, int windowPositioNY, int wind
     else
     {
         std::cerr << "SDL_Init could not initialize! SDL_Init Error: " << SDL_GetError() << std::endl;
-        delete this;
+        return;
     }
     int imgFlags = IMG_INIT_PNG;
     if (!(IMG_Init(imgFlags) & imgFlags))
     {
         std::cerr << "FAIL : SDL_image NOT initialized" << std::endl;
-        delete this;
+        return;
     }
     // Initialize SDL_ttf
     if (TTF_Init() == -1)
     {
         std::cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
-        delete this;
+        return;
     }
 
     structureFactory = StructureFactory::getInstance();

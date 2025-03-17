@@ -32,7 +32,7 @@ public:
         if (!(window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, flags)))
         {
             std::cerr << "FAIL : Window NOT created" << std::endl;
-            delete this;
+            return;
         }
         windowID = SDL_GetWindowID(window);
         // Create renderer
@@ -44,7 +44,7 @@ public:
         else
         {
             std::cerr << "FAIL : Renderer NOT created" << std::endl;
-            delete this;
+            return;
         }
         // Initialize PNG loading
         textureManager = new TextureManager(this);
@@ -55,7 +55,7 @@ public:
         if (!iconSurface)
         {
             std::cout << "Failed to load icon: " << IMG_GetError() << std::endl;
-            delete this;
+            return;
         }
         SDL_SetWindowIcon(window, iconSurface);
         SDL_FreeSurface(iconSurface);
