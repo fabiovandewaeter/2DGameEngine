@@ -26,6 +26,6 @@ int main(int argc, char *argv[])
 
     Game *game = new Game("TestEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, false, vsync, UPS);
     game->run(); // Game loop
-    game->clean();
+    delete game;
     return 0;
 }

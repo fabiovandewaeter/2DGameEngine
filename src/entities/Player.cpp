@@ -4,7 +4,11 @@
 float sprint2 = 1;
 float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
-Player::~Player() { delete camera; }
+Player::~Player()
+{
+    std::cout << "\n\n\n\n\n\n\nDESTROY" << std::endl;
+    delete camera;
+}
 
 void Player::handleEvents(SDL_Event *event)
 {

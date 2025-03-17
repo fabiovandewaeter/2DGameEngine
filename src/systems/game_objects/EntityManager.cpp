@@ -9,6 +9,18 @@
 #include "entities/Entity.hpp"
 #include "entities/Faction.hpp"
 
+EntityManager::~EntityManager()
+{
+    int size = entities.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete entities[i];
+    }
+    size = players.size();
+    entities.clear();
+    players.clear();
+}
+
 void EntityManager::loadEntities()
 {
     // entities.push_back(new Entity((*entityTextures)[1], (SDL_FRect){50, 50, 16, 16}, 100));
@@ -68,7 +80,10 @@ bool EntityManager::checkCollision(SDL_FRect rectA, SDL_FRect rectB)
              rectA.y >= rectB.y + rectB.h);
 }
 
-std::vector<Entity *> EntityManager::getEntities() { return entities; }
+std::vector<Entity *> EntityManager::getEntities()
+{
+    return entities;
+}
 
 std::vector<Entity *> EntityManager::getPotentialEntities(Entity *entity)
 {
@@ -90,8 +105,14 @@ std::vector<Entity *> EntityManager::getEntitiesInArea(SDL_FRect area)
     return res;
 }
 
-std::vector<Player *> *EntityManager::getPlayers() { return &players; }
-int EntityManager::getNumberOfPlayers() { return players.size(); }
+std::vector<Player *> *EntityManager::getPlayers()
+{
+    return &players;
+}
+int EntityManager::getNumberOfPlayers()
+{
+    return players.size();
+}
 
 Entity *EntityManager::findClosestEnemy(const Entity *entity)
 {

@@ -38,7 +38,14 @@ Game::Game(std::string title, int windowPositionX, int windowPositioNY, int wind
     std::cout << "====================================================" << std::endl;
 }
 
-Game::~Game() {}
+Game::~Game()
+{
+    delete map;
+
+    Mix_Quit();
+    IMG_Quit();
+    SDL_Quit();
+}
 
 void Game::run()
 {
@@ -49,9 +56,7 @@ void Game::run()
         update();
         render();
         tickManager.waitTick(getFrameDelay());
-#ifdef PROFILER
-        FrameMark;
-#endif
+        running = false;
     }
 }
 
@@ -124,16 +129,6 @@ void Game::render()
         (*players)[i]->render();
     }
     //  countPrinter("FPS", timeData2.counter, timeData2.interval, timeData2.lastTime);
-}
-
-void Game::clean()
-{
-    delete map;
-    audioManager.free();
-
-    Mix_Quit();
-    IMG_Quit();
-    SDL_Quit();
 }
 
 bool Game::isRunning() { return running; }

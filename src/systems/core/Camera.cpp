@@ -10,6 +10,10 @@
 
 Camera::~Camera()
 {
+    std::cout << "\n\n\n\n\n\n\nDESTROY" << std::endl;
+    delete textureManager;
+    delete backgroundTexture;
+    std::cout << "\n\n\n\n\n\n\nDESTROY" << std::endl;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }

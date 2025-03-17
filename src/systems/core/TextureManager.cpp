@@ -3,7 +3,13 @@
 #include "Texture.hpp"
 #include "systems/utils/JSONManager.hpp"
 
-TextureManager::~TextureManager() {}
+TextureManager::~TextureManager()
+{
+    for (auto &pair : textures)
+    {
+        delete pair.second;
+    }
+}
 
 void TextureManager::loadConfiguration()
 {

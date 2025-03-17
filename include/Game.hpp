@@ -39,7 +39,6 @@ public:
     void handleEvents();
     void update();
     void render();
-    void clean();
 
     bool isRunning();
     void setFPS(unsigned int fps);
