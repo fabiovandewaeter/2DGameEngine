@@ -9,6 +9,7 @@ TextureManager::~TextureManager()
     {
         delete pair.second;
     }
+    textures.clear();
 }
 
 void TextureManager::loadConfiguration()

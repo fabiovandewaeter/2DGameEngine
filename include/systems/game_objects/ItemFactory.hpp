@@ -22,7 +22,7 @@ public:
     void init();
     void load();
 
-    static Item* getItem(std::string name);
+    static Item *getItem(std::string name);
 
 private:
     static std::unordered_map<std::string, Item *> allItems;

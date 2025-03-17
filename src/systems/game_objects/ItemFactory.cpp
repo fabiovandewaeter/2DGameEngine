@@ -12,7 +12,14 @@
 #include "systems/utils/JSONManager.hpp"
 
 ItemFactory::ItemFactory() {}
-ItemFactory::~ItemFactory() {}
+
+ItemFactory::~ItemFactory()
+{
+    for (auto &pair : allItems)
+    {
+        delete pair.second;
+    }
+}
 
 void ItemFactory::free()
 {
@@ -26,9 +33,6 @@ void ItemFactory::free()
 void ItemFactory::init() {}
 void ItemFactory::load()
 {
-#ifdef PROFILER
-    ZoneScoped;
-#endif
     loadEquipments("data/equipments.json");
     loadResources("data/resources.json");
 }

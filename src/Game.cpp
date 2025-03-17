@@ -27,6 +27,28 @@ Game::Game(std::string title, int windowPositionX, int windowPositioNY, int wind
     }
     running = true;
 
+    if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+    {
+        std::cout << "Subsystems Initialised" << std::endl;
+    }
+    else
+    {
+        std::cerr << "SDL_Init could not initialize! SDL_Init Error: " << SDL_GetError() << std::endl;
+        delete this;
+    }
+    int imgFlags = IMG_INIT_PNG;
+    if (!(IMG_Init(imgFlags) & imgFlags))
+    {
+        std::cerr << "FAIL : SDL_image NOT initialized" << std::endl;
+        delete this;
+    }
+    // Initialize SDL_ttf
+    if (TTF_Init() == -1)
+    {
+        std::cerr << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
+        delete this;
+    }
+
     structureFactory = StructureFactory::getInstance();
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
@@ -42,6 +64,7 @@ Game::~Game()
 {
     delete map;
 
+    TTF_Quit();
     Mix_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -56,7 +79,7 @@ void Game::run()
         update();
         render();
         tickManager.waitTick(getFrameDelay());
-        running = false;
+        // running = false;
     }
 }
 
@@ -180,13 +203,13 @@ void Game::loadEntities()
     map->addPlayer(player);
 
     // test
-    Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, map);
+    /*Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-    // map->addEntity(warrior);
+     map->addEntity(warrior);*/
 
-    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
+    /*Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
-    // map->addEntity(explorer);
+    map->addEntity(explorer);*/
 }
 
 void Game::loadItems()

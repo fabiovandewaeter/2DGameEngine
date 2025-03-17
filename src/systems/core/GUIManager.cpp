@@ -25,7 +25,7 @@ static int text_width(mu_Font font, const char *text, int len)
 
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
 
-GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager)
+GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager) : renderer(renderer), textureManager(textureManager), tickManager(tickManager), structureFactory(structureFactory), structureNamesList(structureFactory->getRegistredClasses()), mouseManager(mouseManager)
 {
     button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -43,16 +43,11 @@ GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManage
     mu_init(&ctx);
     ctx.text_width = text_width;
     ctx.text_height = text_height;
-    this->renderer = renderer;
-    this->textureManager = textureManager;
-    this->tickManager = tickManager;
-    this->structureFactory = structureFactory;
-    structureNamesList = structureFactory->getRegistredClasses();
-    this->mouseManager = mouseManager;
-
     loadIcons();
     loadConfiguration();
 }
+
+GUIManager::~GUIManager() { structureTextureIdToTexture.clear(); }
 
 void GUIManager::loadConfiguration() {}
 

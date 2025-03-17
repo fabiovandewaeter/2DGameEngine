@@ -12,6 +12,8 @@
 #include "map/Chunk.hpp"
 #include "structures/Structure.hpp"
 
+CollisionManager::~CollisionManager() {}
+
 bool CollisionManager::checkRectanglesCollision(SDL_FRect rectA, SDL_FRect rectB)
 {
     return !(rectA.x + rectA.w <= rectB.x ||

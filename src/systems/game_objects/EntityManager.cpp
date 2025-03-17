@@ -16,7 +16,6 @@ EntityManager::~EntityManager()
     {
         delete entities[i];
     }
-    size = players.size();
     entities.clear();
     players.clear();
 }

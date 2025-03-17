@@ -9,6 +9,22 @@
 #include "entities/actions/Action.hpp"
 #include "entities/Faction.hpp"
 
+Entity::~Entity()
+{
+    delete behavior;
+    int size = actionStack.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete actionStack.top();
+        actionStack.pop();
+    }
+    size = inventory.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete inventory[i];
+    }
+}
+
 void Entity::update()
 {
     if (actionStack.empty())

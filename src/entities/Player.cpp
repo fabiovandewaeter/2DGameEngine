@@ -6,8 +6,21 @@ float leftVelX2 = 0, rightVelX2 = 0, upVelY2 = 0, downVelY2 = 0;
 
 Player::~Player()
 {
-    std::cout << "\n\n\n\n\n\n\nDESTROY" << std::endl;
     delete camera;
+    delete mouseManager;
+    delete guiManager;
+    delete behavior;
+    int size = actionStack.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete actionStack.top();
+        actionStack.pop();
+    }
+    size = inventory.size();
+    for (int i = 0; i < size; i++)
+    {
+        delete inventory[i];
+    }
 }
 
 void Player::handleEvents(SDL_Event *event)

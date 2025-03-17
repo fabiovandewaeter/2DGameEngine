@@ -7,12 +7,14 @@
 
 Map::~Map()
 {
+    delete collisionManager;
     for (auto &pair : allChunks)
     {
         delete pair.second;
     }
     allChunks.clear();
     nearbyChunks.clear();
+    delete entityManager;
 }
 
 void Map::loadChunks()

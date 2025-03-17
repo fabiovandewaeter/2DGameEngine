@@ -10,6 +10,8 @@
 
 // source : https://lazyfoo.net/tutorials/SDL/17_mouse_events/index.php
 
+MouseManager::~MouseManager() {}
+
 bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, int y)
 {
 	std::pair<float, float> convertedCoordinates = player->getCamera()->convertCameraToInGameCoordinates(x, y);

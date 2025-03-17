@@ -28,44 +28,28 @@ public:
             flags |= SDL_WINDOW_HIDDEN;
         }
         std::cout << "camera zoom need fix" << std::endl;
-        if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+        // Create window
+        if (!(window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, flags)))
         {
-            std::cout << "Subsystems Initialised" << std::endl;
-            // Create window
-            if (!(window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, flags)))
-            {
-                std::cout << "FAIL : Window NOT created" << std::endl;
-                delete this;
-            }
-            windowID = SDL_GetWindowID(window);
-            // Create renderer
-            if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)))
-            {
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-                std::cout << "Renderer created" << std::endl;
-            }
-            else
-            {
-                std::cout << "FAIL : Renderer NOT created" << std::endl;
-                delete this;
-            }
-            // Initialize PNG loading
-            int imgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(imgFlags) & imgFlags))
-            {
-                std::cout << "FAIL : SDL_image NOT initialized" << std::endl;
-                delete this;
-            }
-            // Initialize SDL_ttf
-            if (TTF_Init() == -1)
-            {
-                printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-                delete this;
-            }
-            textureManager = new TextureManager(this);
-            backgroundTexture = textureManager->getTexture("BACKGROUND");
-            backgroundRenderRect = {(int)((windowWidth / 2) - (backgroundTexture->getCenterX())), (int)((windowHeight / 2) - (backgroundTexture->getCenterY())), (int)(backgroundTexture->getWidth()), (int)(backgroundTexture->getHeight())};
+            std::cerr << "FAIL : Window NOT created" << std::endl;
+            delete this;
         }
+        windowID = SDL_GetWindowID(window);
+        // Create renderer
+        if ((renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)))
+        {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            std::cout << "Renderer created" << std::endl;
+        }
+        else
+        {
+            std::cerr << "FAIL : Renderer NOT created" << std::endl;
+            delete this;
+        }
+        // Initialize PNG loading
+        textureManager = new TextureManager(this);
+        backgroundTexture = textureManager->getTexture("BACKGROUND");
+        backgroundRenderRect = {(int)((windowWidth / 2) - (backgroundTexture->getCenterX())), (int)((windowHeight / 2) - (backgroundTexture->getCenterY())), (int)(backgroundTexture->getWidth()), (int)(backgroundTexture->getHeight())};
         // window icon
         SDL_Surface *iconSurface = SDL_LoadBMP("assets/img/icon/window_icon.bmp");
         if (!iconSurface)

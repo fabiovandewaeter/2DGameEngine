@@ -21,7 +21,7 @@ class Entity
 {
 public:
     Entity(std::string textureName, float positionX, float positionY, float width, float height, int HP, Map *map) : textureName(textureName), positionX(positionX), positionY(positionY), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velocityX(0), velocityY(0), behavior(nullptr), faction(nullptr) {};
-    ~Entity() = default;
+    virtual ~Entity();
 
     virtual void update();
     // void move();
