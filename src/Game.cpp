@@ -7,7 +7,7 @@
 #include "map/Map.hpp"
 #include "entities/Player.hpp"
 
-Game::Game(std::string title, int windowPositionX, int windowPositioNY, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS) : title(title), FPS(60), UPS(60), windowWidth(windowWidth), windowHeight(windowHeight)
+Game::Game(std::string title, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS) : title(title), windowWidth(windowWidth), windowHeight(windowHeight), running(true), FPS(60), UPS(60), structureFactory(StructureFactory::getInstance())
 {
     std::cout << "\n======================================================" << std::endl;
     setUPS(UPS);
@@ -25,7 +25,6 @@ Game::Game(std::string title, int windowPositionX, int windowPositioNY, int wind
     {
         flags = flags | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     }
-    running = true;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
@@ -49,7 +48,6 @@ Game::Game(std::string title, int windowPositionX, int windowPositioNY, int wind
         return;
     }
 
-    structureFactory = StructureFactory::getInstance();
     loadMedia();
     std::cout << "================= new Map() =================" << std::endl;
     map = new Map(&tickManager, &structureFactory, &perlinNoise);

@@ -8,6 +8,6 @@ SquarePattern::~SquarePattern() {}
 
 std::vector<Entity *> SquarePattern::getAffectedEntities(int positionX, int positionY)
 {
-    SDL_FRect pattern = {positionX - (radius / 2), positionY - (radius / 2), radius, radius};
+	SDL_FRect pattern = {(float)(positionX - (radius / 2)),(float)(positionY - (radius / 2)),(float) radius, (float)radius};
     return entityManager->getEntitiesInArea(pattern);
 }

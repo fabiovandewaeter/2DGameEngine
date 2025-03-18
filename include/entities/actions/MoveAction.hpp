@@ -16,7 +16,7 @@ public:
 private:
     float goalX, goalY;
     std::vector<SDL_FPoint> path;
-    int currentIndex;
+    size_t currentIndex;
     int stuckedCount;
     SDL_FPoint lastPosition;
     float threshold;

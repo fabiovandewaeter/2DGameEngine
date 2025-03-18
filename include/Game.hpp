@@ -32,7 +32,7 @@ class Map;
 class Game
 {
 public:
-    Game(std::string title, int windowPositionX, int windowPositionY, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS);
+    Game(std::string title, int windowWidth, int windowHeight, bool fullscreen, bool vsync, int UPS);
     ~Game();
 
     void run();
@@ -46,14 +46,14 @@ public:
     Uint64 getFrameDelay();
 
 private:
-    bool running;
+    std::string title;
     int windowWidth, windowHeight;
+    bool running;
     unsigned int FPS;
     unsigned int UPS;
     Uint64 frameDelay;
     TickManager tickManager;
     SDL_Event event;
-    std::string title;
     int flags;
 
     // musics
