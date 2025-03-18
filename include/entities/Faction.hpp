@@ -10,7 +10,7 @@ class Chunk;
 class Faction
 {
 public:
-    Faction(std::string name) : name(name), homeCoordinates({0, 0}), score(0) {}
+    Faction(std::string name) : name(name), score(0), homeCoordinates({0, 0}) {}
     ~Faction();
 
     // getter

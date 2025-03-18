@@ -17,7 +17,6 @@ bool MouseManager::handleClickOnEntity(SDL_Event *event, Player *player, int x, 
 	std::pair<float, float> convertedCoordinates = player->getCamera()->convertCameraToInGameCoordinates(x, y);
 
 	int size = 5;
-	SDL_FRect area = {convertedCoordinates.first - size, convertedCoordinates.second - size, size * 2, size * 2};
 	std::vector<Entity *> potentialEntities = player->getMap()->getEntityManager()->getEntities();
 	bool isEntityClicked = false;
 	Entity *clickedEntity = nullptr;
@@ -87,7 +86,6 @@ void MouseManager::handleEvents(SDL_Event *event, Player *player)
 	if (event->type == SDL_MOUSEMOTION || event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
 	{
 		int x, y;
-		int i, j;
 		SDL_GetMouseState(&x, &y);
 		switch (event->type)
 		{

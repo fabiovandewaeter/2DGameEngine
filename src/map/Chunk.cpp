@@ -215,7 +215,7 @@ void Chunk::addStructure(Structure *structure, float positionX, float positionY)
         std::pair<int, int> newCoordinates = convertToLocalTileCoordinates(positionX, positionY);
         SDL_FRect box = {std::floor(positionX), std::floor(positionY), 1, 1}; // floor to make sure the coordinates are based on the grid
         structure->setHitBox(box);
-        if (IUpdatable *updatable = dynamic_cast<IUpdatable *>(structure))
+        if (dynamic_cast<IUpdatable *>(structure))
         {
             updatableStructures[newCoordinates] = structure;
         }

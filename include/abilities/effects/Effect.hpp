@@ -8,7 +8,7 @@ class Entity;
 class Effect
 {
 public:
-    ~Effect() = default;
+    virtual ~Effect() = default;
 
     virtual void applyEffect(Entity *entity) = 0;
 

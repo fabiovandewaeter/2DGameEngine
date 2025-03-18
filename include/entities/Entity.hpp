@@ -20,7 +20,7 @@ class Structure;
 class Entity
 {
 public:
-    Entity(std::string textureName, float positionX, float positionY, float width, float height, int HP, Map *map) : textureName(textureName), positionX(positionX), positionY(positionY), width(width), height(height), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), velocityX(0), velocityY(0), behavior(nullptr), faction(nullptr) {};
+    Entity(std::string textureName, float positionX, float positionY, float width, float height, int HP, Map *map) : textureName(textureName), positionX(positionX), positionY(positionY), width(width), height(height), velocityX(0), velocityY(0), speed(VELOCITY_MULTIPLIER), HP(HP), range(0.5f), map(map), faction(nullptr), behavior(nullptr) {};
     virtual ~Entity();
 
     virtual void update();
@@ -69,7 +69,7 @@ protected:
     float velocityX, velocityY;
     float speed;
     int HP;
-    // range to break Structure
+    // range at which the Entity can break a Structure
     float range;
     Map *map;
     Faction *faction;

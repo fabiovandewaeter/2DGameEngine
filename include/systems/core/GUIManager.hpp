@@ -8,6 +8,7 @@
 #include "SDL2/SDL_events.h"
 #include "SDL2/SDL_video.h"
 #include "SDL2/SDL_render.h"
+#include <SDL2/SDL_ttf.h>
 extern "C"
 {
 #include "microui/microui.h"
@@ -31,6 +32,7 @@ public:
     void render(Player *player);
 
 private:
+    SDL_Window *window;
     SDL_Renderer *renderer;
     TextureManager *textureManager;
     TickManager *tickManager;
@@ -39,6 +41,7 @@ private:
     std::unordered_map<std::string, int> structureTextureNameToId;
     std::vector<Texture *> structureTextureIdToTexture;
     MouseManager *mouseManager;
+    TTF_Font *font;
     mu_Context ctx;
     char button_map[256];
     char key_map[256];

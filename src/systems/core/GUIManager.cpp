@@ -3,7 +3,6 @@
 #define TEXT_HEIGHT 10
 #define CONFIGURATION_FILE "data/configurations/GUIManagerConfiguration.json"
 
-#include <SDL2/SDL_ttf.h>
 #include <array>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +24,7 @@ static int text_width(mu_Font font, const char *text, int len)
 
 static int text_height(mu_Font font) { return TEXT_HEIGHT; }
 
-GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager) : renderer(renderer), textureManager(textureManager), tickManager(tickManager), structureFactory(structureFactory), structureNamesList(structureFactory->getRegistredClasses()), mouseManager(mouseManager)
+GUIManager::GUIManager(SDL_Window *window, SDL_Renderer *renderer, TextureManager *textureManager, TickManager *tickManager, StructureFactory *structureFactory, MouseManager *mouseManager) : window(window), renderer(renderer), textureManager(textureManager), tickManager(tickManager), structureFactory(structureFactory), structureNamesList(structureFactory->getRegistredClasses()), mouseManager(mouseManager)
 {
     button_map[SDL_BUTTON_LEFT & 0xff] = MU_MOUSE_LEFT;
     button_map[SDL_BUTTON_RIGHT & 0xff] = MU_MOUSE_RIGHT;
@@ -85,7 +84,7 @@ void GUIManager::test_window(mu_Context *ctx, Player *player)
             int row_sizes[] = {30, -1};
             mu_layout_row(ctx, 2, row_sizes, 25);
 
-            int size = structureNamesList.size();
+            size_t size = structureNamesList.size();
             for (size_t i = 0; i < size; ++i)
             {
                 mu_Rect r = mu_layout_next(ctx);
@@ -217,10 +216,6 @@ void GUIManager::render(Player *player)
     }
     // r_present();
 }
-
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static TTF_Font *font;
 
 void GUIManager::r_init(SDL_Window *window1, SDL_Renderer *renderer1)
 {

@@ -21,7 +21,7 @@ class Structure;
 class Camera
 {
 public:
-    Camera(int windowWidth, int windowHeight, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY, bool active) : windowWidth(windowWidth), windowHeight(windowHeight), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velocityX(0), velocityY(0), scale(1.0), scaleSpeed(1.0), velocityMultiplier(4.0 / 16), sprintVelocity(50), active(active)
+    Camera(int windowWidth, int windowHeight, int flags, double minScale, double maxScale, std::string title, float positionX, float positionY, bool active) : windowWidth(windowWidth), windowHeight(windowHeight), velocityX(0), velocityY(0), scale(1.0), scaleSpeed(1.0), minScale(minScale), maxScale(1 / maxScale), positionX(positionX), positionY(positionY), velocityMultiplier(4.0 / 16), sprintVelocity(50), active(active)
     {
         if (!active)
         {

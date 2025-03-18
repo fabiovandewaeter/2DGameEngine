@@ -26,7 +26,7 @@ class Structure;
 class Map
 {
 public:
-    Map(TickManager *tickManager, StructureFactory *structureFactory, PerlinNoise *perlinNoise) : tickManager(tickManager), structureFactory(structureFactory), perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)) { loadChunks(); }
+    Map(TickManager *tickManager, StructureFactory *structureFactory, PerlinNoise *perlinNoise) : perlinNoise(perlinNoise), collisionManager(new CollisionManager(this)), entityManager(new EntityManager(this)), tickManager(tickManager), structureFactory(structureFactory) { loadChunks(); }
     ~Map();
 
     void loadChunks();
