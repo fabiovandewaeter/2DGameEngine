@@ -20,7 +20,7 @@ class ActiveStructure : public Structure, public IUpdatable
 public:
     ActiveStructure();
     // player is the Player that place the ActiveStructure
-    ActiveStructure(std::string textureName, float positionX, float positionY, int HP, bool solid, Player *placedBy, TickManager *tickManager) : Structure{textureName, positionX, positionY, HP, solid, placedBy, tickManager}, map(placedBy->getMap()), entityManager(placedBy->getMap()->getEntityManager()), faction(faction), tickManager(tickManager) {};
+    ActiveStructure(std::string textureName, float positionX, float positionY, int HP, bool solid, Player *placedBy, TickManager *tickManager) : Structure{textureName, positionX, positionY, HP, solid, placedBy, tickManager}, map(placedBy->getMap()), entityManager(placedBy->getMap()->getEntityManager()), faction(faction) {};
     ~ActiveStructure();
 
     void onLeftClick() override;
@@ -31,7 +31,6 @@ protected:
     bool active;
     std::vector<Ability *> abilities;
     Faction *faction;
-    TickManager *tickManager;
 };
 
 #endif

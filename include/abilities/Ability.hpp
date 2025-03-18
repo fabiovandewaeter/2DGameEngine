@@ -20,7 +20,7 @@ public:
 private:
     Pattern *pattern;
     std::vector<Effect *> effects;
-    int cooldown;
+    Uint64 cooldown;
     int cooldownStartTick;
     TickManager *tickManager;
 };

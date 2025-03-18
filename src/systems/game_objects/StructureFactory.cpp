@@ -17,6 +17,7 @@ std::function<Structure *(std::string, float, float, Player *, TickManager *)> S
     }
     return nullptr;
 }
+
 std::vector<std::string> StructureFactory::getRegistredClasses()
 {
     std::vector<std::string> keys;

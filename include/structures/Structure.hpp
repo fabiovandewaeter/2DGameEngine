@@ -21,7 +21,7 @@ class Structure
 {
 public:
     Structure() : Structure(nullptr, -1, -1, 0, false, nullptr, nullptr) {}
-    Structure(std::string textureName, float positionX, float positionY, int HP, bool solid, Player *placedBy, TickManager *tickManager) : textureName(textureName), positionX(positionX), positionY(positionY), width(1), height(1), solid(solid), HP(HP), destroyed(false) {}
+    Structure(std::string textureName, float positionX, float positionY, int HP, bool solid, Player *placedBy, TickManager *tickManager) : textureName(textureName), positionX(positionX), positionY(positionY), width(1), height(1), solid(solid), HP(HP), destroyed(false), tickManager(tickManager) {}
     ~Structure();
 
     void update();
@@ -55,6 +55,7 @@ protected:
     bool solid;
     unsigned int HP;
     bool destroyed;
+    TickManager *tickManager;
 
     int getTileSize();
 };
