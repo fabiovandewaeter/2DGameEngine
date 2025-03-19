@@ -89,6 +89,21 @@ void Game::handleEvents()
         {
             running = false;
         }
+        else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)
+        {
+            running = false;
+            // stop the game when closing a window until a better mechanism is added
+            /*Uint32 eventWindowID = event.window.windowID;
+            std::vector<Player *> *players = map->getEntityManager()->getPlayers();
+            for (Player *player : *players)
+            {
+                if (player->getCamera()->getWindowID() == eventWindowID)
+                {
+                    player->getCamera()->setActive(false);
+                    break;
+                }
+            }*/
+        }
         else
         {
             Uint32 eventWindowID = 0;
@@ -196,7 +211,7 @@ void Game::loadEntities()
     Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, map, camera2);
     map->addPlayer(player2);
 
-    Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, false);
+    Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, true);
     Player *player = new Player("Player", 0, 0, 1, 1, 100000, map, camera);
     map->addPlayer(player);
 
