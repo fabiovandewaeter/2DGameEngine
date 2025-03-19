@@ -66,7 +66,7 @@ void Chunk::loadTilesWithPerlinNoise()
         {
             float positionX = i + this->positionX;
             float positionY = j + this->positionY;
-            double res = this->perlinNoise->perlin2d(positionX, positionY, 0.001f, 1);
+            double res = this->perlinNoise->perlin2d(positionX, positionY, 0.05f, 1);
             int textureIndex = 0;
             int numberOfTileTextures = 4;
             if (res < 1.0 / numberOfTileTextures)

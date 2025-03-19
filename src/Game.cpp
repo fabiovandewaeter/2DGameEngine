@@ -207,22 +207,22 @@ void Game::loadMedia()
 void Game::loadEntities()
 {
     std::cout << "================= Game::LoadEntities() =================" << std::endl;
-    Camera *camera2 = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, true);
+    /*Camera *camera2 = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, true);
     Player *player2 = new Player("GREEN", 0, 0, 1, 1, 100000, map, camera2);
-    map->addPlayer(player2);
+    map->addPlayer(player2);*/
 
     Camera *camera = new Camera(windowWidth, windowHeight, flags, 10, 20000, title, 0, 0, true);
     Player *player = new Player("Player", 0, 0, 1, 1, 100000, map, camera);
     map->addPlayer(player);
 
     // test
-    /*Entity *warrior = new Entity("Warrior", 20, 15, 1, 1, 100, map);
+    Entity *warrior = new Entity("Warrior", 20, 20, 1, 1, 100, map);
     warrior->setBehavior(new WarriorBehavior(warrior));
-     map->addEntity(warrior);*/
+    map->addEntity(warrior);
 
-    /*Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
+    Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
-    map->addEntity(explorer);*/
+    map->addEntity(explorer);
 }
 
 void Game::loadItems()

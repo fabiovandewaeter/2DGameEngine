@@ -2,13 +2,25 @@
 
 ## Description
 
-A small 2D game engine written in c++ and using SDL
+A small 2D game engine/game written in c++ and using SDL
 
-The basic functionalities of a game engine are recreated with SDL in order to obtain maximum performance on specific game functionalities that I want to create
+The basic functionalities of a game engine/game are recreated with SDL in order to obtain maximum performance on specific game functionalities that I want to create
 
 ## Demo
 
-![first](./assets//readme_assets/demo_0.gif)
+### Movements, Structures and GUI
+
+The player can move their camera and their body, place and break structures, and use a basic GUI to select which structure to place
+
+Each player has their own window and body
+
+![movements, structures and GUI](./assets/readme_assets/demo_0.gif)
+
+### Entity behavior
+
+Entities can have behaviors, for exemple the blue entity is busy harvesting wood and the pink entity is trying to kill the other poor entities
+
+![entity behavior](./assets/readme_assets/demo_1.gif)
 
 ## Libraries
 ##### SDL
@@ -29,39 +41,36 @@ The basic functionalities of a game engine are recreated with SDL in order to ob
 
 #### Repository for Windows SDL libraries files
 
-- files : https://github.com/fabiovandewaeter/windows-sdl-libraries-files
+You can grab the Windows SDL libraries files from the repository below and add them to the game folders :
 
-#### Compile with make
-`mingw32-make windows`
+- https://github.com/fabiovandewaeter/windows-sdl-libraries-files
 
-#### Compile without make
+#### Compile
 
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -o bin/main.exe -I include -L Windows_lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`mingw32-make`
 
 ##### run
 
-`./bin/main.exe`
+`./bin/main.exe <width> <height> <FPS>`
 
 ### macOS
 
 #### Install SDL libraries files
 
+- `brew install sdl2`
 - `brew install sdl2_image`
-- `brew install sdl2_tt`
+- `brew install sdl2_ttf`
 - `brew install sdl2_mixer`
 
 #### Compile with make
-`make` or `make SANITIZER=1`
 
-#### Compile without make
-
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I/opt/homebrew/opt/sdl2/include/SDL2 -I/opt/homebrew/opt/sdl2_image/include/SDL2/ -I/opt/homebrew/opt/sdl2_ttf/include/SDL2 -I/opt/homebrew/opt/sdl2_mixer/include/SDL2 -L/opt/homebrew/opt/sdl2/lib -L/opt/homebrew/opt/sdl2_image/lib -L/opt/homebrew/opt/sdl2_ttf/lib -L/opt/homebrew/opt/sdl2_mixer/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`make`
 
 ##### run
 
-`./a.out`
+`.\bin\main <width> <height> <FPS>`
 
-### Linux (no root)
+### Linux (without root)
 
 #### Install SDL libraries files
 
@@ -105,43 +114,37 @@ make install
 
 #### Compile with make
 
-`make macos`
-
-#### Compile without make
-
-`g++ src/*.cpp src/entities/*.cpp src/entities/states/*.cpp src/entities/AI/*.cpp src/systems/*.cpp src/map/*.cpp src/structures/*.cpp src/structures/passiveStructures/*.cpp src/structures/activeStructures/*.cpp src/actions/patterns/*.cpp src/actions/effects/*.cpp src/actions/*.cpp -I include -I$HOME/libs/SDL2/include -L$HOME/libs/SDL2/lib -lSDL2 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer`
+`make`
 
 ##### run
 
-`./a.out`
+`.\bin\main <width> <height> <FPS>`
 
 ##### Tracy profiler
+
+You can use [tracy](https://github.com/wolfpld/tracy) to identify performance hotspots in the program
+
 ###### Windows
 
-`https://github.com/wolfpld/tracy/releases`
+Download from the 0.11.1 release :
+
+`https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip`
 
 ###### Linux
 
+Clone the repository and use the following commands :
+
 https://github.com/wolfpld/tracy
 
-`cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DTRACY_USE_LEGACY=ON -DLEGACY=ON`
-
-`export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)`
-
-`cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DLEGACY=ON -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations" -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_CXX_COMPILER=gcc-14 -DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -DCMAKE_ASM_COMPILER=/opt/homebrew/bin/as -DCMAKE_GIT_EXECUTABLE=/opt/homebrew/bin/git`
-
-`cmake --build profiler/build --config Release --parallel`
-
-`cd profiler/build`
-
-`./tracy-profiler`
+```bash
+cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DTRACY_USE_LEGACY=ON -DLEGACY=ON
+export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release -DLEGACY=ON -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations" -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_CXX_COMPILER=gcc-14 -DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -DCMAKE_ASM_COMPILER=/opt/homebrew/bin/as -DCMAKE_GIT_EXECUTABLE=/opt/homebrew/bin/git
+cmake --build profiler/build --config Release --parallel
+cd profiler/build
+./tracy-profiler
+```
 
 ###### macOS
 
 `brew install tracy`
-
-## How to add things
-
-### images
-
-add 1 px of padding to images
