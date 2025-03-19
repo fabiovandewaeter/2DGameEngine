@@ -19,7 +19,7 @@ Map::~Map()
 
 void Map::loadChunks()
 {
-    loadSquareMap(100);
+    loadSquareMap(0);
 }
 
 void Map::loadSquareMap(int size)

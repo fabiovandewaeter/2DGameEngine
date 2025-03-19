@@ -216,13 +216,13 @@ void Game::loadEntities()
     map->addPlayer(player);
 
     // test
-    Entity *warrior = new Entity("Warrior", 20, 20, 1, 1, 100, map);
+    /*Entity *warrior = new Entity("Warrior", 20, 20, 1, 1, 100, map);
     warrior->setBehavior(new WarriorBehavior(warrior));
     map->addEntity(warrior);
 
     Entity *explorer = new Entity("Explorer", 10, 10, 1, 1, 100, map);
     explorer->setBehavior(new ExplorerBehavior(explorer));
-    map->addEntity(explorer);
+    map->addEntity(explorer);*/
 }
 
 void Game::loadItems()

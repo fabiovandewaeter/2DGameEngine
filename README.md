@@ -22,6 +22,12 @@ Entities can have behaviors, for exemple the blue entity is busy harvesting wood
 
 ![entity behavior](./assets/readme_assets/demo_1.gif)
 
+### Map
+
+The map is generated when the player reaches the limits and the textures follow the perlin noise to make the map more realistic
+
+![map](./assets/readme_assets/demo_2.gif)
+
 ## Libraries
 ##### SDL
 - SDL2
