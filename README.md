@@ -42,43 +42,41 @@ The map is generated when the player reaches the limits and the textures follow 
 - [ut](https://github.com/boost-ext/ut)
 
 ## Commands
+### Compile and run
+#### Windows
 
-### Windows
-
-#### Repository for Windows SDL libraries files
+##### Repository for Windows SDL libraries files
 
 You can grab the Windows SDL libraries files from the repository below and add them to the game folders :
 
 - https://github.com/fabiovandewaeter/windows-sdl-libraries-files
 
-#### Compile
+##### Compile
 
 `mingw32-make`
 
-##### run
+###### run
 
 `./bin/main.exe <width> <height> <FPS>`
 
-### macOS
+#### macOS
 
-#### Install SDL libraries files
+install SDL libraries files :
 
 - `brew install sdl2`
 - `brew install sdl2_image`
 - `brew install sdl2_ttf`
 - `brew install sdl2_mixer`
 
-#### Compile with make
+compile with make :
+- `make`
 
-`make`
+run :
+- `.\bin\main <width> <height> <FPS>`
 
-##### run
+#### Linux (without root)
 
-`.\bin\main <width> <height> <FPS>`
-
-### Linux (without root)
-
-#### Install SDL libraries files
+install SDL libraries files :
 
 * SDL2
 ```bash
@@ -118,25 +116,25 @@ make
 make install
 ```
 
-#### Compile with make
+compile with make :
 
-`make`
+- `make`
 
-##### run
+run :
 
-`.\bin\main <width> <height> <FPS>`
+- `.\bin\main <width> <height> <FPS>`
 
-##### Tracy profiler
+### Tracy profiler
 
 You can use [tracy](https://github.com/wolfpld/tracy) to identify performance hotspots in the program
 
-###### Windows
+#### Windows
 
 Download from the 0.11.1 release :
 
 `https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip`
 
-###### Linux
+#### Linux
 
 Clone the repository and use the following commands :
 
@@ -151,6 +149,6 @@ cd profiler/build
 ./tracy-profiler
 ```
 
-###### macOS
+#### macOS
 
 `brew install tracy`
