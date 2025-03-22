@@ -1,4 +1,4 @@
-# 2D GameEngine SDL
+# 2D GameEngine
 
 ## Description
 
